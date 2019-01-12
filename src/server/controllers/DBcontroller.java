@@ -69,10 +69,8 @@ public class DBcontroller {
 	
 		   try {
 			   Statement stmt = (Statement) connection.createStatement() ;
-			   String[] arr= query.split(";");
-			   int res1 =stmt.executeUpdate(arr[0]);
-			   int res= stmt.executeUpdate(arr[1]);
-			   if(res1==1 && res==1)
+			   int res= stmt.executeUpdate(query);
+			   if( res==1)
 				   return true;
 			   else
 				   return false;
