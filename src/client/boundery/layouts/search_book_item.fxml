@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="tableRow" prefHeight="66.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.SearchBookItemController">
+	<children>
+		<ImageView id="ivBook" fx:id="imgBookImage" fitHeight="54.0" fitWidth="54.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+		<Line endX="-99.99998474121094" endY="45.0" layoutX="170.0" layoutY="11.0" startX="-100.0" />
+		<Line endX="535.0" layoutX="183.0" layoutY="27.0" startX="-100.0" />
+		<Label id="lblBookName" fx:id="txtBookName" layoutX="82.0" layoutY="10.0" text="Book Name">
+			<font>
+				<Font name="System Bold" size="12.0" />
+			</font>
+		</Label>
+		<Label id="lblAuthor" fx:id="txtAuthorName" layoutX="156.0" layoutY="10.0" text="Author">
+			<font>
+				<Font name="System Italic" size="12.0" />
+			</font>
+		</Label>
+		<Text id="lblDescription" fx:id="txtBookDiscription" layoutX="83.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An actor is a person who portrays a character in a performance (also actress; see below). The actor performs &quot;in the flesh&quot; in the traditional medium of the theatre or in modern media such as film, radio, and television." wrappingWidth="599.6141929626465" />
+		<Button id="bookDetails" fx:id="btnBookInfo" layoutX="683.0" layoutY="27.0" mnemonicParsing="false" onAction="#onBookInfoBtn" prefHeight="30.0" prefWidth="13.0" styleClass="btnWithImage">
+			<graphic>
+      				<ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="btnWithImage">
+      					<image>
+      						<Image url="@../resources/button/information-button.png" />
+      					</image>
+      				</ImageView>
+			</graphic>
+		</Button>
+	</children>
+</AnchorPane>
