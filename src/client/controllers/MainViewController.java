@@ -84,8 +84,8 @@ public class MainViewController {
 	@FXML
 	public void initialize() {
 		ViewStarter.client.mainViewController = this;
-		
-		utils = new Utils(this);
+		this.utils = new Utils(this);
+		ViewStarter.client.utilsControllers = this.utils;
 	}
 
 	@FXML
@@ -118,7 +118,8 @@ public class MainViewController {
 
 	@FXML
 	void onBtnDialogBoxLogin(ActionEvent event) {
-		String loginQuery="Select * FROM obl.`user` where usrName = '" + this.tfUserName.getText() + "' AND `usrPassword` = '" + this.tfPassword.getText() + "'";
+		String loginQuery = "Select * FROM obl.`user` where usrName = '" + this.tfUserName.getText()
+				+ "' AND `usrPassword` = '" + this.tfPassword.getText() + "'";
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Login, loginQuery));
 	}
 
@@ -152,8 +153,9 @@ public class MainViewController {
 
 							lblSubTitle.setText("Subscriber Profile");
 							lblLoginAs.setText("Log as Subscriber");
-							ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin((Subscriber)user);
-							
+							ViewStarter.client.subscriberClientControllerObj
+									.initializeDetailsAtLogin((Subscriber) user);
+
 						}
 
 						if (user instanceof Librarian) {
@@ -172,8 +174,7 @@ public class MainViewController {
 							lblLoginAs.setText("Log as LibraryManager");
 
 						}
-						
-						
+
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

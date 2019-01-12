@@ -2,3 +2,9 @@
 	-fx-border-color: transparent;
 	-fx-background-color: transparent;
 }
+
+.btnWithImageWithBorder{
+	-fx-border-color: #8CA6ED;
+	-fx-background-color: #8CA6ED;
+}
+

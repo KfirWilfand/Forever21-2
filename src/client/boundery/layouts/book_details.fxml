@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane layoutX="100.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="602.0" style="-fx-background-color: c4e1ef;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BookDetailsController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="602.0" style="-fx-background-color: c4e1ef;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BookDetailsController">
    <children>
       <ImageView fitHeight="168.0" fitWidth="167.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -17,12 +18,12 @@
          </image>
       </ImageView>
       <Line endX="313.5" layoutX="268.0" layoutY="48.0" startX="-100.0" />
-      <Label id="lblBookNameDetails" fx:id="txtBookName" layoutX="168.0" layoutY="32.0" text="Book Name">
+      <Label id="" fx:id="lblBookNameDetails" layoutX="168.0" layoutY="32.0" text="Book Name">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label id="lblAuthorDetails" fx:id="txtAuthorName" layoutX="242.0" layoutY="32.0" text="Author">
+      <Label id="" fx:id="lblAuthorDetails" layoutX="242.0" layoutY="32.0" text="Author">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
@@ -37,7 +38,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="6.0" layoutY="326.0" mnemonicParsing="false" styleClass="btnWithImage" text="Order copy">
+      <Button layoutX="6.0" layoutY="326.0" mnemonicParsing="false" styleClass="btnWithImageWithBorder" stylesheets="@../styles/mainView.css" text="Order copy">
          <graphic>
             <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -56,7 +57,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="btnTableOfContent" layoutX="6.0" layoutY="230.0" mnemonicParsing="false" onAction="#onTableOfContentBtn" styleClass="btnWithImage" text="Table of content">
+      <Button fx:id="btnTableOfContent" layoutX="6.0" layoutY="230.0" mnemonicParsing="false" onAction="#onTableOfContentBtn" styleClass="btnWithImageWithBorder" text="Table of content">
          <graphic>
             <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -64,10 +65,14 @@
                </image>
             </ImageView>
          </graphic>
+         <stylesheets>
+            <URL value="@../styles/mainView.css" />
+            <URL value="@../styles/mainView.css" />
+         </stylesheets>
       </Button>
       <Text fx:id="txtBookLocation" layoutX="47.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D34 ,S" />
       <Text fx:id="txtAvailableCopies" layoutX="46.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" />
-      <Button id="btnCloseBookDetails" layoutX="570.0" layoutY="1.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="14.0" styleClass="btnWithImage">
+      <Button fx:id="btnCloseBookDetails" layoutX="570.0" layoutY="1.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="14.0" styleClass="btnWithImage">
          <graphic>
             <ImageView fitHeight="18.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true" styleClass="btnWithImage">
                <image>
@@ -76,7 +81,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <Text id="lblDescriptionDetails" fx:id="txtBookDiscription" layoutX="167.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="382.99998588114977" />
-      <Button fx:id="btnOrderBook" layoutX="416.0" layoutY="289.0" mnemonicParsing="false" onAction="#onOrderBookBtn" text="Order Book" />
+      <Text id="" fx:id="lblDescriptionDetails" layoutX="167.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="382.99998588114977" />
    </children>
 </Pane>

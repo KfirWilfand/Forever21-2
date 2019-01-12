@@ -1,12 +1,15 @@
 package client.controllers.adapters;
 
+import java.io.IOException;
+
+import common.entity.Book;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -14,52 +17,35 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import java.io.IOException;
-
-import common.entity.Book;
 
 
 public class BookSearchRow extends ListCell<Book> {
 
-	@FXML
-	private Label lblBookName;
+    @FXML
+    private AnchorPane tableRow;
 
-	@FXML
-	private Label lblAuthor;
+    @FXML
+    private ImageView ivBook;
 
-	@FXML
-	private Text lblDescription;
+    @FXML
+    private Label lblBookName;
 
-	@FXML
-	private ImageView ivBook;
+    @FXML
+    private Label lblAuthor;
 
-	@FXML
-	private AnchorPane tableRow;
+    @FXML
+    private Text lblDescription;
 
-	private Button bookDetails;
+    @FXML
+    private Button btnBookInfo;
 
-	private AnchorPane mainView;
 
-	public BookSearchRow(AnchorPane mainView) {
-		this.mainView = mainView;
-		loadFXML();
-	}
 
-	private void loadFXML() {
-		try {
-			Parent loader = FXMLLoader.load(getClass().getResource("/client/gui/layouts/search_book_item.fxml"));
-			Scene scene = new Scene(loader);
-			lblBookName = (Label) scene.lookup("#lblBookName");
-			lblAuthor = (Label) scene.lookup("#lblAuthor");
-			lblDescription = (Text) scene.lookup("#lblDescription");
-			tableRow = (AnchorPane) scene.lookup("#tableRow");
-			ivBook = (ImageView) scene.lookup("#ivBook");
-			bookDetails = (Button) scene.lookup("#bookDetails");
+    @FXML
+    void onBookInfoBtn(ActionEvent event) {
 
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    }
+
 
 	@Override
 	protected void updateItem(Book item, boolean empty) {
@@ -68,31 +54,29 @@ public class BookSearchRow extends ListCell<Book> {
 			setText(null);
 			setContentDisplay(ContentDisplay.TEXT_ONLY);
 		} else {
-//			lblBookName.setText(item.getBookName());
-//			lblAuthor.setText(item.getAuthor());
-//			lblDescription.setText(item.getDescription());
-//			Image image = new Image(item.getBookImagePath());
-//			ivBook.setImage(image);
-			bookDetails.setOnAction(new EventHandler<ActionEvent>() {
+
+			lblBookName.setText(item.getBookName());
+			lblAuthor.setText(item.getAuthor().toString());
+			lblDescription.setText(item.getDescription());
+			//Image image = new Image(item.getBookImagePath());
+		//	ivBook.setImage(image);
+			btnBookInfo.setOnAction(new EventHandler<ActionEvent>() {
+
+
 				@Override
 				public void handle(ActionEvent e) {
 					try {
 
-						Parent loginBox = FXMLLoader
-								.load(getClass().getResource("/client/gui/layouts/book_details.fxml"));
-						mainView.getChildren().add(loginBox);
+						AnchorPane bookDetails = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/book_details.fxml"));
+						mainView.getChildren().add(bookDetails);
 						
-						Button btnCloseBookDetails = (Button) loginBox.lookup("#btnCloseBookDetails");
-						Label lblBookNameDetails = (Label) loginBox.lookup("#lblBookNameDetails");
-						Label lblAuthorDetails = (Label) loginBox.lookup("#lblAuthorDetails");
-						Text lblDescriptionDetails = (Text) loginBox.lookup("#lblDescriptionDetails");
-						ImageView ivBookDetails = (ImageView) loginBox.lookup("#ivBookDetails");
+
 						
 						btnCloseBookDetails.setOnAction(new EventHandler<ActionEvent>() {
 
 							@Override
 							public void handle(ActionEvent arg0) {
-								mainView.getChildren().remove(loginBox);
+								mainView.getChildren().remove(bookDetails);
 							}
 
 						});
@@ -100,9 +84,9 @@ public class BookSearchRow extends ListCell<Book> {
 
 
 						
-//						lblBookNameDetails.setText(item.getBookName());
-//						lblAuthorDetails.setText(item.getAuthor());
-//						lblDescriptionDetails.setText(item.getDescription());
+						lblBookNameDetails.setText(item.getBookName());
+						lblAuthorDetails.setText(item.getAuthor().toString());
+						lblDescriptionDetails.setText(item.getDescription());
 //						Image image = new Image(item.getBookImagePath());
 //						ivBookDetails.setImage(image);
 

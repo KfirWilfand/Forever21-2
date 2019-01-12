@@ -5,11 +5,13 @@ import client.controllers.adapters.BorrowBookRow;
 import common.entity.Book;
 import common.entity.BorrowBook;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,7 +26,8 @@ import javafx.util.Callback;
 
 public class Utils {
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
-	private AnchorPane mainView;
+	private AnchorPane apListView;
+
 	private MainViewController mController;
 
 	public Utils(MainViewController mController) {
@@ -49,7 +52,16 @@ public class Utils {
 
 		@Override
 		public ListCell<Book> call(ListView<Book> param) {
-			return new BookSearchRow(mainView);
+			try {
+				FXMLLoader loader = new FXMLLoader(
+						getClass().getResource("/client/boundery/layouts/search_book_item.fxml"));
+				Parent root = (Parent) loader.load();
+				BookSearchRow bookSearchRow = loader.getController();
+				return bookSearchRow;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
 		}
 	}
 
@@ -57,19 +69,22 @@ public class Utils {
 
 		@Override
 		public ListCell<BorrowBook> call(ListView<BorrowBook> param) {
-			return new BorrowBookRow(mainView);
+			try {
+				FXMLLoader loader = new FXMLLoader(
+						getClass().getResource("/client/boundery/layouts/borrow_book_item.fxml"));
+				Parent root = (Parent) loader.load();
+				BorrowBookRow borrowBookRow = loader.getController();
+				return borrowBookRow;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed) {	
-		replaceBtnImg(isSearchPressed,mController.getBtnSearchBook());
-		replaceBtnImg(isProfilePressed,mController.getBtnProfile());
+	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed) {
+		replaceBtnImg(isSearchPressed, mController.getBtnSearchBook());
+		replaceBtnImg(isProfilePressed, mController.getBtnProfile());
 	}
 
 	private void replaceBtnImg(boolean isPressed, Button btn) {
@@ -77,18 +92,21 @@ public class Utils {
 		if (btnChildren.get(0) instanceof ImageView) {
 			ImageView iv = (ImageView) btnChildren.get(0);
 			String newImagePath;
-				
-		if (isPressed) {
-			if(iv.getImage().getUrl().endsWith("-pressed.png"))
-				newImagePath = iv.getImage().getUrl();
-			else
-				newImagePath = iv.getImage().getUrl().replaceFirst(".png", "-pressed.png");
-		}
-		else
-			newImagePath = iv.getImage().getUrl().replaceFirst("-pressed.png", ".png");
+
+			if (isPressed) {
+				if (iv.getImage().getUrl().endsWith("-pressed.png"))
+					newImagePath = iv.getImage().getUrl();
+				else
+					newImagePath = iv.getImage().getUrl().replaceFirst(".png", "-pressed.png");
+			} else
+				newImagePath = iv.getImage().getUrl().replaceFirst("-pressed.png", ".png");
 			Image image = new Image(newImagePath);
 			iv.setImage(image);
 		}
+	}
+
+	public void setApListView(AnchorPane apListView) {
+		this.apListView = apListView;
 	}
 
 }

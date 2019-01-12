@@ -13,6 +13,7 @@ public class Client extends AbstractClient {
 	public MainViewController mainViewController;
 	public SearchBookController searchBookControllerObj;
 	public SubscriberClientController subscriberClientControllerObj;
+	public Utils utilsControllers;
 
 	public Client(String host, int port) throws IOException {
 		super(host, port);
