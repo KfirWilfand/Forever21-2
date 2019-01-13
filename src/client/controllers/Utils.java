@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -70,10 +71,12 @@ public class Utils {
 		}
 	}
 
-    public void showAlertWithHeaderText(AlertType alertType,String title,String text ) {// this alert function pops up a dialog box with a fitted information
+    public void showAlertWithHeaderText(AlertType alertType,String title,String text )
+    {//this alert function pops up an alert type dialog box when needed
 		try {
 	
-			Platform.runLater(new Runnable() {
+			Platform.runLater(new Runnable() 
+			{
 				@Override
 				public void run() {
 					Alert alert = new Alert(alertType);
@@ -90,8 +93,34 @@ public class Utils {
     	
 
     }
-	
+    
+    public boolean isValidEmail(String email) 
+    { //checks if an email address is valid
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
+                            "[a-zA-Z0-9_+&*-]+)*@" + 
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" + 
+                            "A-Z]{2,7}$"; 
+                              
+        Pattern pat = Pattern.compile(emailRegex); 
+        if (email == null) 
+            return false; 
+        return pat.matcher(email).matches(); 
+    } 
 
+    public boolean validatePhoneNumber(String phoneNo) {//checks phone number input
+		//validate phone numbers of format "1234567890"
+		if (phoneNo.matches("\\d{10}")) return true;
+		//validating phone number with -, . or spaces
+		else if(phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}")) return true;
+		//validating phone number with extension length from 3 to 5
+		else if(phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}")) return true;
+		//validating phone number where area code is in braces ()
+		else if(phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}")) return true;
+		//return false if nothing matches the input
+		else return false;
+		
+	}
+    
 	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed) {	
 		replaceBtnImg(isSearchPressed,mController.getBtnSearchBook());
 		replaceBtnImg(isProfilePressed,mController.getBtnProfile());

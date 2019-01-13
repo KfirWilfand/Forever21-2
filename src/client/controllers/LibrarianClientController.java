@@ -1,5 +1,8 @@
 package client.controllers;
 
+import client.ViewStarter;
+import common.controllers.Message;
+import common.controllers.enums.OperationType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,25 +18,10 @@ public class LibrarianClientController {
     private TextField tfSubscriberLastName;
 
     @FXML
-    private TextField tfSubscriberGender;
-
-    @FXML
-    private TextField tfSubscriberBirthDay;
-
-    @FXML
-    private TextField tfSubscriberAge;
-
-    @FXML
-    private TextField tfSubscriberStreet;
-
-    @FXML
-    private TextField tfSubscriberCity;
-
-    @FXML
-    private TextField tfSubscriberNumber;
-
-    @FXML
     private TextField tfSubscriberUsrName;
+    
+    @FXML
+    private TextField tfSubscriberPassword;
 
     @FXML
     private TextField tfSubscruberPhone;
@@ -89,7 +77,16 @@ public class LibrarianClientController {
     }
 
     @FXML
-    void onCreateSubscruberBtn(ActionEvent event) {
+    void onCreateSubscruberBtn(ActionEvent event) {//adding a new subscriber to the DB
+    	String createNewSubscriberQueryUserTable="INSERT INTO obl.user (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"+ tfSubscriberUsrName.getText() + "', '"+tfSubscriberPassword.getText() + "', '"+ tfSubscriberFirstName.getText()+ "','"+ tfSubscriberLastName.getText() + "','"+ tfSubscriberEmail.getText()+ "'); ";
+       	String createNewSubscriberQuerySubscriberTable=	"INSERT INTO obl.subscriber (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '" +tfSubscruberPhone.getText()+"');";
+    	String checkEmailAndPhoneQuery="SELECT usrEmail, subPhoneNum FROM obl.user, obl.subscriber WHERE user.usrEmail="+tfSubscriberEmail.getText()+" AND subscriber.subPhoneNum="+tfSubscruberPhone.getText()+"";
+    	String[] queryArr=new String[3];
+    	queryArr[0]=createNewSubscriberQueryUserTable;
+    	queryArr[1]=createNewSubscriberQuerySubscriberTable;
+    	queryArr[2]=checkEmailAndPhoneQuery;
+   
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); //sending to LibrarianController in the server
 
     }
 
