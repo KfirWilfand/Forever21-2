@@ -1,23 +1,30 @@
 package client.controllers;
 
+import client.ViewStarter;
 import client.controllers.adapters.BookSearchRow;
 import client.controllers.adapters.BorrowBookRow;
 import common.entity.Book;
 import common.entity.BorrowBook;
+import common.entity.Librarian;
+import common.entity.LibraryManager;
+import common.entity.Subscriber;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;

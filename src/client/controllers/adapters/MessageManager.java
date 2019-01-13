@@ -5,10 +5,14 @@ import java.util.List;
 
 import client.ViewStarter;
 import client.controllers.SearchBookController;
+import client.controllers.Utils;
 import common.controllers.Message;
+import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
 import common.entity.Subscriber;
 import common.entity.User;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class MessageManager {
 
@@ -27,10 +31,7 @@ public class MessageManager {
 			break;
 		case SearchBook:
 			List<Book> books = (List<Book>) msg.getObj();
-//			for(Book book: books) {
-//				System.out.println(book.getCatalogNum());
-//			}
-//						
+				
 			try {
 					ViewStarter.client.searchBookControllerObj.onGetSearchResult(books);
 					//TODO print the books to the screen
@@ -47,6 +48,24 @@ public class MessageManager {
 			e.printStackTrace();
 			}
 			break;
+		case EditDetailsBySubscriber:
+			try {
+				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				if(msg.getReturnMessageType()== ReturnMessageType.UpdateSuccesfully)
+				{	
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Update details succeed!");
+				}
+				else
+				{
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Update details failed!");
+				}
+				
+			}catch (Exception e) {
+			e.printStackTrace();
+			}
+			break;
+			
+			
 			
 		}
 	}

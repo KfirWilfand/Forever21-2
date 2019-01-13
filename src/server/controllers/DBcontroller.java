@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,7 +39,7 @@ public class DBcontroller {
 			/* handle the error */}
 
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "Aa123456");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "0508386875");
 			LOGGER.info("MySql Server connected");
 		} catch (SQLException ex) {/* handle any errors */
 			LOGGER.severe("SQLException: " + ex.getMessage() + "\nSQLState: " + ex.getSQLState() + "\nVendorError: "
@@ -61,12 +62,25 @@ public class DBcontroller {
 	}
 
 	public  void insert(String table, List<String> params) {
-//		INSERT INTO `student` VALUES ('1234', 'Kfir', 'Active', 'ReturnBookRequest,LendingReqest', '0');
 
 	}
 
-	public  void update(List<String> params) {
-//		UPDATE obl.student SET StatusMembership = 'Freeze' WHERE StudentID = 'k12345';
+	public  Boolean update(String query) {//receive update query as a string and execute the query in the DB
+	
+		   try {
+			   Statement stmt = (Statement) connection.createStatement() ;
+			   String[] arr= query.split(";");
+			   int res1 =stmt.executeUpdate(arr[0]);
+			   int res= stmt.executeUpdate(arr[1]);
+			   if(res1==1 && res==1)
+				   return true;
+			   else
+				   return false;
+	
+		   }catch (SQLException e) {
+				e.printStackTrace();
+			}
+		   return false;
 
 	}
 

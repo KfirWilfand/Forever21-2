@@ -75,7 +75,11 @@ public class ServerConsole extends AbstractServer {
 			case GetSubscriberDetails:
 				returnMessageToClient=subscriberControllerObj.getSubscriber(msg);
 				this.sendToClient(returnMessageToClient,client);
-				break;	
+				break;
+			case EditDetailsBySubscriber:
+				returnMessageToClient=subscriberControllerObj.updateDetails(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 			}
 		} catch(Exception ex) {
 			LOGGER.severe("ERROR in handleMessageFromClient: " + ex);

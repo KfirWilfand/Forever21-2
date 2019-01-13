@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import client.controllers.adapters.MessageManager;
 import common.controllers.Message;
+import common.controllers.enums.ReturnMessageType;
 import common.entity.User;
 import ocsf.client.AbstractClient;
 
@@ -23,7 +24,9 @@ public class Client extends AbstractClient {
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		try {
-			System.out.println("handleMessageFromServer " + ((Message) msg));
+			
+			if(((Message) msg).getObj()!=null)
+				System.out.println("handleMessageFromServer " + ((Message) msg));
 			MessageManager.handle((Message) msg);
 
 		} catch (Exception e) {
