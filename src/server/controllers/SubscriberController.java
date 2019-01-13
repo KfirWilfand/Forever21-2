@@ -2,6 +2,7 @@ package server.controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
@@ -41,10 +42,14 @@ public class SubscriberController {
     {
     	String query=(String)((Message)msg).getObj();
     	DBcontroller dbControllerObj=DBcontroller.getInstance();
-    	Boolean res=dbControllerObj.update(query);
-    	if(res)
-    		return new Message(OperationType.EditDetailsBySubscriber, null , ReturnMessageType.UpdateSuccesfully);
-    	else
-        	return new Message(OperationType.EditDetailsBySubscriber, null , ReturnMessageType.NotUpdateSuccesfully);
+    	String[] arr= query.split(";");
+    	Boolean res=dbControllerObj.update(arr[0]);
+    	Boolean res1=dbControllerObj.update(arr[1]);	
+    		if(res && res1)
+    			return new Message(OperationType.EditDetailsBySubscriber, null , ReturnMessageType.UpdateSuccesfully);
+    		else
+    			return new Message(OperationType.EditDetailsBySubscriber, null , ReturnMessageType.NotUpdateSuccesfully);
     }
+    	
+    
 }
