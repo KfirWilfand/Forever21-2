@@ -80,7 +80,7 @@ public class LibrarianClientController {
     void onCreateSubscruberBtn(ActionEvent event) {//adding a new subscriber to the DB
     	String createNewSubscriberQueryUserTable="INSERT INTO obl.user (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"+ tfSubscriberUsrName.getText() + "', '"+tfSubscriberPassword.getText() + "', '"+ tfSubscriberFirstName.getText()+ "','"+ tfSubscriberLastName.getText() + "','"+ tfSubscriberEmail.getText()+ "'); ";
        	String createNewSubscriberQuerySubscriberTable=	"INSERT INTO obl.subscriber (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '" +tfSubscruberPhone.getText()+"');";
-    	String checkEmailAndPhoneQuery="SELECT usrEmail, subPhoneNum FROM obl.user, obl.subscriber WHERE user.usrEmail="+tfSubscriberEmail.getText()+" AND subscriber.subPhoneNum="+tfSubscruberPhone.getText()+"";
+    	String checkEmailAndPhoneQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.user as a right join obl.subscriber as b on a.usrId=b.subNum WHERE a.usrEmail='"+tfSubscriberEmail.getText()+"' or b.subPhoneNum='"+tfSubscruberPhone.getText()+"' or usrName='"+tfSubscriberUsrName.getText()+"';";
     	String[] queryArr=new String[3];
     	queryArr[0]=createNewSubscriberQueryUserTable;
     	queryArr[1]=createNewSubscriberQuerySubscriberTable;
