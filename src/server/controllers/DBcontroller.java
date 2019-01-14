@@ -61,9 +61,22 @@ public class DBcontroller {
 	   return rs;
 	}
 
-	public  void insert(String table, List<String> params) {
-
+	public Boolean insert(String query) 
+	{//for now, this looks exactly like update function, maby in the future we'll merge them both
+		 try {
+			   Statement stmt = (Statement) connection.createStatement();
+			   int res=stmt.executeUpdate(query);
+			   if( res==1)
+				   return true;
+			   else
+				   return false;
+	
+		   }catch (SQLException e) {
+				e.printStackTrace();
+			}
+		   return false;
 	}
+			   
 
 	public  Boolean update(String query) {//receive update query as a string and execute the query in the DB
 	
@@ -81,5 +94,6 @@ public class DBcontroller {
 		   return false;
 
 	}
+	
 
 }

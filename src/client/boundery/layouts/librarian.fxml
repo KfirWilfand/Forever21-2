@@ -25,11 +25,13 @@
                      <children>
                         <GridPane layoutX="53.0" layoutY="72.0" prefHeight="352.0" prefWidth="653.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.33334350585938" minWidth="10.0" prefWidth="76.66665649414062" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.33332316080731" minWidth="10.0" prefWidth="116.00001017252606" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="30.333323160807282" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.00000000000003" minWidth="10.0" prefWidth="129.00000000000003" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.33333333333331" minWidth="10.0" prefWidth="147.33333333333331" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="173.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="164.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="10.0" prefWidth="101.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="0.0" prefWidth="0.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="102.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.00000000000003" minWidth="0.0" prefWidth="0.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.33333333333331" minWidth="10.0" prefWidth="75.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.66668701171875" minWidth="0.0" prefWidth="0.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="104.0" />
                            </columnConstraints>
@@ -44,7 +46,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="tfSubscriberFirstName" prefHeight="25.0" prefWidth="87.0" promptText="Menashe" GridPane.columnIndex="1" />
+                              <TextField fx:id="tfSubscriberFirstName" prefHeight="25.0" prefWidth="176.0" GridPane.columnIndex="1" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="First Name:">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
@@ -55,71 +57,37 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="tfSubscriberLastName" prefHeight="25.0" prefWidth="87.0" promptText="Levi" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="tfSubscriberLastName" prefHeight="25.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gender:" GridPane.rowIndex="2">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Name:" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="tfSubscriberGender" prefHeight="25.0" prefWidth="87.0" promptText="Male" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Birth Day:" GridPane.rowIndex="3">
+                              <TextField fx:id="tfSubscriberUsrName" prefHeight="25.0" prefWidth="99.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="tfSubscriberBirthDay" prefHeight="25.0" prefWidth="87.0" promptText="05.05.91" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="tfSubscruberPhone" prefHeight="25.0" prefWidth="99.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" GridPane.rowIndex="5">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="tfSubscriberEmail" prefHeight="25.0" prefWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                               <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Age:" GridPane.rowIndex="4">
+                              <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" GridPane.rowIndex="4">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="tfSubscriberAge" prefHeight="25.0" prefWidth="87.0" promptText="28" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" GridPane.rowIndex="5">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Street:" GridPane.rowIndex="6">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="tfSubscriberStreet" prefHeight="25.0" prefWidth="86.0" promptText="Mizpe" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="City:" GridPane.rowIndex="7">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="tfSubscriberCity" prefHeight="25.0" prefWidth="86.0" promptText="Tel Aviv" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number :" GridPane.columnIndex="3">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="tfSubscriberNumber" prefHeight="25.0" prefWidth="99.0" promptText="5343647" GridPane.columnIndex="4" />
-                              <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="5" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Name:" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="tfSubscriberUsrName" prefHeight="25.0" prefWidth="99.0" promptText="Menashe120" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                              <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="tfSubscruberPhone" prefHeight="25.0" prefWidth="99.0" promptText="0546222222" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="tfSubscriberEmail" prefHeight="25.0" prefWidth="170.0" promptText="Menashe120@gamil.com" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                              <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                              <TextField fx:id="tfSubscriberPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                            </children>
                         </GridPane>
                         <Text fill="#f50606" layoutX="25.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*  - Required" />
