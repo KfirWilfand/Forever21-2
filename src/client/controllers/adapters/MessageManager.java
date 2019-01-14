@@ -67,9 +67,10 @@ public class MessageManager {
 		case AddNewSubscriberByLibrarian:
 			try {
 				Utils utils=new Utils(ViewStarter.client.mainViewController);
-				if(msg.getReturnMessageType()== ReturnMessageType.EmailOrPhoneAreAlreadyExists)
+				if(msg.getReturnMessageType()== ReturnMessageType.EmailOrPhoneAreAlreadyExists) 
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Email or Phone number are already exists!");
-				if(msg.getReturnMessageType()== ReturnMessageType.SubscriberAddedSuccessfuly)	
+				
+				else if(msg.getReturnMessageType()== ReturnMessageType.SubscriberAddedSuccessfuly)	
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Subscriber was added!");
 				else
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Adding was failed!");

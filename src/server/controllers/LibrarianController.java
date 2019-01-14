@@ -1,5 +1,6 @@
 package server.controllers;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import common.controllers.Message;
@@ -23,8 +24,8 @@ public class LibrarianController {
 	    {
 		String [] query=(String[])((Message)msg).getObj();
     	DBcontroller dbControllerObj=DBcontroller.getInstance();
-    	Boolean res2=dbControllerObj.update(query[2]);
-    	if(!res2)
+    	ResultSet res2=dbControllerObj.query(query[2]);
+    	if(res2.next())
 			return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.EmailOrPhoneAreAlreadyExists);
     	else {
     		Boolean res=dbControllerObj.update(query[0]); 
