@@ -72,9 +72,15 @@ public class MainViewController {
 	@FXML
 	private ComboBox<String> comboboxLogAs;
 
+	@FXML
+	private Button btnLogout;
+
 	private Utils utils;
 
 	private User user;
+
+	@FXML
+	private Button btnHomePage;
 
 	@FXML
 	void openLogInForm(ActionEvent event) {
@@ -82,16 +88,40 @@ public class MainViewController {
 	}
 
 	@FXML
+	void onHomePageBtn(ActionEvent event) {
+		utils.setBtnPressed(true, false, false);
+		utils.layoutSwitcher(mainPane, "homepage.fxml", "Library management system");
+	}
+
+	@FXML
 	public void initialize() {
 		ViewStarter.client.mainViewController = this;
 		this.utils = new Utils(this);
 		ViewStarter.client.utilsControllers = this.utils;
+
+		utils.layoutSwitcher(mainPane, "homepage.fxml", "Library management system");
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				utils.setBtnPressed(true, false, false);
+			}
+		});
 	}
 
 	@FXML
 	void openProfileView(ActionEvent event) throws IOException {
 		if (this.user != null)
 			onLogin(user);
+	}
+
+	@FXML
+	void onLogoutBtn(ActionEvent event) {
+		btnLogout.setVisible(false);
+		mainView.getChildren().add(dialogBoxLogin);
+		dialogBoxLogin.setVisible(false);
+		btnLogin.setText("Login");
+		lblLoginAs.setText("");
+		utils.setBtnPressed(false, false, false);
 	}
 
 	public Label getLblSubTitle() {
@@ -101,14 +131,7 @@ public class MainViewController {
 	@FXML
 	void openSearchView(ActionEvent event) {
 		utils.setBtnPressed(false, true, false);
-		try {
-			Parent newLoadedPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/search.fxml"));
-			mainPane.getChildren().setAll(newLoadedPane);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		utils.layoutSwitcher(mainPane, "search.fxml", "Search Book");
 	}
 
 	@FXML
@@ -133,58 +156,41 @@ public class MainViewController {
 
 	public void onLogin(User user) {
 		this.user = user;
-		try {
-			System.out.println(user);
 
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					dialogBoxLogin.setVisible(false);
-					btnLogin.setText(user.getFirstName() + " " + user.getLastName());
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				btnLogout.setVisible(true);
+				mainView.getChildren().remove(dialogBoxLogin);
+				btnLogin.setText(user.getFirstName() + " " + user.getLastName());
 
-					Parent newLoadedPane = null;
+				utils.setBtnPressed(false, false, true);
 
-					utils.setBtnPressed(false, false, true);
-					try {
-						if (user instanceof Subscriber) {
+				if (user instanceof Subscriber) {
+					utils.layoutSwitcher(mainPane, "subscriber.fxml", "Subscriber Profile");
 
-							newLoadedPane = FXMLLoader
-									.load(getClass().getResource("/client/boundery/layouts/subscriber.fxml"));
-
-							lblSubTitle.setText("Subscriber Profile");
-							lblLoginAs.setText("Log as Subscriber");
-							ViewStarter.client.subscriberClientControllerObj
-									.initializeDetailsAtLogin((Subscriber) user);
-
-						}
-
-						if (user instanceof Librarian) {
-
-							newLoadedPane = FXMLLoader
-									.load(getClass().getResource("/client/boundery/layouts/librarian.fxml"));
-
-							lblSubTitle.setText("Librarian Profile");
-							lblLoginAs.setText("Log as Librarian");
-						}
-
-						if (user instanceof LibraryManager) {
-							newLoadedPane = FXMLLoader
-									.load(getClass().getResource("/client/boundery/layouts/librarian.fxml"));
-							lblSubTitle.setText("Library Manager Profile");
-							lblLoginAs.setText("Log as LibraryManager");
-
-						}
-
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-					mainPane.getChildren().setAll(newLoadedPane);
+					lblLoginAs.setText("Log as Subscriber");
+					ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin((Subscriber) user);
 				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+				if (user instanceof Librarian) {
+					utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
+					lblLoginAs.setText("Log as Librarian");
+				}
+
+				if (user instanceof LibraryManager) {
+					utils.layoutSwitcher(mainPane, "librarian.fxml", "Library Manager Profile");
+					lblLoginAs.setText("Log as LibraryManager");
+				}
+			}
+		});
 	}
 
+	public Button getBtnHomePage() {
+		return btnHomePage;
+	}
+
+	public AnchorPane getMainView() {
+		return mainView;
+	}
 }

@@ -23,7 +23,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="437.0" prefWidth="748.0">
                      <children>
-                        <GridPane layoutX="53.0" layoutY="72.0" prefHeight="352.0" prefWidth="653.0">
+                        <GridPane layoutX="28.0" layoutY="72.0" prefHeight="352.0" prefWidth="679.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="173.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="164.0" />
@@ -96,7 +96,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Text layoutX="53.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Subscriber">
+                        <Text layoutX="25.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Subscriber">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -115,7 +115,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Text layoutX="68.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrowing Details ">
+                        <Text layoutX="22.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrowing Details ">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -138,8 +138,8 @@
                         </Text>
                         <DatePicker fx:id="tfBorrowBookBorrowDate" layoutX="510.0" layoutY="168.0" prefHeight="25.0" prefWidth="101.0" promptText="4/12/18" />
                         <DatePicker fx:id="tfBorrowBookEndBorrowDate" layoutX="511.0" layoutY="214.0" prefHeight="25.0" prefWidth="102.0" promptText="18/12/18" />
-                        <TextField fx:id="tfBorrowBookCatalogNumber" layoutX="212.0" layoutY="87.0" prefHeight="25.0" prefWidth="102.0" promptText="D54324OD" />
-                        <Text layoutX="68.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Catalog Number:">
+                        <TextField fx:id="tfBorrowBookCatalogNumber" layoutX="174.0" layoutY="86.0" prefHeight="26.0" prefWidth="129.0" promptText="D54324OD" />
+                        <Text layoutX="22.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Catalog Number:">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -159,7 +159,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Text layoutX="65.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Book Details ">
+                        <Text layoutX="19.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Book Details ">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -189,13 +189,13 @@
                         <DatePicker fx:id="tfReturnBookBorrowDate" layoutX="522.0" layoutY="153.0" prefHeight="25.0" prefWidth="101.0" promptText="2/12/18" />
                         <DatePicker fx:id="tfReturnBookEndBorrowDate" layoutX="524.0" layoutY="198.0" prefHeight="25.0" prefWidth="101.0" promptText="16/12/18" />
                         <DatePicker fx:id="tfReturnBookReturningDate" layoutX="524.0" layoutY="300.0" prefHeight="25.0" prefWidth="101.0" promptText="18/12/18" />
-                        <TextField fx:id="tfReturnBookCatalogNumber" layoutX="213.0" layoutY="86.0" prefHeight="25.0" prefWidth="102.0" promptText="D54324OD" />
-                        <Text layoutX="68.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Catalog Number:">
+                        <TextField fx:id="tfReturnBookCatalogNumber" layoutX="173.0" layoutY="86.0" prefHeight="26.0" prefWidth="134.0" promptText="D54324OD" />
+                        <Text layoutX="19.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Catalog Number:">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Line endX="-100.0" endY="359.0" layoutX="464.0" layoutY="69.0" startX="-100.0" />
+                        <Line endX="-100.0" endY="359.0" layoutX="458.0" layoutY="66.0" startX="-100.0" />
                      </children>
                   </AnchorPane>
               </content>
@@ -206,7 +206,15 @@
                      <children>
                         <ListView layoutX="17.0" layoutY="95.0" prefHeight="425.0" prefWidth="725.0" />
                         <TextField fx:id="tfSearchSubscriberNumber" layoutX="19.0" layoutY="57.0" prefHeight="25.0" prefWidth="135.0" promptText="Subscriber Number" />
-                        <Button fx:id="btnSearchSubscriber" layoutX="682.0" layoutY="57.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search" />
+                        <Button fx:id="btnSearchSubscriber" layoutX="682.0" layoutY="57.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Button>
+                        <Text layoutX="19.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Subscriber">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
                </content>

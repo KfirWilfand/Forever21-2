@@ -10,22 +10,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="602.0" style="-fx-background-color: c4e1ef;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BookDetailsController">
+<Pane fx:id="paneBookDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="602.0" style="-fx-background-color: c4e1ef;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BookDetailsController">
    <children>
       <ImageView fitHeight="168.0" fitWidth="167.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/book-no-image.png" />
          </image>
       </ImageView>
-      <Line endX="313.5" layoutX="268.0" layoutY="48.0" startX="-100.0" />
+      <Line endX="313.5" layoutX="269.0" layoutY="66.0" startX="-100.0" />
       <Label id="" fx:id="lblBookNameDetails" layoutX="168.0" layoutY="32.0" text="Book Name">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label id="" fx:id="lblAuthorDetails" layoutX="242.0" layoutY="32.0" text="Author">
+      <Label id="" fx:id="lblAuthorDetails" layoutX="168.0" layoutY="47.0" text="Author">
          <font>
-            <Font name="System Italic" size="12.0" />
+            <Font name="System Italic" size="11.0" />
          </font>
       </Label>
       <ImageView fitHeight="31.0" fitWidth="36.0" layoutX="14.0" layoutY="285.0" pickOnBounds="true" preserveRatio="true">
@@ -38,7 +38,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="6.0" layoutY="326.0" mnemonicParsing="false" styleClass="btnWithImageWithBorder" stylesheets="@../styles/mainView.css" text="Order copy">
+      <Button layoutX="6.0" layoutY="326.0" mnemonicParsing="false" onAction="#onOrderCopyBtn" styleClass="btnWithImageWithBorder" stylesheets="@../styles/mainView.css" text="Order copy">
          <graphic>
             <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -72,7 +72,7 @@
       </Button>
       <Text fx:id="txtBookLocation" layoutX="47.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D34 ,S" />
       <Text fx:id="txtAvailableCopies" layoutX="46.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" />
-      <Button fx:id="btnCloseBookDetails" layoutX="570.0" layoutY="1.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="14.0" styleClass="btnWithImage">
+      <Button fx:id="btnCloseBookDetails" layoutX="570.0" layoutY="1.0" mnemonicParsing="false" onAction="#onCloseBookDetailsBtn" prefHeight="17.0" prefWidth="14.0" styleClass="btnWithImage">
          <graphic>
             <ImageView fitHeight="18.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true" styleClass="btnWithImage">
                <image>
@@ -81,6 +81,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <Text id="" fx:id="lblDescriptionDetails" layoutX="167.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="382.99998588114977" />
+      <Text id="" fx:id="lblDescriptionDetails" layoutX="167.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="382.99998588114977" />
    </children>
 </Pane>

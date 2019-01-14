@@ -17,17 +17,21 @@ import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
@@ -63,7 +67,7 @@ public class Utils {
 			try {
 				FXMLLoader loader = new FXMLLoader(
 						getClass().getResource("/client/boundery/layouts/search_book_item.fxml"));
-				Parent root = (Parent) loader.load();
+				Pane root = (Pane) loader.load();
 				BookSearchRow bookSearchRow = loader.getController();
 				return bookSearchRow;
 			} catch (IOException e) {
@@ -90,59 +94,61 @@ public class Utils {
 		}
 	}
 
-    public void showAlertWithHeaderText(AlertType alertType,String title,String text )
-    {//this alert function pops up an alert type dialog box when needed
+	public void showAlertWithHeaderText(AlertType alertType, String title, String text) {// this alert function pops up
+																							// an alert type dialog box
+																							// when needed
 		try {
-	
-			Platform.runLater(new Runnable() 
-			{
+
+			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
 					Alert alert = new Alert(alertType);
-			    	alert.setTitle(title);
-			    	alert.setHeaderText(null);
-			    	alert.setContentText(text);
+					alert.setTitle(title);
+					alert.setHeaderText(null);
+					alert.setContentText(text);
 
-			    	alert.showAndWait();
+					alert.showAndWait();
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	
 
-    }
-    
-    public boolean isValidEmail(String email) 
-    { //checks if an email address is valid
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
-                            "[a-zA-Z0-9_+&*-]+)*@" + 
-                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" + 
-                            "A-Z]{2,7}$"; 
-                              
-        Pattern pat = Pattern.compile(emailRegex); 
-        if (email == null) 
-            return false; 
-        return pat.matcher(email).matches(); 
-    } 
-
-    public boolean validatePhoneNumber(String phoneNo) {//checks phone number input
-		//validate phone numbers of format "1234567890"
-		if (phoneNo.matches("\\d{10}")) return true;
-		//validating phone number with -, . or spaces
-		else if(phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}")) return true;
-		//validating phone number with extension length from 3 to 5
-		else if(phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}")) return true;
-		//validating phone number where area code is in braces ()
-		else if(phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}")) return true;
-		//return false if nothing matches the input
-		else return false;
-		
 	}
-    
-	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed) {	
-		replaceBtnImg(isSearchPressed,mController.getBtnSearchBook());
-		replaceBtnImg(isProfilePressed,mController.getBtnProfile());
+
+	public boolean isValidEmail(String email) { // checks if an email address is valid
+		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
+				+ "A-Z]{2,7}$";
+
+		Pattern pat = Pattern.compile(emailRegex);
+		if (email == null)
+			return false;
+		return pat.matcher(email).matches();
+	}
+
+	public boolean validatePhoneNumber(String phoneNo) {// checks phone number input
+		// validate phone numbers of format "1234567890"
+		if (phoneNo.matches("\\d{10}"))
+			return true;
+		// validating phone number with -, . or spaces
+		else if (phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"))
+			return true;
+		// validating phone number with extension length from 3 to 5
+		else if (phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
+			return true;
+		// validating phone number where area code is in braces ()
+		else if (phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
+			return true;
+		// return false if nothing matches the input
+		else
+			return false;
+
+	}
+
+	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed) {
+		replaceBtnImg(isHomePagePressed, mController.getBtnHomePage());
+		replaceBtnImg(isSearchPressed, mController.getBtnSearchBook());
+		replaceBtnImg(isProfilePressed, mController.getBtnProfile());
 	}
 
 	private void replaceBtnImg(boolean isPressed, Button btn) {
@@ -165,6 +171,19 @@ public class Utils {
 
 	public void setApListView(AnchorPane apListView) {
 		this.apListView = apListView;
+	}
+
+	public void layoutSwitcher(Pane parent, String layout,String subTitle) {
+		
+		mController.getLblSubTitle().setText(subTitle);
+		
+		try {
+			Parent newLoadedPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/" + layout));
+			parent.getChildren().setAll(newLoadedPane);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
