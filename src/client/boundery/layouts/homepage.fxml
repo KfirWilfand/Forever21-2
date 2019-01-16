@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="594.0" prefWidth="759.0" style="-fx-background-color: WHITE;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LibrarianClientController">
+   <children>
+      <ImageView fitHeight="172.0" fitWidth="539.0" layoutX="104.0" layoutY="389.0">
+         <image>
+            <Image url="@../resources/welcome.jpg" />
+         </image>
+      </ImageView>
+      <Text layoutX="76.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening Hours">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="17.0" fitWidth="60.0" layoutX="52.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/clock-circular-outline.png" />
+         </image>
+      </ImageView>
+      <Line endX="129.99998474121094" layoutX="154.0" layoutY="72.0" startX="-100.0" />
+      <Text layoutX="52.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Friday from 08:00 - 24:00 hrs." wrappingWidth="216.7035369873047" />
+      <Text layoutX="52.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Saturday and Sunday from 10:00 - 24:00 hrs." />
+      <Text layoutX="77.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="17.0" fitWidth="60.0" layoutX="53.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/location.png" />
+         </image>
+      </ImageView>
+      <Line endX="129.99998474121094" layoutX="154.0" layoutY="190.0" startX="-100.0" />
+      <Text layoutX="53.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Snunit St 51, Karmiel, 2161002" wrappingWidth="216.7035369873047" />
+      <Text layoutX="76.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact us">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="17.0" fitWidth="60.0" layoutX="52.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/contact%20(1).png" />
+         </image>
+      </ImageView>
+      <Line endX="129.99998474121094" layoutX="153.0" layoutY="296.0" startX="-100.0" />
+      <Text layoutX="51.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tel:" wrappingWidth="40.703521728515625">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text layoutX="92.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Library@braude.ac.il" />
+      <Text layoutX="92.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="04-9901967" wrappingWidth="174.30357360839844" />
+      <Text layoutX="92.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="04-9901880" />
+      <Text layoutX="51.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fax:" wrappingWidth="40.703521728515625">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text layoutX="51.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="40.703521728515625">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text layoutX="389.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Newsletter">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="17.0" fitWidth="60.0" layoutX="365.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/newsletter.png" />
+         </image>
+      </ImageView>
+      <Line endX="258.00006103515625" layoutX="467.0" layoutY="70.0" startX="-100.0" />
+      <ListView layoutX="366.0" layoutY="78.0" prefHeight="273.0" prefWidth="359.0" />
+   </children>
+    </AnchorPane>

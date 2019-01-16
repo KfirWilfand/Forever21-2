@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -15,11 +15,6 @@
 
 <AnchorPane fx:id="mainView" prefHeight="771.0" prefWidth="812.0" style="-fx-background-color: WHITE;" stylesheets="@../styles/mainView.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.MainViewController">
 	<children>
-		<Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
-			<font>
-				<Font size="18.0" />
-			</font>
-		</Label>
 		<ImageView fitHeight="282.0" fitWidth="810.0" layoutX="1.0" layoutY="511.0" pickOnBounds="true" preserveRatio="true">
 			<image>
 				<Image url="@../resources/footer.png" />
@@ -39,25 +34,8 @@
 			<padding>
 				<Insets bottom="50.0" left="5.0" right="5.0" top="100.0" />
 			</padding>
-         <children>
-            <ImageView fx:id="welcomeImg" fitHeight="385.0" fitWidth="678.0" layoutX="51.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/welcome.png" />
-               </image>
-            </ImageView>
-         </children>
 		</Pane>
-
-		<Button fx:id="btnProfile" layoutX="723.0" layoutY="30.0" mnemonicParsing="false" onAction="#openProfileView" prefHeight="46.0" prefWidth="45.0" styleClass="btnWithImage">
-			<graphic>
-				<ImageView fitHeight="27.0" fitWidth="26.0">
-					<image>
-						<Image fx:id="123" url="@../resources/button/user.png" />
-					</image>
-				</ImageView>
-			</graphic>
-		</Button>
-		<Button fx:id="btnSearchBook" layoutX="666.0" layoutY="29.0" mnemonicParsing="false" onAction="#openSearchView" prefHeight="46.0" prefWidth="39.0" styleClass="btnWithImage">
+		<Button fx:id="btnSearchBook" layoutX="267.0" layoutY="33.0" mnemonicParsing="false" onAction="#openSearchView" prefHeight="46.0" prefWidth="39.0" styleClass="btnWithImage">
 			<graphic>
 				<ImageView fitHeight="39.0" fitWidth="45.0">
 					<image>
@@ -72,12 +50,15 @@
 			</font>
 		</Label>
 		<Line endX="326.0" layoutX="461.0" layoutY="136.0" startX="-436.0" stroke="#022b3a" />
-		<Button fx:id="btnLogin" layoutX="697.0" layoutY="62.0" mnemonicParsing="false" onAction="#openLogInForm" prefHeight="27.0" prefWidth="104.0" styleClass="btnWithImage" text="Login">
+		<Button fx:id="btnLogin" alignment="BOTTOM_LEFT" ellipsisString="" layoutX="699.0" layoutY="31.0" mnemonicParsing="false" onAction="#openLogInForm" prefHeight="27.0" prefWidth="101.0" styleClass="btnWithImage" text="Login">
 			<font>
 				<Font name="System Bold" size="12.0" />
 			</font>
 		</Button>
-		<Label fx:id="lblLoginAs" layoutX="700.0" layoutY="83.0" />
+		<Label fx:id="lblLoginAs" layoutX="708.0" layoutY="47.0" prefHeight="18.0" prefWidth="90.0" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
 		<AnchorPane fx:id="dialogBoxLogin" layoutX="544.0" layoutY="86.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="428.0" prefWidth="224.0" style="-fx-background-color: E1E5F2;" visible="false">
 			<children>
 				<Label layoutX="63.0" layoutY="23.0" text="Login" textFill="#022b3a">
@@ -101,6 +82,30 @@
 				</Button>
 			</children>
 		</AnchorPane>
+      <Button fx:id="btnLogout" layoutX="700.0" layoutY="53.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#onLogoutBtn" prefHeight="26.0" prefWidth="50.0" styleClass="btnWithImage" text="Logout" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="System Bold" size="10.0" />
+         </font>
+      </Button>
+
+		<Button fx:id="btnProfile" layoutX="670.0" layoutY="33.0" mnemonicParsing="false" onAction="#openProfileView" prefHeight="46.0" prefWidth="45.0" styleClass="btnWithImage">
+         <graphic>
+      				<ImageView fitHeight="27.0" fitWidth="26.0">
+      					<image>
+      						<Image fx:id="123" url="@../resources/button/user.png" />
+      					</image>
+      				</ImageView>
+         </graphic>
+		</Button>
+      <Button fx:id="btnHomePage" layoutX="219.0" layoutY="33.0" mnemonicParsing="false" onAction="#onHomePageBtn" prefHeight="46.0" prefWidth="39.0" styleClass="btnWithImage">
+         <graphic>
+            <ImageView fitHeight="39.0" fitWidth="38.0">
+               <image>
+                  <Image url="@../resources/button/homepage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
 
 	</children>
 </AnchorPane>

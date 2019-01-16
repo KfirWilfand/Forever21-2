@@ -18,25 +18,10 @@ public class LibrarianClientController {
     private TextField tfSubscriberLastName;
 
     @FXML
-    private TextField tfSubscriberGender;
-
-    @FXML
-    private TextField tfSubscriberBirthDay;
-
-    @FXML
-    private TextField tfSubscriberAge;
-
-    @FXML
-    private TextField tfSubscriberStreet;
-
-    @FXML
-    private TextField tfSubscriberCity;
-
-    @FXML
-    private TextField tfSubscriberNumber;
-
-    @FXML
     private TextField tfSubscriberUsrName;
+    
+    @FXML
+    private TextField tfSubscriberPassword;
 
     @FXML
     private TextField tfSubscruberPhone;
@@ -92,7 +77,16 @@ public class LibrarianClientController {
     }
 
     @FXML
-    void onCreateSubscruberBtn(ActionEvent event) {
+    void onCreateSubscruberBtn(ActionEvent event) {//adding a new subscriber to the DB
+    	String createNewSubscriberQueryUserTable="INSERT INTO obl.user (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"+ tfSubscriberUsrName.getText() + "', '"+tfSubscriberPassword.getText() + "', '"+ tfSubscriberFirstName.getText()+ "','"+ tfSubscriberLastName.getText() + "','"+ tfSubscriberEmail.getText()+ "'); ";
+       	String createNewSubscriberQuerySubscriberTable=	"INSERT INTO obl.subscriber (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '" +tfSubscruberPhone.getText()+"');";
+    	String checkEmailAndPhoneQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.user as a right join obl.subscriber as b on a.usrId=b.subNum WHERE a.usrEmail='"+tfSubscriberEmail.getText()+"' or b.subPhoneNum='"+tfSubscruberPhone.getText()+"' or usrName='"+tfSubscriberUsrName.getText()+"';";
+    	String[] queryArr=new String[3];
+    	queryArr[0]=createNewSubscriberQueryUserTable;
+    	queryArr[1]=createNewSubscriberQuerySubscriberTable;
+    	queryArr[2]=checkEmailAndPhoneQuery;
+   
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); //sending to LibrarianController in the server
 
     }
 

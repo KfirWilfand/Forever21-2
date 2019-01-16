@@ -9,5 +9,10 @@ public enum ReturnMessageType {
 	SubscriberNotFound,
 	SubscriberFound,
 	SubsciberExist,
-	SubsciberNotExist
+	SubsciberNotExist,
+	UpdateSuccesfully,
+	NotUpdateSuccesfully,
+	SubscriberAddedSuccessfuly,
+	SubscriberFailedToAdd, 
+	EmailOrPhoneAreAlreadyExists
 }

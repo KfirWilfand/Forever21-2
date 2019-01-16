@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -60,14 +61,39 @@ public class DBcontroller {
 	   return rs;
 	}
 
-	public  void insert(String table, List<String> params) {
-//		INSERT INTO `student` VALUES ('1234', 'Kfir', 'Active', 'ReturnBookRequest,LendingReqest', '0');
+	public Boolean insert(String query) 
+	{//for now, this looks exactly like update function, maby in the future we'll merge them both
+		 try {
+			   Statement stmt = (Statement) connection.createStatement();
+			   int res=stmt.executeUpdate(query);
+			   if( res==1)
+				   return true;
+			   else
+				   return false;
+	
+		   }catch (SQLException e) {
+				e.printStackTrace();
+			}
+		   return false;
+	}
+			   
+
+	public  Boolean update(String query) {//receive update query as a string and execute the query in the DB
+	
+		   try {
+			   Statement stmt = (Statement) connection.createStatement() ;
+			   int res= stmt.executeUpdate(query);
+			   if( res==1)
+				   return true;
+			   else
+				   return false;
+	
+		   }catch (SQLException e) {
+				e.printStackTrace();
+			}
+		   return false;
 
 	}
-
-	public  void update(List<String> params) {
-//		UPDATE obl.student SET StatusMembership = 'Freeze' WHERE StudentID = 'k12345';
-
-	}
+	
 
 }
