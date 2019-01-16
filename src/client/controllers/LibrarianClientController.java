@@ -1,5 +1,8 @@
 package client.controllers;
 
+import client.ViewStarter;
+import common.controllers.Message;
+import common.controllers.enums.OperationType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -100,7 +103,9 @@ public class LibrarianClientController {
 
     @FXML
     void onSearchSubscriberBtn(ActionEvent event) {
-
+    	String searchSubscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.user as a right join obl.subsriber as b on a.usrId=b.subNum WHERE b.subNum = "+tfSearchSubscriberNumber.getText();
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberQuery));
     }
+    
 
 }

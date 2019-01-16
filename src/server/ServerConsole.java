@@ -58,6 +58,7 @@ public class ServerConsole extends AbstractServer {
 		Message returnMessageToClient;
 		ReaderController readerControllerObj=ReaderController.getInstance();
 		SubscriberController subscriberControllerObj=SubscriberController.getInstance();
+		LibrarianController librarianControllerObj=LibrarianController.getInstance();
 		
 		try {
 			Message message = ((Message) msg);
@@ -74,6 +75,10 @@ public class ServerConsole extends AbstractServer {
 				break;
 			case GetSubscriberDetails:
 				returnMessageToClient=subscriberControllerObj.getSubscriber(msg);
+				this.sendToClient(returnMessageToClient,client);
+				break;	
+			case SearchSubscriber:
+				returnMessageToClient=librarianControllerObj.searchSubscriber(msg);
 				this.sendToClient(returnMessageToClient,client);
 				break;	
 			}

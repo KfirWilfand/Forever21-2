@@ -43,7 +43,7 @@ public class ReaderController {
     			ResultSet subscriber_res= dbControllerObj.query(subscriberQuery);
     			if(subscriber_res.next()) {
     				User user = new Subscriber(subscriber_res.getInt("subNum"), subscriber_res.getString("usrName"), subscriber_res.getString("usrPassword"),
-    					subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), subscriber_res.getString("subStatus"));
+    					subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), subscriber_res.getString("subStatus"), subscriber_res.getString("subPhoneNum"));
 
     				return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);
     			}
