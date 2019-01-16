@@ -141,7 +141,7 @@ public class MainViewController {
 
 	@FXML
 	void onBtnDialogBoxLogin(ActionEvent event) {
-		String loginQuery = "Select * FROM obl.`user` where usrName = '" + this.tfUserName.getText()
+		String loginQuery = "Select * FROM obl.`users` where usrName = '" + this.tfUserName.getText()
 				+ "' AND `usrPassword` = '" + this.tfPassword.getText() + "'";
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Login, loginQuery));
 	}

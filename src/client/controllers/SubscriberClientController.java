@@ -74,7 +74,7 @@ public class SubscriberClientController {
 			utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Phone number is not valid!");
 			return;
 		}
-    	String editSubscriberDetailsQuery= "UPDATE obl.subsriber SET subPhoneNum='"+ tfEditPhone.getText() +"' WHERE subNum="+tfEditSubscriberNumber.getText() +";UPDATE obl.user SET usrEmail='"+tfEditEmail.getText() +"' WHERE usrID="+tfEditSubscriberNumber.getText() +";";	
+    	String editSubscriberDetailsQuery= "UPDATE obl.subsribers SET subPhoneNum='"+ tfEditPhone.getText() +"' WHERE subNum="+tfEditSubscriberNumber.getText() +";UPDATE obl.users SET usrEmail='"+tfEditEmail.getText() +"' WHERE usrID="+tfEditSubscriberNumber.getText() +";";	
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.EditDetailsBySubscriber, editSubscriberDetailsQuery));
     }
     

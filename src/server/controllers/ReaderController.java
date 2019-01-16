@@ -39,11 +39,11 @@ public class ReaderController {
     	ResultSet user_res= dbControllerObj.query(loginQuery);
     	if(user_res.next()) {
     		if (user_res.getString("usrType").equals("Subscriber")) {
-    			String subscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.user as a right join obl.subsriber as b on a.usrId=b.subNum WHERE a.usrId = "+user_res.getString("usrId");
+    			String subscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "+user_res.getString("usrId");
     			ResultSet subscriber_res= dbControllerObj.query(subscriberQuery);
     			if(subscriber_res.next()) {
     				User user = new Subscriber(subscriber_res.getInt("subNum"), subscriber_res.getString("usrName"), subscriber_res.getString("usrPassword"),
-    					subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), subscriber_res.getString("subStatus"), subscriber_res.getString("subPhoneNum"));
+    					subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), "Subscriber", subscriber_res.getString("subPhoneNum"));
 
     				return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);
     			}
