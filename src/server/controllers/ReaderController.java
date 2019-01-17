@@ -29,6 +29,7 @@ public class ReaderController {
             instance = new ReaderController();
         }
         return instance;
+        
     }
   
     
