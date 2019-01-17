@@ -38,8 +38,14 @@ public class DBcontroller {
 		} catch (Exception ex) {
 			/* handle the error */}
 
+<<<<<<< HEAD
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "0508386875");
+=======
+		try {
+
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "bar313536492");
+>>>>>>> branch 'master' of https://github.com/kfir333/Forever21-2
 			LOGGER.info("MySql Server connected");
 		} catch (SQLException ex) {/* handle any errors */
 			LOGGER.severe("SQLException: " + ex.getMessage() + "\nSQLState: " + ex.getSQLState() + "\nVendorError: "

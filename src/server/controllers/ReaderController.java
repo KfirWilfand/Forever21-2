@@ -40,6 +40,7 @@ public class ReaderController {
     	ResultSet user_res= dbControllerObj.query(loginQuery);
     	if(user_res.next()) {
     		if (user_res.getString("usrType").equals("Subscriber")) {
+
     			String subscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "+user_res.getString("usrId");
     			ResultSet subscriber_res= dbControllerObj.query(subscriberQuery);
     			if(subscriber_res.next()) {
