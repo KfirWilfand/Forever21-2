@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class LibrarianClientController {
 
@@ -96,6 +97,12 @@ public class LibrarianClientController {
 
     @FXML
     void onCreateSubscruberBtn(ActionEvent event) {//adding a new subscriber to the DB
+    	Utils utils=new Utils(ViewStarter.client.mainViewController);
+    	if ((tfSubscriberFirstName.getText().isEmpty() == true ||tfSubscriberLastName.getText().isEmpty() == true  || tfSubscriberUsrName.getText().isEmpty() == true  || tfSubscriberPassword.getText().isEmpty() == true  ||tfSubscruberPhone.getText().isEmpty() == true ||tfSubscriberEmail.getText().isEmpty() == true ))
+    	{
+			utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Please fill all required fields!");
+    	}
+    	else {
     	String createNewSubscriberQueryUserTable="INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"+ tfSubscriberUsrName.getText() + "', '"+tfSubscriberPassword.getText() + "', '"+ tfSubscriberFirstName.getText()+ "','"+ tfSubscriberLastName.getText() + "','"+ tfSubscriberEmail.getText()+ "'); ";
        	String createNewSubscriberQuerySubscriberTable=	"INSERT INTO obl.subscribers (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '" +tfSubscruberPhone.getText()+"');";
     	String checkEmailAndPhoneQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"+tfSubscriberEmail.getText()+"' or b.subPhoneNum='"+tfSubscruberPhone.getText()+"' or usrName='"+tfSubscriberUsrName.getText()+"';";
@@ -105,7 +112,7 @@ public class LibrarianClientController {
     	queryArr[2]=checkEmailAndPhoneQuery;
    
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); //sending to LibrarianController in the server
-
+    	}
     }
 
     @FXML
