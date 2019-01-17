@@ -76,6 +76,10 @@ public class ServerConsole extends AbstractServer {
 			case GetSubscriberDetails:
 				returnMessageToClient=subscriberControllerObj.getSubscriber(msg);
 				this.sendToClient(returnMessageToClient,client);
+				break;	
+			case SearchSubscriber:
+				returnMessageToClient=librarianControllerObj.searchSubscriber(msg);
+				this.sendToClient(returnMessageToClient,client);
 				break;
 			case EditDetailsBySubscriber:
 				returnMessageToClient=subscriberControllerObj.updateDetails(msg);
