@@ -224,10 +224,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnAddNewBook" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickAddNewBook" prefHeight="27.0" prefWidth="122.0" text="Add New Book" />
-                        <Button fx:id="btnUpdateBook" layoutX="157.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickUpdateBook" prefHeight="27.0" prefWidth="116.0" text="Update Book" />
+                        <Button fx:id="btnAddNewBookManageStock" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickAddNewBookManageStock" prefHeight="27.0" prefWidth="122.0" text="Add New Book" />
+                        <Button fx:id="btnUpdateBookManageStock" layoutX="157.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickUpdateBookManageStock" prefHeight="27.0" prefWidth="116.0" text="Update Book" />
                         <Pane layoutX="5.0" layoutY="52.0" prefHeight="504.0" prefWidth="748.0" />
-                        <Button layoutX="296.0" layoutY="13.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="105.0" text="Button" />
                      </children>
                   </AnchorPane>
               </content>

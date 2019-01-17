@@ -70,9 +70,27 @@ public class LibrarianClientController {
 
     @FXML
     private Button btnSearchSubscriber;
+    
+    @FXML
+    private Button btnAddNewBookManageStock;
+
+    @FXML
+    private Button btnUpdateBookManageStock;
+
 
     @FXML
     void onBorrowBookBtn(ActionEvent event) {
+
+    }
+    
+
+    @FXML
+    void onClickAddNewBookManageStock(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onClickUpdateBookManageStock(ActionEvent event) {
 
     }
 
