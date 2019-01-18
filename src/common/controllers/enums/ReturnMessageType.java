@@ -14,5 +14,7 @@ public enum ReturnMessageType {
 	NotUpdateSuccesfully,
 	SubscriberAddedSuccessfuly,
 	SubscriberFailedToAdd, 
-	EmailOrPhoneAreAlreadyExists
+	EmailOrPhoneAreAlreadyExists,
+	BookWasNotFoundOnManageStock,
+	BooksFoundOnManageStock
 }

@@ -1,14 +1,19 @@
 package client.controllers;
 
+import java.io.IOException;
+
 import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
 
 public class LibrarianClientController {
 
@@ -20,15 +25,15 @@ public class LibrarianClientController {
 
     @FXML
     private TextField tfSubscriberUsrName;
-    
-    @FXML
-    private TextField tfSubscriberPassword;
 
     @FXML
     private TextField tfSubscruberPhone;
 
     @FXML
     private TextField tfSubscriberEmail;
+
+    @FXML
+    private TextField tfSubscriberPassword;
 
     @FXML
     private Button btnCreateSubscrciber;
@@ -71,27 +76,26 @@ public class LibrarianClientController {
 
     @FXML
     private Button btnSearchSubscriber;
+
+    @FXML
+    private AnchorPane ancPaneManageStock;
     
     @FXML
-    private Button btnAddNewBookManageStock;
-
-    @FXML
-    private Button btnUpdateBookManageStock;
-
-
+	public void initialize() {
+		ViewStarter.client.librarianClientControllerObj = this;
+		try {
+			
+			Parent newPane=FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
+			if (ancPaneManageStock != null)
+				ancPaneManageStock.getChildren().setAll(newPane);
+		} catch (IOException e  ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+    
     @FXML
     void onBorrowBookBtn(ActionEvent event) {
-
-    }
-    
-
-    @FXML
-    void onClickAddNewBookManageStock(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onClickUpdateBookManageStock(ActionEvent event) {
 
     }
 
@@ -118,7 +122,6 @@ public class LibrarianClientController {
     @FXML
     void onReturnBookBtn(ActionEvent event) {
 
-    	
     }
 
     @FXML

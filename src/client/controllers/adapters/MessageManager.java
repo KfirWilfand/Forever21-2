@@ -78,6 +78,15 @@ public class MessageManager {
 				e.printStackTrace();
 				}
 				break;
+				
+		case SearchBookOnManageStock:
+			if(msg.getReturnMessageType() == ReturnMessageType.BooksFoundOnManageStock)
+			{
+				ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((Book)msg.getObj());
+			}
+			
+		
+			
 			
 			
 		}

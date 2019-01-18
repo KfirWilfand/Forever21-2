@@ -20,6 +20,7 @@ import ocsf.server.ConnectionToClient;
 import server.controllers.DBcontroller;
 import server.controllers.LibrarianController;
 import server.controllers.LibraryManagerController;
+import server.controllers.ManageStockController;
 import server.controllers.ReaderController;
 import server.controllers.SubscriberController;
 
@@ -59,6 +60,7 @@ public class ServerConsole extends AbstractServer {
 		ReaderController readerControllerObj=ReaderController.getInstance();
 		SubscriberController subscriberControllerObj=SubscriberController.getInstance();
 		LibrarianController librarianControllerObj=LibrarianController.getInstance();
+		ManageStockController manageStockControllerObj=ManageStockController.getInstance();
 		
 		try {
 			Message message = ((Message) msg);
@@ -89,10 +91,17 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=librarianControllerObj.createNewSubscriber(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case SearchBookOnManageStock:
+				returnMessageToClient=manageStockControllerObj.searchBook(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 			}
+			
 		} catch(Exception ex) {
 			LOGGER.severe("ERROR in handleMessageFromClient: " + ex);
 		}
+
+			
 
 	}
 

@@ -2,8 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
@@ -14,28 +15,33 @@
       <TextField fx:id="tfCatalogNumber" layoutX="127.0" layoutY="79.0" />
       <TextField fx:id="tfBookName" layoutX="127.0" layoutY="121.0" />
       <TextField fx:id="tfAuthorName" layoutX="127.0" layoutY="158.0" />
-      <TextField fx:id="tfEditionNumber" layoutX="119.0" layoutY="274.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="tfEditionNumber" layoutX="124.0" layoutY="274.0" prefHeight="25.0" prefWidth="149.0" />
       <TextField fx:id="tfLocationOnShelf" layoutX="406.0" layoutY="120.0" />
-      <TextArea fx:id="txteDescription" layoutX="116.0" layoutY="361.0" prefHeight="154.0" prefWidth="165.0" />
+      <TextArea fx:id="txteDescription" layoutX="123.0" layoutY="361.0" prefHeight="154.0" prefWidth="165.0" />
       <Text layoutX="18.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Catalog Number" />
       <Text layoutX="21.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Name" />
       <Text layoutX="18.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author Name" />
       <Text layoutX="19.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edition Number" />
-      <DatePicker fx:id="dpPrintingDate" layoutX="118.0" layoutY="320.0" prefHeight="25.0" prefWidth="149.0" />
+      <DatePicker fx:id="dpPrintingDate" layoutX="123.0" layoutY="320.0" prefHeight="25.0" prefWidth="149.0" />
       <Text layoutX="17.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Printing Date" />
       <Text layoutX="297.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location On Shelf" />
-      <Text layoutX="21.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre" />
-      <ChoiceBox layoutX="126.0" layoutY="197.0" prefWidth="150.0" />
+      <Text layoutX="22.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre" />
       <Text layoutX="302.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Purchase Date" />
       <DatePicker fx:id="dpPurchaseDate" layoutX="406.0" layoutY="81.0" prefHeight="25.0" prefWidth="149.0" />
       <Text layoutX="301.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copies Number" />
       <TextField fx:id="tfCopiesNumber" layoutX="406.0" layoutY="159.0" />
       <CheckBox fx:id="cbIsPopular" layoutX="124.0" layoutY="241.0" mnemonicParsing="false" text="Popular" />
       <Text layoutX="16.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
-      <Button fx:id="btnUpdate" layoutX="418.0" layoutY="492.0" mnemonicParsing="false" onAction="#onClickUpdate" prefHeight="25.0" prefWidth="62.0" text="Update" />
+      <Button fx:id="btnUpdate" layoutX="498.0" layoutY="492.0" mnemonicParsing="false" onAction="#onClickUpdate" prefHeight="25.0" prefWidth="62.0" text="Update" />
       <Button fx:id="btnUploadTableOfContent" layoutX="405.0" layoutY="202.0" mnemonicParsing="false" text="Upload Table Of Content" />
       <Button fx:id="btnAddBook" layoutX="493.0" layoutY="492.0" mnemonicParsing="false" onAction="#onClickAddBook" prefHeight="25.0" prefWidth="72.0" text="Add Book" />
       <Button fx:id="btnBack" layoutX="20.0" layoutY="32.0" mnemonicParsing="false" onAction="#onClickBack" text="Back" />
-      <Button fx:id="btnAddCopy" layoutX="329.0" layoutY="492.0" mnemonicParsing="false" onAction="#onClickAddCopy" text="Add Copy" />
+      <Button fx:id="btnAddCopy" layoutX="412.0" layoutY="492.0" mnemonicParsing="false" onAction="#onClickAddCopy" text="Add Copy" />
+      <MenuButton layoutX="127.0" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="MenuButton">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </MenuButton>
    </children>
 </Pane>
