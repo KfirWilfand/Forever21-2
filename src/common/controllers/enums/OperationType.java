@@ -11,4 +11,5 @@ SearchBookOnManageStock,
 AddNewBook,
 GetCopiesOfSelectedBook,
 OrderBook,
+BorrowBookByLibrarian,
 }

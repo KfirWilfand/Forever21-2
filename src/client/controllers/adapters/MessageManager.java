@@ -9,6 +9,8 @@ import client.controllers.Utils;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
+import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import common.entity.Copy;
 import common.entity.Subscriber;
 import common.entity.User;
@@ -130,6 +132,25 @@ public class MessageManager {
 					e.printStackTrace();
 				}
 				break;
+		case BorrowBookByLibrarian:
+			Utils utils1=new Utils(ViewStarter.client.mainViewController);
+			try 
+			{
+				if(msg.getReturnMessageType()== ReturnMessageType.Successful) {
+					utils1.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Borrow executed successfully");
+					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[])msg.getObj());
+
+				}
+				else if (msg.getReturnMessageType()== ReturnMessageType.ErrorWhileTyping)
+					utils1.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in typing! copy does not exist");
+				else
+					utils1.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in operation!");
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			break;
 		
 			
 			

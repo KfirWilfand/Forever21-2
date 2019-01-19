@@ -18,5 +18,6 @@ public enum ReturnMessageType {
 	BookWasNotFoundOnManageStock,
 	BooksFoundOnManageStock, 
 	Successful,
-	Unsuccessful
+	Unsuccessful, 
+	ErrorWhileTyping
 }
