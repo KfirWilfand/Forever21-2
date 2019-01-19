@@ -6,5 +6,8 @@ SearchBook,
 SearchSubscriber,
 GetSubscriberDetails,
 EditDetailsBySubscriber,
-AddNewSubscriberByLibrarian
+AddNewSubscriberByLibrarian,
+SearchBookOnManageStock,
+AddNewBook,
+GetCopiesOfSelectedBook,
 }

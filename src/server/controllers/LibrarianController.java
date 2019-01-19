@@ -57,7 +57,7 @@ public class LibrarianController {
     	ResultSet subscriber_res= dbControllerObj.query(searchSubscriberQuery);
     	if(subscriber_res.next()) 
     	{
-    		Subscriber subscriber = new Subscriber(subscriber_res.getInt("subNum"), subscriber_res.getString("usrName"),  subscriber_res.getString("usrPassword"), subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), subscriber_res.getString("subStatus"), subscriber_res.getString("subPhoneNum"));
+    		Subscriber subscriber = new Subscriber(subscriber_res.getInt("subNum"), subscriber_res.getString("usrName"),  subscriber_res.getString("usrPassword"), subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), "Active" , subscriber_res.getString("subPhoneNum"));
 			return new Message(OperationType.SearchSubscriber, subscriber, ReturnMessageType.SubsciberExist);
        	}
     	else 

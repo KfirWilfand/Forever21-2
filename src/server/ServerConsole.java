@@ -20,6 +20,7 @@ import ocsf.server.ConnectionToClient;
 import server.controllers.DBcontroller;
 import server.controllers.LibrarianController;
 import server.controllers.LibraryManagerController;
+import server.controllers.ManageStockController;
 import server.controllers.ReaderController;
 import server.controllers.SubscriberController;
 
@@ -59,9 +60,10 @@ public class ServerConsole extends AbstractServer {
 		ReaderController readerControllerObj=ReaderController.getInstance();
 		SubscriberController subscriberControllerObj=SubscriberController.getInstance();
 		LibrarianController librarianControllerObj=LibrarianController.getInstance();
+		ManageStockController manageStockControllerObj=ManageStockController.getInstance();
 		
 		try {
-			Message message = ((Message) msg);
+			//Message message = ((Message) msg);
 
 			switch (((Message) msg).getOperationType()) {
 			case Login:
@@ -89,10 +91,26 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=librarianControllerObj.createNewSubscriber(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case SearchBookOnManageStock:
+				returnMessageToClient=readerControllerObj.searchBook(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case AddNewBook:
+				returnMessageToClient=manageStockControllerObj.addNewBook(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case GetCopiesOfSelectedBook:
+				returnMessageToClient=manageStockControllerObj.getCopiesbyCatalogNumber(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+				
 			}
+			
 		} catch(Exception ex) {
 			LOGGER.severe("ERROR in handleMessageFromClient: " + ex);
 		}
+
+			
 
 	}
 

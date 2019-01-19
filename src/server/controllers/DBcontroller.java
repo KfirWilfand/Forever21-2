@@ -38,6 +38,7 @@ public class DBcontroller {
 		} catch (Exception ex) {
 			/* handle the error */}
 
+
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "0508386875");
 			LOGGER.info("MySql Server connected");
