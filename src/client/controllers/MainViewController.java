@@ -121,7 +121,8 @@ public class MainViewController {
 		dialogBoxLogin.setVisible(false);
 		btnLogin.setText("Login");
 		lblLoginAs.setText("");
-		utils.setBtnPressed(false, false, false);
+		utils.setBtnPressed(true, false, false);
+		utils.layoutSwitcher(mainPane, "homepage.fxml", "Library management system");
 	}
 
 	public Label getLblSubTitle() {
