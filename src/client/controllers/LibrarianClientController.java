@@ -1,10 +1,17 @@
 package client.controllers;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
+import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +22,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 public class LibrarianClientController {
 
@@ -39,6 +47,7 @@ public class LibrarianClientController {
     @FXML
     private Button btnCreateSubscrciber;
 
+    
     @FXML
     private Button btnBorrowBook;
 
@@ -52,7 +61,10 @@ public class LibrarianClientController {
     private DatePicker tfBorrowBookEndBorrowDate;
 
     @FXML
-    private TextField tfBorrowBookCatalogNumber;
+    private TextField tfBorrowCopyID;
+
+    @FXML
+    private Text txtBorrowBookNotice;
 
     @FXML
     private Button btnReturnBook;
@@ -100,7 +112,10 @@ public class LibrarianClientController {
     
     @FXML
     void onBorrowBookBtn(ActionEvent event) {
-
+    	LocalDate borrowDate= LocalDate.now();
+    	Date date=Date.valueOf(borrowDate);
+    	BorrowCopy borrowCopy=new BorrowCopy(tfBorrowCopyID.getText(),Integer.parseInt(tfBorrowBookSubscriberNumber.getText()),date,null);
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.BorrowBookByLibrarian, borrowCopy)); 
     }
 
     @FXML
@@ -133,6 +148,16 @@ public class LibrarianClientController {
     	String searchSubscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subsribers as b on a.usrId=b.subNum WHERE b.subNum = "+tfSearchSubscriberNumber.getText();
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberQuery));
     }
+
+	public void updateDetailsOnBorrow(Object[] objects) {
+		BorrowCopy bCopy=(BorrowCopy)objects[0];
+		Boolean isPopular= (Boolean)objects[1];
+		tfBorrowBookBorrowDate.setValue(bCopy.getBorrowDate().toLocalDate());
+		tfReturnBookEndBorrowDate.setValue(bCopy.getReturnDueDate().toLocalDate());
+		if(isPopular) {
+			txtBorrowBookNotice.setVisible(true);
+		}
+	}
     
    
 

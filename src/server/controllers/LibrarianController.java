@@ -1,7 +1,9 @@
 package server.controllers;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +12,8 @@ import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
+import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import common.entity.Librarian;
 import common.entity.Subscriber;
 import common.entity.User;
@@ -65,4 +69,52 @@ public class LibrarianController {
     		return new Message(OperationType.SearchSubscriber, null, ReturnMessageType.SubsciberNotExist);	
     	} 
     }
+    public Message borrowBook (Object msg) throws SQLException
+    {
+    	Message queryMsg=((Message)msg);
+    	String queryPopularBook="select c.copyId,b.bIsPopular,b.bCatalogNum from obl.copeis as c right join obl.books as b on c.bcatalogNum=b.bCatalogNum where c.copyId='"+((BorrowCopy)queryMsg.getObj()).getCopyID()+"'";
+    	DBcontroller dbControllerObj= DBcontroller.getInstance();
+    	ResultSet isPopular_res= dbControllerObj.query(queryPopularBook);
+    	if(isPopular_res.next())
+    	{
+    		Date returnDueDate;
+    		boolean isPopular=isPopular_res.getBoolean("bIsPopular");
+    		if(isPopular)
+    		{
+    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(3);
+    	    	returnDueDate=Date.valueOf(returnDate);
+    	    	((BorrowCopy)queryMsg.getObj()).setReturnDueDate(returnDueDate);
+    		}
+    		else
+    		{
+    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(14);
+    	    	returnDueDate=Date.valueOf(returnDate);
+    	    	((BorrowCopy)queryMsg.getObj()).setReturnDueDate(returnDueDate);
+    		}
+    		String insertBorrowBookQuery="insert into obl.borrows (copyID, subNum, borrowDate,returnDueDate) values ('"+((BorrowCopy)queryMsg.getObj()).getCopyID()+"','"+((BorrowCopy)queryMsg.getObj()).getSubNum()+"','"+((BorrowCopy)queryMsg.getObj()).getBorrowDate()+"','"+returnDueDate+"')";
+    		Boolean insertBorrowBook= dbControllerObj.update(insertBorrowBookQuery);
+    		String decreaseBookAviabilaty="update obl.books set bAvilableCopiesNum=bAvilableCopiesNum-1 where bCatalogNum='"+String.valueOf(isPopular_res.getInt("bCatalogNum"))+"'";
+    		Boolean decreaseAviability= dbControllerObj.update(decreaseBookAviabilaty);
+    		String updateBookCopyAviability= "update obl.copeis set isAvilable=0 where copyID='"+((BorrowCopy)queryMsg.getObj()).getCopyID()+"'";
+    		Boolean updateAviableCopy= dbControllerObj.update(updateBookCopyAviability);
+    		if(insertBorrowBook&&decreaseAviability&&updateAviableCopy)
+    		{
+    			Object[] arr= new Object[2];
+    			arr[0]=((BorrowCopy)queryMsg.getObj());
+    			arr[1]=isPopular_res.getBoolean("bIsPopular");
+    			return new Message(OperationType.BorrowBookByLibrarian, arr , ReturnMessageType.Successful);
+    		}
+    		else
+    		{
+    			return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.Unsuccessful);
+    		}
+    		
+    	}
+    	else
+    	{
+			return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.ErrorWhileTyping);
+
+    	}
+    }
+    
 }

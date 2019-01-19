@@ -9,6 +9,8 @@ import client.controllers.Utils;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
+import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import common.entity.Copy;
 import common.entity.Subscriber;
 import common.entity.User;
@@ -133,19 +135,52 @@ public class MessageManager {
 			e.printStackTrace();
 			}
 			break;
-		
+		case OrderBook:
+				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				try 
+				{
+					if(msg.getReturnMessageType()== ReturnMessageType.Successful)
+						utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Book was ordered, SMS will be sent when book will arrive!");
+					else
+						utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Book cannot be ordered!");
+
+				}
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+				break;
+		case BorrowBookByLibrarian:
+			Utils utils1=new Utils(ViewStarter.client.mainViewController);
+			try 
+			{
+				if(msg.getReturnMessageType()== ReturnMessageType.Successful) {
+					utils1.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Borrow executed successfully");
+					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[])msg.getObj());
+
+				}
+				else if (msg.getReturnMessageType()== ReturnMessageType.ErrorWhileTyping)
+					utils1.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in typing! copy does not exist");
+				else
+					utils1.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in operation!");
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			break;
 		case DeleteCopy:
 			try 
 			{
-				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				Utils utils11=new Utils(ViewStarter.client.mainViewController);
 				if(msg.getReturnMessageType()== ReturnMessageType.Successful)
 				{	
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Copy was deleted Successfully!");
+					utils11.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Copy was deleted Successfully!");
 					//ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy)msg.getObj());
 				}
 				else
 				{
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy was deleted failed!");
+					utils11.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy was deleted failed!");
 				}
 				
 			}catch (Exception e) {
@@ -156,14 +191,14 @@ public class MessageManager {
 		case UpdateBookDetails:
 			try 
 			{
-				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				Utils utils12=new Utils(ViewStarter.client.mainViewController);
 				if(msg.getReturnMessageType()== ReturnMessageType.Successful)
 				{	
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Book update Successfully!");
+					utils12.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Book update Successfully!");
 				}
 				else
 				{
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Book update failed!");
+					utils12.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Book update failed!");
 				}
 				
 			}catch (Exception e) {
