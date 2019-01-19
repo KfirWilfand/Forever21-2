@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="543.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.SearchBookOnManageStockController">
+   <children>
+      <TextField fx:id="tfCatalogNumberForSearch" layoutX="17.0" layoutY="17.0" promptText="Enter Catalog Number" />
+      <Button fx:id="btnSearchBook" layoutX="179.0" layoutY="17.0" mnemonicParsing="false" onAction="#onClickSearchBook" text="Search" />
+      <TableView fx:id="booksTable" layoutX="17.0" layoutY="68.0" onMouseClicked="#onChosenRow" prefHeight="475.0" prefWidth="545.0">
+         <columns>
+            <TableColumn fx:id="tvColumnCatalogNumber" prefWidth="130.0" text="Catalog Number" />
+            <TableColumn fx:id="tvColumnBookName" prefWidth="141.0" text="Book Name" />
+            <TableColumn fx:id="tvColumnCopiesNumber" prefWidth="132.0" text="Copies Number" />
+            <TableColumn fx:id="tvColumnEditionNumber" prefWidth="141.0" text="Edition Number" />
+         </columns>
+      </TableView>
+      <Label layoutX="313.0" layoutY="42.0" text="for update book details press on the book" />
+   </children>
+</Pane>

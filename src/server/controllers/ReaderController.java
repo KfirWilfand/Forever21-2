@@ -29,6 +29,7 @@ public class ReaderController {
             instance = new ReaderController();
         }
         return instance;
+        
     }
   
     
@@ -39,11 +40,12 @@ public class ReaderController {
     	ResultSet user_res= dbControllerObj.query(loginQuery);
     	if(user_res.next()) {
     		if (user_res.getString("usrType").equals("Subscriber")) {
-    			String subscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.user as a right join obl.subsriber as b on a.usrId=b.subNum WHERE a.usrId = "+user_res.getString("usrId");
+
+    			String subscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "+user_res.getString("usrId");
     			ResultSet subscriber_res= dbControllerObj.query(subscriberQuery);
     			if(subscriber_res.next()) {
     				User user = new Subscriber(subscriber_res.getInt("subNum"), subscriber_res.getString("usrName"), subscriber_res.getString("usrPassword"),
-    					subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), subscriber_res.getString("subStatus"),subscriber_res.getString("subPhoneNum"));
+    					subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), "Subscriber", subscriber_res.getString("subPhoneNum"));
 
     				return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);
     			}
@@ -66,24 +68,22 @@ public class ReaderController {
     }
     
     public Message searchBook(Object msg) throws SQLException
-    {
+    {//TODO :μαγεχ 
     	String searchQuery= (String)((Message)msg).getObj();
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	ResultSet books_res= dbControllerObj.query(searchQuery);
-    	if(books_res != null) {
-    		List<Book> books_array= new ArrayList<Book>();
-    		while (books_res.next())
-    		{
-    			List<String> authors= Arrays.asList(books_res.getString("bAuthor").split(","));
-    			List<String> genres= Arrays.asList(books_res.getString("bGenre").split(","));
-    			books_array.add(new Book(books_res.getInt("bCatalogNum"), books_res.getString("bName"),  books_res.getString("bDescription"), authors, genres,
-    					books_res.getInt("bCopiesNum"), books_res.getDate("bPurchaseDate"), books_res.getString("bShelfLocation"), books_res.getString("bEdition"), books_res.getDate("bPrintDate")));
-    		}
-    		return new Message(OperationType.SearchBook, books_array, ReturnMessageType.BooksFound);
+    	List<Book> books_list = Book.resultSetToList(books_res);
+    	if(!books_list.isEmpty())
+    	{
+    		if (((Message)msg).getOperationType() ==  OperationType.SearchBook )
+    			return new Message(OperationType.SearchBook, books_list, ReturnMessageType.BooksFound);
+    		else //if the operation type is 'SearchBookOnManageStock'
+    			return new Message(OperationType.SearchBookOnManageStock, books_list, ReturnMessageType.BooksFoundOnManageStock);
     	}
     	else
+    	{
     		return new Message(OperationType.SearchBook, null, ReturnMessageType.BooksNotFound);
-    	
+    	}
     }
 
 

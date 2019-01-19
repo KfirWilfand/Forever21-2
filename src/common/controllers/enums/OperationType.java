@@ -3,5 +3,11 @@ package common.controllers.enums;
 public enum OperationType {
 Login,
 SearchBook,
-GetSubscriberDetails, EditDetailsBySubscriber, AddNewSubscriberByLibrarian
+SearchSubscriber,
+GetSubscriberDetails,
+EditDetailsBySubscriber,
+AddNewSubscriberByLibrarian,
+SearchBookOnManageStock,
+AddNewBook,
+GetCopiesOfSelectedBook,
 }

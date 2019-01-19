@@ -9,6 +9,7 @@ import client.controllers.Utils;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
+import common.entity.Copy;
 import common.entity.Subscriber;
 import common.entity.User;
 import javafx.scene.control.Alert;
@@ -78,6 +79,44 @@ public class MessageManager {
 				e.printStackTrace();
 				}
 				break;
+				
+		case SearchBookOnManageStock:
+			if(msg.getReturnMessageType() == ReturnMessageType.BooksFoundOnManageStock)
+			{
+				ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((List<Book>)msg.getObj());
+			}
+			break;
+			
+		case AddNewBook:
+			try 
+			{
+				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				if(msg.getReturnMessageType()== ReturnMessageType.Successful)
+				{	
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Book added Successfully!");
+				}
+				else
+				{
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Book added failed!");
+				}
+				
+			}catch (Exception e) {
+			e.printStackTrace();
+			}
+			break;
+		case GetCopiesOfSelectedBook:
+			try 
+			{
+				ViewStarter.client.manageStockClientControllerObj.displayCopies((List<Copy>)msg.getObj());
+		
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			break;
+		
+			
 			
 			
 		}

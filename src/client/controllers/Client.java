@@ -16,7 +16,9 @@ public class Client extends AbstractClient {
 	public SubscriberClientController subscriberClientControllerObj;
 	public Utils utilsControllers;
 	public LibrarianClientController librarianClientControllerObj;
-	
+	public ManageStockClientController manageStockClientControllerObj;
+	public UpdateOrAddBookController updateOrAddBookControllerObj;
+	public SearchBookOnManageStockController searchBookOnManageStockControllerObj;
 
 	public Client(String host, int port) throws IOException {
 		super(host, port);
