@@ -63,7 +63,7 @@ public class ServerConsole extends AbstractServer {
 		ManageStockController manageStockControllerObj=ManageStockController.getInstance();
 		
 		try {
-			Message message = ((Message) msg);
+			//Message message = ((Message) msg);
 
 			switch (((Message) msg).getOperationType()) {
 			case Login:
@@ -92,9 +92,18 @@ public class ServerConsole extends AbstractServer {
 				this.sendToClient(returnMessageToClient, client);
 				break;
 			case SearchBookOnManageStock:
-				returnMessageToClient=manageStockControllerObj.searchBook(msg);
+				returnMessageToClient=readerControllerObj.searchBook(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case AddNewBook:
+				returnMessageToClient=manageStockControllerObj.addNewBook(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case GetCopiesOfSelectedBook:
+				returnMessageToClient=manageStockControllerObj.getCopiesbyCatalogNumber(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+				
 			}
 			
 		} catch(Exception ex) {

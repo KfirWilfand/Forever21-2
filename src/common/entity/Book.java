@@ -1,7 +1,12 @@
 package common.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import java.util.List;
 
 public class Book implements Serializable {
@@ -17,10 +22,12 @@ public class Book implements Serializable {
 	private String edition;
 	private Date printDate;
 	private String bookImagePath;
+	private boolean isPopular;
+	
 	private static final String Defualt_Image_Path = "/client/boundery/resources/book-no-image.png";
 
 	public Book(int catalogNum, String bookName, String description, List<String> author, List<String> genre,
-			int copiesNum, Date purchaseDate, String shelfLocation, String edition, Date printDate) {
+			int copiesNum, Date purchaseDate, String shelfLocation, String edition, Date printDate, boolean isPopular) {
 		this.catalogNum = catalogNum;
 		this.bookName = bookName;
 		this.description = description;
@@ -31,6 +38,15 @@ public class Book implements Serializable {
 		this.shelfLocation = shelfLocation;
 		this.edition = edition;
 		this.printDate = printDate;
+		this.isPopular = isPopular;
+	}
+
+	public boolean isPopular() {
+		return isPopular;
+	}
+
+	public void setPopular(boolean isPopular) {
+		this.isPopular = isPopular;
 	}
 
 	public int getCatalogNum() {
@@ -117,6 +133,21 @@ public class Book implements Serializable {
 		return (bookImagePath != null) ? Defualt_Image_Path : bookImagePath;
 	}
 
+	public static List<Book> resultSetToList(ResultSet rs) throws SQLException
+	{
+		List<Book> books_list= new ArrayList<Book>();
+		if(rs != null) 
+		{
+       		while (rs.next())
+    		{
+    			List<String> authors= Arrays.asList(rs.getString("bAuthor").split(","));
+    			List<String> genres= Arrays.asList(rs.getString("bGenre").split(","));
+    			books_list.add(new Book(rs.getInt("bCatalogNum"), rs.getString("bName"),  rs.getString("bDescription"), 
+    					authors, genres, rs.getInt("bCopiesNum"), rs.getDate("bPurchaseDate"), 
+    					rs.getString("bShelfLocation"), rs.getString("bEdition"), rs.getDate("bPrintDate"), rs.getBoolean("bIsPopular")));
+    		}
+	     }
+		return books_list;
 
-
+	}
 }

@@ -1,8 +1,16 @@
 package client.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import client.ViewStarter;
+import common.controllers.Message;
+import common.controllers.enums.OperationType;
+import common.entity.Book;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,6 +41,9 @@ public class UpdateOrAddBookController {
 
     @FXML
     private TextArea txteDescription;
+    
+    @FXML
+    private TextField tfGenre;
 
     @FXML
     private DatePicker dpPrintingDate;
@@ -49,8 +60,7 @@ public class UpdateOrAddBookController {
     @FXML
     private Button btnUpdate;
 
-   
-	@FXML
+   	@FXML
     private Button btnUploadTableOfContent;
 
     @FXML
@@ -87,10 +97,24 @@ public class UpdateOrAddBookController {
 
     @FXML
     void onClickAddBook(ActionEvent event) {
+    	ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
+      	
+    	String addBookQuery = "insert  into obl.books (bName,bDescription,bEdition,bPrintDate,bCopiesNum,bShelfLocation,bGenre,bAuthor,bPurchaseDate,bAvilableCopiesNum,bIsPopular) "
+    			+ "values ('"+ tfBookName.getText() +"','"+ txteDescription.getText() +"','"+ tfEditionNumber.getText() +"','"+ dpPrintingDate.getValue()+"'"
+    					+ ",0,'"+tfLocationOnShelf.getText()+"','"+tfGenre.getText()+"','"+tfAuthorName.getText()+"'"
+    							+ ",'"+dpPurchaseDate.getValue()+"',0,"+cbIsPopular.isSelected()+")";
+    	System.out.println(addBookQuery);
+    	
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, addBookQuery));
+//    	for(int i=1; i<=Integer.parseInt(tfCopiesNumber.getText()); i++)
+//    	{
+//    		String query = "insert into obl.copies (copyID,bCatalogNum,isAvilable) values ("
+//    	}
 
     }
 
-    @FXML
+
+	@FXML
     void onClickAddCopy(ActionEvent event) {
 
     }
@@ -100,6 +124,7 @@ public class UpdateOrAddBookController {
     {
     	try 
     	{
+    		ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
 			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/searchBook_by_number_at_manageStock.fxml"));
 			if(ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock() != null)
 			{
@@ -113,9 +138,33 @@ public class UpdateOrAddBookController {
     }
 
     @FXML
-    void onClickUpdate(ActionEvent event) {
+    void onClickUpdate(ActionEvent event) 
+    {
 
     }
+    
+    public void showSelectedBookDetails(Book book)
+    {
+    	Platform.runLater(new Runnable() 
+    	{
+		@Override
+		public void run() 
+			{
+				tfCatalogNumber.setText(String.valueOf(book.getCatalogNum()));
+		    	tfBookName.setText(book.getBookName());
+		    	tfAuthorName.setText(String.join(", ",book.getAuthor()));
+		    	tfGenre.setText(String.join(", ",book.getGenre()));
+		    	cbIsPopular.setSelected(book.isPopular());
+		    	tfEditionNumber.setText(book.getEdition());
+		    	dpPrintingDate.setValue(book.getPrintDate().toLocalDate());
+		       	dpPurchaseDate.setValue(book.getPurchaseDate().toLocalDate());
+		       	txteDescription.setText(book.getDescription());
+		       	tfLocationOnShelf.setText(book.getShelfLocation());
+		    	tfCopiesNumber.setText(String.valueOf(book.getCopiesNum()));
+			}
+    	});
+    }
+    
     public Button getBtnAddBook() {
 		return btnAddBook;
 	}

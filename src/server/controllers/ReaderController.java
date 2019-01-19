@@ -68,24 +68,22 @@ public class ReaderController {
     }
     
     public Message searchBook(Object msg) throws SQLException
-    {
+    {//TODO :μαγεχ 
     	String searchQuery= (String)((Message)msg).getObj();
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	ResultSet books_res= dbControllerObj.query(searchQuery);
-    	if(books_res != null) {
-    		List<Book> books_array= new ArrayList<Book>();
-    		while (books_res.next())
-    		{
-    			List<String> authors= Arrays.asList(books_res.getString("bAuthor").split(","));
-    			List<String> genres= Arrays.asList(books_res.getString("bGenre").split(","));
-    			books_array.add(new Book(books_res.getInt("bCatalogNum"), books_res.getString("bName"),  books_res.getString("bDescription"), authors, genres,
-    					books_res.getInt("bCopiesNum"), books_res.getDate("bPurchaseDate"), books_res.getString("bShelfLocation"), books_res.getString("bEdition"), books_res.getDate("bPrintDate")));
-    		}
-    		return new Message(OperationType.SearchBook, books_array, ReturnMessageType.BooksFound);
+    	List<Book> books_list = Book.resultSetToList(books_res);
+    	if(!books_list.isEmpty())
+    	{
+    		if (((Message)msg).getOperationType() ==  OperationType.SearchBook )
+    			return new Message(OperationType.SearchBook, books_list, ReturnMessageType.BooksFound);
+    		else //if the operation type is 'SearchBookOnManageStock'
+    			return new Message(OperationType.SearchBookOnManageStock, books_list, ReturnMessageType.BooksFoundOnManageStock);
     	}
     	else
+    	{
     		return new Message(OperationType.SearchBook, null, ReturnMessageType.BooksNotFound);
-    	
+    	}
     }
 
 

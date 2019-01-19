@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class SearchBookOnManageStockController {
 
@@ -43,14 +44,19 @@ public class SearchBookOnManageStockController {
 
     @FXML
     private TableView<Book> booksTable;
-    
-    public void initialize() 
+
+	public void initialize() 
     {
 		ViewStarter.client.searchBookOnManageStockControllerObj = this;
 		tvColumnCatalogNumber.setCellValueFactory(new PropertyValueFactory<Book,Integer>("catalogNum"));
     	tvColumnBookName.setCellValueFactory(new PropertyValueFactory<Book,String>("bookName"));
     	tvColumnCopiesNumber.setCellValueFactory(new PropertyValueFactory<Book,Integer>("copiesNum"));
     	tvColumnEditionNumber.setCellValueFactory(new PropertyValueFactory<Book,String>("edition"));
+    	if (booksTable != null)
+    	{	
+    		String getAllBooksQuery = "Select * from obl.books";
+    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, getAllBooksQuery));
+    	}
 	}
 
     @FXML
@@ -59,11 +65,50 @@ public class SearchBookOnManageStockController {
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, searchBookQuery));
     }
     
-    public void showBookResult(Book book)
+    public void showBookResult(List<Book> list)
     {
-    	ObservableList<Book> BookToAdd = FXCollections.observableArrayList(book);
-      	booksTable.setItems(BookToAdd);
-      	System.out.println(book.getBookName());
+    	ObservableList<Book> BookToAdd = FXCollections.observableArrayList();
+    	for(Book book: list)
+    		BookToAdd.add(book);
+    	booksTable.setItems(BookToAdd);      
     }
+    
+
+    @FXML
+    void onChosenRow(MouseEvent event) {
+    	if(event.getClickCount() == 1)
+    	{
+    		Book book = booksTable.getSelectionModel().getSelectedItem();
+    		String query = "SELECT * FROM obl.copeis where bCatalogNum = " + book.getCatalogNum();
+    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetCopiesOfSelectedBook,query));
+    	}
+    	if(event.getClickCount() == 2) 
+    	{
+        	try 
+        	{
+    			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/updateOrAddBook.fxml"));
+    			if(ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock() != null)
+    			{
+    				ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock().getChildren().setAll(newPane);
+    				Button b=ViewStarter.client.updateOrAddBookControllerObj.getBtnAddBook();
+					b.setVisible(false);
+					b=ViewStarter.client.updateOrAddBookControllerObj.getBtnAddCopy();
+					b.setVisible(true);
+					b=ViewStarter.client.updateOrAddBookControllerObj.getBtnUpdate();
+					b.setVisible(true);
+					Book book = booksTable.getSelectionModel().getSelectedItem();
+					ViewStarter.client.updateOrAddBookControllerObj.showSelectedBookDetails(book);
+					
+    			}		
+    			
+        	}
+    		 catch (IOException e) 
+        	{
+    			e.printStackTrace();
+    		}
+    	}
+
+    }
+    
 
 }

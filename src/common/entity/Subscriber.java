@@ -1,6 +1,7 @@
 package common.entity;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import common.entity.enums.UserType;
 
@@ -8,6 +9,7 @@ public class Subscriber extends User implements Serializable {
 	private Integer subscriberNum;
 	private String phoneNum;
 	private String Status;
+	private Date graduationDate;
 	//ReaderCard readerCard;
 
 //	Subscriber() {
