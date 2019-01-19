@@ -53,5 +53,43 @@ public class ManageStockController {
 		 }
 		 return new Message(OperationType.GetCopiesOfSelectedBook, copies_list , ReturnMessageType.Unsuccessful); 
 	 }
+	 
+	 public Message addNewCopy(Object msg) throws SQLException 
+	 {
+		 	Object[] m=(Object[])((Message)msg).getObj();
+	    	DBcontroller dbControllerObj=DBcontroller.getInstance();
+	       	Boolean res1=dbControllerObj.insert((String)m[0]);
+	    	Boolean res2=dbControllerObj.update((String)m[1]);	
+	    	
+	    	if(res1 && res2)
+    			return new Message(OperationType.AddNewCopy, (Copy)m[2] , ReturnMessageType.Successful);
+    		else
+    			return new Message(OperationType.AddNewCopy, null , ReturnMessageType.Unsuccessful);
+	 }
+	 
+	 public Message deleteCopy(Object msg) throws SQLException 
+	 {
+		 	String[] query=(String[])((Message)msg).getObj();
+	    	DBcontroller dbControllerObj=DBcontroller.getInstance();
+	       	Boolean res1=dbControllerObj.insert(query[0]);
+	    	Boolean res2=dbControllerObj.update(query[1]);	
+	    	
+	    	if(res1 && res2)
+    			return new Message(OperationType.DeleteCopy, null , ReturnMessageType.Successful);
+    		else
+    			return new Message(OperationType.DeleteCopy, null , ReturnMessageType.Unsuccessful);
+	 }
+	 
+	 public Message updateBookDetails(Object msg) throws SQLException 
+	 {
+		 String query=(String)((Message)msg).getObj();
+		 DBcontroller dbControllerObj=DBcontroller.getInstance();
+	   	 Boolean res = dbControllerObj.update(query);
+	   	 if(res)
+	   	 {
+	   		return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Successful); 
+	   	 }
+	   	 else return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Unsuccessful);  
+	 }
 }
 

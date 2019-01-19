@@ -34,7 +34,6 @@
       <Button fx:id="btnUploadTableOfContent" layoutX="405.0" layoutY="202.0" mnemonicParsing="false" text="Upload Table Of Content" />
       <Button fx:id="btnAddBook" layoutX="493.0" layoutY="492.0" mnemonicParsing="false" onAction="#onClickAddBook" prefHeight="25.0" prefWidth="72.0" text="Add Book" />
       <Button fx:id="btnBack" layoutX="20.0" layoutY="32.0" mnemonicParsing="false" onAction="#onClickBack" text="Back" />
-      <Button fx:id="btnAddCopy" layoutX="412.0" layoutY="492.0" mnemonicParsing="false" onAction="#onClickAddCopy" text="Add Copy" />
       <TextField fx:id="tfGenre" layoutX="127.0" layoutY="202.0" />
    </children>
 </Pane>

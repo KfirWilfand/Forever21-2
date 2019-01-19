@@ -44,6 +44,11 @@ public class SearchBookOnManageStockController {
 
     @FXML
     private TableView<Book> booksTable;
+    
+
+	public TableView<Book> getBooksTable() {
+		return booksTable;
+	}
 
 	public void initialize() 
     {
@@ -52,11 +57,29 @@ public class SearchBookOnManageStockController {
     	tvColumnBookName.setCellValueFactory(new PropertyValueFactory<Book,String>("bookName"));
     	tvColumnCopiesNumber.setCellValueFactory(new PropertyValueFactory<Book,Integer>("copiesNum"));
     	tvColumnEditionNumber.setCellValueFactory(new PropertyValueFactory<Book,String>("edition"));
+    	
     	if (booksTable != null)
     	{	
     		String getAllBooksQuery = "Select * from obl.books";
     		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, getAllBooksQuery));
+    	
+    	
+//	    	booksTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> 
+//	    	{
+//	    		System.out.println(oldSelection.toString());
+//	    		System.out.println(newSelection.toString());
+//	    		Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
+//				b1.setDisable(false);
+//				Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
+//				b2.setDisable(false);
+//				TextField t=ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID();
+//				t.setDisable(false);
+//				
+//	    	});
+//	    	
+	    	
     	}
+    	   	
 	}
 
     @FXML
@@ -78,9 +101,16 @@ public class SearchBookOnManageStockController {
     void onChosenRow(MouseEvent event) {
     	if(event.getClickCount() == 1)
     	{
+    		ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
     		Book book = booksTable.getSelectionModel().getSelectedItem();
     		String query = "SELECT * FROM obl.copeis where bCatalogNum = " + book.getCatalogNum();
     		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetCopiesOfSelectedBook,query));
+    		Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
+			b1.setDisable(false);
+			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
+			b2.setDisable(false);
+			TextField t=ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID();
+			t.setDisable(false);
     	}
     	if(event.getClickCount() == 2) 
     	{
@@ -92,8 +122,6 @@ public class SearchBookOnManageStockController {
     				ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock().getChildren().setAll(newPane);
     				Button b=ViewStarter.client.updateOrAddBookControllerObj.getBtnAddBook();
 					b.setVisible(false);
-					b=ViewStarter.client.updateOrAddBookControllerObj.getBtnAddCopy();
-					b.setVisible(true);
 					b=ViewStarter.client.updateOrAddBookControllerObj.getBtnUpdate();
 					b.setVisible(true);
 					Book book = booksTable.getSelectionModel().getSelectedItem();

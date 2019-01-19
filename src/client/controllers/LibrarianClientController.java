@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
@@ -81,6 +82,9 @@ public class LibrarianClientController {
     private AnchorPane ancPaneManageStock;
     
     @FXML
+    private Tab btnManageStockTab; 
+    
+    @FXML
 	public void initialize() {
 		ViewStarter.client.librarianClientControllerObj = this;
 		try {
@@ -130,5 +134,6 @@ public class LibrarianClientController {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberQuery));
     }
     
+   
 
 }

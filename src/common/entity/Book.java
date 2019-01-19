@@ -23,11 +23,14 @@ public class Book implements Serializable {
 	private Date printDate;
 	private String bookImagePath;
 	private boolean isPopular;
+	private int avilableCopiesNum;
 	
+
+
 	private static final String Defualt_Image_Path = "/client/boundery/resources/book-no-image.png";
 
 	public Book(int catalogNum, String bookName, String description, List<String> author, List<String> genre,
-			int copiesNum, Date purchaseDate, String shelfLocation, String edition, Date printDate, boolean isPopular) {
+			int copiesNum, Date purchaseDate, String shelfLocation, String edition, Date printDate, boolean isPopular,int avilableCopiesNum) {
 		this.catalogNum = catalogNum;
 		this.bookName = bookName;
 		this.description = description;
@@ -39,6 +42,7 @@ public class Book implements Serializable {
 		this.edition = edition;
 		this.printDate = printDate;
 		this.isPopular = isPopular;
+		this.avilableCopiesNum=avilableCopiesNum;
 	}
 
 	public boolean isPopular() {
@@ -128,6 +132,9 @@ public class Book implements Serializable {
 	public void setPrintDate(Date printDate) {
 		this.printDate = printDate;
 	}
+	public int getAvilableCopiesNum() {
+		return avilableCopiesNum;
+	}
 
 	public String getBookImagePath( ) {
 		return (bookImagePath != null) ? Defualt_Image_Path : bookImagePath;
@@ -144,7 +151,7 @@ public class Book implements Serializable {
     			List<String> genres= Arrays.asList(rs.getString("bGenre").split(","));
     			books_list.add(new Book(rs.getInt("bCatalogNum"), rs.getString("bName"),  rs.getString("bDescription"), 
     					authors, genres, rs.getInt("bCopiesNum"), rs.getDate("bPurchaseDate"), 
-    					rs.getString("bShelfLocation"), rs.getString("bEdition"), rs.getDate("bPrintDate"), rs.getBoolean("bIsPopular")));
+    					rs.getString("bShelfLocation"), rs.getString("bEdition"), rs.getDate("bPrintDate"), rs.getBoolean("bIsPopular"),rs.getInt("bAvilableCopiesNum")));
     		}
 	     }
 		return books_list;

@@ -115,7 +115,62 @@ public class MessageManager {
 				e.printStackTrace();
 			}
 			break;
+		case AddNewCopy:
+			try 
+			{
+				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				if(msg.getReturnMessageType()== ReturnMessageType.Successful)
+				{	
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Copy added Successfully!");
+					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy)msg.getObj());
+				}
+				else
+				{
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
+				}
+				
+			}catch (Exception e) {
+			e.printStackTrace();
+			}
+			break;
 		
+		case DeleteCopy:
+			try 
+			{
+				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				if(msg.getReturnMessageType()== ReturnMessageType.Successful)
+				{	
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Copy was deleted Successfully!");
+					//ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy)msg.getObj());
+				}
+				else
+				{
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy was deleted failed!");
+				}
+				
+			}catch (Exception e) {
+			e.printStackTrace();
+			}
+			break;
+			
+		case UpdateBookDetails:
+			try 
+			{
+				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				if(msg.getReturnMessageType()== ReturnMessageType.Successful)
+				{	
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Book update Successfully!");
+				}
+				else
+				{
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Book update failed!");
+				}
+				
+			}catch (Exception e) {
+			e.printStackTrace();
+			}
+			break;
+			
 			
 			
 			

@@ -10,4 +10,8 @@ AddNewSubscriberByLibrarian,
 SearchBookOnManageStock,
 AddNewBook,
 GetCopiesOfSelectedBook,
+AddNewCopy,
+DeleteCopy, 
+UpdateBookDetails,
+
 }

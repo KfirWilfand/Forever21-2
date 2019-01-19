@@ -103,6 +103,18 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=manageStockControllerObj.getCopiesbyCatalogNumber(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case AddNewCopy:
+				returnMessageToClient=manageStockControllerObj.addNewCopy(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case DeleteCopy:
+				returnMessageToClient=manageStockControllerObj.deleteCopy(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case UpdateBookDetails:
+				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 				
 			}
 			

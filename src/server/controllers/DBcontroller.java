@@ -40,7 +40,7 @@ public class DBcontroller {
 
 
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "0508386875");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "root");
 			LOGGER.info("MySql Server connected");
 		} catch (SQLException ex) {/* handle any errors */
 			LOGGER.severe("SQLException: " + ex.getMessage() + "\nSQLState: " + ex.getSQLState() + "\nVendorError: "
