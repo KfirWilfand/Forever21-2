@@ -115,6 +115,21 @@ public class MessageManager {
 				e.printStackTrace();
 			}
 			break;
+		case OrderBook:
+				Utils utils=new Utils(ViewStarter.client.mainViewController);
+				try 
+				{
+					if(msg.getReturnMessageType()== ReturnMessageType.Successful)
+						utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Book was ordered, SMS will be sent when book will arrive!");
+					else
+						utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Book cannot be ordered!");
+
+				}
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+				break;
 		
 			
 			

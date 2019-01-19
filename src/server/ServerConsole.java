@@ -3,6 +3,8 @@ package server;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +12,7 @@ import java.util.logging.Logger;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
+import common.entity.BookInOrder;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
@@ -26,11 +29,21 @@ import server.controllers.SubscriberController;
 
 public class ServerConsole extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
+	//public static List<BookInOrder> BooksOrders = Collections.synchronizedList(new LinkedList<BookInOrder>());
+	
+	
 
 	public ServerConsole(int port) {
 		super(port);
 	}
-
+	
+//	Thread thread =  new Thread(new Runnable() {
+//        @Override public void run() {
+//
+//        }
+//
+//    }).start();
+	
 	private static final Logger LOGGER = Logger.getLogger(ServerConsole.class.getName());
 
 	public static void main(String[] args) {
@@ -101,6 +114,10 @@ public class ServerConsole extends AbstractServer {
 				break;
 			case GetCopiesOfSelectedBook:
 				returnMessageToClient=manageStockControllerObj.getCopiesbyCatalogNumber(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case OrderBook:
+				returnMessageToClient=subscriberControllerObj.orderBook(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
 				

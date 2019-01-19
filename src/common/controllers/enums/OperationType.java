@@ -10,4 +10,5 @@ AddNewSubscriberByLibrarian,
 SearchBookOnManageStock,
 AddNewBook,
 GetCopiesOfSelectedBook,
+OrderBook,
 }
