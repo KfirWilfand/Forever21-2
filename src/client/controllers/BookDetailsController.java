@@ -48,10 +48,14 @@ public class BookDetailsController {
 	
     @FXML
     private Button btnOrderBook;
+    
+    @FXML
+    private Text txtBookOrderStatusNotice;
 
 	private Book book;
 
 	private AnchorPane mainView;
+	
 
 	@FXML
 	public void initialize() {
@@ -75,11 +79,7 @@ public class BookDetailsController {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime orderDate = LocalDateTime.now();
 		String orderQuery="INSERT INTO OBL.books_orders (subNum, bCatalogNum, dateOfOrder) VALUES('"+((Subscriber)usr).getSubscriberNum()+"','"+book.getCatalogNum()+"','"+orderDate.format(dtf)+"')";
-		System.out.println(orderQuery);
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.OrderBook, orderQuery));
-
-	
-
 	}
 
 	@FXML
@@ -97,7 +97,7 @@ public class BookDetailsController {
 	}
 
 	public void updateUi() {
-
+		User usr=ViewStarter.client.mainViewController.getUser();
 		lblBookNameDetails.setText(this.book.getBookName());
 		lblAuthorDetails.setText(this.book.getAuthor().toString());
         //btnTableOfContent;
@@ -105,9 +105,17 @@ public class BookDetailsController {
 		txtBookLocation.setText(this.book.getShelfLocation());
 		txtAvailableCopies.setText(Integer.toString(this.book.getAvilableCopiesNum()));
 		lblDescriptionDetails.setText(this.book.getDescription());
-		if(this.book.getAvilableCopiesNum() != 0)
+		String temp= ((Subscriber)usr).getStatus();
+		System.out.println(temp);
+		if(((Subscriber)usr).getStatus()!="Active")
+		{
+			txtBookOrderStatusNotice.setVisible(true);
 			btnOrderBook.setDisable(true);
-			
+		}	
+		else if(this.book.getAvilableCopiesNum() != 0) //if number of copies per book is not 0 then hide the order book button
+			btnOrderBook.setDisable(true);		
+		else 
+			btnOrderBook.setDisable(false);
 	}
 
 }

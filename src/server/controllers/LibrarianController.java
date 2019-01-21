@@ -32,7 +32,7 @@ public class LibrarianController {
 	        return instance;
 	    }
 	 
-	    public Message createNewSubscriber (Object msg) throws SQLException//NEED TO HANDLE WITH THE 2 DIALOG BOX בו זמנית
+	    public Message createNewSubscriber (Object msg) throws SQLException
 	    {
 		String [] query=(String[])((Message)msg).getObj();
     	DBcontroller dbControllerObj=DBcontroller.getInstance();
@@ -81,15 +81,18 @@ public class LibrarianController {
     		boolean isPopular=isPopular_res.getBoolean("bIsPopular");
     		if(isPopular)
     		{
-    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(3);
+    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(3L);
     	    	returnDueDate=Date.valueOf(returnDate);
     	    	((BorrowCopy)queryMsg.getObj()).setReturnDueDate(returnDueDate);
+//    	    	System.out.println(returnDate);
     		}
     		else
     		{
-    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(14);
+    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(14L);
     	    	returnDueDate=Date.valueOf(returnDate);
     	    	((BorrowCopy)queryMsg.getObj()).setReturnDueDate(returnDueDate);
+//    	    	System.out.println(returnDate);
+
     		}
     		String insertBorrowBookQuery="insert into obl.borrows (copyID, subNum, borrowDate,returnDueDate) values ('"+((BorrowCopy)queryMsg.getObj()).getCopyID()+"','"+((BorrowCopy)queryMsg.getObj()).getSubNum()+"','"+((BorrowCopy)queryMsg.getObj()).getBorrowDate()+"','"+returnDueDate+"')";
     		Boolean insertBorrowBook= dbControllerObj.update(insertBorrowBookQuery);

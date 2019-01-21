@@ -52,15 +52,18 @@ public class SubscriberController {
     }
 
 	public Message orderBook(Object msg) {
-		String query=(String)((Message)msg).getObj();
+    	String queryOrderBook=(String)((Message)msg).getObj();
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
-    	Boolean res=dbControllerObj.update(query);
-    	if(res)
-    		return new Message(OperationType.OrderBook, null , ReturnMessageType.Successful);
-    	else
-    		return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
+		Boolean insertionOrder=dbControllerObj.update(queryOrderBook); 
+		if(insertionOrder)
+			return new Message(OperationType.OrderBook, null , ReturnMessageType.Successful);
+		else
+			return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
 	}
-    
+		
+		
+		
+
     	
     
 }
