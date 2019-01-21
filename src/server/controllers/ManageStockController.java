@@ -53,5 +53,31 @@ public class ManageStockController {
 		 }
 		 return new Message(OperationType.GetCopiesOfSelectedBook, copies_list , ReturnMessageType.Unsuccessful); 
 	 }
+	 
+
+	 /**
+	    * This method update Subscriber details by Librarian
+	    * @param Message
+	    * Message.getObj() return String[3]
+	    * 
+	    * String[0] = subId
+	    * String[1] = query 1 to update user table
+	    * String[2] = query 2 to update subscriber table
+	    * 
+	    * @return if Successful: Message with updated Subscriber Object
+	    * @author kfir3
+	    */ 
+	public Message editDetailsByLibrarian(Object msg) throws SQLException {
+		String[] params =  (String[]) ((Message)msg).getObj();
+		DBcontroller dbControllerObj=DBcontroller.getInstance();
+	
+		Boolean res0 = dbControllerObj.update(params[1]);
+		Boolean res1 = dbControllerObj.update(params[2]);
+		
+		if(res0 && res1) 
+			 return new Message(OperationType.EditDetailsByLibrarian, SubscriberController.getSubscriberById(params[0]) , ReturnMessageType.Successful); 
+
+		 return new Message(OperationType.EditDetailsByLibrarian, null , ReturnMessageType.Unsuccessful); 
+	}
 }
 

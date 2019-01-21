@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -19,7 +22,7 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="594.0" prefWidth="759.0" style="-fx-background-color: WHITE;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LibrarianClientController">
       <children>
-      <TabPane id="tpSubscriber" prefHeight="594.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane id="tpSubscriber" fx:id="tvSubsciber" prefHeight="594.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Open New Subsriber">
             <content>
@@ -340,9 +343,67 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="17.0" layoutY="95.0" prefHeight="425.0" prefWidth="725.0" />
-                        <TextField fx:id="tfSearchSubscriberNumber" layoutX="19.0" layoutY="57.0" prefHeight="25.0" prefWidth="135.0" promptText="Subscriber Number" />
-                        <Button fx:id="btnSearchSubscriber" layoutX="682.0" layoutY="57.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search">
+                        <TextField fx:id="tfSearchSubscriberNumber" layoutX="516.0" layoutY="15.0" prefHeight="25.0" prefWidth="135.0" promptText="Subscriber Number" />
+                        <GridPane layoutX="19.0" layoutY="89.0" prefHeight="247.0" prefWidth="231.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="97.39998779296874" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="132.60001220703126" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.00000610351563" minHeight="10.0" prefHeight="33.00000610351563" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="45.59998168945313" minHeight="10.0" prefHeight="26.599993896484364" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="45.59998168945313" minHeight="10.0" prefHeight="34.400000000000006" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="First Name:" wrappingWidth="64.359375">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name:" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Name:" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" GridPane.rowIndex="5">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" GridPane.rowIndex="4">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="ssTfFirstName" GridPane.columnIndex="1" />
+                              <TextField fx:id="ssTfLastName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="ssTfPhone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="ssTfUserName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="ssTfPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="ssTfEmail" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Graduation:" GridPane.rowIndex="6">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <DatePicker fx:id="ssPdGraduation" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                           </children>
+                        </GridPane>
+                        <Button fx:id="btnSearchSubscriber" layoutX="674.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></Button>
@@ -351,6 +412,115 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
+                        <Label layoutX="19.0" layoutY="66.0" text="User Details:">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="285.0" layoutY="66.0" text="Reader Card History:">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <TabPane layoutX="285.0" layoutY="88.0" prefHeight="434.0" prefWidth="462.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Books Request">
+                                 <content>
+                                    <ScrollPane prefHeight="418.0" prefWidth="462.0">
+                                       <content>
+                                          <ListView fx:id="ssLVBookRequest" prefHeight="403.0" prefWidth="462.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </content>
+                            </Tab>
+                            <Tab text="Books Approve ">
+                                 <content>
+                                    <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                       <content>
+                                          <ListView fx:id="ssLVBookApprove" prefHeight="403.0" prefWidth="462.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </content>
+                            </Tab>
+                              <Tab text="Books Return">
+                                                               <content>
+                                    <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                       <content>
+                                          <ListView fx:id="ssLVBookReturn" prefHeight="404.0" prefWidth="462.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Edit Profile">
+                                 <content>
+                                    <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                       <content>
+                                          <ListView fx:id="ssLVEditProfile" prefHeight="404.0" prefWidth="462.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Change Status">
+                                                               <content>
+                                    <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                       <content>
+                                          <ListView fx:id="ssLVChangeStatus" prefHeight="402.0" prefWidth="462.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                        <Button fx:id="ssbtnUpdate" layoutX="186.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUpdate" text="Update" />
+                        <Label layoutX="14.0" layoutY="376.0" text="Reader Card Details:">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <GridPane layoutX="15.0" layoutY="398.0" prefHeight="82.0" prefWidth="246.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="97.39998779296874" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="132.60001220703126" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="41.800018310546875" minHeight="2.4000183105468693" prefHeight="24.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="72.79998779296872" minHeight="1.8000061035156136" prefHeight="8.99999389648437" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="84.79998779296872" minHeight="3.7999633789062273" prefHeight="40.20000610351562" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Late Returns:" wrappingWidth="73.88671875">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Status:" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Label text="*Change after update" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
+                              <CheckBox fx:id="ssCxbHoldSubscriber" mnemonicParsing="false" text="Hold Subsriber" textFill="#ffbe0b" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </CheckBox>
+                              <Label fx:id="sslblStatus" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Label>
+                              <Label fx:id="sslblLateReturn" text="Label" GridPane.columnIndex="1" />
+                           </children>
+                        </GridPane>
                      </children>
                   </AnchorPane>
                </content>

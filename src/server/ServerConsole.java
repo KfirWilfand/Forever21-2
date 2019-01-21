@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
@@ -55,7 +56,7 @@ public class ServerConsole extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		LOGGER.info("Message received11: " + msg + " from " + client);
+		LOGGER.info("Message received: " + msg + " from " + client);
 		Message returnMessageToClient;
 		ReaderController readerControllerObj=ReaderController.getInstance();
 		SubscriberController subscriberControllerObj=SubscriberController.getInstance();
@@ -63,8 +64,6 @@ public class ServerConsole extends AbstractServer {
 		ManageStockController manageStockControllerObj=ManageStockController.getInstance();
 		
 		try {
-			//Message message = ((Message) msg);
-
 			switch (((Message) msg).getOperationType()) {
 			case Login:
 				returnMessageToClient=readerControllerObj.login(msg);
@@ -76,7 +75,7 @@ public class ServerConsole extends AbstractServer {
 				this.sendToClient(returnMessageToClient,client);
 				break;
 			case GetSubscriberDetails:
-				returnMessageToClient=subscriberControllerObj.getSubscriber(msg);
+				returnMessageToClient=subscriberControllerObj.getSubscriberMessage(msg);
 				this.sendToClient(returnMessageToClient,client);
 				break;	
 			case SearchSubscriber:
@@ -103,7 +102,9 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=manageStockControllerObj.getCopiesbyCatalogNumber(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
-				
+			case EditDetailsByLibrarian:
+				returnMessageToClient=manageStockControllerObj.editDetailsByLibrarian(msg);
+				this.sendToClient(returnMessageToClient, client);				
 			}
 			
 		} catch(Exception ex) {

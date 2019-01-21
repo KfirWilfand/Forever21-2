@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import client.ViewStarter;
 import client.controllers.adapters.QueryBuilder;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
@@ -39,16 +40,10 @@ public class ReaderController {
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	ResultSet user_res= dbControllerObj.query(loginQuery);
     	if(user_res.next()) {
+    		
     		if (user_res.getString("usrType").equals("Subscriber")) {
-
-    			String subscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "+user_res.getString("usrId");
-    			ResultSet subscriber_res= dbControllerObj.query(subscriberQuery);
-    			if(subscriber_res.next()) {
-    				User user = new Subscriber(subscriber_res.getInt("subNum"), subscriber_res.getString("usrName"), subscriber_res.getString("usrPassword"),
-    					subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), "Subscriber", subscriber_res.getString("subPhoneNum"));
-
-    				return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);
-    			}
+    			User user = SubscriberController.getSubscriberById(user_res.getString("usrId"));
+    			return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);	
     		}
 		
     		if (user_res.getString("usrType").equals("Librarian")) {

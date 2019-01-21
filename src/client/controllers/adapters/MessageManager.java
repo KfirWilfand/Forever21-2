@@ -1,10 +1,8 @@
 package client.controllers.adapters;
 
-
 import java.util.List;
 
 import client.ViewStarter;
-import client.controllers.SearchBookController;
 import client.controllers.Utils;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
@@ -12,113 +10,76 @@ import common.entity.Book;
 import common.entity.Copy;
 import common.entity.Subscriber;
 import common.entity.User;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class MessageManager {
 
-	public static void handle(Message msg) {
+	static AlertController alert = new AlertController();
 
-		switch (msg.getOperationType()) {
-		case Login:
-			User user = (User) msg.getObj();
-		
-			try {
-					ViewStarter.client.mainViewController.onLogin(user);
-	
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case SearchBook:
-			List<Book> books = (List<Book>) msg.getObj();
-				
-			try {
-					ViewStarter.client.searchBookControllerObj.onGetSearchResult(books);
-					//TODO print the books to the screen
-					
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case GetSubscriberDetails:
-			Subscriber subscriber = (Subscriber) msg.getObj();
-			try {
+	public static void handle(Message msg) {
+		try {
+			switch (msg.getOperationType()) {
+			case Login:
+				User user = (User) msg.getObj();
+				ViewStarter.client.mainViewController.onLogin(user);
+				break;
+			case SearchBook:
+				List<Book> books = (List<Book>) msg.getObj();
+				ViewStarter.client.searchBookControllerObj.onGetSearchResult(books);
+				break;
+			case GetSubscriberDetails:
+				Subscriber subscriber = (Subscriber) msg.getObj();
 				ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin(subscriber);
-			}catch (Exception e) {
-			e.printStackTrace();
-			}
-			break;
-		case EditDetailsBySubscriber:
-			try {
-				Utils utils=new Utils(ViewStarter.client.mainViewController);
-				if(msg.getReturnMessageType()== ReturnMessageType.UpdateSuccesfully)
-				{	
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Update details succeed!");
-				}
-				else
-				{
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Update details failed!");
-				}
-				
-			}catch (Exception e) {
-			e.printStackTrace();
-			}
-			break;
-		case AddNewSubscriberByLibrarian:
-			try {
-				Utils utils=new Utils(ViewStarter.client.mainViewController);
-				if(msg.getReturnMessageType()== ReturnMessageType.EmailOrPhoneAreAlreadyExists) 
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Email or Phone number are already exists!");
-				
-				else if(msg.getReturnMessageType()== ReturnMessageType.SubscriberAddedSuccessfuly)	
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Subscriber was added!");
-				else
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Adding was failed!");
-			}catch (Exception e) {
-				e.printStackTrace();
+				break;
+			case EditDetailsBySubscriber:
+				if (msg.getReturnMessageType() == ReturnMessageType.UpdateSuccesfully) {
+					alert.info("Update details succeed!", "");
+
+				} else {
+					alert.error("Update details failed!", "");
 				}
 				break;
-				
-		case SearchBookOnManageStock:
-			if(msg.getReturnMessageType() == ReturnMessageType.BooksFoundOnManageStock)
-			{
-				ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((List<Book>)msg.getObj());
-			}
-			break;
-			
-		case AddNewBook:
-			try 
-			{
-				Utils utils=new Utils(ViewStarter.client.mainViewController);
-				if(msg.getReturnMessageType()== ReturnMessageType.Successful)
-				{	
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "Information Dialog", "Book added Successfully!");
-				}
+			case AddNewSubscriberByLibrarian:
+				if (msg.getReturnMessageType() == ReturnMessageType.EmailOrPhoneAreAlreadyExists)
+					alert.error("Email or Phone number are already exists!", "");
+				else if (msg.getReturnMessageType() == ReturnMessageType.SubscriberAddedSuccessfuly)
+					alert.info("Subscriber was added!", "");
 				else
-				{
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Book added failed!");
+					alert.error("Adding was failed!", "");
+				break;
+
+			case SearchBookOnManageStock:
+				if (msg.getReturnMessageType() == ReturnMessageType.BooksFoundOnManageStock) {
+					ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((List<Book>) msg.getObj());
 				}
-				
-			}catch (Exception e) {
+				break;
+
+			case AddNewBook:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					alert.info("Book added Successfully!", "");
+				} else {
+					alert.error("Book added failed!", "");
+
+				}
+				break;
+			case GetCopiesOfSelectedBook:
+				ViewStarter.client.manageStockClientControllerObj.displayCopies((List<Copy>) msg.getObj());
+				break;
+			case SearchSubscriber:
+				ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
+				break;
+			case EditDetailsByLibrarian:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
+					alert.info("Subscriber details updated successfully!", "");
+				} else {
+					alert.error("Can't update subscriber details", "");
+				}
+				break;
+
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-			}
-			break;
-		case GetCopiesOfSelectedBook:
-			try 
-			{
-				ViewStarter.client.manageStockClientControllerObj.displayCopies((List<Copy>)msg.getObj());
-		
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			break;
-		
-			
-			
-			
 		}
 	}
 

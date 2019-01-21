@@ -1,134 +1,302 @@
 package client.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
+import common.entity.HistoryItem;
+import common.entity.Subscriber;
+import common.entity.enums.SubscriberHistoryType;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.util.converter.LocalDateStringConverter;
 
 public class LibrarianClientController {
 
-    @FXML
-    private TextField tfSubscriberFirstName;
+	@FXML
+	private TextField tfSubscriberFirstName;
 
-    @FXML
-    private TextField tfSubscriberLastName;
+	@FXML
+	private TextField tfSubscriberLastName;
 
-    @FXML
-    private TextField tfSubscriberUsrName;
+	@FXML
+	private TextField tfSubscriberUsrName;
 
-    @FXML
-    private TextField tfSubscruberPhone;
+	@FXML
+	private TextField tfSubscruberPhone;
 
-    @FXML
-    private TextField tfSubscriberEmail;
+	@FXML
+	private TextField tfSubscriberEmail;
 
-    @FXML
-    private TextField tfSubscriberPassword;
+	@FXML
+	private TextField tfSubscriberPassword;
 
-    @FXML
-    private Button btnCreateSubscrciber;
+	@FXML
+	private Button btnCreateSubscrciber;
 
-    @FXML
-    private Button btnBorrowBook;
+	@FXML
+	private Button btnBorrowBook;
 
-    @FXML
-    private TextField tfBorrowBookSubscriberNumber;
+	@FXML
+	private TextField tfBorrowBookSubscriberNumber;
 
-    @FXML
-    private DatePicker tfBorrowBookBorrowDate;
+	@FXML
+	private DatePicker tfBorrowBookBorrowDate;
 
-    @FXML
-    private DatePicker tfBorrowBookEndBorrowDate;
+	@FXML
+	private DatePicker tfBorrowBookEndBorrowDate;
 
-    @FXML
-    private TextField tfBorrowBookCatalogNumber;
+	@FXML
+	private TextField tfBorrowBookCatalogNumber;
 
-    @FXML
-    private Button btnReturnBook;
+	@FXML
+	private Button btnReturnBook;
 
-    @FXML
-    private TextField tfReturnBookSubscriberNumber;
+	@FXML
+	private TextField tfReturnBookSubscriberNumber;
 
-    @FXML
-    private DatePicker tfReturnBookBorrowDate;
+	@FXML
+	private DatePicker tfReturnBookBorrowDate;
 
-    @FXML
-    private DatePicker tfReturnBookEndBorrowDate;
+	@FXML
+	private DatePicker tfReturnBookEndBorrowDate;
 
-    @FXML
-    private DatePicker tfReturnBookReturningDate;
+	@FXML
+	private DatePicker tfReturnBookReturningDate;
 
-    @FXML
-    private TextField tfReturnBookCatalogNumber;
+	@FXML
+	private TextField tfReturnBookCatalogNumber;
 
-    @FXML
-    private TextField tfSearchSubscriberNumber;
+	@FXML
+	private TextField tfSearchSubscriberNumber;
 
-    @FXML
-    private Button btnSearchSubscriber;
+	@FXML
+	private Button btnSearchSubscriber;
 
-    @FXML
-    private AnchorPane ancPaneManageStock;
-    
-    @FXML
+	@FXML
+	private AnchorPane ancPaneManageStock;
+
+	@FXML
+	private TextField ssTfFirstName;
+
+	@FXML
+	private TextField ssTfLastName;
+
+	@FXML
+	private TextField ssTfPhone;
+
+	@FXML
+	private TextField ssTfUserName;
+
+	@FXML
+	private TextField ssTfPassword;
+
+	@FXML
+	private TextField ssTfEmail;
+
+	@FXML
+	private Label sslblStatus;
+
+	@FXML
+	private CheckBox ssCxbHoldSubscriber;
+
+	@FXML
+	private ListView<HistoryItem> ssLVBookRequest;
+
+	@FXML
+	private ListView<HistoryItem> ssLVBookApprove;
+
+	@FXML
+	private ListView<HistoryItem> ssLVBookReturn;
+
+	@FXML
+	private ListView<HistoryItem> ssLVEditProfile;
+
+	@FXML
+	private ListView<HistoryItem> ssLVChangeStatus;
+
+	@FXML
+	private Label sslblLateReturn;
+
+	@FXML
+	private DatePicker ssPdGraduation;
+
+	@FXML
+	private Button ssbtnUpdate;
+
+	@FXML
+	void onBtnUpdate(ActionEvent event) {
+		String updateUserDetailsQuery = " UPDATE `obl`.`users`" + " SET `usrName` = '" + ssTfUserName.getText()
+				+ "', `usrPassword` = '" + ssTfPassword.getText() + "', `usrFirstName` = '" + ssTfFirstName.getText()
+				+ "', `usrLastName` = '" + ssTfLastName.getText() + "', `usrEmail` = '" + ssTfEmail.getText()
+				+ "' WHERE (`usrId` = " + tfSearchSubscriberNumber.getText() + ");";
+
+		String updateSubscriberQuery = " UPDATE `obl`.`subscribers`" + " SET `subPhoneNum` = '" + ssTfPhone.getText();
+
+		if (!ssCxbHoldSubscriber.isDisable()) {
+			if (ssCxbHoldSubscriber.isSelected())
+				updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Hold";
+			else
+				updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Active";
+		}
+
+		updateSubscriberQuery = updateSubscriberQuery + "', `subGraduationDate` = '" + ssPdGraduation.getValue()
+				+ "' WHERE (`subNum` = " + tfSearchSubscriberNumber.getText() + ");";
+
+		try {
+			String[] params = new String[3];
+			
+			params[0] = tfSearchSubscriberNumber.getText();
+			params[1] = updateUserDetailsQuery;
+			params[2] = updateSubscriberQuery;
+
+			ViewStarter.client.sendToServer(new Message(OperationType.EditDetailsByLibrarian, params));
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
 	public void initialize() {
 		ViewStarter.client.librarianClientControllerObj = this;
 		try {
-			
-			Parent newPane=FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
+
+			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
 			if (ancPaneManageStock != null)
 				ancPaneManageStock.getChildren().setAll(newPane);
-		} catch (IOException e  ) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-    
-    @FXML
-    void onBorrowBookBtn(ActionEvent event) {
 
-    }
+	@FXML
+	void onBorrowBookBtn(ActionEvent event) {
 
-    @FXML
-    void onCreateSubscruberBtn(ActionEvent event) {//adding a new subscriber to the DB
-    	Utils utils=new Utils(ViewStarter.client.mainViewController);
-    	if ((tfSubscriberFirstName.getText().isEmpty() == true ||tfSubscriberLastName.getText().isEmpty() == true  || tfSubscriberUsrName.getText().isEmpty() == true  || tfSubscriberPassword.getText().isEmpty() == true  ||tfSubscruberPhone.getText().isEmpty() == true ||tfSubscriberEmail.getText().isEmpty() == true ))
-    	{
+	}
+
+	@FXML
+	void onCreateSubscruberBtn(ActionEvent event) {// adding a new subscriber to the DB
+		Utils utils = new Utils(ViewStarter.client.mainViewController);
+		if ((tfSubscriberFirstName.getText().isEmpty() == true || tfSubscriberLastName.getText().isEmpty() == true
+				|| tfSubscriberUsrName.getText().isEmpty() == true || tfSubscriberPassword.getText().isEmpty() == true
+				|| tfSubscruberPhone.getText().isEmpty() == true || tfSubscriberEmail.getText().isEmpty() == true)) {
 			utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Please fill all required fields!");
-    	}
-    	else {
-    	String createNewSubscriberQueryUserTable="INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"+ tfSubscriberUsrName.getText() + "', '"+tfSubscriberPassword.getText() + "', '"+ tfSubscriberFirstName.getText()+ "','"+ tfSubscriberLastName.getText() + "','"+ tfSubscriberEmail.getText()+ "'); ";
-       	String createNewSubscriberQuerySubscriberTable=	"INSERT INTO obl.subscribers (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '" +tfSubscruberPhone.getText()+"');";
-    	String checkEmailAndPhoneQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"+tfSubscriberEmail.getText()+"' or b.subPhoneNum='"+tfSubscruberPhone.getText()+"' or usrName='"+tfSubscriberUsrName.getText()+"';";
-    	String[] queryArr=new String[3];
-    	queryArr[0]=createNewSubscriberQueryUserTable;
-    	queryArr[1]=createNewSubscriberQuerySubscriberTable;
-    	queryArr[2]=checkEmailAndPhoneQuery;
-   
-    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); //sending to LibrarianController in the server
-    	}
-    }
+		} else {
+			String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"
+					+ tfSubscriberUsrName.getText() + "', '" + tfSubscriberPassword.getText() + "', '"
+					+ tfSubscriberFirstName.getText() + "','" + tfSubscriberLastName.getText() + "','"
+					+ tfSubscriberEmail.getText() + "'); ";
+			String createNewSubscriberQuerySubscriberTable = "INSERT INTO obl.subscribers (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '"
+					+ tfSubscruberPhone.getText() + "');";
+			String checkEmailAndPhoneQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"
+					+ tfSubscriberEmail.getText() + "' or b.subPhoneNum='" + tfSubscruberPhone.getText()
+					+ "' or usrName='" + tfSubscriberUsrName.getText() + "';";
+			String[] queryArr = new String[3];
+			queryArr[0] = createNewSubscriberQueryUserTable;
+			queryArr[1] = createNewSubscriberQuerySubscriberTable;
+			queryArr[2] = checkEmailAndPhoneQuery;
 
-    @FXML
-    void onReturnBookBtn(ActionEvent event) {
+			ViewStarter.client
+					.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); // sending
+																													// to
+																													// LibrarianController
+																													// in
+																													// the
+																													// server
+		}
+	}
 
-    }
+	@FXML
+	void onReturnBookBtn(ActionEvent event) {
 
-    @FXML
-    void onSearchSubscriberBtn(ActionEvent event) {
-    	String searchSubscriberQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subsribers as b on a.usrId=b.subNum WHERE b.subNum = "+tfSearchSubscriberNumber.getText();
-		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberQuery));
-    }
-    
+	}
 
+	@FXML
+	void onSearchSubscriberBtn(ActionEvent event) {
+		String searchSubscriberUsrId = tfSearchSubscriberNumber.getText();
+		ViewStarter.client
+				.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberUsrId));
+	}
+
+	public void updateSearchSubscriberUI(Subscriber subscriber) {
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+
+				switch (subscriber.getReaderCard().getStatus()) {
+				case Hold:
+					sslblStatus.setText("Hold");
+					sslblStatus.setTextFill(Color.web("#FFBE0B"));
+					ssCxbHoldSubscriber.setSelected(true);
+					ssCxbHoldSubscriber.setDisable(false);
+
+					break;
+				case Active:
+					sslblStatus.setText("Active");
+					sslblStatus.setTextFill(Color.web("#7FFF00"));
+					ssCxbHoldSubscriber.setDisable(false);
+					ssCxbHoldSubscriber.setSelected(false);
+					break;
+				case Lock:
+					sslblStatus.setText("Lock");
+					sslblStatus.setTextFill(Color.web("#CE0E0E"));
+					ssCxbHoldSubscriber.setDisable(true);
+					ssCxbHoldSubscriber.setSelected(false);
+					break;
+				}
+
+
+				ssTfFirstName.setText(subscriber.getFirstName());
+				ssTfLastName.setText(subscriber.getLastName());
+				ssTfPhone.setText(subscriber.getPhoneNum());
+				ssTfUserName.setText(subscriber.getUsrName());
+				ssTfEmail.setText(subscriber.getEmail());
+				ssTfPassword.setText(subscriber.getPassword());
+				ssPdGraduation.setValue(subscriber.getGraduationDate().toLocalDate());
+				sslblLateReturn.setText(subscriber.getReaderCard().getLateReturnsBookCounter().toString());
+
+				ObservableList<HistoryItem> items;
+				Map<SubscriberHistoryType, List<HistoryItem>> history = subscriber.getReaderCard().getHistory();
+
+				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BooksRequest));
+				ssLVBookRequest.setItems(items);
+
+				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BooksApprove));
+				ssLVBookApprove.setItems(items);
+
+				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BooksReturn));
+				ssLVBookReturn.setItems(items);
+
+				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.EditProfile));
+				ssLVEditProfile.setItems(items);
+
+				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.ChangeStatus));
+				ssLVChangeStatus.setItems(items);
+			}
+
+		});
+	}
 }

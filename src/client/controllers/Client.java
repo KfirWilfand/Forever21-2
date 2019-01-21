@@ -3,6 +3,7 @@ package client.controllers;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import client.controllers.adapters.AlertController;
 import client.controllers.adapters.MessageManager;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
@@ -19,6 +20,7 @@ public class Client extends AbstractClient {
 	public ManageStockClientController manageStockClientControllerObj;
 	public UpdateOrAddBookController updateOrAddBookControllerObj;
 	public SearchBookOnManageStockController searchBookOnManageStockControllerObj;
+	public AlertController alertClientControllerObj;
 
 	public Client(String host, int port) throws IOException {
 		super(host, port);
