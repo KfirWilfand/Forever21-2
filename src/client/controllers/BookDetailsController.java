@@ -45,17 +45,17 @@ public class BookDetailsController {
 
 	@FXML
 	private Pane paneBookDetails;
-	
-    @FXML
-    private Button btnOrderBook;
-    
-    @FXML
-    private Text txtBookOrderStatusNotice;
+
+	@FXML
+	private Button btnOrderBook;
+
+	@FXML
+	private Text txtBookOrderStatusNotice;
 
 	private Book book;
 
 	private AnchorPane mainView;
-	
+
 
 	@FXML
 	public void initialize() {
@@ -67,11 +67,11 @@ public class BookDetailsController {
 			btnOrderBook.setVisible(false);
 		else if(loginLabel.contains("Subscriber"))
 			btnOrderBook.setVisible(true);
-		
+
 		else
 			btnOrderBook.setVisible(false);	}
-		
-		
+
+
 
 	@FXML
 	void onOrderCopyBtn(ActionEvent event) {
@@ -100,22 +100,24 @@ public class BookDetailsController {
 		User usr=ViewStarter.client.mainViewController.getUser();
 		lblBookNameDetails.setText(this.book.getBookName());
 		lblAuthorDetails.setText(this.book.getAuthor().toString());
-        //btnTableOfContent;
+		//btnTableOfContent;
 		//update image
 		txtBookLocation.setText(this.book.getShelfLocation());
 		txtAvailableCopies.setText(Integer.toString(this.book.getAvilableCopiesNum()));
 		lblDescriptionDetails.setText(this.book.getDescription());
-		String temp= ((Subscriber)usr).getStatus();
-		System.out.println(temp);
-		if(((Subscriber)usr).getStatus()!="Active")
+		String temp= ((Subscriber)usr).getReaderCard().getStatus().toString();
+		if(temp!="Active")
 		{
 			txtBookOrderStatusNotice.setVisible(true);
 			btnOrderBook.setDisable(true);
 		}	
 		else if(this.book.getAvilableCopiesNum() != 0) //if number of copies per book is not 0 then hide the order book button
-			btnOrderBook.setDisable(true);		
+		{btnOrderBook.setDisable(true);
+		txtBookOrderStatusNotice.setVisible(false);}
 		else 
-			btnOrderBook.setDisable(false);
-	}
-
+		{btnOrderBook.setDisable(false);
+		txtBookOrderStatusNotice.setVisible(false);}
+		}
+	
 }
+

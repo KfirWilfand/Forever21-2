@@ -202,7 +202,6 @@ public class LibrarianClientController {
 	public void initialize() {
 		ViewStarter.client.librarianClientControllerObj = this;
 		try {
-
 			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
 			if (ancPaneManageStock != null)
 				ancPaneManageStock.getChildren().setAll(newPane);
