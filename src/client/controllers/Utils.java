@@ -163,6 +163,7 @@ public class Utils {
 			if (isPressed) {
 				if (iv.getImage().getUrl().endsWith("-pressed.png"))
 					newImagePath = iv.getImage().getUrl();
+
 				else
 					newImagePath = iv.getImage().getUrl().replaceFirst(".png", "-pressed.png");
 			} else

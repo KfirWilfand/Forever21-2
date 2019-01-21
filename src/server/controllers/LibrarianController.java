@@ -6,17 +6,23 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
+import common.entity.HistoryItem;
 import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import common.entity.Librarian;
+import common.entity.ReaderCard;
 import common.entity.Subscriber;
 import common.entity.User;
+import common.entity.enums.ReaderCardStatus;
+import common.entity.enums.SubscriberHistoryType;
 import common.entity.enums.UserType;
 
 public class LibrarianController {
@@ -53,15 +59,38 @@ public class LibrarianController {
 		// TODO Auto-generated method stub
 		
 	}
-	
-    public Message searchSubscriber(Object msg) throws SQLException
-    {
-    	String searchSubscriberQuery= (String)((Message)msg).getObj();
-    	DBcontroller dbControllerObj= DBcontroller.getInstance();
-    	ResultSet subscriber_res= dbControllerObj.query(searchSubscriberQuery);
-    	if(subscriber_res.next()) 
-    	{
-    		Subscriber subscriber = new Subscriber(subscriber_res.getInt("subNum"), subscriber_res.getString("usrName"),  subscriber_res.getString("usrPassword"), subscriber_res.getString("usrFirstName"), subscriber_res.getString("usrLastName"), subscriber_res.getString("usrEmail"), UserType.stringToEnum(subscriber_res.getString("usrType")), "Active" , subscriber_res.getString("subPhoneNum"));
+
+	public static LibrarianController getInstance() {
+		if (instance == null) {
+			instance = new LibrarianController();
+		}
+		return instance;
+	}
+
+	public Message createNewSubscriber(Object msg) throws SQLException// NEED TO HANDLE WITH THE 2 DIALOG BOX �� �����
+	{
+		String[] query = (String[]) ((Message) msg).getObj();
+		DBcontroller dbControllerObj = DBcontroller.getInstance();
+		ResultSet res2 = dbControllerObj.query(query[2]);
+		if (res2.next())
+			return new Message(OperationType.AddNewSubscriberByLibrarian, null,
+					ReturnMessageType.EmailOrPhoneAreAlreadyExists);
+		else {
+			Boolean res = dbControllerObj.update(query[0]);
+			Boolean res1 = dbControllerObj.update(query[1]);
+			if (res && res1)
+				return new Message(OperationType.AddNewSubscriberByLibrarian, null,
+						ReturnMessageType.SubscriberAddedSuccessfuly);
+			else
+				return new Message(OperationType.AddNewSubscriberByLibrarian, null,
+						ReturnMessageType.SubscriberFailedToAdd);
+		}
+	}
+
+
+	public Message searchSubscriber(Object msg) throws SQLException {
+		Subscriber subscriber = SubscriberController.getSubscriberById((String)((Message)msg).getObj());
+		if (subscriber != null) {
 			return new Message(OperationType.SearchSubscriber, subscriber, ReturnMessageType.SubsciberExist);
        	}
     	else 

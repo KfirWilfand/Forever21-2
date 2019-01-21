@@ -6,10 +6,16 @@ SearchBook,
 SearchSubscriber,
 GetSubscriberDetails,
 EditDetailsBySubscriber,
+EditDetailsByLibrarian,
 AddNewSubscriberByLibrarian,
 SearchBookOnManageStock,
 AddNewBook,
 GetCopiesOfSelectedBook,
+
+AddNewCopy,
+DeleteCopy, 
+UpdateBookDetails,
+
 OrderBook,
 BorrowBookByLibrarian,
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import client.ViewStarter;
 import client.controllers.Utils;
@@ -166,28 +167,34 @@ public class MainViewController {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				btnLogout.setVisible(true);
-				mainView.getChildren().remove(dialogBoxLogin);
-				btnLogin.setText(user.getFirstName() + " " + user.getLastName());
+				try {
+	
+					btnLogout.setVisible(true);
+					mainView.getChildren().remove(dialogBoxLogin);
+					btnLogin.setText(user.getFirstName() + " " + user.getLastName());
 
-				utils.setBtnPressed(false, false, true);
+					utils.setBtnPressed(false, false, true);
 
-				if (user instanceof Subscriber) {
-					utils.layoutSwitcher(mainPane, "subscriber.fxml", "Subscriber Profile");
+					if (user instanceof Subscriber) {
+						utils.layoutSwitcher(mainPane, "subscriber.fxml", "Subscriber Profile");
 
-					lblLoginAs.setText("Log as Subscriber");
-					ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin((Subscriber) user);
+						lblLoginAs.setText("Log as Subscriber");
+						ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin((Subscriber) user);
+					}
+
+					if (user instanceof Librarian) {
+						utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
+						lblLoginAs.setText("Log as Librarian");
+					}
+
+					if (user instanceof LibraryManager) {
+						utils.layoutSwitcher(mainPane, "librarian.fxml", "Library Manager Profile");
+						lblLoginAs.setText("Log as LibraryManager");
+					}
+				} catch (Exception e) {
+					System.out.println(e);
 				}
 
-				if (user instanceof Librarian) {
-					utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
-					lblLoginAs.setText("Log as Librarian");
-				}
-
-				if (user instanceof LibraryManager) {
-					utils.layoutSwitcher(mainPane, "librarian.fxml", "Library Manager Profile");
-					lblLoginAs.setText("Log as LibraryManager");
-				}
 			}
 		});
 	}

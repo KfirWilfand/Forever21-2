@@ -9,14 +9,15 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ManageStockClientController">
    <children>
-      <Pane fx:id="InnerPaneInManageStock" layoutX="23.0" layoutY="21.0" prefHeight="543.0" prefWidth="578.0" />
-      <TextField layoutX="595.0" layoutY="519.0" prefHeight="33.0" prefWidth="113.0" promptText="enter new copy ID" />
-      <Button layoutX="711.0" layoutY="519.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="37.0" text="+" />
+      <Pane fx:id="InnerPaneInManageStock" layoutX="23.0" layoutY="21.0" prefHeight="543.0" prefWidth="558.0" />
+      <TextField fx:id="tfEnterNewCopyID" disable="true" layoutX="597.0" layoutY="485.0" prefHeight="34.0" prefWidth="94.0" promptText="enter new copy ID" />
+      <Button fx:id="btnAddNewCopy" disable="true" layoutX="694.0" layoutY="484.0" mnemonicParsing="false" onAction="#onClickAddCopy" prefHeight="34.0" prefWidth="58.0" text="Add" />
       <Button fx:id="btnAddNewBook" layoutX="691.0" layoutY="33.0" mnemonicParsing="false" onAction="#onClickAddNewBook" prefHeight="44.0" prefWidth="58.0" text="+book" />
-      <TableView fx:id="tvCopies" layoutX="596.0" layoutY="93.0" prefHeight="420.0" prefWidth="155.0">
+      <TableView fx:id="tvCopies" layoutX="596.0" layoutY="93.0" prefHeight="384.0" prefWidth="155.0">
         <columns>
           <TableColumn fx:id="tvColumsCopyID" prefWidth="165.0" text="Copy ID" />
         </columns>
       </TableView>
+      <Button fx:id="btnDeleteCopy" disable="true" layoutX="694.0" layoutY="529.0" mnemonicParsing="false" onAction="#onClickDeleteCopy" prefHeight="34.0" prefWidth="58.0" text="Delete" />
    </children>
 </AnchorPane>

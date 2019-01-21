@@ -70,9 +70,7 @@ public class UpdateOrAddBookController {
 	@FXML
     private Button btnBack;
 
-    @FXML
-    private Button btnAddCopy;
-    
+
   
 
 	@FXML
@@ -106,18 +104,10 @@ public class UpdateOrAddBookController {
     	System.out.println(addBookQuery);
     	
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, addBookQuery));
-//    	for(int i=1; i<=Integer.parseInt(tfCopiesNumber.getText()); i++)
-//    	{
-//    		String query = "insert into obl.copies (copyID,bCatalogNum,isAvilable) values ("
-//    	}
 
     }
 
 
-	@FXML
-    void onClickAddCopy(ActionEvent event) {
-
-    }
 
     @FXML
     void onClickBack(ActionEvent event)
@@ -140,6 +130,12 @@ public class UpdateOrAddBookController {
     @FXML
     void onClickUpdate(ActionEvent event) 
     {
+    	String query = "UPDATE obl.books SET bName='"+tfBookName.getText()+"',bAuthor='"+tfAuthorName.getText()+"',bGenre='"+tfGenre.getText()+"',bIsPopular="+cbIsPopular.isSelected()+",bEdition='"+tfEditionNumber.getText()+"',bPrintDate='"+dpPrintingDate.getValue()+"',bDescription='"+txteDescription.getText()+"',bPurchaseDate='"+dpPurchaseDate.getValue()+"',bShelfLocation='"+tfLocationOnShelf.getText()+"' WHERE bCatalogNum="+tfCatalogNumber.getText()+";";
+    	
+    	
+    	System.out.println(query);
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,query ));
+    	
 
     }
     
@@ -171,9 +167,7 @@ public class UpdateOrAddBookController {
     public Button getBtnUpdate() {
 		return btnUpdate;
 	}
-    public Button getBtnAddCopy() {
-  		return btnAddCopy;
-  	}
+
 
 
 
