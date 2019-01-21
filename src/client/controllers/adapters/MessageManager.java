@@ -7,6 +7,8 @@ import client.controllers.Utils;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
+import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import common.entity.Copy;
 import common.entity.Subscriber;
 import common.entity.User;
@@ -53,13 +55,11 @@ public class MessageManager {
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((List<Book>) msg.getObj());
 				}
 				break;
-
 			case AddNewBook:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					alert.info("Book added Successfully!", "");
 				} else {
 					alert.error("Book added failed!", "");
-
 				}
 				break;
 			case GetCopiesOfSelectedBook:
@@ -76,10 +76,56 @@ public class MessageManager {
 					alert.error("Can't update subscriber details", "");
 				}
 				break;
+			case AddNewCopy:
 
+				Utils utils = new Utils(ViewStarter.client.mainViewController);
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					alert.info("Copy added Successfully!","");
+					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy) msg.getObj());
+				} else {
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
+				}
+
+			case OrderBook:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
+					alert.info("Book was ordered, SMS will be sent when book will arrive!","");
+				else
+					alert.error("Book cannot be ordered!","");
+
+			case BorrowBookByLibrarian:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					alert.info("Borrow executed successfully","");
+					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[]) msg.getObj());
+
+				} else if (msg.getReturnMessageType() == ReturnMessageType.ErrorWhileTyping)
+					alert.error("Error in typing! copy does not exist","");
+				else
+					alert.error("Error in operation!","");
+
+			case DeleteCopy:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					alert.info("Copy was deleted Successfully!","");
+				} else {
+					alert.error("Copy was deleted failed!","");
+				}
+
+				break;
+
+			case UpdateBookDetails:
+
+				Utils utils12 = new Utils(ViewStarter.client.mainViewController);
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					alert.info("Book update Successfully!","");
+				} else {
+					alert.error("Book update failed!","");
+				}
+
+				break;
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
+
 		}
 	}
 

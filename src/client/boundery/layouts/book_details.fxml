@@ -38,7 +38,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="6.0" layoutY="326.0" mnemonicParsing="false" onAction="#onOrderCopyBtn" styleClass="btnWithImageWithBorder" stylesheets="@../styles/mainView.css" text="Order copy">
+      <Button fx:id="btnOrderBook" layoutX="6.0" layoutY="326.0" mnemonicParsing="false" onAction="#onOrderCopyBtn" styleClass="btnWithImageWithBorder" stylesheets="@../styles/mainView.css" text="Order copy">
          <graphic>
             <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>

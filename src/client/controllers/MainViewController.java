@@ -61,6 +61,7 @@ public class MainViewController {
 	@FXML
 	private Label lblLoginAs;
 
+
 	@FXML
 	private AnchorPane dialogBoxLogin;
 
@@ -79,6 +80,10 @@ public class MainViewController {
 	private Utils utils;
 
 	private User user;
+
+	public User getUser() {
+		return user;
+	}
 
 	@FXML
 	private Button btnHomePage;
@@ -201,4 +206,9 @@ public class MainViewController {
 	public AnchorPane getMainView() {
 		return mainView;
 	}
+	
+	public Label getLblLoginAs() {
+		return lblLoginAs;
+	}
+
 }

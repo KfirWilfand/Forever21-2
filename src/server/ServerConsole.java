@@ -3,6 +3,8 @@ package server;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +13,7 @@ import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
+import common.entity.BookInOrder;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
@@ -27,11 +30,21 @@ import server.controllers.SubscriberController;
 
 public class ServerConsole extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
+	//public static List<BookInOrder> BooksOrders = Collections.synchronizedList(new LinkedList<BookInOrder>());
+	
+	
 
 	public ServerConsole(int port) {
 		super(port);
 	}
-
+	
+//	Thread thread =  new Thread(new Runnable() {
+//        @Override public void run() {
+//
+//        }
+//
+//    }).start();
+	
 	private static final Logger LOGGER = Logger.getLogger(ServerConsole.class.getName());
 
 	public static void main(String[] args) {
@@ -102,9 +115,28 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=manageStockControllerObj.getCopiesbyCatalogNumber(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case AddNewCopy:
+				returnMessageToClient=manageStockControllerObj.addNewCopy(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case DeleteCopy:
+				returnMessageToClient=manageStockControllerObj.deleteCopy(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 			case EditDetailsByLibrarian:
 				returnMessageToClient=manageStockControllerObj.editDetailsByLibrarian(msg);
 				this.sendToClient(returnMessageToClient, client);				
+			case UpdateBookDetails:
+				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
+				break;
+			case OrderBook:
+				returnMessageToClient=subscriberControllerObj.orderBook(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case BorrowBookByLibrarian:
+				returnMessageToClient=librarianControllerObj.borrowBook(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;	
 			}
 			
 		} catch(Exception ex) {

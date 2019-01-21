@@ -6,6 +6,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import client.ViewStarter;
 import common.controllers.Message;
@@ -16,6 +21,8 @@ import common.entity.enums.SubscriberHistoryType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +37,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.converter.LocalDateStringConverter;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 public class LibrarianClientController {
 
@@ -68,6 +79,11 @@ public class LibrarianClientController {
 
 	@FXML
 	private TextField tfBorrowBookCatalogNumber;
+    @FXML
+    private TextField tfBorrowCopyID;
+
+    @FXML
+    private Text txtBorrowBookNotice;
 
 	@FXML
 	private Button btnReturnBook;
@@ -92,9 +108,6 @@ public class LibrarianClientController {
 
 	@FXML
 	private Button btnSearchSubscriber;
-
-	@FXML
-	private AnchorPane ancPaneManageStock;
 
 	@FXML
 	private TextField ssTfFirstName;
@@ -145,6 +158,12 @@ public class LibrarianClientController {
 	private Button ssbtnUpdate;
 
 	@FXML
+    private AnchorPane ancPaneManageStock;
+    
+    @FXML
+    private Tab btnManageStockTab; 
+
+	@FXML
 	void onBtnUpdate(ActionEvent event) {
 		String updateUserDetailsQuery = " UPDATE `obl`.`users`" + " SET `usrName` = '" + ssTfUserName.getText()
 				+ "', `usrPassword` = '" + ssTfPassword.getText() + "', `usrFirstName` = '" + ssTfFirstName.getText()
@@ -177,7 +196,9 @@ public class LibrarianClientController {
 		}
 	}
 
-	@FXML
+
+    
+    @FXML
 	public void initialize() {
 		ViewStarter.client.librarianClientControllerObj = this;
 		try {
@@ -190,11 +211,15 @@ public class LibrarianClientController {
 			e.printStackTrace();
 		}
 	}
+    
+    @FXML
+    void onBorrowBookBtn(ActionEvent event) {
+    	LocalDate borrowDate= LocalDate.now();
+    	Date date=Date.valueOf(borrowDate);
+    	BorrowCopy borrowCopy=new BorrowCopy(tfBorrowCopyID.getText(),Integer.parseInt(tfBorrowBookSubscriberNumber.getText()),date,null);
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.BorrowBookByLibrarian, borrowCopy)); 
+    }
 
-	@FXML
-	void onBorrowBookBtn(ActionEvent event) {
-
-	}
 
 	@FXML
 	void onCreateSubscruberBtn(ActionEvent event) {// adding a new subscriber to the DB
@@ -203,35 +228,24 @@ public class LibrarianClientController {
 				|| tfSubscriberUsrName.getText().isEmpty() == true || tfSubscriberPassword.getText().isEmpty() == true
 				|| tfSubscruberPhone.getText().isEmpty() == true || tfSubscriberEmail.getText().isEmpty() == true)) {
 			utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Please fill all required fields!");
-		} else {
-			String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"
-					+ tfSubscriberUsrName.getText() + "', '" + tfSubscriberPassword.getText() + "', '"
-					+ tfSubscriberFirstName.getText() + "','" + tfSubscriberLastName.getText() + "','"
-					+ tfSubscriberEmail.getText() + "'); ";
-			String createNewSubscriberQuerySubscriberTable = "INSERT INTO obl.subscribers (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '"
-					+ tfSubscruberPhone.getText() + "');";
-			String checkEmailAndPhoneQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"
-					+ tfSubscriberEmail.getText() + "' or b.subPhoneNum='" + tfSubscruberPhone.getText()
-					+ "' or usrName='" + tfSubscriberUsrName.getText() + "';";
-			String[] queryArr = new String[3];
-			queryArr[0] = createNewSubscriberQueryUserTable;
-			queryArr[1] = createNewSubscriberQuerySubscriberTable;
-			queryArr[2] = checkEmailAndPhoneQuery;
+    	}
+    	else {
+    	String createNewSubscriberQueryUserTable="INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"+ tfSubscriberUsrName.getText() + "', '"+tfSubscriberPassword.getText() + "', '"+ tfSubscriberFirstName.getText()+ "','"+ tfSubscriberLastName.getText() + "','"+ tfSubscriberEmail.getText()+ "'); ";
+       	String createNewSubscriberQuerySubscriberTable=	"INSERT INTO obl.subscribers (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '" +tfSubscruberPhone.getText()+"');";
+    	String checkEmailAndPhoneQuery="SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"+tfSubscriberEmail.getText()+"' or b.subPhoneNum='"+tfSubscruberPhone.getText()+"' or usrName='"+tfSubscriberUsrName.getText()+"';";
+    	String[] queryArr=new String[3];
+    	queryArr[0]=createNewSubscriberQueryUserTable;
+    	queryArr[1]=createNewSubscriberQuerySubscriberTable;
+    	queryArr[2]=checkEmailAndPhoneQuery;
+   
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); //sending to LibrarianController in the server
+    	}
+    }
 
-			ViewStarter.client
-					.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); // sending
-																													// to
-																													// LibrarianController
-																													// in
-																													// the
-																													// server
-		}
-	}
+    @FXML
+    void onReturnBookBtn(ActionEvent event) {
 
-	@FXML
-	void onReturnBookBtn(ActionEvent event) {
-
-	}
+    }
 
 	@FXML
 	void onSearchSubscriberBtn(ActionEvent event) {
@@ -239,6 +253,18 @@ public class LibrarianClientController {
 		ViewStarter.client
 				.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberUsrId));
 	}
+
+	public void updateDetailsOnBorrow(Object[] objects) {
+		BorrowCopy bCopy=(BorrowCopy)objects[0];
+		Boolean isPopular= (Boolean)objects[1];
+		tfBorrowBookBorrowDate.setValue(bCopy.getBorrowDate().toLocalDate());
+		tfReturnBookEndBorrowDate.setValue(bCopy.getReturnDueDate().toLocalDate());
+		if(isPopular) {
+			txtBorrowBookNotice.setVisible(true);
+		}
+	}
+    
+   
 
 	public void updateSearchSubscriberUI(Subscriber subscriber) {
 

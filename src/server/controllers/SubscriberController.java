@@ -85,4 +85,14 @@ public class SubscriberController {
 			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.NotUpdateSuccesfully);
 	}
 
+	public Message orderBook(Object msg) {
+		String query=(String)((Message)msg).getObj();
+		DBcontroller dbControllerObj=DBcontroller.getInstance();
+    	Boolean res=dbControllerObj.update(query);
+    	if(res)
+    		return new Message(OperationType.OrderBook, null , ReturnMessageType.Successful);
+    	else
+    		return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
+	}
+
 }

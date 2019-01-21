@@ -115,7 +115,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="527.0">
                      <children>
                         <ListView id="lvBookList" layoutY="6.0" prefHeight="565.0" prefWidth="759.0" />
-                        <Button fx:id="btnBorrowBook" layoutX="636.0" layoutY="516.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" text="Borrow Book">
+                        <Button fx:id="btnBorrowBook" layoutX="280.0" layoutY="176.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" text="Borrow Book">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -125,31 +125,36 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="284.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number :">
+                        <Text layoutX="22.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="tfBorrowBookSubscriberNumber" layoutX="410.0" layoutY="129.0" prefHeight="25.0" prefWidth="101.0" />
-                        <Text layoutX="284.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Date :">
+                        <TextField fx:id="tfBorrowBookSubscriberNumber" layoutX="146.0" layoutY="129.0" prefHeight="25.0" prefWidth="134.0" />
+                        <Text layoutX="403.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Date :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text layoutX="284.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Borrow date :">
+                        <Text layoutX="403.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Borrow date :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <DatePicker fx:id="tfBorrowBookBorrowDate" layoutX="410.0" layoutY="168.0" prefHeight="25.0" prefWidth="101.0" />
-                        <DatePicker fx:id="tfBorrowBookEndBorrowDate" layoutX="410.0" layoutY="214.0" prefHeight="25.0" prefWidth="102.0" />
-                        <TextField fx:id="tfBorrowBookCatalogNumber" layoutX="86.0" layoutY="87.0" prefHeight="26.0" prefWidth="129.0" />
+                        <DatePicker fx:id="tfBorrowBookBorrowDate" layoutX="516.0" layoutY="168.0" prefHeight="25.0" prefWidth="112.0" />
+                        <DatePicker fx:id="tfBorrowBookEndBorrowDate" layoutX="515.0" layoutY="214.0" prefHeight="25.0" prefWidth="115.0" />
+                        <TextField fx:id="tfBorrowCopyID" layoutX="149.0" layoutY="86.0" prefHeight="26.0" prefWidth="129.0" />
                         <Text layoutX="22.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copy ID:">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Line endX="-100.0" endY="359.0" layoutX="363.0" layoutY="59.0" startX="-100.0" />
+                        <Line endX="-100.0" endY="359.0" layoutX="489.0" layoutY="54.0" startX="-100.0" />
+                        <Text fx:id="txtBorrowBookNotice" fill="RED" layoutX="407.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTICE: subscriber will not be able to make an extension because it's a popular book" visible="false" wrappingWidth="216.13671875">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
             </content>
@@ -525,7 +530,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Manage Stock">
+            <Tab fx:id="btnManageStockTab" text="Manage Stock">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
