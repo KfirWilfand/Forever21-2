@@ -29,7 +29,35 @@ public class LibrarianController {
 
 	private static LibrarianController instance;
 
-	private LibrarianController() {
+	 private LibrarianController(){}
+	 
+	 public static LibrarianController getInstance(){
+	        if(instance == null){
+	            instance = new LibrarianController();
+	        }
+	        return instance;
+	    }
+	 
+	    public Message createNewSubscriber (Object msg) throws SQLException
+	    {
+		String [] query=(String[])((Message)msg).getObj();
+    	DBcontroller dbControllerObj=DBcontroller.getInstance();
+    	ResultSet res2=dbControllerObj.query(query[2]);
+    	if(res2.next())
+			return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.EmailOrPhoneAreAlreadyExists);
+    	else {
+    		Boolean res=dbControllerObj.update(query[0]); 
+        	Boolean res1=dbControllerObj.update(query[1]);
+        		if(res && res1 )
+    		return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.SubscriberAddedSuccessfuly);
+        		else
+    		return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.SubscriberFailedToAdd);
+    	}
+    }
+	 
+	public static void init(String data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public static LibrarianController getInstance() {
@@ -82,15 +110,18 @@ public class LibrarianController {
     		boolean isPopular=isPopular_res.getBoolean("bIsPopular");
     		if(isPopular)
     		{
-    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(3);
+    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(3L);
     	    	returnDueDate=Date.valueOf(returnDate);
     	    	((BorrowCopy)queryMsg.getObj()).setReturnDueDate(returnDueDate);
+//    	    	System.out.println(returnDate);
     		}
     		else
     		{
-    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(14);
+    			LocalDate returnDate=((BorrowCopy)queryMsg.getObj()).getBorrowDate().toLocalDate().plusDays(14L);
     	    	returnDueDate=Date.valueOf(returnDate);
     	    	((BorrowCopy)queryMsg.getObj()).setReturnDueDate(returnDueDate);
+//    	    	System.out.println(returnDate);
+
     		}
     		String insertBorrowBookQuery="insert into obl.borrows (copyID, subNum, borrowDate,returnDueDate) values ('"+((BorrowCopy)queryMsg.getObj()).getCopyID()+"','"+((BorrowCopy)queryMsg.getObj()).getSubNum()+"','"+((BorrowCopy)queryMsg.getObj()).getBorrowDate()+"','"+returnDueDate+"')";
     		Boolean insertBorrowBook= dbControllerObj.update(insertBorrowBookQuery);

@@ -82,5 +82,10 @@
          </graphic>
       </Button>
       <Text id="" fx:id="lblDescriptionDetails" layoutX="167.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="382.99998588114977" />
+      <Text fx:id="txtBookOrderStatusNotice" fill="RED" layoutX="129.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTICE: you cannot place order due to your status condition!">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Text>
    </children>
 </Pane>
