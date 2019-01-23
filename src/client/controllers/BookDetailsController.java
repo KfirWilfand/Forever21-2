@@ -78,7 +78,7 @@ public class BookDetailsController {
 		User usr=ViewStarter.client.mainViewController.getUser();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime orderDate = LocalDateTime.now();
-		String orderQuery="INSERT INTO OBL.books_orders (subNum, bCatalogNum, dateOfOrder) VALUES('"+((Subscriber)usr).getSubscriberNum()+"','"+book.getCatalogNum()+"','"+orderDate.format(dtf)+"')";
+		String orderQuery="INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"+((Subscriber)usr).getSubscriberNum()+"','"+book.getCatalogNum()+"','"+orderDate.format(dtf)+"')";
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.OrderBook, orderQuery));
 	}
 
