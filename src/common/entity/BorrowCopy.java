@@ -16,6 +16,12 @@ public class BorrowCopy implements Serializable {
 		this.borrowDate = borrowDate;
 		this.returnDueDate = returnDueDate;
 	}
+	
+	public BorrowCopy(String copyID, Date returnDueDate)//constructor for return date functionality 
+	{
+		this.copyID = copyID;
+		this.returnDueDate = returnDueDate;
+	}
 
 	public String getCopyID() {
 		return copyID;
