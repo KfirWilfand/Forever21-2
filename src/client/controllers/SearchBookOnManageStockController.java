@@ -111,6 +111,7 @@ public class SearchBookOnManageStockController {
     			Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
     			b1.setDisable(false);
        		
+    	
     		});
    		
 //			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
