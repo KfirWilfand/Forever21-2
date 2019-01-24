@@ -59,6 +59,7 @@ public class LibrarianController {
 		}
 	}
 	
+	
 	public Message searchSubscriber(Object msg) throws SQLException
 	{
 		Subscriber subscriber = SubscriberController.getSubscriberById((String)((Message)msg).getObj());
