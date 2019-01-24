@@ -178,34 +178,65 @@ public class LibrarianClientController {
 
 	@FXML
 	void onBtnUpdate(ActionEvent event) {
-		String updateUserDetailsQuery = " UPDATE `obl`.`users`" + " SET `usrName` = '" + ssTfUserName.getText()
-		+ "', `usrPassword` = '" + ssTfPassword.getText() + "', `usrFirstName` = '" + ssTfFirstName.getText()
-		+ "', `usrLastName` = '" + ssTfLastName.getText() + "', `usrEmail` = '" + ssTfEmail.getText()
-		+ "' WHERE (`usrId` = " + tfSearchSubscriberNumber.getText() + ");";
+		
+		ssTfUserName.setStyle(null);
+		ssTfPassword.setStyle(null);
+		ssTfFirstName.setStyle(null);
+		ssTfLastName.setStyle(null);
+		ssTfEmail.setStyle(null);
+		ssTfPhone.setStyle(null);
+		ssPdGraduation.setStyle(null);
+		
+		Utils utils = new Utils(ViewStarter.client.mainViewController);
+		
+		boolean isEmailCorrect=utils.isValidEmail(ssTfEmail.getText());
+		boolean isPhoneCorrect=utils.validatePhoneNumber(ssTfPhone.getText());
+		if(ssTfUserName.getText().isEmpty())
+			ssTfUserName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(ssTfPassword.getText().isEmpty())
+			ssTfPassword.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(ssTfFirstName.getText().isEmpty())
+			ssTfFirstName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(ssTfLastName.getText().isEmpty())
+			ssTfLastName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(!isEmailCorrect)
+			ssTfEmail.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(!isPhoneCorrect)
+			ssTfPhone.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(ssPdGraduation.getValue()== null)
+			ssPdGraduation.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		
+		
+		if(!ssTfUserName.getText().isEmpty() && !ssTfPassword.getText().isEmpty() && !ssTfFirstName.getText().isEmpty() && !ssTfLastName.getText().isEmpty() && isEmailCorrect && isPhoneCorrect && ssPdGraduation.getValue() != null )	
+		{	String updateUserDetailsQuery = " UPDATE `obl`.`users`" + " SET `usrName` = '" + ssTfUserName.getText()
+			+ "', `usrPassword` = '" + ssTfPassword.getText() + "', `usrFirstName` = '" + ssTfFirstName.getText()
+			+ "', `usrLastName` = '" + ssTfLastName.getText() + "', `usrEmail` = '" + ssTfEmail.getText()
+			+ "' WHERE (`usrId` = " + tfSearchSubscriberNumber.getText() + ");";
 
-		String updateSubscriberQuery = " UPDATE `obl`.`subscribers`" + " SET `subPhoneNum` = '" + ssTfPhone.getText();
+			String updateSubscriberQuery = " UPDATE `obl`.`subscribers`" + " SET `subPhoneNum` = '" + ssTfPhone.getText();
 
-		if (!ssCxbHoldSubscriber.isDisable()) {
-			if (ssCxbHoldSubscriber.isSelected())
-				updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Hold";
-			else
-				updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Active";
-		}
+			if (!ssCxbHoldSubscriber.isDisable()) {
+				if (ssCxbHoldSubscriber.isSelected())
+					updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Hold";
+				else
+					updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Active";
+			}
 
-		updateSubscriberQuery = updateSubscriberQuery + "', `subGraduationDate` = '" + ssPdGraduation.getValue()
-		+ "' WHERE (`subNum` = " + tfSearchSubscriberNumber.getText() + ");";
+			updateSubscriberQuery = updateSubscriberQuery + "', `subGraduationDate` = '" + ssPdGraduation.getValue()
+			+ "' WHERE (`subNum` = " + tfSearchSubscriberNumber.getText() + ");";
 
-		try {
-			String[] params = new String[3];
+			try {
+				String[] params = new String[3];
 
-			params[0] = tfSearchSubscriberNumber.getText();
-			params[1] = updateUserDetailsQuery;
-			params[2] = updateSubscriberQuery;
+				params[0] = tfSearchSubscriberNumber.getText();
+				params[1] = updateUserDetailsQuery;
+				params[2] = updateSubscriberQuery;
 
-			ViewStarter.client.sendToServer(new Message(OperationType.EditDetailsByLibrarian, params));
-		} catch (IOException e) {
+				ViewStarter.client.sendToServer(new Message(OperationType.EditDetailsByLibrarian, params));
+			} catch (IOException e) {
 
-			e.printStackTrace();
+				e.printStackTrace();
+				}
 		}
 	}
 
@@ -300,9 +331,7 @@ public class LibrarianClientController {
 		}
 	}
 
-
-
-
+	
 	@FXML
 	void onReturnBookBtn(ActionEvent event)
 	{

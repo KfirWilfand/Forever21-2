@@ -91,7 +91,6 @@ public class MessageManager {
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Adding was failed!");
 					//alert.error("Adding was failed!", "");
-					
 					break;
 				case EmailOrPhoneAreAlreadyExists:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Email or Phone number are already exists!");
@@ -99,6 +98,7 @@ public class MessageManager {
 					break;
 				}
 				break;
+					
 			case SearchBookOnManageStock:
 				if (msg.getReturnMessageType() == ReturnMessageType.BooksFoundOnManageStock) {
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((List<Book>) msg.getObj());
@@ -112,7 +112,7 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Book added failed!");
 					//alert.error("Book added failed!", "");
 				}
-				break;
+				break;	
 			case GetCopiesOfSelectedBook:
 				ViewStarter.client.manageStockClientControllerObj.displayCopies((List<Copy>) msg.getObj());
 				break;
@@ -120,13 +120,16 @@ public class MessageManager {
 				ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
 				break;
 			case EditDetailsByLibrarian:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+				switch (msg.getReturnMessageType()) {
+				case Successful:
 					ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Subscriber details updated successfully!");
 					//alert.info("Subscriber details updated successfully!", "");
-				} else {
+					break;
+				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Can't update subscriber details");
 					//alert.error("Can't update subscriber details", "");
+					break;
 				}
 				break;
 			case AddNewCopy:
@@ -138,12 +141,14 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
 				}
 				break;
+				
 			case OrderBook:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
 					alert.info("Book was ordered, SMS will be sent when book will arrive!","");
 				else
 					alert.error("Book cannot be ordered!","");
 				break;
+				
 			case BorrowBookByLibrarian:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					//alert.info("Book was ordered, SMS will be sent when book will arrive!","");
@@ -156,6 +161,7 @@ public class MessageManager {
 					//alert.error("Error in operation!","");
 				}
 				break;
+				
 			case UpdateBookDetails:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Borrow executed successfully");
@@ -171,6 +177,7 @@ public class MessageManager {
 					//alert.error("Error in operation!","");
 				}
 				break;
+				
 			case DeleteCopy:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					//alert.info("Copy was deleted Successfully!","");
