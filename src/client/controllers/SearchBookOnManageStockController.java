@@ -133,6 +133,7 @@ public class SearchBookOnManageStockController {
 					ViewStarter.client.updateOrAddBookControllerObj.showSelectedBookDetails(book);
 					
 					
+					
     			}		
     			
         	}
