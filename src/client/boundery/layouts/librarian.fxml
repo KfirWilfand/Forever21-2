@@ -32,9 +32,9 @@
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="173.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="164.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="10.0" prefWidth="101.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="0.0" prefWidth="0.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="102.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="10.0" prefWidth="24.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="0.0" prefWidth="139.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="8.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.00000000000003" minWidth="0.0" prefWidth="0.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.33333333333331" minWidth="10.0" prefWidth="75.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.66668701171875" minWidth="0.0" prefWidth="0.0" />
@@ -76,13 +76,13 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="tfSubscruberPhone" prefHeight="25.0" prefWidth="99.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="tfSubscruberPhone" prefHeight="25.0" prefWidth="99.0" promptText="ex. 0521111111" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" GridPane.rowIndex="5">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="tfSubscriberEmail" prefHeight="25.0" prefWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField fx:id="tfSubscriberEmail" prefHeight="25.0" prefWidth="170.0" promptText="ex. obl@gmail.com" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                               <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                               <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="1" />
@@ -93,6 +93,23 @@
                               </Text>
                               <TextField fx:id="tfSubscriberPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Text fill="#f50606" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                              <Text fx:id="txtAddNewSubscriberEmailError" fill="#f50808" strokeType="OUTSIDE" strokeWidth="0.0" text="ex. obl@gmail.com" visible="false" wrappingWidth="133.95703125" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="txtAddNewSubscriberPhoneError" fill="#e40404" strokeType="OUTSIDE" strokeWidth="0.0" text="should contain 10 digits" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Text>
+                              <DatePicker fx:id="dpGraduationDateNewSub" promptText="Graduation Date" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Graduation Date:" GridPane.rowIndex="6">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="#f80505" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
                         <Text fill="#f50606" layoutX="25.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*  - Required" />

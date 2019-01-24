@@ -24,15 +24,29 @@ public class QueryBuilder {
     	String query="SELECT * FROM obl.books WHERE 1=1";
     	if (!bookName.isEmpty())
     		query=query+" AND books.bName REGEXP '^"+bookName+"'";
-    	if (!bookGenre.isEmpty())
-    		query=query+" AND books.bGenre REGEXP '^"+bookGenre+"'";
-    	if (!authorName.isEmpty())
-    		query=query+" AND books.bAuthor REGEXP '^"+authorName+"'";
+    	
+    	if (!bookGenre.isEmpty()) {
+    		bookGenre=bookGenre.replaceAll(" ", "");
+    		String[] geners=bookGenre.split(",");
+    		for(String genre : geners)
+    		{
+    			query=query+" AND books.bGenre REGEXP '"+genre+"'";
+    		}
+    	}
+    	
+    	if (!authorName.isEmpty()) {
+    		authorName=authorName.replaceAll(" ", "");
+           	String[] authors=authorName.split(",");
+    		for(String author : authors)
+    		{
+    			query=query+" AND books.bGenre REGEXP '"+author+"'";
+    		}
+    	}
     	if(!freeText.isEmpty()) {
     		String[] words = freeText.split("\\W+");
     		for(String word: words)
     		{
-    			query=query+"AND books.bDescription REGEXP '"+word+"'";
+    			query=query+" AND books.bDescription REGEXP '"+word+"'";
     		}
     	}
     	return query;

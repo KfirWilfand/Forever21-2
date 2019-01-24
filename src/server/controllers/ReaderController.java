@@ -18,6 +18,7 @@ import common.entity.LibraryManager;
 import common.entity.Subscriber;
 import common.entity.User;
 import common.entity.enums.UserType;
+import server.ServerConsole;
 
 public class ReaderController {
 
@@ -39,25 +40,39 @@ public class ReaderController {
     	String loginQuery=(String)((Message)msg).getObj();
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	ResultSet user_res= dbControllerObj.query(loginQuery);
+   
     	if(user_res.next()) {
-    		
-    		if (user_res.getString("usrType").equals("Subscriber")) {
+    		if(ServerConsole.connectedClients.contains(user_res.getInt("usrId")))
+    		{
+    			return new Message(OperationType.Login, null, ReturnMessageType.ClientIsAlreadyLogin);
+    		}
+    		ServerConsole.connectedClients.add(user_res.getInt("usrId"));
+    		if (user_res.getString("usrType").equals("Subscriber")) 
+    		{
+    			String query= "SELECT b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = " + user_res.getString("usrId");
+    			ResultSet result= dbControllerObj.query(query);
+    			if(result.next())
+    			{ 
+    				if(result.getString("subStatus").equals("Lock"))
+    				 return new Message(OperationType.Login, null, ReturnMessageType.SubscriberIsLocked);
+    			}
+    			
     			User user = SubscriberController.getSubscriberById(user_res.getString("usrId"));
-    			return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);	
+    			return new Message(OperationType.Login, user, ReturnMessageType.Successful);	
     		}
 		
     		if (user_res.getString("usrType").equals("Librarian")) {
     			User user = new Librarian(user_res.getInt("usrId"), user_res.getString("usrName"),  user_res.getString("usrPassword"), user_res.getString("usrFirstName"), user_res.getString("usrLastName"), user_res.getString("usrEmail"), UserType.stringToEnum(user_res.getString("usrType")));
-    			return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);
+    			return new Message(OperationType.Login, user, ReturnMessageType.Successful);
     		}
 
     		if (user_res.getString("usrType").equals("LibraryManager")) {
     			User user = new LibraryManager(user_res.getInt("usrId"), user_res.getString("usrName"), user_res.getString("usrPassword"),
     					user_res.getString("usrFirstName"), user_res.getString("usrLastName"), user_res.getString("usrEmail"), UserType.stringToEnum(user_res.getString("usrType")));
-    			return new Message(OperationType.Login, user, ReturnMessageType.UserSuccessLogin);
+    			return new Message(OperationType.Login, user, ReturnMessageType.Successful);
     		}	
     	}else {
-    		return new Message(OperationType.Login, null, ReturnMessageType.UserFailedLogin);	
+    		return new Message(OperationType.Login, null, ReturnMessageType.Unsuccessful);	
     	} 
     	return (Message) msg;
     }

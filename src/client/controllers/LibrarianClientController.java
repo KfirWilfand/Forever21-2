@@ -161,10 +161,19 @@ public class LibrarianClientController {
 
 	@FXML
 	private AnchorPane ancPaneManageStock;
+	
+    @FXML
+    private Text txtAddNewSubscriberEmailError;
+
+    @FXML
+    private Text txtAddNewSubscriberPhoneError;
 
 	@FXML
 	private Tab btnManageStockTab;
 
+    @FXML
+    private DatePicker dpGraduationDateNewSub;
+    
 	static AlertController alert = new AlertController();
 
 	@FXML
@@ -228,18 +237,51 @@ public class LibrarianClientController {
 
 	@FXML
 	void onCreateSubscruberBtn(ActionEvent event) {// adding a new subscriber to the DB
+		txtAddNewSubscriberEmailError.setVisible(false);
+		txtAddNewSubscriberPhoneError.setVisible(false);
+
+		tfSubscriberFirstName.setStyle(null);
+		tfSubscriberLastName.setStyle(null);
+		tfSubscriberUsrName.setStyle(null);
+		tfSubscriberPassword.setStyle(null);
+		tfSubscruberPhone.setStyle(null);
+		tfSubscriberEmail.setStyle(null);
+		dpGraduationDateNewSub.setStyle(null);
+		
 		Utils utils = new Utils(ViewStarter.client.mainViewController);
-		if ((tfSubscriberFirstName.getText().isEmpty() == true || tfSubscriberLastName.getText().isEmpty() == true
-				|| tfSubscriberUsrName.getText().isEmpty() == true || tfSubscriberPassword.getText().isEmpty() == true
-				|| tfSubscruberPhone.getText().isEmpty() == true || tfSubscriberEmail.getText().isEmpty() == true)) {
-			utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Please fill all required fields!");
-		} else {
-			String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"
+		boolean isPhoneCorrect=utils.validatePhoneNumber(tfSubscruberPhone.getText());
+		boolean isEmailCoorect=utils.isValidEmail(tfSubscriberEmail.getText());
+		if(tfSubscriberFirstName.getText().isEmpty())
+			tfSubscriberFirstName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfSubscriberLastName.getText().isEmpty())
+			tfSubscriberLastName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfSubscriberUsrName.getText().isEmpty())
+			tfSubscriberUsrName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfSubscriberPassword.getText().isEmpty())
+			tfSubscriberPassword.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(!isPhoneCorrect)
+		{
+			tfSubscruberPhone.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+			txtAddNewSubscriberPhoneError.setVisible(true);
+			
+		}
+		if(!isEmailCoorect)
+		{
+				tfSubscriberEmail.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+				txtAddNewSubscriberEmailError.setVisible(true);
+		}
+		if(dpGraduationDateNewSub.getValue()==null)
+		{
+			dpGraduationDateNewSub.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		}
+		
+		if(dpGraduationDateNewSub.getValue() != null && isEmailCoorect &&  isPhoneCorrect && !tfSubscriberPassword.getText().isEmpty() && !tfSubscriberUsrName.getText().isEmpty() && !tfSubscriberLastName.getText().isEmpty() && !tfSubscriberFirstName.getText().isEmpty())
+		{	String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"
 					+ tfSubscriberUsrName.getText() + "', '" + tfSubscriberPassword.getText() + "', '"
 					+ tfSubscriberFirstName.getText() + "','" + tfSubscriberLastName.getText() + "','"
 					+ tfSubscriberEmail.getText() + "'); ";
-			String createNewSubscriberQuerySubscriberTable = "INSERT INTO obl.subscribers (subNum, subPhoneNum) VALUES (LAST_INSERT_ID(), '"
-					+ tfSubscruberPhone.getText() + "');";
+			String createNewSubscriberQuerySubscriberTable = "INSERT INTO obl.subscribers (subNum, subPhoneNum, subGraduationDate) VALUES (LAST_INSERT_ID(), '"
+					+ tfSubscruberPhone.getText() + "', '"+ Date.valueOf(dpGraduationDateNewSub.getValue())+"');";
 			String checkEmailAndPhoneQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"
 					+ tfSubscriberEmail.getText() + "' or b.subPhoneNum='" + tfSubscruberPhone.getText()
 					+ "' or usrName='" + tfSubscriberUsrName.getText() + "';";
@@ -350,5 +392,15 @@ public class LibrarianClientController {
 			}
 
 		});
+	}
+
+	public void cleanNewSubscriberFields() {
+		tfSubscriberFirstName.clear();
+		tfSubscriberLastName.clear();
+		tfSubscriberUsrName.clear();
+		tfSubscriberPassword.clear();
+		tfSubscruberPhone.clear();
+		tfSubscriberEmail.clear();
+		dpGraduationDateNewSub.getEditor().clear();
 	}
 }

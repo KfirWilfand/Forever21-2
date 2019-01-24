@@ -17,5 +17,5 @@ DeleteCopy,
 UpdateBookDetails,
 
 OrderBook,
-BorrowBookByLibrarian, ReturnBookByLibrarian,
+BorrowBookByLibrarian, ReturnBookByLibrarian, Logout,
 }
