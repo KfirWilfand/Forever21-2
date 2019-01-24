@@ -192,6 +192,7 @@ public class ManageStockClientController {
 
     }
     
+    
     @FXML
     void onChosenRow(MouseEvent event) {
 
