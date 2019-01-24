@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class ManageStockClientController {
@@ -191,6 +192,11 @@ public class ManageStockClientController {
     	copyArr[0]="Delete from obl.copeis where copyID='"+copyIDofSelected+"';";
     	copyArr[1]="UPDATE obl.books SET bCopiesNum="+(copiesNumOfSelectedBook-1)+",bAvilableCopiesNum="+(avilableCopiesNumOfSelectedBook-1)+" WHERE bCatalogNum="+catlogNumOfSelectedBook+";";
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.DeleteCopy, copyArr));
+
+    }
+    
+    @FXML
+    void onChosenRow(MouseEvent event) {
 
     }
     

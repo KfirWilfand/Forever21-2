@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -29,8 +30,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.Control;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -189,5 +192,16 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
+	
+	public void setStyleToList(List<Control> txtfields,String css)
+	{
+		for(Control tf :txtfields)
+		{
+			tf.setStyle(css);
+		}
+		
+	}
+	
+
 
 }
