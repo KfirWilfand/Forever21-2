@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.sql.Date;
@@ -32,6 +34,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -178,34 +181,31 @@ public class LibrarianClientController {
 
 	@FXML
 	void onBtnUpdate(ActionEvent event) {
-		
-		ssTfUserName.setStyle(null);
-		ssTfPassword.setStyle(null);
-		ssTfFirstName.setStyle(null);
-		ssTfLastName.setStyle(null);
-		ssTfEmail.setStyle(null);
-		ssTfPhone.setStyle(null);
-		ssPdGraduation.setStyle(null);
-		
+
 		Utils utils = new Utils(ViewStarter.client.mainViewController);
+		List<Control> tflist= new ArrayList<Control>(Arrays.asList(ssTfUserName,ssTfPassword,ssTfFirstName,ssTfLastName,ssTfEmail,ssPdGraduation,ssTfPhone));
+		utils.setStyleToList(tflist,null);
 		
 		boolean isEmailCorrect=utils.isValidEmail(ssTfEmail.getText());
 		boolean isPhoneCorrect=utils.validatePhoneNumber(ssTfPhone.getText());
-		if(ssTfUserName.getText().isEmpty())
-			ssTfUserName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(ssTfPassword.getText().isEmpty())
-			ssTfPassword.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(ssTfFirstName.getText().isEmpty())
-			ssTfFirstName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(ssTfLastName.getText().isEmpty())
-			ssTfLastName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(!isEmailCorrect)
-			ssTfEmail.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(!isPhoneCorrect)
-			ssTfPhone.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(ssPdGraduation.getValue()== null)
-			ssPdGraduation.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		
+		tflist.clear();
+		if(ssTfUserName.getText().isEmpty())
+			tflist.add(ssTfUserName);
+		if(ssTfPassword.getText().isEmpty())
+			tflist.add(ssTfPassword);
+		if(ssTfFirstName.getText().isEmpty())
+			tflist.add(ssTfFirstName);
+		if(ssTfLastName.getText().isEmpty())
+			tflist.add(ssTfLastName);
+		if(!isEmailCorrect)
+			tflist.add(ssTfEmail);
+		if(!isPhoneCorrect)
+			tflist.add(ssTfPhone);
+		if(ssPdGraduation.getValue()== null)
+			tflist.add(ssPdGraduation);
+		
+		utils.setStyleToList(tflist,"-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		
 		if(!ssTfUserName.getText().isEmpty() && !ssTfPassword.getText().isEmpty() && !ssTfFirstName.getText().isEmpty() && !ssTfLastName.getText().isEmpty() && isEmailCorrect && isPhoneCorrect && ssPdGraduation.getValue() != null )	
 		{	String updateUserDetailsQuery = " UPDATE `obl`.`users`" + " SET `usrName` = '" + ssTfUserName.getText()
@@ -270,41 +270,42 @@ public class LibrarianClientController {
 	void onCreateSubscruberBtn(ActionEvent event) {// adding a new subscriber to the DB
 		txtAddNewSubscriberEmailError.setVisible(false);
 		txtAddNewSubscriberPhoneError.setVisible(false);
-
-		tfSubscriberFirstName.setStyle(null);
-		tfSubscriberLastName.setStyle(null);
-		tfSubscriberUsrName.setStyle(null);
-		tfSubscriberPassword.setStyle(null);
-		tfSubscruberPhone.setStyle(null);
-		tfSubscriberEmail.setStyle(null);
-		dpGraduationDateNewSub.setStyle(null);
+		
 		
 		Utils utils = new Utils(ViewStarter.client.mainViewController);
+		List<Control> tflist= new ArrayList<Control>(Arrays.asList(tfSubscriberFirstName,tfSubscriberLastName,tfSubscriberUsrName,tfSubscriberPassword,tfSubscruberPhone,tfSubscriberEmail,dpGraduationDateNewSub));
+		utils.setStyleToList(tflist,null);
+
+
 		boolean isPhoneCorrect=utils.validatePhoneNumber(tfSubscruberPhone.getText());
 		boolean isEmailCoorect=utils.isValidEmail(tfSubscriberEmail.getText());
+		
+		
+		tflist.clear();
+		
 		if(tfSubscriberFirstName.getText().isEmpty())
-			tfSubscriberFirstName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+			tflist.add(tfSubscriberFirstName);
 		if(tfSubscriberLastName.getText().isEmpty())
-			tfSubscriberLastName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+			tflist.add(tfSubscriberLastName);
 		if(tfSubscriberUsrName.getText().isEmpty())
-			tfSubscriberUsrName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+			tflist.add(tfSubscriberUsrName);
 		if(tfSubscriberPassword.getText().isEmpty())
-			tfSubscriberPassword.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+			tflist.add(tfSubscriberPassword);
 		if(!isPhoneCorrect)
 		{
-			tfSubscruberPhone.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-			txtAddNewSubscriberPhoneError.setVisible(true);
-			
+			tflist.add(tfSubscruberPhone);
+			txtAddNewSubscriberPhoneError.setVisible(true);	
 		}
 		if(!isEmailCoorect)
 		{
-				tfSubscriberEmail.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+			tflist.add(tfSubscriberEmail);
 				txtAddNewSubscriberEmailError.setVisible(true);
 		}
 		if(dpGraduationDateNewSub.getValue()==null)
-		{
-			dpGraduationDateNewSub.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		}
+			tflist.add(dpGraduationDateNewSub);
+
+		utils.setStyleToList(tflist,"-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		
 		
 		if(dpGraduationDateNewSub.getValue() != null && isEmailCoorect &&  isPhoneCorrect && !tfSubscriberPassword.getText().isEmpty() && !tfSubscriberUsrName.getText().isEmpty() && !tfSubscriberLastName.getText().isEmpty() && !tfSubscriberFirstName.getText().isEmpty())
 		{	String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"
@@ -321,13 +322,7 @@ public class LibrarianClientController {
 			queryArr[1] = createNewSubscriberQuerySubscriberTable;
 			queryArr[2] = checkEmailAndPhoneQuery;
 
-			ViewStarter.client
-			.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr)); // sending
-			// to
-			// LibrarianController
-			// in
-			// the
-			// server
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr));
 		}
 	}
 

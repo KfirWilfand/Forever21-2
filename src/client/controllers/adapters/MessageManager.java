@@ -137,9 +137,13 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy added Successfully!");
 					//alert.info("Copy added Successfully!","");
 					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy) msg.getObj());
+					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
 				} else {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
 				}
+				ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().clear();
+				ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setDisable(true);
+			
 				break;
 				
 			case OrderBook:
@@ -182,10 +186,13 @@ public class MessageManager {
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					//alert.info("Copy was deleted Successfully!","");
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy was deleted Successfully!");
+					ViewStarter.client.manageStockClientControllerObj.removeCopiefromList();
+					
 				} else {
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Copy deleted was failed!");
 					//alert.error("Copy was deleted failed!","");
 				}
+				ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setDisable(true);
 				break;
 			}
 

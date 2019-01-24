@@ -7,6 +7,7 @@ import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.Book;
+import common.entity.Copy;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -84,7 +85,12 @@ public class SearchBookOnManageStockController {
 
     @FXML
     void onClickSearchBook(ActionEvent event) {
-       	String searchBookQuery="SELECT * FROM obl.books WHERE bCatalogNum='"+tfCatalogNumberForSearch.getText()+"'" ;
+    	String searchBookQuery;
+    	if(tfCatalogNumberForSearch.getText().isEmpty()) 
+    	{
+    		searchBookQuery="SELECT * FROM obl.books";
+    	}
+    	else searchBookQuery="SELECT * FROM obl.books WHERE bCatalogNum='"+tfCatalogNumberForSearch.getText()+"'" ;
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, searchBookQuery));
     }
     
@@ -144,6 +150,23 @@ public class SearchBookOnManageStockController {
     		}
     	}
 
+    }
+    
+    
+    
+    public void showBookDetails()
+    {
+    	
+    	Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+		    	
+				String getAllBooksQuery = "Select * from obl.books";
+	    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, getAllBooksQuery));
+	    	
+			}
+
+		});
     }
     
 

@@ -112,8 +112,14 @@ public class UpdateOrAddBookController {
     @FXML
     void onClickBack(ActionEvent event)
     {
+
     	try 
     	{
+        	ViewStarter.client.manageStockClientControllerObj.getBtnAddNewBook().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getTvCopies().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().setVisible(true);
     		ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
 			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/searchBook_by_number_at_manageStock.fxml"));
 			if(ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock() != null)
