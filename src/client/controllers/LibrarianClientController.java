@@ -322,6 +322,7 @@ public class LibrarianClientController {
 		ViewStarter.client
 		.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberUsrId));
 	}
+	
 
 	public void updateDetailsOnBorrow(Object[] objects) {
 		BorrowCopy bCopy = (BorrowCopy) objects[0];

@@ -130,8 +130,6 @@ public class MessageManager {
 				}
 				break;
 			case AddNewCopy:
-
-				//Utils utils = new Utils(ViewStarter.client.mainViewController);
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy added Successfully!");
 					//alert.info("Copy added Successfully!","");
@@ -140,8 +138,13 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
 				}
 				break;
-
 			case OrderBook:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
+					alert.info("Book was ordered, SMS will be sent when book will arrive!","");
+				else
+					alert.error("Book cannot be ordered!","");
+				break;
+			case BorrowBookByLibrarian:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					//alert.info("Book was ordered, SMS will be sent when book will arrive!","");
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Book was ordered, SMS will be sent when book will arrive!");
@@ -150,10 +153,10 @@ public class MessageManager {
 				{
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Book cannot be ordered!");
 					//alert.error("Book cannot be ordered!","");
+					//alert.error("Error in operation!","");
 				}
-
 				break;
-			case BorrowBookByLibrarian:
+			case UpdateBookDetails:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Borrow executed successfully");
 					//alert.info("Borrow executed successfully","");
@@ -176,22 +179,11 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Copy deleted was failed!");
 					//alert.error("Copy was deleted failed!","");
 				}
-
-				break;
-			case UpdateBookDetails:
-				//Utils utils12 = new Utils(ViewStarter.client.mainViewController);
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Book update Successfully!");
-					//alert.info("Book update Successfully!","");
-				} else {
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Book update failed!");
-					//alert.error("Book update failed!","");
-				}
-
 				break;
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
 		}

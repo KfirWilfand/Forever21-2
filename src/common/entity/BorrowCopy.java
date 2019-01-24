@@ -8,6 +8,7 @@ public class BorrowCopy implements Serializable {
 	private int subNum;
 	private Date borrowDate;
 	private Date returnDueDate;
+	private Date actualReturnDate;
 		
 	public BorrowCopy(String copyID, int subNum, Date borrowDate, Date returnDueDate) {
 		super();
@@ -17,10 +18,10 @@ public class BorrowCopy implements Serializable {
 		this.returnDueDate = returnDueDate;
 	}
 	
-	public BorrowCopy(String copyID, Date returnDueDate)//constructor for return date functionality 
+	public BorrowCopy(String copyID, Date actualReturnDate)//constructor for return date functionality 
 	{
 		this.copyID = copyID;
-		this.returnDueDate = returnDueDate;
+		this.setActualReturnDate(actualReturnDate);
 	}
 
 	public String getCopyID() {
@@ -53,6 +54,14 @@ public class BorrowCopy implements Serializable {
 
 	public void setReturnDueDate(Date returnDueDate) {
 		this.returnDueDate = returnDueDate;
+	}
+
+	public Date getActualReturnDate() {
+		return actualReturnDate;
+	}
+
+	public void setActualReturnDate(Date actualReturnDate) {
+		this.actualReturnDate = actualReturnDate;
 	}
 
 	
