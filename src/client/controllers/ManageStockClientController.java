@@ -57,9 +57,6 @@ public class ManageStockClientController {
 		return tfEnterNewCopyID;
 	}
 
-	public void setTfEnterNewCopyID(TextField tfEnterNewCopyID) {
-		this.tfEnterNewCopyID = tfEnterNewCopyID;
-	}
 
 	public Button getBtnAddNewCopy() {
 		return btnAddNewCopy;

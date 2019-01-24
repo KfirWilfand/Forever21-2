@@ -135,8 +135,8 @@ public class UpdateOrAddBookController {
     	
     	System.out.println(query);
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,query ));
-    	
 
+    	
     }
     
     public void showSelectedBookDetails(Book book)
