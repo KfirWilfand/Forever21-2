@@ -123,7 +123,8 @@ public class UpdateOrAddBookController {
 		if(dpPurchaseDate.getValue()==null)
 			dpPurchaseDate.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		if(!tfBookName.getText().isEmpty() && !tfAuthorName.getText().isEmpty() && !tfEditionNumber.getText().isEmpty() && !tfLocationOnShelf.getText().isEmpty() && !tfGenre.getText().isEmpty() && !txteDescription.getText().isEmpty() && !(dpPrintingDate.getValue()==null) && !(dpPurchaseDate.getValue()==null))
-		{	
+		{
+			
 			String addBookQuery = "insert  into obl.books (bName,bDescription,bEdition,bPrintDate,bCopiesNum,bShelfLocation,bGenre,bAuthor,bPurchaseDate,bAvilableCopiesNum,bIsPopular) "
 					+ "values ('"+ tfBookName.getText() +"','"+ txteDescription.getText() +"','"+ tfEditionNumber.getText() +"','"+ dpPrintingDate.getValue()+"'"
 						+ ",0,'"+tfLocationOnShelf.getText()+"','"+tfGenre.getText()+"','"+tfAuthorName.getText()+"'"
