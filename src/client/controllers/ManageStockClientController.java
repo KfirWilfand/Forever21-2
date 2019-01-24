@@ -39,7 +39,8 @@ public class ManageStockClientController {
     @FXML
     private Button btnAddNewBook;
 
-    @FXML
+
+	@FXML
     private Pane InnerPaneInManageStock;
    
     @FXML
@@ -95,7 +96,7 @@ public class ManageStockClientController {
 			
 			}
 		});
-	
+
 	}
     
     @FXML
@@ -104,6 +105,10 @@ public class ManageStockClientController {
 			@Override
 			public void run() {
 				try {
+					tvCopies.setVisible(false);
+					btnAddNewCopy.setVisible(false);
+					btnDeleteCopy.setVisible(false);
+					tfEnterNewCopyID.setVisible(false);
 					btnAddNewBook.setVisible(false);
 					Parent newPane=FXMLLoader.load(getClass().getResource("/client/boundery/layouts/updateOrAddBook.fxml"));
 					if (InnerPaneInManageStock != null)
@@ -157,6 +162,7 @@ public class ManageStockClientController {
     	queryArr[1]="UPDATE obl.books SET bCopiesNum="+(copiesNumOfSelectedBook+1)+",bAvilableCopiesNum="+(avilableCopiesNumOfSelectedBook+1)+" WHERE bCatalogNum="+catlogNumOfSelectedBook+";";
     	queryArr[2]= new Copy(tfEnterNewCopyID.getText(),catlogNumOfSelectedBook,true);
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewCopy, queryArr));
+    	
 
     }
     
@@ -177,6 +183,25 @@ public class ManageStockClientController {
 
 		});
     }
+   
+    public void removeCopiefromList()
+    {
+    	
+    	Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+		    	
+		    		Copy selectedItem = tvCopies.getSelectionModel().getSelectedItem();
+		    		tvCopies.getItems().remove(selectedItem);
+		    	
+			}
+
+		});
+    }
+    
+    
+    
+    
     
     @FXML
     void onClickDeleteCopy(ActionEvent event)
@@ -195,11 +220,21 @@ public class ManageStockClientController {
     
     @FXML
     void onChosenRow(MouseEvent event) {
+		if(event.getClickCount() == 1)
+		{
+			if(tvCopies.getSelectionModel().getSelectedItem() != null)
+			{
+				btnDeleteCopy.setDisable(false);
+			}
+		}
 
     }
+
     
-   
- 
+    public Button getBtnAddNewBook() {
+		return btnAddNewBook;
+	}
+
 
 
 }
