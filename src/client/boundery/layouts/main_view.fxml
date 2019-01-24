@@ -87,7 +87,6 @@
             <Font name="System Bold" size="10.0" />
          </font>
       </Button>
-
 		<Button fx:id="btnProfile" layoutX="670.0" layoutY="33.0" mnemonicParsing="false" onAction="#openProfileView" prefHeight="46.0" prefWidth="45.0" styleClass="btnWithImage">
          <graphic>
       				<ImageView fitHeight="27.0" fitWidth="26.0">

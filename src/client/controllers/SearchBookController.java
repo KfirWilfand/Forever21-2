@@ -36,6 +36,7 @@ public class SearchBookController {
 	@FXML
 	private ListView<Book> lvBooks;
 
+
 	@FXML
 	private AnchorPane apListView;
 
@@ -52,6 +53,8 @@ public class SearchBookController {
 		QueryBuilder qbObj = QueryBuilder.getInstance();
 		String searchQeury = qbObj.searchQuery(tfBookName.getText(), tfAuthorName.getText(), tfBookGenre.getText(),
 				tfTextFree.getText());
+		
+		System.out.println(searchQeury);
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBook, searchQeury));
 	}
 
@@ -70,5 +73,10 @@ public class SearchBookController {
 		}
 
 	}
+	
+	public ListView<Book> getLvBooks() {
+		return lvBooks;
+	}
+
 
 };

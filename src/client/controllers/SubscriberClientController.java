@@ -26,6 +26,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 public class SubscriberClientController {
 
@@ -96,6 +97,12 @@ public class SubscriberClientController {
     private Tab tabReaderCardHistory;
 
 	private Subscriber mSubscriber;
+	
+    @FXML
+    private Text txtEmailError;
+
+    @FXML
+    private Text txtPhoneError;
 
 	@FXML
 	public void initialize() {
@@ -107,6 +114,10 @@ public class SubscriberClientController {
 
 	@FXML // This query update existed subscriber's details (only phone number and email)
 	void onEditSaveBtn(ActionEvent event) {
+		tfEditEmail.setStyle(null);
+		tfEditPhone.setStyle(null);
+		txtEmailError.setVisible(false);
+		txtPhoneError.setVisible(false);
 		Utils utils = new Utils(ViewStarter.client.mainViewController);
 		String checkPhoneValid = tfEditPhone.getText();
 		String checkEmailValid = tfEditEmail.getText();
@@ -114,18 +125,22 @@ public class SubscriberClientController {
 		check[0] = utils.isValidEmail(checkEmailValid);
 		check[1] = utils.validatePhoneNumber(checkPhoneValid);
 		if (!check[0]) {
-			utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Mail is not valid!");
-			return;
+			//utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Mail is not valid!");
+			txtEmailError.setVisible(true);
+			tfEditEmail.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		}
 		if (!check[1]) {
-			utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Phone number is not valid!");
-			return;
+			txtPhoneError.setVisible(true);
+			//utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Phone number is not valid!");
+			tfEditPhone.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		}
-		String editSubscriberDetailsQuery = "UPDATE obl.subsribers SET subPhoneNum='" + tfEditPhone.getText()
+		if(check[0] && check[1])
+		{	String editSubscriberDetailsQuery = "UPDATE obl.subscribers SET subPhoneNum='" + tfEditPhone.getText()
 				+ "' WHERE subNum=" + tfEditSubscriberNumber.getText() + ";UPDATE obl.users SET usrEmail='"
 				+ tfEditEmail.getText() + "' WHERE usrID=" + tfEditSubscriberNumber.getText() + ";";
-		ViewStarter.client.handleMessageFromClientUI(
+				ViewStarter.client.handleMessageFromClientUI(
 				new Message(OperationType.EditDetailsBySubscriber, editSubscriberDetailsQuery));
+		}
 	}
 
 	public void initializeDetailsAtLogin(Subscriber subscriber) {

@@ -31,11 +31,11 @@ import server.controllers.SubscriberController;
 public class ServerConsole extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 	//public static List<BookInOrder> BooksOrders = Collections.synchronizedList(new LinkedList<BookInOrder>());
+	public static ArrayList<Integer> connectedClients;
 	
-	
-
 	public ServerConsole(int port) {
 		super(port);
+		connectedClients=new ArrayList<Integer>();
 	}
 	
 //	Thread thread =  new Thread(new Runnable() {
@@ -83,12 +83,16 @@ public class ServerConsole extends AbstractServer {
 				//LOGGER.severe(returnMessageToClient.getReturnMessageType());
 				this.sendToClient(returnMessageToClient,client);
 				break;
+			case Logout:
+				Integer usrID=((User)((Message)msg).getObj()).getId();
+				connectedClients.remove(usrID);
+				break;
 			case SearchBook:
 				returnMessageToClient=readerControllerObj.searchBook(msg);
 				this.sendToClient(returnMessageToClient,client);
 				break;
 			case GetSubscriberDetails:
-				returnMessageToClient=subscriberControllerObj.getSubscriberMessage(msg);
+				returnMessageToClient=subscriberControllerObj.getSubscriberDetails(msg);
 				this.sendToClient(returnMessageToClient,client);
 				break;	
 			case SearchSubscriber:
