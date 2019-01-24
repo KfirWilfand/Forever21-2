@@ -187,6 +187,8 @@ public class MessageManager {
 					//alert.info("Copy was deleted Successfully!","");
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy was deleted Successfully!");
 					ViewStarter.client.manageStockClientControllerObj.removeCopiefromList();
+					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
+					
 					
 				} else {
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Copy deleted was failed!");
