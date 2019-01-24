@@ -132,6 +132,7 @@ public class SearchBookOnManageStockController {
 					Book book = booksTable.getSelectionModel().getSelectedItem();
 					ViewStarter.client.updateOrAddBookControllerObj.showSelectedBookDetails(book);
 					
+					
     			}		
     			
         	}
