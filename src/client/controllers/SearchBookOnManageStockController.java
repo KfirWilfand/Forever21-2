@@ -110,7 +110,8 @@ public class SearchBookOnManageStockController {
     		ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().textProperty().addListener((observable, oldValue, newValue) -> {
     			Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
     			b1.setDisable(false);
-       		});
+       		
+    		});
    		
 //			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
 //			b2.setDisable(false);
