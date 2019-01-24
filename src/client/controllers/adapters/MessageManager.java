@@ -141,7 +141,6 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
 				}
 				break;
-				
 			case OrderBook:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
 					alert.info("Book was ordered, SMS will be sent when book will arrive!","");
@@ -152,11 +151,11 @@ public class MessageManager {
 			case BorrowBookByLibrarian:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					//alert.info("Book was ordered, SMS will be sent when book will arrive!","");
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Book was ordered, SMS will be sent when book will arrive!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "successfull borrowing");
 				}
 				else
 				{
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Book cannot be ordered!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot be borrow!");
 					//alert.error("Book cannot be ordered!","");
 					//alert.error("Error in operation!","");
 				}
@@ -164,16 +163,16 @@ public class MessageManager {
 				
 			case UpdateBookDetails:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Borrow executed successfully");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Borrow executed successfully");
 					//alert.info("Borrow executed successfully","");
 					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[]) msg.getObj());
 
 				} else if (msg.getReturnMessageType() == ReturnMessageType.ErrorWhileTyping) {
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Error in typing! copy does not exist");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Error in typing! copy does not exist");
 					//alert.error("Error in typing! copy does not exist","");
 				}
 				else {
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Error in operation!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Error in operation!");
 					//alert.error("Error in operation!","");
 				}
 				break;
@@ -181,9 +180,9 @@ public class MessageManager {
 			case DeleteCopy:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					//alert.info("Copy was deleted Successfully!","");
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy was deleted Successfully!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Copy was deleted Successfully!");
 				} else {
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Copy deleted was failed!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Copy deleted was failed!");
 					//alert.error("Copy was deleted failed!","");
 				}
 				break;
