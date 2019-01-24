@@ -106,13 +106,14 @@ public class SearchBookOnManageStockController {
     		Book book = booksTable.getSelectionModel().getSelectedItem();
     		String query = "SELECT * FROM obl.copeis where bCatalogNum = " + book.getCatalogNum();
     		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetCopiesOfSelectedBook,query));
+    		
     		ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().textProperty().addListener((observable, oldValue, newValue) -> {
     			Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
     			b1.setDisable(false);
        		});
    		
-			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
-			b2.setDisable(false);
+//			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
+//			b2.setDisable(false);
 			TextField t=ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID();
 			t.setDisable(false);
     	}
