@@ -131,7 +131,7 @@ public class SearchBookOnManageStockController {
 					b.setVisible(true);
 					Book book = booksTable.getSelectionModel().getSelectedItem();
 					ViewStarter.client.updateOrAddBookControllerObj.showSelectedBookDetails(book);
-					
+
 					
 					
     			}		
