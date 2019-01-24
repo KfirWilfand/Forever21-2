@@ -113,7 +113,8 @@ public class SearchBookOnManageStockController {
        		
     	
     		});
-   		
+ 		
+ 	
 //			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
 //			b2.setDisable(false);
 			TextField t=ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID();

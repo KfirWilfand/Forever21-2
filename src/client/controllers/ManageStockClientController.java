@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class ManageStockClientController {
@@ -190,6 +191,24 @@ public class ManageStockClientController {
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.DeleteCopy, copyArr));
 
     }
+    
+    @FXML
+    void onChosenRow(MouseEvent event) {
+    	if(event.getClickCount() == 1)
+    	{
+    		if(tvCopies.getSelectionModel().getSelectedItem() != null)
+    		{
+    			Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
+    			b1.setDisable(false);
+    		}
+    	}
+ 		
+ 	
+//			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
+//			b2.setDisable(false);
+			TextField t=ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID();
+			t.setDisable(false);
+    	}
     
    
  
