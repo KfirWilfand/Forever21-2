@@ -3,13 +3,17 @@ package server.controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import client.controllers.adapters.AlertController;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
+import common.entity.BookInOrder;
+import common.entity.BorrowCopy;
 import common.entity.HistoryItem;
 import common.entity.ReaderCard;
 import common.entity.Subscriber;
@@ -20,6 +24,9 @@ import common.entity.enums.UserType;
 public class SubscriberController {
 
 	private static SubscriberController instance;
+
+	static AlertController alert = new AlertController();
+
 
 	private SubscriberController() {
 	}
@@ -58,7 +65,7 @@ public class SubscriberController {
 			while (history_res.next()) {
 				SubscriberHistoryType subscriberHistoryType = SubscriberHistoryType
 						.stringToEnum(history_res.getString("actionType"));
-				
+
 				readerCard.getHistory().get(subscriberHistoryType).add(
 						new HistoryItem(history_res.getDate("actionDate"), history_res.getString("actionDescription")));
 			}
@@ -85,13 +92,27 @@ public class SubscriberController {
 			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.NotUpdateSuccesfully);
 	}
 
-	public Message orderBook(Object msg) {
-    	String queryOrderBook=(String)((Message)msg).getObj();
-		DBcontroller dbControllerObj=DBcontroller.getInstance();
-		Boolean insertionOrder=dbControllerObj.update(queryOrderBook); 
-		if(insertionOrder)
-			return new Message(OperationType.OrderBook, null , ReturnMessageType.Successful);
+	public Message orderBook(Object msg) throws SQLException {
+
+		Message orderMsg=((Message)msg);
+		int tempSubNum=((BookInOrder)orderMsg.getObj()).getSubNum();
+		int tempBookCatalogNum=((BookInOrder)orderMsg.getObj()).getbCatalogNum();
+		Timestamp orderDate= ((BookInOrder)orderMsg.getObj()).getDateOfOrder();
+		DBcontroller dbControllerObj= DBcontroller.getInstance();
+		String checkIfOrderAlreadyExist="select boSubNum, boCatalogNum from obl.books_orders where boSubNum="+tempSubNum+" and boCatalogNum='"+tempBookCatalogNum+"'";
+		ResultSet checkIfOrderAlreadyExist_res=dbControllerObj.query(checkIfOrderAlreadyExist);
+		if(checkIfOrderAlreadyExist_res.next())
+			alert.error("Order is already exist for you!", "");
 		else
-			return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
+		{
+			String orderQuery="INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"+tempSubNum+"','"+tempBookCatalogNum+"','"+orderDate+"')";
+			Boolean insertBookInOrder= dbControllerObj.update(orderQuery);
+			if(insertBookInOrder)//if order executed
+				return new Message(OperationType.OrderBook, null , ReturnMessageType.Successful);
+			else
+				return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
+		}
+		return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
+
 	}
 }

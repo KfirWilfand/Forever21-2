@@ -126,6 +126,7 @@ public class ServerConsole extends AbstractServer {
 			case EditDetailsByLibrarian:
 				returnMessageToClient=manageStockControllerObj.editDetailsByLibrarian(msg);
 				this.sendToClient(returnMessageToClient, client);				
+				break;
 			case UpdateBookDetails:
 				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
 				break;

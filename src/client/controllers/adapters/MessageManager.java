@@ -85,13 +85,13 @@ public class MessageManager {
 				} else {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
 				}
-
+				break;
 			case OrderBook:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
 					alert.info("Book was ordered, SMS will be sent when book will arrive!","");
 				else
 					alert.error("Book cannot be ordered!","");
-
+				break;
 			case BorrowBookByLibrarian:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					alert.info("Borrow executed successfully","");
@@ -101,6 +101,7 @@ public class MessageManager {
 					alert.error("Error in typing! copy does not exist","");
 				else
 					alert.error("Error in operation!","");
+				break;
 
 			case DeleteCopy:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
@@ -112,18 +113,16 @@ public class MessageManager {
 				break;
 
 			case UpdateBookDetails:
-
-				Utils utils12 = new Utils(ViewStarter.client.mainViewController);
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					alert.info("Book update Successfully!","");
 				} else {
 					alert.error("Book update failed!","");
 				}
-
 				break;
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
 		}

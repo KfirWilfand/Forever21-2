@@ -5,11 +5,13 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.Book;
+import common.entity.BookInOrder;
 import common.entity.Subscriber;
 import common.entity.User;
 import javafx.event.ActionEvent;
@@ -76,14 +78,16 @@ public class BookDetailsController {
 	@FXML
 	void onOrderCopyBtn(ActionEvent event) {
 		User usr=ViewStarter.client.mainViewController.getUser();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime orderDate = LocalDateTime.now();
-		String orderQuery="INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"+((Subscriber)usr).getSubscriberNum()+"','"+book.getCatalogNum()+"','"+orderDate.format(dtf)+"')";
-		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.OrderBook, orderQuery));
+		Calendar calendar = Calendar.getInstance();				
+		java.util.Date now = calendar.getTime();
+		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+		BookInOrder bookInOrder=new BookInOrder(((Subscriber)usr).getSubscriberNum(), book.getCatalogNum(),currentTimestamp);
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.OrderBook, bookInOrder));
 	}
 
 	@FXML
-	void onTableOfContentBtn(ActionEvent event) {
+	void onTableOfContentBtn(ActionEvent event) 
+	{
 
 	}
 
