@@ -178,6 +178,23 @@ public class LibrarianClientController {
     private DatePicker dpGraduationDateNewSub;
     
 	static AlertController alert = new AlertController();
+	
+	
+	
+	@FXML
+	public void initialize() {
+		ViewStarter.client.librarianClientControllerObj = this;
+		try {
+			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
+			if (ancPaneManageStock != null)
+				ancPaneManageStock.getChildren().setAll(newPane);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 	@FXML
 	void onBtnUpdate(ActionEvent event) {
@@ -240,28 +257,23 @@ public class LibrarianClientController {
 		}
 	}
 
-	@FXML
-	public void initialize() {
-		ViewStarter.client.librarianClientControllerObj = this;
-		try {
-			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
-			if (ancPaneManageStock != null)
-				ancPaneManageStock.getChildren().setAll(newPane);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 
 	@FXML
 	void onBorrowBookBtn(ActionEvent event) {
-		LocalDate borrowDate = LocalDate.now();
-		Date date = Date.valueOf(borrowDate);
-		if (tfBorrowBookSubscriberNumber.getText().isEmpty()|| tfBorrowCopyID.getText().isEmpty())// if the librarian missed a field
-			alert.error("Subscriber or Copy id fields are missing!", "");
-		else {
-			BorrowCopy borrowCopy = new BorrowCopy(tfBorrowCopyID.getText(),
-					Integer.parseInt(tfBorrowBookSubscriberNumber.getText()), date, null);
+		tfBorrowCopyID.setStyle(null);
+		tfBorrowBookSubscriberNumber.setStyle(null);
+		
+		if(tfBorrowCopyID.getText().isEmpty())
+			tfBorrowCopyID.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfBorrowBookSubscriberNumber.getText().isEmpty())
+			tfBorrowBookSubscriberNumber.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		
+		if(!tfBorrowCopyID.getText().isEmpty() && !tfBorrowBookSubscriberNumber.getText().isEmpty())
+		{	
+			LocalDate borrowDate = LocalDate.now();
+			Date date = Date.valueOf(borrowDate);
+			BorrowCopy borrowCopy = new BorrowCopy(tfBorrowCopyID.getText(),Integer.parseInt(tfBorrowBookSubscriberNumber.getText()), date, null);
 			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.BorrowBookByLibrarian, borrowCopy));
 		}
 	}
@@ -308,10 +320,10 @@ public class LibrarianClientController {
 		
 		
 		if(dpGraduationDateNewSub.getValue() != null && isEmailCoorect &&  isPhoneCorrect && !tfSubscriberPassword.getText().isEmpty() && !tfSubscriberUsrName.getText().isEmpty() && !tfSubscriberLastName.getText().isEmpty() && !tfSubscriberFirstName.getText().isEmpty())
-		{	String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail) VALUES ('"
+		{	String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail,usrType) VALUES ('"
 					+ tfSubscriberUsrName.getText() + "', '" + tfSubscriberPassword.getText() + "', '"
 					+ tfSubscriberFirstName.getText() + "','" + tfSubscriberLastName.getText() + "','"
-					+ tfSubscriberEmail.getText() + "'); ";
+					+ tfSubscriberEmail.getText() + "', 'Subscriber'); ";
 			String createNewSubscriberQuerySubscriberTable = "INSERT INTO obl.subscribers (subNum, subPhoneNum, subGraduationDate) VALUES (LAST_INSERT_ID(), '"
 					+ tfSubscruberPhone.getText() + "', '"+ Date.valueOf(dpGraduationDateNewSub.getValue())+"');";
 			String checkEmailAndPhoneQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"
@@ -342,12 +354,27 @@ public class LibrarianClientController {
 
 	@FXML
 	void onSearchSubscriberBtn(ActionEvent event) {
+		
+		cleanAndDisableSearchSubscriberFields();
+		
 		String searchSubscriberUsrId = tfSearchSubscriberNumber.getText();
-		ViewStarter.client
-		.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberUsrId));
+		if(!searchSubscriberUsrId.isEmpty())
+		{
+			ssTfFirstName.setDisable(false);
+			ssTfLastName.setDisable(false);
+			ssTfPhone.setDisable(false);
+			ssTfUserName.setDisable(false);
+			//ssTfPassword.setDisable(false);
+			ssTfEmail.setDisable(false);
+			ssPdGraduation.setDisable(false);
+			ssbtnUpdate.setDisable(false);
+			
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberUsrId));
+		}
+		
+		
 	}
 	
-
 	public void updateDetailsOnBorrow(Object[] objects) {
 		BorrowCopy bCopy = (BorrowCopy) objects[0];
 		Boolean isPopular = (Boolean) objects[1];
@@ -418,6 +445,25 @@ public class LibrarianClientController {
 		});
 	}
 
+	public void cleanAndDisableSearchSubscriberFields()
+	{
+		ssTfFirstName.setDisable(true);
+		ssTfLastName.setDisable(true);
+		ssTfPhone.setDisable(true);
+		ssTfUserName.setDisable(true);
+		//ssTfPassword.setDisable(true);
+		ssTfEmail.setDisable(true);
+		ssPdGraduation.setDisable(true);
+		ssbtnUpdate.setDisable(true);
+		
+		ssTfFirstName.clear();
+		ssTfLastName.clear();
+		ssTfPhone.clear();
+		ssTfUserName.clear();
+		ssTfPassword.clear();
+		ssTfEmail.clear();
+		ssPdGraduation.setValue(null);	
+	}
 	public void cleanNewSubscriberFields() {
 		tfSubscriberFirstName.clear();
 		tfSubscriberLastName.clear();

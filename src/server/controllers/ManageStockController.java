@@ -83,7 +83,8 @@ public class ManageStockController {
 
 		 return new Message(OperationType.EditDetailsByLibrarian, null , ReturnMessageType.Unsuccessful); 
 	}
-	 public Message addNewCopy(Object msg) throws SQLException 
+	 
+	public Message addNewCopy(Object msg) throws SQLException 
 	 {
 		 	Object[] m=(Object[])((Message)msg).getObj();
 	    	DBcontroller dbControllerObj=DBcontroller.getInstance();

@@ -47,10 +47,8 @@ public class ServerStarter extends Application {
 	public void stop(){
 		server.connectedClients.clear();
 		try {
-			
 			server.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

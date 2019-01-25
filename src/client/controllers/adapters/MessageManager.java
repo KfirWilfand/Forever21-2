@@ -117,8 +117,21 @@ public class MessageManager {
 				ViewStarter.client.manageStockClientControllerObj.displayCopies((List<Copy>) msg.getObj());
 				break;
 			case SearchSubscriber:
-				ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Subscriber Not Found!");
+					ViewStarter.client.librarianClientControllerObj.cleanAndDisableSearchSubscriberFields();
+					break;
+				}
 				break;
+				
+				
+				
+
+				
 			case EditDetailsByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
@@ -133,18 +146,21 @@ public class MessageManager {
 				}
 				break;
 			case AddNewCopy:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+				switch (msg.getReturnMessageType()) {
+				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy added Successfully!");
 					//alert.info("Copy added Successfully!","");
 					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy) msg.getObj());
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
-				} else {
+					break;
+				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
+					break;
 				}
 				ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().clear();
 				ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setDisable(true);
-			
 				break;
+				
 			case OrderBook:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
 					alert.info("Book was ordered, SMS will be sent when book will arrive!","");

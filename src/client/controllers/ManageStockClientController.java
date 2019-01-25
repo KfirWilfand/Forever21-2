@@ -132,11 +132,7 @@ public class ManageStockClientController {
     public Pane getInnerPaneInManageStock() {
 		return InnerPaneInManageStock;
 	}
-    
-    @FXML
-    void onAddNewCopie(ActionEvent event) {
-    	
-    }
+   
     
     public void displayCopies(List<Copy> list)
     {
@@ -163,7 +159,6 @@ public class ManageStockClientController {
     	queryArr[2]= new Copy(tfEnterNewCopyID.getText(),catlogNumOfSelectedBook,true);
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewCopy, queryArr));
     	
-
     }
     
     public TableView<Copy> getTvCopies() {

@@ -54,7 +54,8 @@ public class UpdateOrAddBookController {
     @FXML
     private TextField tfCopiesNumber;
 
-    @FXML
+
+	@FXML
     private CheckBox cbIsPopular;
 
     @FXML
@@ -201,7 +202,14 @@ public class UpdateOrAddBookController {
 		return btnUpdate;
 	}
 
+    public TextField getTfCopiesNumber() {
+		return tfCopiesNumber;
+	}
 
+
+	public void setTfCopiesNumber(TextField tfCopiesNumber) {
+		this.tfCopiesNumber = tfCopiesNumber;
+	}
 
 
 }

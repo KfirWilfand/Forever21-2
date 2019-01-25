@@ -22,7 +22,7 @@
       <children>
       <TabPane id="tpSubscriber" fx:id="tvSubsciber" prefHeight="594.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Open New Subsriber">
+          <Tab text="Add New Subsriber">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="437.0" prefWidth="748.0">
                      <children>
@@ -129,8 +129,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="527.0">
                      <children>
-                        <ListView id="lvBookList" layoutY="6.0" prefHeight="565.0" prefWidth="759.0" />
-                        <Button fx:id="btnBorrowBook" layoutX="280.0" layoutY="176.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" text="Borrow Book">
+                        <Button fx:id="btnBorrowBook" layoutX="265.0" layoutY="188.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" text="Borrow Book">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -145,31 +144,33 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="tfBorrowBookSubscriberNumber" layoutX="146.0" layoutY="129.0" prefHeight="25.0" prefWidth="134.0" />
-                        <Text layoutX="403.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Date :">
+                        <TextField fx:id="tfBorrowBookSubscriberNumber" layoutX="149.0" layoutY="129.0" prefHeight="25.0" prefWidth="129.0" />
+                        <Text layoutX="404.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Date :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text layoutX="403.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Borrow date :">
+                        <Text layoutX="403.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Borrow date :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <DatePicker fx:id="tfBorrowBookBorrowDate" layoutX="516.0" layoutY="168.0" prefHeight="25.0" prefWidth="112.0" />
-                        <DatePicker fx:id="tfBorrowBookEndBorrowDate" layoutX="515.0" layoutY="214.0" prefHeight="25.0" prefWidth="115.0" />
-                        <TextField fx:id="tfBorrowCopyID" layoutX="149.0" layoutY="86.0" prefHeight="26.0" prefWidth="129.0" />
+                        <DatePicker fx:id="tfBorrowBookBorrowDate" layoutX="515.0" layoutY="366.0" prefHeight="25.0" prefWidth="117.0" />
+                        <DatePicker fx:id="tfBorrowBookEndBorrowDate" layoutX="516.0" layoutY="411.0" prefHeight="25.0" prefWidth="115.0" />
+                        <TextField fx:id="tfBorrowCopyID" layoutX="148.0" layoutY="86.0" prefHeight="26.0" prefWidth="130.0" />
                         <Text layoutX="22.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copy ID:">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Line endX="-100.0" endY="359.0" layoutX="489.0" layoutY="54.0" startX="-100.0" />
-                        <Text fx:id="txtBorrowBookNotice" fill="RED" layoutX="407.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTICE: subscriber will not be able to make an extension because it's a popular book" visible="false" wrappingWidth="216.13671875">
+                        <Line endX="-100.0" endY="451.0" layoutX="472.0" layoutY="72.0" startX="-100.0" stroke="#a4a4a4" />
+                        <Text fx:id="txtBorrowBookNotice" fill="RED" layoutX="516.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTICE: subscriber will not be able to make an extension because it's a popular book" visible="false" wrappingWidth="216.13671875">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="Calibri Bold" size="16.0" />
                            </font>
                         </Text>
+                        <Text fill="#f50000" layoutX="280.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+                        <Text fill="#ff0404" layoutX="281.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
                      </children>
                   </AnchorPane>
             </content>
@@ -178,8 +179,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutY="1.0" prefHeight="564.0" prefWidth="759.0" />
-                        <Button fx:id="btnReturnBook" layoutX="177.0" layoutY="136.0" mnemonicParsing="false" onAction="#onReturnBookBtn" text="Return Book">
+                        <Button fx:id="btnReturnBook" layoutX="251.0" layoutY="132.0" mnemonicParsing="false" onAction="#onReturnBookBtn" text="Return Book">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -189,38 +189,38 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="285.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number :">
+                        <Text layoutX="393.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber Number :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="tfReturnBookSubscriberNumber" layoutX="421.0" layoutY="111.0" prefHeight="25.0" prefWidth="114.0" />
-                        <Text layoutX="285.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Date :">
+                        <TextField fx:id="tfReturnBookSubscriberNumber" layoutX="524.0" layoutY="293.0" prefHeight="25.0" prefWidth="126.0" />
+                        <Text layoutX="394.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Date :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text layoutX="285.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Borrow date :">
+                        <Text layoutX="394.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Borrow date :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text layoutX="289.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Returning Date :">
+                        <Text layoutX="395.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Returning Date :">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text fx:id="txtLateReturnAlert" fill="RED" layoutX="401.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="140.66077110171318" />
-                        <DatePicker fx:id="tfReturnBookBorrowDate" layoutX="421.0" layoutY="153.0" prefHeight="25.0" prefWidth="113.0" />
-                        <DatePicker fx:id="tfReturnBookEndBorrowDate" layoutX="421.0" layoutY="198.0" prefHeight="25.0" prefWidth="114.0" />
-                        <DatePicker fx:id="tfReturnBookReturningDate" layoutX="421.0" layoutY="300.0" prefHeight="25.0" prefWidth="110.0" />
-                        <TextField fx:id="tfReturnBookCatalogNumber" layoutX="78.0" layoutY="85.0" prefHeight="26.0" prefWidth="134.0" />
-                        <Text layoutX="19.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copy ID:">
+                        <DatePicker fx:id="tfReturnBookBorrowDate" layoutX="524.0" layoutY="333.0" prefHeight="25.0" prefWidth="124.0" />
+                        <DatePicker fx:id="tfReturnBookEndBorrowDate" layoutX="523.0" layoutY="372.0" prefHeight="25.0" prefWidth="127.0" />
+                        <DatePicker fx:id="tfReturnBookReturningDate" layoutX="522.0" layoutY="412.0" prefHeight="25.0" prefWidth="130.0" />
+                        <TextField fx:id="tfReturnBookCatalogNumber" layoutX="106.0" layoutY="85.0" prefHeight="26.0" prefWidth="134.0" />
+                        <Text layoutX="31.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copy ID:">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Line endX="-100.0" endY="359.0" layoutX="373.0" layoutY="63.0" startX="-100.0" />
+                        <Line endX="-100.0" endY="451.0" layoutX="472.0" layoutY="72.0" startX="-100.0" stroke="#a4a4a4" />
+                        <Text fill="#ff0505" layoutX="242.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
                      </children>
                   </AnchorPane>
               </content>
@@ -275,18 +275,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="ssTfFirstName" GridPane.columnIndex="1" />
-                              <TextField fx:id="ssTfLastName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField fx:id="ssTfPhone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <TextField fx:id="ssTfUserName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField fx:id="ssTfPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <TextField fx:id="ssTfEmail" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField fx:id="ssTfFirstName" disable="true" GridPane.columnIndex="1" />
+                              <TextField fx:id="ssTfLastName" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="ssTfPhone" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="ssTfUserName" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="ssTfPassword" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="ssTfEmail" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Graduation:" GridPane.rowIndex="6">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Text>
-                              <DatePicker fx:id="ssPdGraduation" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <DatePicker fx:id="ssPdGraduation" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
                         <Button fx:id="btnSearchSubscriber" layoutX="674.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search">
@@ -357,7 +357,7 @@
                               </Tab>
                           </tabs>
                         </TabPane>
-                        <Button fx:id="ssbtnUpdate" layoutX="186.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUpdate" text="Update" />
+                        <Button fx:id="ssbtnUpdate" disable="true" layoutX="186.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUpdate" text="Update" />
                         <Label layoutX="14.0" layoutY="376.0" text="Reader Card Details:">
                            <font>
                               <Font name="System Bold" size="15.0" />
@@ -395,7 +395,7 @@
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <CheckBox fx:id="ssCxbHoldSubscriber" mnemonicParsing="false" text="Hold Subsriber" textFill="#ffbe0b" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <CheckBox fx:id="ssCxbHoldSubscriber" mnemonicParsing="false" text="Hold Subsriber" textFill="#ffbe0b" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

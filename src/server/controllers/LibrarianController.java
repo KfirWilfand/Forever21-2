@@ -63,11 +63,11 @@ public class LibrarianController {
 	{
 		Subscriber subscriber = SubscriberController.getSubscriberById((String)((Message)msg).getObj());
 		if (subscriber != null) {
-			return new Message(OperationType.SearchSubscriber, subscriber, ReturnMessageType.SubsciberExist);
+			return new Message(OperationType.SearchSubscriber, subscriber, ReturnMessageType.Successful);
 		}
 		else 
 		{
-			return new Message(OperationType.SearchSubscriber, null, ReturnMessageType.SubsciberNotExist);	
+			return new Message(OperationType.SearchSubscriber, null, ReturnMessageType.Unsuccessful);	
 		} 
 	}
 
