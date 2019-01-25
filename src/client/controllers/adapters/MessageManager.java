@@ -127,11 +127,6 @@ public class MessageManager {
 					break;
 				}
 				break;
-				
-				
-				
-
-				
 			case EditDetailsByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case Successful:

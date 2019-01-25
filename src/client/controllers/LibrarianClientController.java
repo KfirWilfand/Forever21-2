@@ -222,6 +222,7 @@ public class LibrarianClientController {
 		if(ssPdGraduation.getValue()== null)
 			tflist.add(ssPdGraduation);
 		
+		
 		utils.setStyleToList(tflist,"-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		
 		if(!ssTfUserName.getText().isEmpty() && !ssTfPassword.getText().isEmpty() && !ssTfFirstName.getText().isEmpty() && !ssTfLastName.getText().isEmpty() && isEmailCorrect && isPhoneCorrect && ssPdGraduation.getValue() != null )	
