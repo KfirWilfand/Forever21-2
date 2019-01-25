@@ -7,6 +7,7 @@ import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.Book;
+import common.entity.Copy;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -63,20 +64,7 @@ public class SearchBookOnManageStockController {
     		String getAllBooksQuery = "Select * from obl.books";
     		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, getAllBooksQuery));
     	
-    	
-//	    	booksTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> 
-//	    	{
-//	    		System.out.println(oldSelection.toString());
-//	    		System.out.println(newSelection.toString());
-//	    		Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
-//				b1.setDisable(false);
-//				Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
-//				b2.setDisable(false);
-//				TextField t=ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID();
-//				t.setDisable(false);
-//				
-//	    	});
-//	    	
+
 	    	
     	}
     	   	
@@ -84,7 +72,12 @@ public class SearchBookOnManageStockController {
 
     @FXML
     void onClickSearchBook(ActionEvent event) {
-       	String searchBookQuery="SELECT * FROM obl.books WHERE bCatalogNum='"+tfCatalogNumberForSearch.getText()+"'" ;
+    	String searchBookQuery;
+    	if(tfCatalogNumberForSearch.getText().isEmpty()) 
+    	{
+    		searchBookQuery="SELECT * FROM obl.books";
+    	}
+    	else searchBookQuery="SELECT * FROM obl.books WHERE bCatalogNum='"+tfCatalogNumberForSearch.getText()+"'" ;
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, searchBookQuery));
     }
     
@@ -101,19 +94,31 @@ public class SearchBookOnManageStockController {
     void onChosenRow(MouseEvent event) {
     	if(event.getClickCount() == 1)
     	{
+
     		ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
     		Book book = booksTable.getSelectionModel().getSelectedItem();
     		String query = "SELECT * FROM obl.copeis where bCatalogNum = " + book.getCatalogNum();
     		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetCopiesOfSelectedBook,query));
-    		Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
-			b1.setDisable(false);
-			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
-			b2.setDisable(false);
+    		
+    		ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().textProperty().addListener((observable, oldValue, newValue) -> {
+    			Button b1=ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy();
+    			b1.setDisable(false);
+       		
+    	
+    		});
+ 		
+ 	
+//			Button b2=ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy();
+//			b2.setDisable(false);
 			TextField t=ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID();
 			t.setDisable(false);
     	}
     	if(event.getClickCount() == 2) 
     	{
+    		ViewStarter.client.manageStockClientControllerObj.getTvCopies().setVisible(false);
+    		ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setVisible(false);
+    		ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setVisible(false);
+    		ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().setVisible(false);
         	try 
         	{
     			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/updateOrAddBook.fxml"));
@@ -136,6 +141,23 @@ public class SearchBookOnManageStockController {
     		}
     	}
 
+    }
+    
+    
+    
+    public void showBookDetails()
+    {
+    	
+    	Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+		    	
+				String getAllBooksQuery = "Select * from obl.books";
+	    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, getAllBooksQuery));
+	    	
+			}
+
+		});
     }
     
 

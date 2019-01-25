@@ -109,19 +109,28 @@ public class BookDetailsController {
 		txtBookLocation.setText(this.book.getShelfLocation());
 		txtAvailableCopies.setText(Integer.toString(this.book.getAvilableCopiesNum()));
 		lblDescriptionDetails.setText(this.book.getDescription());
-		String temp= ((Subscriber)usr).getReaderCard().getStatus().toString();
-		if(temp!="Active")
-		{
-			txtBookOrderStatusNotice.setVisible(true);
-			btnOrderBook.setDisable(true);
-		}	
-		else if(this.book.getAvilableCopiesNum() != 0) //if number of copies per book is not 0 then hide the order book button
-		{btnOrderBook.setDisable(true);
-		txtBookOrderStatusNotice.setVisible(false);}
-		else 
-		{btnOrderBook.setDisable(false);
-		txtBookOrderStatusNotice.setVisible(false);}
+		if(usr instanceof Subscriber)
+		{	String temp= ((Subscriber)usr).getReaderCard().getStatus().toString();
+			if(temp.equals("Active"))
+			{
+				if(this.book.getAvilableCopiesNum() != 0) //if number of copies per book is not 0 then hide the order book button
+				{	
+					btnOrderBook.setDisable(true);
+					txtBookOrderStatusNotice.setVisible(false);
+				}
+				else
+				{
+					txtBookOrderStatusNotice.setVisible(false);
+					btnOrderBook.setDisable(false);
+				}
+			}
+			else 
+			{	btnOrderBook.setDisable(true);
+				txtBookOrderStatusNotice.setVisible(true);
+			}
 		}
+	}
 	
 }
+
 

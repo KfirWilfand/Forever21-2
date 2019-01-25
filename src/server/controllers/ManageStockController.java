@@ -1,16 +1,20 @@
 package server.controllers;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
 import common.entity.Copy;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 public class ManageStockController {
 	private static ManageStockController instance;
@@ -79,7 +83,8 @@ public class ManageStockController {
 
 		 return new Message(OperationType.EditDetailsByLibrarian, null , ReturnMessageType.Unsuccessful); 
 	}
-	 public Message addNewCopy(Object msg) throws SQLException 
+	 
+	public Message addNewCopy(Object msg) throws SQLException 
 	 {
 		 	Object[] m=(Object[])((Message)msg).getObj();
 	    	DBcontroller dbControllerObj=DBcontroller.getInstance();
@@ -92,17 +97,19 @@ public class ManageStockController {
     			return new Message(OperationType.AddNewCopy, null , ReturnMessageType.Unsuccessful);
 	 }
 	 
-	 public Message deleteCopy(Object msg) throws SQLException 
+	 public Message deleteCopy(Object msg) throws SQLException, IOException 
 	 {
 		 	String[] query=(String[])((Message)msg).getObj();
 	    	DBcontroller dbControllerObj=DBcontroller.getInstance();
 	       	Boolean res1=dbControllerObj.insert(query[0]);
 	    	Boolean res2=dbControllerObj.update(query[1]);	
 	    	
+
 	    	if(res1 && res2)
     			return new Message(OperationType.DeleteCopy, null , ReturnMessageType.Successful);
     		else
     			return new Message(OperationType.DeleteCopy, null , ReturnMessageType.Unsuccessful);
+	    	
 	 }
 	 
 	 public Message updateBookDetails(Object msg) throws SQLException 

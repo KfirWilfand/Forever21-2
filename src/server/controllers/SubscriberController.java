@@ -38,12 +38,12 @@ public class SubscriberController {
 		return instance;
 	}
 
-	public Message getSubscriberMessage(Object msg) throws SQLException {
+	public Message getSubscriberDetails(Object msg) throws SQLException {
 		Subscriber subscriber = getSubscriberById((String) ((Message) msg).getObj());
 		if (subscriber != null) {
-			return new Message(OperationType.GetSubscriberDetails, subscriber, ReturnMessageType.SubscriberFound);
+			return new Message(OperationType.GetSubscriberDetails, subscriber, ReturnMessageType.Successful);
 		} else
-			return new Message(OperationType.GetSubscriberDetails, null, ReturnMessageType.SubscriberNotFound);
+			return new Message(OperationType.GetSubscriberDetails, null, ReturnMessageType.Unsuccessful);
 	}
 
 	public static Subscriber getSubscriberById(String userId) throws SQLException {
@@ -87,9 +87,9 @@ public class SubscriberController {
 		Boolean res = dbControllerObj.update(arr[0]);
 		Boolean res1 = dbControllerObj.update(arr[1]);
 		if (res && res1)
-			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.UpdateSuccesfully);
+			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.Successful);
 		else
-			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.NotUpdateSuccesfully);
+			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.Unsuccessful);
 	}
 
 	public Message orderBook(Object msg) throws SQLException {

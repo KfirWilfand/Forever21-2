@@ -5,6 +5,9 @@ import java.util.logging.Logger;
 
 import client.controllers.Client;
 import client.controllers.MainViewController;
+import common.controllers.Message;
+import common.controllers.enums.OperationType;
+import common.entity.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -44,6 +47,7 @@ public class ViewStarter extends Application {
 		launch(args);
 	}
 
+	@Override
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -59,5 +63,11 @@ public class ViewStarter extends Application {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Override
+	public void stop(){
+		User usr=ViewStarter.client.mainViewController.getUser();
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Logout, usr));  
 	}
 }

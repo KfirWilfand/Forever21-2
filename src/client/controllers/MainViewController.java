@@ -122,6 +122,7 @@ public class MainViewController {
 
 	@FXML
 	void onLogoutBtn(ActionEvent event) {
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Logout, user));
 		btnLogout.setVisible(false);
 		mainView.getChildren().add(dialogBoxLogin);
 		dialogBoxLogin.setVisible(false);
@@ -129,6 +130,9 @@ public class MainViewController {
 		lblLoginAs.setText("");
 		utils.setBtnPressed(true, false, false);
 		utils.layoutSwitcher(mainPane, "homepage.fxml", "Library management system");
+		user=null;
+		tfUserName.clear();
+		tfPassword.clear();		
 	}
 
 	public Label getLblSubTitle() {
@@ -148,9 +152,17 @@ public class MainViewController {
 
 	@FXML
 	void onBtnDialogBoxLogin(ActionEvent event) {
-		String loginQuery = "Select * FROM obl.`users` where usrName = '" + this.tfUserName.getText()
-				+ "' AND `usrPassword` = '" + this.tfPassword.getText() + "'";
-		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Login, loginQuery));
+		tfPassword.setStyle(null);
+		tfUserName.setStyle(null);
+		if(tfPassword.getText().isEmpty())
+			tfPassword.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfUserName.getText().isEmpty())
+			tfUserName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(!tfUserName.getText().isEmpty() && !tfPassword.getText().isEmpty())
+		{	String loginQuery = "Select * FROM obl.`users` where usrName = '" + this.tfUserName.getText()
+					+ "' AND `usrPassword` = '" + this.tfPassword.getText() + "'";
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Login, loginQuery));
+		}	
 	}
 
 	public Button getBtnProfile() {

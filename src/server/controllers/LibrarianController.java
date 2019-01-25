@@ -53,27 +53,21 @@ public class LibrarianController {
 			Boolean res=dbControllerObj.update(query[0]); 
 			Boolean res1=dbControllerObj.update(query[1]);
 			if(res && res1 )
-				return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.SubscriberAddedSuccessfuly);
+				return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.Successful);
 			else
-				return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.SubscriberFailedToAdd);
+				return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.Unsuccessful);
 		}
-	}
-
-	public static void init(String data) 
-	{
-		// TODO Auto-generated method stub
-
 	}
 	
 	public Message searchSubscriber(Object msg) throws SQLException
 	{
 		Subscriber subscriber = SubscriberController.getSubscriberById((String)((Message)msg).getObj());
 		if (subscriber != null) {
-			return new Message(OperationType.SearchSubscriber, subscriber, ReturnMessageType.SubsciberExist);
+			return new Message(OperationType.SearchSubscriber, subscriber, ReturnMessageType.Successful);
 		}
 		else 
 		{
-			return new Message(OperationType.SearchSubscriber, null, ReturnMessageType.SubsciberNotExist);	
+			return new Message(OperationType.SearchSubscriber, null, ReturnMessageType.Unsuccessful);	
 		} 
 	}
 

@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="594.0" prefWidth="759.0" style="-fx-background-color: WHITE;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LibrarianClientController">
    <children>
-      <ImageView fitHeight="172.0" fitWidth="539.0" layoutX="104.0" layoutY="389.0">
+      <ImageView fitHeight="172.0" fitWidth="539.0" layoutX="104.0" layoutY="389.0" visible="false">
          <image>
             <Image url="@../resources/welcome.jpg" />
          </image>
