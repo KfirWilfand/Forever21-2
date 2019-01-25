@@ -127,11 +127,6 @@ public class MessageManager {
 					break;
 				}
 				break;
-				
-				
-				
-
-				
 			case EditDetailsByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
@@ -242,6 +237,14 @@ public class MessageManager {
 					//alert.error("Copy was deleted failed!","");
 				}
 				ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setDisable(true);
+				break;
+				
+			case ReturnBookByLibrarian:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					alert.info("Book returned Successfully!","");
+				} else {
+					alert.error("Book return failed!","");
+				}
 				break;
 			}
 
