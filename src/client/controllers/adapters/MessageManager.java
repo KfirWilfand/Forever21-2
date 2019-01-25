@@ -119,6 +119,14 @@ public class MessageManager {
 					alert.error("Book update failed!","");
 				}
 				break;
+				
+			case ReturnBookByLibrarian:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					alert.info("Book returned Successfully!","");
+				} else {
+					alert.error("Book return failed!","");
+				}
+				break;
 			}
 
 		}
