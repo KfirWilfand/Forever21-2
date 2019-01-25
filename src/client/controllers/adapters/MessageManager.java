@@ -162,23 +162,55 @@ public class MessageManager {
 				break;
 				
 			case OrderBook:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
-					alert.info("Book was ordered, SMS will be sent when book will arrive!","");
-				else
-					alert.error("Book cannot be ordered!","");
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Book was ordered, Email will be sent when book will arrive!");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Book order failed!");
+					break;
+				case SubscriberAlreadyInOrderList:
+					utils.showAlertWithHeaderText(AlertType.ERROR,"", "You are already in the order list for this book!");
+					break;
+				}
 				break;
 				
 			case BorrowBookByLibrarian:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					//alert.info("Book was ordered, SMS will be sent when book will arrive!","");
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "successfull borrowing");
+				switch (msg.getReturnMessageType()) {
+				case SubscriberNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber number is not exist!");
+					break;
+				case CopyNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy ID is not exist!");
+					break;
+				case HoldOrLockStatus:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber is Lock or Hold!");
+					break;
+				case CopyIsNotAvailable:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy is not abilable!");
+					break;
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "successfull borrowing");
+					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[])msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in operation!");
+					break;
+					
 				}
-				else
-				{
-					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot be borrow!");
-					//alert.error("Book cannot be ordered!","");
-					//alert.error("Error in operation!","");
-				}
+
+			
+				
+				//				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+//					//alert.info("Book was ordered, SMS will be sent when book will arrive!","");
+//					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "successfull borrowing");
+//				}
+//				else
+//				{
+//					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot be borrow!");
+//					//alert.error("Book cannot be ordered!","");
+//					//alert.error("Error in operation!","");
+//				}
 				break;
 				
 			case UpdateBookDetails:

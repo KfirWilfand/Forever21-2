@@ -1,6 +1,7 @@
 package server.controllers;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -123,5 +124,39 @@ public class ManageStockController {
 	   	 }
 	   	 else return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Unsuccessful);  
 	 }
+	 
+	 
+	 
+	  public static Copy getCopyById(String copyID) throws SQLException
+	  {
+		 String query= "select * from obl.copeis where copyID= '"+copyID+"'";
+		 DBcontroller dbControllerObj=DBcontroller.getInstance();
+	   	 ResultSet res = dbControllerObj.query(query);
+	   	 if(res.next()) 
+	   	 {
+	   		 Copy copy= new Copy(res.getString("copyID"),res.getInt("bCatalogNum"),res.getBoolean("isAvilable"));
+	   		 return copy;
+	   	 }
+	   	 return null;
+	   	 
+	  }
+		 
+	  public static Book getBookByCatalogNumber(int catalogNumber) throws SQLException
+	  {
+		 String query= "select * from obl.books where bCatalogNum= '"+catalogNumber+"'";
+		 DBcontroller dbControllerObj=DBcontroller.getInstance();
+	   	 ResultSet rs = dbControllerObj.query(query);
+	   	 if(rs.next()) 
+	   	 {
+				List<String> authors= Arrays.asList(rs.getString("bAuthor").split(","));
+    			List<String> genres= Arrays.asList(rs.getString("bGenre").split(","));
+    			Book book=new Book(rs.getInt("bCatalogNum"), rs.getString("bName"),  rs.getString("bDescription"), 
+    					authors, genres, rs.getInt("bCopiesNum"), rs.getDate("bPurchaseDate"), 
+    					rs.getString("bShelfLocation"), rs.getString("bEdition"), rs.getDate("bPrintDate"), rs.getBoolean("bIsPopular"),rs.getInt("bAvilableCopiesNum"));
+	   	 return book;
+	   	 }
+	   	 return null;
+	   	 
+	  }
 }
 

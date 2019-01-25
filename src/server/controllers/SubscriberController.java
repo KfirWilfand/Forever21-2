@@ -102,7 +102,7 @@ public class SubscriberController {
 		String checkIfOrderAlreadyExist="select boSubNum, boCatalogNum from obl.books_orders where boSubNum="+tempSubNum+" and boCatalogNum='"+tempBookCatalogNum+"'";
 		ResultSet checkIfOrderAlreadyExist_res=dbControllerObj.query(checkIfOrderAlreadyExist);
 		if(checkIfOrderAlreadyExist_res.next())
-			alert.error("Order is already exist for you!", "");
+			return new Message(OperationType.OrderBook, null , ReturnMessageType.SubscriberAlreadyInOrderList);
 		else
 		{
 			String orderQuery="INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"+tempSubNum+"','"+tempBookCatalogNum+"','"+orderDate+"')";
@@ -112,7 +112,5 @@ public class SubscriberController {
 			else
 				return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
 		}
-		return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
-
 	}
 }

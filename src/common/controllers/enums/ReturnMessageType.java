@@ -6,8 +6,8 @@ public enum ReturnMessageType {
 	UserFailedLogin,
 	BooksFound,
 	BooksNotFound,
-	SubsciberExist,
-	SubsciberNotExist,
+	SubscriberExist,
+	SubscriberNotExist,
 	EmailOrPhoneAreAlreadyExists,
 	BookWasNotFoundOnManageStock,
 	BooksFoundOnManageStock, 
@@ -15,5 +15,9 @@ public enum ReturnMessageType {
 	Unsuccessful, 
 	ErrorWhileTyping,
 	ClientIsAlreadyLogin,
-	SubscriberIsLocked
+	SubscriberIsLocked, 
+	CopyNotExist,
+	HoldOrLockStatus, 
+	CopyIsNotAvailable, 
+	SubscriberAlreadyInOrderList
 }

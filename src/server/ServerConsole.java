@@ -21,6 +21,7 @@ import common.entity.User;
 import common.entity.enums.UserType;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+import server.controllers.AutomaticFunctionsController;
 import server.controllers.DBcontroller;
 import server.controllers.LibrarianController;
 import server.controllers.LibraryManagerController;
@@ -122,14 +123,13 @@ public class ServerConsole extends AbstractServer {
 		} catch(Exception ex) {
 			LOGGER.severe("ERROR in handleMessageFromClient: " + ex);
 		}
-
-			
-
 	}
 
 	@Override
 	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
+		AutomaticFunctionsController afObj=AutomaticFunctionsController.getInstance();
+		afObj.startExecutionAt(16,44,00);
 	}
 
 	@Override

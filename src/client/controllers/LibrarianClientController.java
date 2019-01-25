@@ -261,6 +261,10 @@ public class LibrarianClientController {
 
 	@FXML
 	void onBorrowBookBtn(ActionEvent event) {
+		tfBorrowBookBorrowDate.setValue(null);
+		tfBorrowBookEndBorrowDate.setValue(null);
+		txtBorrowBookNotice.setVisible(false);
+		
 		tfBorrowCopyID.setStyle(null);
 		tfBorrowBookSubscriberNumber.setStyle(null);
 		
@@ -380,7 +384,6 @@ public class LibrarianClientController {
 		Boolean isPopular = (Boolean) objects[1];
 		tfBorrowBookBorrowDate.setValue(bCopy.getBorrowDate().toLocalDate());
 		tfBorrowBookEndBorrowDate.setValue(bCopy.getReturnDueDate().toLocalDate());
-		System.out.println(tfBorrowBookEndBorrowDate.getValue());
 		if (isPopular) {
 			txtBorrowBookNotice.setVisible(true);
 		}
