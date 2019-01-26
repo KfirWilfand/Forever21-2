@@ -59,7 +59,14 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-
+/**
+ * The LibrarianClientController class represent librarian client controller
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class LibrarianClientController {
 	/** tfSubscriberFirstName is the subscriber first name */
 	@FXML
@@ -763,6 +770,9 @@ public class LibrarianClientController {
 		ssTfEmail.clear();
 		ssPdGraduation.setValue(null);	
 	}
+	 /**
+   	 * cleanNewSubscriberFields clean subscriber fields
+   	 */
 	public void cleanNewSubscriberFields() {
 		tfSubscriberFirstName.clear();
 		tfSubscriberLastName.clear();

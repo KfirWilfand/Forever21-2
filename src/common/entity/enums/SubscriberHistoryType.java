@@ -1,8 +1,16 @@
 package common.entity.enums;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The SubscriberHistoryType enum is containing history type
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public enum SubscriberHistoryType {
 	BooksRequest, BooksApprove, BooksReturn, EditProfile, ChangeStatus, BookExtension;
 
@@ -22,7 +30,11 @@ public enum SubscriberHistoryType {
 
 		return null;
 	}
-	
+	/**
+	 * getEnums method get enums
+	 * @throws SQLException when occurs
+	 * @return List of reader card history
+	 */
 	public static List<SubscriberHistoryType> getEnums(){
 		List<SubscriberHistoryType> list = new ArrayList<SubscriberHistoryType>();
 		list.add(BooksRequest);

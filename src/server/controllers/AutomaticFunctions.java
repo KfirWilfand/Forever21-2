@@ -113,6 +113,7 @@ public class AutomaticFunctions {
 	    {
 	    	Copy copyToReturn=ManageStockController.getCopyById(needToreturnTomorrow.getString("copyID"));
 	    	Book bookToReturn=ManageStockController.getBookByCatalogNumber(copyToReturn.getbCatalogNum());
+	    	
 	    	Subscriber subscriber=SubscriberController.getSubscriberById(needToreturnTomorrow.getString("subNum"));
  			String mailSubject="Reminder: Your need to return your book";
 			String mailBody="Dear Student you need to return the book: "+bookToReturn.getBookName()+" until tomrrow\nOr your reader card will Hold!";

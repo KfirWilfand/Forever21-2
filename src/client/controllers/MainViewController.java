@@ -30,6 +30,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ComboBox;
 
+/**
+ * The MainViewController class represent the main view controller on the client's side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class MainViewController {
 
 	/** mainView is a anchor pane */
@@ -91,28 +99,47 @@ public class MainViewController {
 	@FXML
 	private Button btnLogout;
 
+	/** utils object declaration*/
 	private Utils utils;
 
+	/** user object declaration*/
 	private User user;
+	
+	/** btnHomePage homepage button*/
+	@FXML
+	private Button btnHomePage;
 
+	/**
+   	 * getUser returns the current user
+   	 * @return User 
+   	 */
 	public User getUser() {
 		return user;
 	}
 
-	@FXML
-	private Button btnHomePage;
-
+	
+	/**
+   	 * openLogInForm open the login form
+   	 * @param event action event
+   	 */
 	@FXML
 	void openLogInForm(ActionEvent event) {
 		dialogBoxLogin.setVisible(true);
 	}
-
+	
+	/**
+   	 * onHomePageBtn display the homepage
+   	 * @param event action event
+   	 */
 	@FXML
 	void onHomePageBtn(ActionEvent event) {
 		utils.setBtnPressed(true, false, false);
 		utils.layoutSwitcher(mainPane, "homepage.fxml", "Library management system");
 	}
 
+	/**
+   	 * initialize the main view controller
+   	 */
 	@FXML
 	public void initialize() {
 		ViewStarter.client.mainViewController = this;
@@ -128,12 +155,21 @@ public class MainViewController {
 		});
 	}
 
+	/**
+   	 * openProfileView open user profile 
+   	 * @param event action of current event
+   	 * @throws IOException 
+   	 */
 	@FXML
 	void openProfileView(ActionEvent event) throws IOException {
 		if (this.user != null)
 			onLogin(user);
 	}
 
+	/**
+   	 * onLogoutBtn log out the current user
+   	 * @param event action of current event
+   	 */
 	@FXML
 	void onLogoutBtn(ActionEvent event) {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Logout, user));
@@ -149,21 +185,36 @@ public class MainViewController {
 		tfPassword.clear();		
 	}
 
+	/**
+   	 * getLblSubTitle get the user title
+   	 * @return user label
+   	 */
 	public Label getLblSubTitle() {
 		return lblSubTitle;
 	}
-
+	/**
+   	 * openSearchView open the search view
+   	 * @param event action of current event
+   	 */
 	@FXML
 	void openSearchView(ActionEvent event) {
 		utils.setBtnPressed(false, true, false);
 		utils.layoutSwitcher(mainPane, "search.fxml", "Search Book");
 	}
 
+	/**
+   	 * onCloseLogIn close after login the login dialog box
+   	 * @param event action of current event
+   	 */
 	@FXML
 	void onCloseLogIn(ActionEvent event) {
 		dialogBoxLogin.setVisible(false);
 	}
 
+	/**
+   	 * onBtnDialogBoxLogin open login dialog box
+   	 * @param event action of current event
+   	 */
 	@FXML
 	void onBtnDialogBoxLogin(ActionEvent event) {
 		tfPassword.setStyle(null);
@@ -179,14 +230,27 @@ public class MainViewController {
 		}	
 	}
 
+	/**
+   	 * getBtnProfile presents profile
+   	 * @return button
+   	 */
 	public Button getBtnProfile() {
 		return btnProfile;
 	}
 
+	/**
+   	 * getBtnSearchBook get the search book button
+   	 * @return button
+   	 */
 	public Button getBtnSearchBook() {
 		return btnSearchBook;
 	}
 
+	/**
+   	 * onLogin make the log in procedure
+   	 * @param user the current logged user
+   	 * @exception Exception
+   	 */
 	public void onLogin(User user) {
 		this.user = user;
 
@@ -225,14 +289,26 @@ public class MainViewController {
 		});
 	}
 
+	/**
+   	 * getBtnHomePage get the homepage button
+   	 * @return button
+   	 */
 	public Button getBtnHomePage() {
 		return btnHomePage;
 	}
 
+	/**
+   	 * getMainView get the main viewbutton
+   	 * @return anchor pane main view
+   	 */
 	public AnchorPane getMainView() {
 		return mainView;
 	}
 	
+	/**
+   	 * getLblLoginAs write login as label
+   	 * @return login as label
+   	 */
 	public Label getLblLoginAs() {
 		return lblLoginAs;
 	}

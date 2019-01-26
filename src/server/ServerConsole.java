@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import server.controllers.AutomaticFunctionsController;
 import server.controllers.DBcontroller;
+import common.controllers.FilesController;
 import server.controllers.LibrarianController;
 import server.controllers.LibraryManagerController;
 import server.controllers.ManageStockController;
@@ -31,19 +33,35 @@ import server.controllers.ReaderController;
 import server.controllers.StatisticController;
 import server.controllers.SubscriberController;
 
+/**
+ * The ServerConsole extends AbstractServer represent the server's console
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class ServerConsole extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
-	//public static List<BookInOrder> BooksOrders = Collections.synchronizedList(new LinkedList<BookInOrder>());
+	/**public static List<BookInOrder> BooksOrders = Collections.synchronizedList(new LinkedList<BookInOrder>());*/
 	public static ArrayList<Integer> connectedClients;
 	private int port;
-	
+	/**
+     * ServerConsole method
+     * @param port
+	 */
 	public ServerConsole(int port) {
 		super(port);
 		connectedClients=new ArrayList<Integer>();
 	}
 	
 	private static final Logger LOGGER = Logger.getLogger(ServerConsole.class.getName());
-
+	/**
+     * handleMessageFromClient method handle with messages from the client with switch 
+     * @param msg
+     * @param client 
+     * @exception Exception
+	 */
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		LOGGER.info("Message received: " + msg + " from " + client);
@@ -111,6 +129,7 @@ public class ServerConsole extends AbstractServer {
 				break;
 			case UpdateBookDetails:
 				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
+				this.sendToClient(returnMessageToClient, client);
 				break;
 			case OrderBook:
 				returnMessageToClient=subscriberControllerObj.orderBook(msg);
@@ -129,6 +148,14 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=librarianControllerObj.returnBook(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;	
+			case DownloadTableOfContent:
+				returnMessageToClient=readerControllerObj.sendTableOfContantToClient((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case ShowBookPhoto:
+				returnMessageToClient=manageStockControllerObj.sendBookPhotoToClient((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 			}
 			
 		} catch(Exception ex) {
@@ -136,14 +163,18 @@ public class ServerConsole extends AbstractServer {
 		}
 		
 	}
-
+	/**
+     * serverStarted method
+	 */
 	@Override
 	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
 		AutomaticFunctionsController afObj=AutomaticFunctionsController.getInstance();
 		afObj.startExecutionAt(00,00,01);
 	}
-
+	/**
+     * serverStopped method
+	 */
 	@Override
 	public void serverStopped() {
 		ServerStarter.server.stopListening();

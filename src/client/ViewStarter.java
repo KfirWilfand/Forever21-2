@@ -16,11 +16,23 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * The ViewStarter class that extends application represent the start view
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class ViewStarter extends Application {
 	private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 	final public static int DEFAULT_PORT = 5555;
 	public static Client client;
-
+	/**
+     * main method
+     * @exception ArrayIndexOutOfBoundsException
+     * @exception IOException
+	 */
 	public static void main(String[] args) {
 		String host = "";
 		int port = 0; // The port number
@@ -53,7 +65,11 @@ public class ViewStarter extends Application {
 
 		launch(args);
 	}
-
+	/**
+     * start method
+     * @param primaryStage
+     * @exception Exception
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -78,7 +94,9 @@ public class ViewStarter extends Application {
 		}
 
 	}
-
+	/**
+     * stop method
+	 */
 	@Override
 	public void stop() {
 		User usr = ViewStarter.client.mainViewController.getUser();

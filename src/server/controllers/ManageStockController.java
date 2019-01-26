@@ -1,6 +1,7 @@
 package server.controllers;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Queue;
 
 import client.ViewStarter;
+import common.controllers.FilesController;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
@@ -18,26 +20,52 @@ import common.entity.Book;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
 import common.entity.Subscriber;
+import common.entity.TransferFile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-
+/**
+ * The ManageStockController class represent the manage stock controller on the server side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class ManageStockController {
+	/**instance is a singleton of the class */
 	private static ManageStockController instance;
 
 	private ManageStockController(){}
-
+	/**
+	 * getInstance is creating the singleton object of the class
+	 */
 	public static ManageStockController getInstance(){
 		if(instance == null){
 			instance = new ManageStockController();
 		}
 		return instance;
 	}
-
+	/**
+	 * addNewBook is adding a new book to the inventory
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message addNewBook(Object msg) throws SQLException 
 	{
-		String query=(String)((Message)msg).getObj();
+		
+		Object[] message=(Object[])((Message)msg).getObj();
+		String query=(String)message[0];
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
 		Boolean res = dbControllerObj.insert(query);
+		
+		FilesController filesControllerObj=FilesController.getInstance();
+		if((TransferFile)message[1]!=null)
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+		if((TransferFile)message[3]!=null)
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
+		
+		
 		if(res)
 		{
 			return new Message(OperationType.AddNewBook, null , ReturnMessageType.Successful); 
@@ -45,6 +73,12 @@ public class ManageStockController {
 		else return new Message(OperationType.AddNewBook, null , ReturnMessageType.Unsuccessful); 
 	}
 
+	/**
+	 * getCopiesbyCatalogNumber is getting the copies by using catalog number
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message getCopiesbyCatalogNumber(Object msg) throws SQLException 
 	{
 		List<Copy> copies_list= new ArrayList<Copy>();
@@ -74,7 +108,6 @@ public class ManageStockController {
 	 * String[2] = query 2 to update subscriber table
 	 * 
 	 * @return if Successful: Message with updated Subscriber Object
-	 * @author kfir3
 	 */ 
 	public Message editDetailsByLibrarian(Object msg) throws SQLException {
 		String[] params =  (String[]) ((Message)msg).getObj();
@@ -89,6 +122,12 @@ public class ManageStockController {
 		return new Message(OperationType.EditDetailsByLibrarian, null , ReturnMessageType.Unsuccessful); 
 	}
 
+	/**
+	 * addNewCopy is adding a new copy to the inventory
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message addNewCopy(Object msg) throws SQLException 
 	{
 		Object[] m=(Object[])((Message)msg).getObj();
@@ -101,7 +140,13 @@ public class ManageStockController {
 		else
 			return new Message(OperationType.AddNewCopy, null , ReturnMessageType.Unsuccessful);
 	}
-
+	/**
+	 * deleteCopy is deleting a copy from the inventory
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @throw IOException
+	 * @return Message to the client
+	 */
 	public Message deleteCopy(Object msg) throws SQLException, IOException 
 	{
 		String[] query=(String[])((Message)msg).getObj();
@@ -116,12 +161,25 @@ public class ManageStockController {
 			return new Message(OperationType.DeleteCopy, null , ReturnMessageType.Unsuccessful);
 
 	}
-
+	/**
+	 * updateBookDetails is updating details about book
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message updateBookDetails(Object msg) throws SQLException 
 	{
-		String query=(String)((Message)msg).getObj();
+		Object[] message=(Object[])((Message)msg).getObj();
+		String query=(String)message[0];
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
-		Boolean res = dbControllerObj.update(query);
+		Boolean res = dbControllerObj.insert(query);
+		
+		FilesController filesControllerObj=FilesController.getInstance();
+		if((TransferFile)message[1]!= null)
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+		if((TransferFile)message[3]!= null)
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
+		
 		if(res)
 		{
 			return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Successful); 
@@ -130,7 +188,12 @@ public class ManageStockController {
 	}
 
 
-
+	/**
+	 * getCopyById is returning copy by his id
+	 * @param copyID contains the id of the copy 
+	 * @throws SQLException when occurs
+	 * @return Copy details to the client
+	 */
 	public static Copy getCopyById(String copyID) throws SQLException
 	{
 		String query= "select * from obl.copeis where copyID= '"+copyID+"'";
@@ -144,7 +207,12 @@ public class ManageStockController {
 		return null;
 
 	}
-
+	/**
+	 * getBookByCatalogNumber is returning book by his catalog number
+	 * @param catalogNumber contains the book catalog number
+	 * @throws SQLException when occurs
+	 * @return book details to the client
+	 */
 	public static Book getBookByCatalogNumber(int catalogNumber) throws SQLException
 	{
 		String query= "select * from obl.books where bCatalogNum= '"+catalogNumber+"'";
@@ -163,7 +231,12 @@ public class ManageStockController {
 
 	}
 
-
+	/**
+	 * getBookOrderQueue is returning queue of subscriber for specific book
+	 * @param bookCatalogNamber contains the book catalog number
+	 * @throws SQLException when occurs
+	 * @return Queue<Subscriber> 
+	 */
 	public static Queue<Subscriber> getBookOrderQueue(int bookCatalogNamber) throws SQLException
 	{
 		Queue<Subscriber> orderQueue= new  ArrayDeque<Subscriber>();
@@ -177,7 +250,12 @@ public class ManageStockController {
 		}
 		return orderQueue;
 	}
-	
+	/**
+	 * getBorrowCopyByCopyID is returning a borrow copy by his copy id
+	 * @param bookCatalogNamber contains the book catalog number
+	 * @throws SQLException when occurs
+	 * @return BorrowCopy 
+	 */
 	public static BorrowCopy getBorrowCopyByCopyID(String copyID) throws SQLException
 	{
 		BorrowCopy borrow=null;
@@ -189,6 +267,23 @@ public class ManageStockController {
 			borrow=new BorrowCopy(rs.getString("copyID"),rs.getInt("subNum"),rs.getDate("borrowDate"), rs.getDate("returnDueDate"));
 		return borrow ;
 	}
+
+	public Message sendBookPhotoToClient(Message msg) 
+	{
+  		String bookName=(String)msg.getObj();
+		URL url = getClass().getResource("../photos/");
+		String path=url.getPath().toString()+bookName.replace(" ","_")+".png";
+		path=path.replace('/', '\\');
+		path=path.replaceAll("bin", "src");
+  		TransferFile tf=TransferFile.createFileToTransfer(path);
+  		Object[] message=new Object[2];
+  		message[0]=tf;
+  		message[1]=bookName;
+  		if(tf!=null)
+  			return new Message(OperationType.ShowBookPhoto, message , ReturnMessageType.Successful);
+  		else
+  			return new Message(OperationType.ShowBookPhoto, null , ReturnMessageType.Unsuccessful);
+  	}
 
 }
 
