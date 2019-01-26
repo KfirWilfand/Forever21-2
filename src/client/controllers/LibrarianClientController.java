@@ -266,8 +266,6 @@ public class LibrarianClientController {
 		}
 	}
 
-
-
 	@FXML
 	void onBorrowBookBtn(ActionEvent event) {
 		tfBorrowBookBorrowDate.setValue(null);
