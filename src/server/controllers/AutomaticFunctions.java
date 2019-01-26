@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Queue;
+
+import common.entity.Subscriber;
 
 public class AutomaticFunctions {
 	
@@ -100,6 +103,28 @@ public class AutomaticFunctions {
 	    {// send mail dont forgettttttttttttttt motherfackerrrrrrr
 	    	System.out.println("mail is send to the subscriber "+needToreturnTomorrow.getString("subNum"));	
 	    }
+	        
+	}
+	
+	public static void moveToTheNextSubscriberInQueue() throws SQLException
+	{
+		LocalDate today=LocalDate.now();
+		Date todayDate=Date.valueOf(today);
+		today.minusDays(2L);
+		Date date=Date.valueOf(today);
+		String query1 = "select * from obl.book_arrived_mail where reminderDate = '"+date+"'";
+		DBcontroller dbControllerObj=DBcontroller.getInstance();
+	    ResultSet needToDeleteFromOrderQueue = dbControllerObj.query(query1);
+	    while(needToDeleteFromOrderQueue.next())
+	    {
+	    	Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(needToDeleteFromOrderQueue.getInt("catalogNum"));
+	    	Subscriber nextInQueue=orderQueue.remove();
+	    	String replaceSubscriberToTheNext = "update obl.book_arrived_mail set subNum="+orderQueue.peek().getSubscriberNum()+", reminderDate='"+todayDate+"' where subNum="+nextInQueue.getSubscriberNum()+" and catalogNum="+needToDeleteFromOrderQueue.getInt("catalogNum");
+	    	Boolean isUpdate=dbControllerObj.update(replaceSubscriberToTheNext);
+	    	String removeFromLine = "delete from obl.books_orders  where boSubNum="+nextInQueue.getSubscriberNum()+" and boCatalogNum="+needToDeleteFromOrderQueue.getInt("catalogNum");
+	    	Boolean isRemoved=dbControllerObj.update(removeFromLine);
+	    }
+
 	        
 	}
 

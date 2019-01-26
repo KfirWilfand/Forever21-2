@@ -128,13 +128,14 @@ public class ServerConsole extends AbstractServer {
 		} catch(Exception ex) {
 			LOGGER.severe("ERROR in handleMessageFromClient: " + ex);
 		}
+		
 	}
 
 	@Override
 	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
 		AutomaticFunctionsController afObj=AutomaticFunctionsController.getInstance();
-		afObj.startExecutionAt(16,44,00);
+		afObj.startExecutionAt(11,10,02);
 	}
 
 	@Override

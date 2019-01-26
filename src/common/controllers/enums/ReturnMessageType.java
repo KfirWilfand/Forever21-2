@@ -19,5 +19,6 @@ public enum ReturnMessageType {
 	CopyNotExist,
 	HoldOrLockStatus, 
 	CopyIsNotAvailable, 
-	SubscriberAlreadyInOrderList
+	SubscriberAlreadyInOrderList, wrongBorrowDetails, FullOrderList,
+	ChangeStatusToLock, ChangeStatusToActive, subscriberInWaitingList
 }

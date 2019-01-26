@@ -7,11 +7,13 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import client.controllers.adapters.AlertController;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
+import common.entity.Book;
 import common.entity.BookInOrder;
 import common.entity.BorrowCopy;
 import common.entity.HistoryItem;
@@ -101,10 +103,14 @@ public class SubscriberController {
 		DBcontroller dbControllerObj= DBcontroller.getInstance();
 		String checkIfOrderAlreadyExist="select boSubNum, boCatalogNum from obl.books_orders where boSubNum="+tempSubNum+" and boCatalogNum='"+tempBookCatalogNum+"'";
 		ResultSet checkIfOrderAlreadyExist_res=dbControllerObj.query(checkIfOrderAlreadyExist);
+		
 		if(checkIfOrderAlreadyExist_res.next())
 			return new Message(OperationType.OrderBook, null , ReturnMessageType.SubscriberAlreadyInOrderList);
 		else
-		{
+		{	Book bookToOrder =ManageStockController.getBookByCatalogNumber(checkIfOrderAlreadyExist_res.getInt("boCatalogNum"));
+			Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(bookToOrder.getCatalogNum());
+			if(bookToOrder.getCopiesNum() == orderQueue.size() )
+				return new Message(OperationType.OrderBook, null , ReturnMessageType.FullOrderList);
 			String orderQuery="INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"+tempSubNum+"','"+tempBookCatalogNum+"','"+orderDate+"')";
 			Boolean insertBookInOrder= dbControllerObj.update(orderQuery);
 			if(insertBookInOrder)//if order executed

@@ -194,6 +194,14 @@ public class LibrarianClientController {
 		}
 	}
 	
+	@FXML
+	public void updateReturnUI(BorrowCopy borrowCopy)
+	{
+		tfReturnBookSubscriberNumber.setText(String.valueOf(borrowCopy.getSubNum()));
+		tfReturnBookBorrowDate.setValue(borrowCopy.getBorrowDate().toLocalDate());
+		tfReturnBookEndBorrowDate.setValue(borrowCopy.getReturnDueDate().toLocalDate());
+		tfReturnBookReturningDate.setValue(borrowCopy.getActualReturnDate().toLocalDate());
+	}
 	
 
 	@FXML
@@ -347,11 +355,20 @@ public class LibrarianClientController {
 	@FXML
 	void onReturnBookBtn(ActionEvent event)
 	{
-		LocalDate actualReturnDate = LocalDate.now();
-		Date date = Date.valueOf(actualReturnDate);
-		if(tfReturnBookCatalogNumber.getText().isEmpty())//if the librarian forgot to insert copyId
-			alert.error("CopyID is missing!", "");
-		else {
+		tfReturnBookSubscriberNumber.clear();
+		tfReturnBookBorrowDate.setValue(null);
+		tfReturnBookEndBorrowDate.setValue(null);
+		tfReturnBookReturningDate.setValue(null);
+		
+		
+		tfReturnBookCatalogNumber.setStyle(null);
+		
+		if(tfReturnBookCatalogNumber.getText().isEmpty())
+			tfReturnBookCatalogNumber.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		else
+		{
+			LocalDate actualReturnDate = LocalDate.now();
+			Date date = Date.valueOf(actualReturnDate);
 			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(),date);
 			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ReturnBookByLibrarian, borrowCopy));
 		}

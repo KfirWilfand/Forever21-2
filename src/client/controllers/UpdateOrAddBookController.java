@@ -1,6 +1,9 @@
 package client.controllers;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -21,6 +24,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 public class UpdateOrAddBookController {
 
@@ -72,7 +78,16 @@ public class UpdateOrAddBookController {
     private Button btnBack;
 
 
-  
+    @FXML
+    private TextField tfTableOfContent;
+
+    @FXML
+    private ImageView bookImage;
+    
+    @FXML
+    private TextField tfBookImagePath;
+    
+    private byte[] imgByteArr;
 
 	@FXML
 	public void initialize() {
@@ -130,7 +145,7 @@ public class UpdateOrAddBookController {
 					+ "values ('"+ tfBookName.getText() +"','"+ txteDescription.getText() +"','"+ tfEditionNumber.getText() +"','"+ dpPrintingDate.getValue()+"'"
 						+ ",0,'"+tfLocationOnShelf.getText()+"','"+tfGenre.getText()+"','"+tfAuthorName.getText()+"'"
 							+ ",'"+dpPurchaseDate.getValue()+"',0,"+cbIsPopular.isSelected()+")";
-    	
+			
 			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, addBookQuery));
 		}
     }
@@ -210,6 +225,27 @@ public class UpdateOrAddBookController {
 	public void setTfCopiesNumber(TextField tfCopiesNumber) {
 		this.tfCopiesNumber = tfCopiesNumber;
 	}
+
+    @FXML
+    void onUploadImageBtn(ActionEvent event) throws IOException {
+    	FileChooser fc= new FileChooser();
+    	File selectedFile =fc.showOpenDialog(null);
+    	if (selectedFile != null)
+    		{
+    			tfBookImagePath.setText(selectedFile.getCanonicalPath());
+    			imgByteArr=Files.readAllBytes(selectedFile.toPath());
+    			bookImage.setImage(new Image(selectedFile.toURI().toString()));
+    		}
+    }
+
+    @FXML
+    void onUploadTableOfContent(ActionEvent event) {
+    	FileChooser fc= new FileChooser();
+    	File selectedFile =fc.showOpenDialog(null);
+    	if (selectedFile != null)
+    		tfTableOfContent.setText(selectedFile.getAbsolutePath());		
+    }
+	
 
 
 }

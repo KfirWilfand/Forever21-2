@@ -167,6 +167,9 @@ public class MessageManager {
 				case SubscriberAlreadyInOrderList:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "You are already in the order list for this book!");
 					break;
+				case FullOrderList:
+					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Order List is full!");
+					break;
 				}
 				break;
 				
@@ -190,22 +193,8 @@ public class MessageManager {
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in operation!");
-					break;
-					
+					break;	
 				}
-
-			
-				
-				//				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-//					//alert.info("Book was ordered, SMS will be sent when book will arrive!","");
-//					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "successfull borrowing");
-//				}
-//				else
-//				{
-//					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot be borrow!");
-//					//alert.error("Book cannot be ordered!","");
-//					//alert.error("Error in operation!","");
-//				}
 				break;
 				
 			case UpdateBookDetails:
@@ -240,10 +229,26 @@ public class MessageManager {
 				break;
 				
 			case ReturnBookByLibrarian:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					alert.info("Book returned Successfully!","");
-				} else {
-					alert.error("Book return failed!","");
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "successfull returning!");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy)msg.getObj());
+					break;
+				case wrongBorrowDetails:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Wrong borrow Details");
+					break;	
+				case CopyNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
+					break;
+				case subscriberInWaitingList:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "there is a waiting list to this book\nput the book aside.");
+					break;
+				case ChangeStatusToActive:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber status changed to 'Active'.\nSubscriber was late in return");
+					break;
+				case ChangeStatusToLock:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+					break;
 				}
 				break;
 			}

@@ -41,6 +41,7 @@ public class AutomaticFunctionsController {
 						AutomaticFunctions.checkStudentsGraduate();
 						AutomaticFunctions.checkLatesInReturns();
 						AutomaticFunctions.remainderOneDayBeforeReturns();
+						AutomaticFunctions.moveToTheNextSubscriberInQueue();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
