@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 
 public class SearchBookController {
@@ -39,6 +40,7 @@ public class SearchBookController {
 
 	@FXML
 	private ListView<Book> lvBooks;
+
 
 	@FXML
 	private AnchorPane apListView;
@@ -63,15 +65,23 @@ public class SearchBookController {
 		QueryBuilder qbObj = QueryBuilder.getInstance();
 		String searchQeury = qbObj.searchQuery(tfBookName.getText(), tfAuthorName.getText(), tfBookGenre.getText(),
 				tfTextFree.getText());
+		
+		System.out.println(searchQeury);
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBook, searchQeury));
 	}
 
 	@FXML
-	void onSavePdfBtn(ActionEvent event) throws IOException, DocumentException {
+	void onSavePdfBtn(ActionEvent event) throws IOException{
 		if(books.isEmpty()) {
 			return;
 		}
-		new PDFGenerator().createPdf(PDF_PATH, "Search Book Result", this.books);
+		try {
+			new PDFGenerator().createPdf(PDF_PATH, "Search Book Result", this.books);
+			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.CONFIRMATION, "", "Successful! your search result saved in " +PDF_PATH);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "", "Error, can't save your search result");
+		}
 
 	}
 
@@ -91,5 +101,10 @@ public class SearchBookController {
 		}
 
 	}
+	
+	public ListView<Book> getLvBooks() {
+		return lvBooks;
+	}
+
 
 };

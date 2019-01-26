@@ -5,11 +5,13 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.Book;
+import common.entity.BookInOrder;
 import common.entity.Subscriber;
 import common.entity.User;
 import javafx.event.ActionEvent;
@@ -20,43 +22,65 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+/**
+ * The BookDetailsController class represent all the details about a book fxml functionality 
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class BookDetailsController {
-
+	
+	/** lblBookNameDetails is a label that contains book name */
 	@FXML
 	private Label lblBookNameDetails;
 
+	/** lblAuthorDetails is a label that contains the author */
 	@FXML
 	private Label lblAuthorDetails;
 
+	/** btnTableOfContent is a button that redirect to the table of contents of the book */
 	@FXML
 	private Button btnTableOfContent;
-
+	
+	/** txtBookLocation is a text that contains the location on shelf */
 	@FXML
 	private Text txtBookLocation;
-
+	
+	/** txtAvailableCopies is a text that contains the number of aviable copies */
 	@FXML
 	private Text txtAvailableCopies;
 
+	/** btnCloseBookDetails is a button that shut down the book details */
 	@FXML
 	private Button btnCloseBookDetails;
-
+	
+	/** lblDescriptionDetails is text that contains the description of the book */
 	@FXML
 	private Text lblDescriptionDetails;
-
+	
+	/** paneBookDetails is the pane of the book details */
 	@FXML
 	private Pane paneBookDetails;
-
+	
+	/** btnOrderBook is a button that allow to place a order of the book*/
 	@FXML
 	private Button btnOrderBook;
 
+	/** txtBookOrderStatusNotice is a text notice*/
 	@FXML
 	private Text txtBookOrderStatusNotice;
-
+	
+	/** book is an object of Book class*/
 	private Book book;
-
+	
+	/** mainView is an anchor pane*/
 	private AnchorPane mainView;
 
-
+	 /**
+   	 * initialize is check if its a random user or a subscriber in order to set the 'order' button to visible or not
+   	 */
 	@FXML
 	public void initialize() {
 		paneBookDetails.setTranslateX(100);
@@ -72,30 +96,49 @@ public class BookDetailsController {
 			btnOrderBook.setVisible(false);	}
 
 
-
+	 /**
+   	 * onOrderCopyBtn place an order of a book if the number of aviable copies is eual to 0
+   	 * @param event is an action event
+   	 */
 	@FXML
 	void onOrderCopyBtn(ActionEvent event) {
 		User usr=ViewStarter.client.mainViewController.getUser();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime orderDate = LocalDateTime.now();
-		String orderQuery="INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"+((Subscriber)usr).getSubscriberNum()+"','"+book.getCatalogNum()+"','"+orderDate.format(dtf)+"')";
-		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.OrderBook, orderQuery));
+		Calendar calendar = Calendar.getInstance();				
+		java.util.Date now = calendar.getTime();
+		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+		BookInOrder bookInOrder=new BookInOrder(((Subscriber)usr).getSubscriberNum(), book.getCatalogNum(),currentTimestamp);
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.OrderBook, bookInOrder));
 	}
-
+	
+	 /**
+   	 * onTableOfContentBtn display the pdf file of the table of contents of the chosen book
+   	 * @param event is an action event
+   	 */
 	@FXML
-	void onTableOfContentBtn(ActionEvent event) {
+	void onTableOfContentBtn(ActionEvent event) 
+	{
 
 	}
-
+	 /**
+   	 * onCloseBookDetailsBtn is shutting down the book details window
+   	 * @param event is an action event
+   	 */
 	@FXML
 	void onCloseBookDetailsBtn(ActionEvent event) {
 		mainView.getChildren().remove(paneBookDetails);
 	}
 
+	/**
+   	 * setBook id set 'book' to the bookItem
+   	 * @param bookItem is the specific book
+   	 */
 	public void setBook(Book bookItem) {
 		this.book = bookItem;
 	}
 
+	/**
+   	 * updateUi is supposed to update the gui according to the number of aviable copies of a book
+   	 */
 	public void updateUi() {
 		User usr=ViewStarter.client.mainViewController.getUser();
 		lblBookNameDetails.setText(this.book.getBookName());
@@ -105,19 +148,28 @@ public class BookDetailsController {
 		txtBookLocation.setText(this.book.getShelfLocation());
 		txtAvailableCopies.setText(Integer.toString(this.book.getAvilableCopiesNum()));
 		lblDescriptionDetails.setText(this.book.getDescription());
-		String temp= ((Subscriber)usr).getReaderCard().getStatus().toString();
-		if(temp!="Active")
-		{
-			txtBookOrderStatusNotice.setVisible(true);
-			btnOrderBook.setDisable(true);
-		}	
-		else if(this.book.getAvilableCopiesNum() != 0) //if number of copies per book is not 0 then hide the order book button
-		{btnOrderBook.setDisable(true);
-		txtBookOrderStatusNotice.setVisible(false);}
-		else 
-		{btnOrderBook.setDisable(false);
-		txtBookOrderStatusNotice.setVisible(false);}
+		if(usr instanceof Subscriber)
+		{	String temp= ((Subscriber)usr).getReaderCard().getStatus().toString();
+			if(temp.equals("Active"))
+			{
+				if(this.book.getAvilableCopiesNum() != 0) //if number of copies per book is not 0 then hide the order book button
+				{	
+					btnOrderBook.setDisable(true);
+					txtBookOrderStatusNotice.setVisible(false);
+				}
+				else
+				{
+					txtBookOrderStatusNotice.setVisible(false);
+					btnOrderBook.setDisable(false);
+				}
+			}
+			else 
+			{	btnOrderBook.setDisable(true);
+				txtBookOrderStatusNotice.setVisible(true);
+			}
 		}
+	}
 	
 }
+
 

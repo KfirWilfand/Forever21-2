@@ -22,6 +22,7 @@ import common.entity.User;
 import common.entity.enums.UserType;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+import server.controllers.AutomaticFunctionsController;
 import server.controllers.DBcontroller;
 import server.controllers.LibrarianController;
 import server.controllers.LibraryManagerController;
@@ -33,41 +34,15 @@ import server.controllers.SubscriberController;
 public class ServerConsole extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 	//public static List<BookInOrder> BooksOrders = Collections.synchronizedList(new LinkedList<BookInOrder>());
+	public static ArrayList<Integer> connectedClients;
+	private int port;
 	
-	
-
 	public ServerConsole(int port) {
 		super(port);
+		connectedClients=new ArrayList<Integer>();
 	}
-	
-//	Thread thread =  new Thread(new Runnable() {
-//        @Override public void run() {
-//
-//        }
-//
-//    }).start();
 	
 	private static final Logger LOGGER = Logger.getLogger(ServerConsole.class.getName());
-
-	public static void main(String[] args) {
-		int port = 0; // Port to listen on
-
-		try {
-			port = Integer.parseInt(args[0]); // Get port from command line
-		} catch (Throwable t) {
-			port = DEFAULT_PORT; // Set port to 5555
-		}
-
-		ServerConsole sv = new ServerConsole(port);
-
-		try {
-			sv.listen(); // Start listening for connections
-		} catch (Exception ex) {
-			LOGGER.severe("ERROR - Could not listen for clients!");
-		}
-		DBcontroller dbControllerObj=DBcontroller.getInstance();
-		dbControllerObj.connectDB();
-	}
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
@@ -86,12 +61,16 @@ public class ServerConsole extends AbstractServer {
 				//LOGGER.severe(returnMessageToClient.getReturnMessageType());
 				this.sendToClient(returnMessageToClient,client);
 				break;
+			case Logout:
+				Integer usrID=((User)((Message)msg).getObj()).getId();
+				connectedClients.remove(usrID);
+				break;
 			case SearchBook:
 				returnMessageToClient=readerControllerObj.searchBook(msg);
 				this.sendToClient(returnMessageToClient,client);
 				break;
 			case GetSubscriberDetails:
-				returnMessageToClient=subscriberControllerObj.getSubscriberMessage(msg);
+				returnMessageToClient=subscriberControllerObj.getSubscriberDetails(msg);
 				this.sendToClient(returnMessageToClient,client);
 				break;	
 			case SearchSubscriber:
@@ -129,6 +108,7 @@ public class ServerConsole extends AbstractServer {
 			case EditDetailsByLibrarian:
 				returnMessageToClient=manageStockControllerObj.editDetailsByLibrarian(msg);
 				this.sendToClient(returnMessageToClient, client);				
+				break;
 			case UpdateBookDetails:
 				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
 				break;
@@ -136,6 +116,7 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=subscriberControllerObj.orderBook(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+				
 			case BorrowBookByLibrarian:
 				returnMessageToClient=librarianControllerObj.borrowBook(msg);
 				this.sendToClient(returnMessageToClient, client);
@@ -143,24 +124,29 @@ public class ServerConsole extends AbstractServer {
 			case GetStatstic:
 				returnMessageToClient=statisticController.getStatstic(msg);
 				this.sendToClient(returnMessageToClient, client);
+				break;
+			case ReturnBookByLibrarian:
+				returnMessageToClient=librarianControllerObj.returnBook(msg);
+				this.sendToClient(returnMessageToClient, client);
 				break;	
 			}
 			
 		} catch(Exception ex) {
 			LOGGER.severe("ERROR in handleMessageFromClient: " + ex);
 		}
-
-			
-
+		
 	}
 
 	@Override
-	protected void serverStarted() {
+	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
+		AutomaticFunctionsController afObj=AutomaticFunctionsController.getInstance();
+		afObj.startExecutionAt(00,00,01);
 	}
 
 	@Override
-	protected void serverStopped() {
+	public void serverStopped() {
+		ServerStarter.server.stopListening();
 		LOGGER.log(Level.INFO, "Server has stopped listening for connections.");
 	}
 

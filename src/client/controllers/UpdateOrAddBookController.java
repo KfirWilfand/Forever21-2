@@ -1,6 +1,9 @@
 package client.controllers;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -21,6 +24,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 public class UpdateOrAddBookController {
 
@@ -54,7 +60,8 @@ public class UpdateOrAddBookController {
     @FXML
     private TextField tfCopiesNumber;
 
-    @FXML
+
+	@FXML
     private CheckBox cbIsPopular;
 
     @FXML
@@ -71,7 +78,16 @@ public class UpdateOrAddBookController {
     private Button btnBack;
 
 
-  
+    @FXML
+    private TextField tfTableOfContent;
+
+    @FXML
+    private ImageView bookImage;
+    
+    @FXML
+    private TextField tfBookImagePath;
+    
+    private byte[] imgByteArr;
 
 	@FXML
 	public void initialize() {
@@ -95,16 +111,43 @@ public class UpdateOrAddBookController {
 
     @FXML
     void onClickAddBook(ActionEvent event) {
-    	ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
-      	
-    	String addBookQuery = "insert  into obl.books (bName,bDescription,bEdition,bPrintDate,bCopiesNum,bShelfLocation,bGenre,bAuthor,bPurchaseDate,bAvilableCopiesNum,bIsPopular) "
-    			+ "values ('"+ tfBookName.getText() +"','"+ txteDescription.getText() +"','"+ tfEditionNumber.getText() +"','"+ dpPrintingDate.getValue()+"'"
-    					+ ",0,'"+tfLocationOnShelf.getText()+"','"+tfGenre.getText()+"','"+tfAuthorName.getText()+"'"
-    							+ ",'"+dpPurchaseDate.getValue()+"',0,"+cbIsPopular.isSelected()+")";
-    	System.out.println(addBookQuery);
     	
-    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, addBookQuery));
+    	ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
+    	tfBookName.setStyle(null);
+    	tfAuthorName.setStyle(null);
+    	tfEditionNumber.setStyle(null);
+    	tfLocationOnShelf.setStyle(null);
+    	tfGenre.setStyle(null);
+    	txteDescription.setStyle(null);
+    	dpPrintingDate.setStyle(null);
+    	dpPurchaseDate.setStyle(null);
 
+		if(tfBookName.getText().isEmpty())
+			tfBookName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfAuthorName.getText().isEmpty())
+			tfAuthorName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfEditionNumber.getText().isEmpty())
+			tfEditionNumber.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfLocationOnShelf.getText().isEmpty())
+			tfLocationOnShelf.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfGenre.getText().isEmpty())
+			tfGenre.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(txteDescription.getText().isEmpty())
+			txteDescription.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(dpPrintingDate.getValue()==null)
+			dpPrintingDate.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(dpPurchaseDate.getValue()==null)
+			dpPurchaseDate.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(!tfBookName.getText().isEmpty() && !tfAuthorName.getText().isEmpty() && !tfEditionNumber.getText().isEmpty() && !tfLocationOnShelf.getText().isEmpty() && !tfGenre.getText().isEmpty() && !txteDescription.getText().isEmpty() && !(dpPrintingDate.getValue()==null) && !(dpPurchaseDate.getValue()==null))
+		{
+			
+			String addBookQuery = "insert  into obl.books (bName,bDescription,bEdition,bPrintDate,bCopiesNum,bShelfLocation,bGenre,bAuthor,bPurchaseDate,bAvilableCopiesNum,bIsPopular) "
+					+ "values ('"+ tfBookName.getText() +"','"+ txteDescription.getText() +"','"+ tfEditionNumber.getText() +"','"+ dpPrintingDate.getValue()+"'"
+						+ ",0,'"+tfLocationOnShelf.getText()+"','"+tfGenre.getText()+"','"+tfAuthorName.getText()+"'"
+							+ ",'"+dpPurchaseDate.getValue()+"',0,"+cbIsPopular.isSelected()+")";
+			
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, addBookQuery));
+		}
     }
 
 
@@ -112,8 +155,14 @@ public class UpdateOrAddBookController {
     @FXML
     void onClickBack(ActionEvent event)
     {
+
     	try 
     	{
+        	ViewStarter.client.manageStockClientControllerObj.getBtnAddNewBook().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getTvCopies().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setVisible(true);
+        	ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().setVisible(true);
     		ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
 			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/searchBook_by_number_at_manageStock.fxml"));
 			if(ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock() != null)
@@ -135,8 +184,8 @@ public class UpdateOrAddBookController {
     	
     	System.out.println(query);
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,query ));
-    	
 
+    	
     }
     
     public void showSelectedBookDetails(Book book)
@@ -168,7 +217,35 @@ public class UpdateOrAddBookController {
 		return btnUpdate;
 	}
 
+    public TextField getTfCopiesNumber() {
+		return tfCopiesNumber;
+	}
 
+
+	public void setTfCopiesNumber(TextField tfCopiesNumber) {
+		this.tfCopiesNumber = tfCopiesNumber;
+	}
+
+    @FXML
+    void onUploadImageBtn(ActionEvent event) throws IOException {
+    	FileChooser fc= new FileChooser();
+    	File selectedFile =fc.showOpenDialog(null);
+    	if (selectedFile != null)
+    		{
+    			tfBookImagePath.setText(selectedFile.getCanonicalPath());
+    			imgByteArr=Files.readAllBytes(selectedFile.toPath());
+    			bookImage.setImage(new Image(selectedFile.toURI().toString()));
+    		}
+    }
+
+    @FXML
+    void onUploadTableOfContent(ActionEvent event) {
+    	FileChooser fc= new FileChooser();
+    	File selectedFile =fc.showOpenDialog(null);
+    	if (selectedFile != null)
+    		tfTableOfContent.setText(selectedFile.getAbsolutePath());		
+    }
+	
 
 
 }

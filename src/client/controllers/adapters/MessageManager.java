@@ -4,6 +4,7 @@ import java.util.List;
 
 import client.ViewStarter;
 import client.controllers.Utils;
+import client.controllers.Utils.SearchBookRowFactory;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
@@ -13,42 +14,123 @@ import common.entity.Copy;
 import common.entity.Statistic;
 import common.entity.Subscriber;
 import common.entity.User;
+import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * The MessageManager class represent the cases of our operations type and how
+ * we would handle each one of them on the client side
+ * 
+ * @author Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class MessageManager {
-
+	/** alert */
 	static AlertController alert = new AlertController();
 
+	/** utils is a static Utils which handles with the operations type */
+	static Utils utils = new Utils(ViewStarter.client.mainViewController);
+
+	/**
+	 * handle is checking with switch each possible case of our declared operation
+	 * type after the return from the server
+	 * 
+	 * @param msg a Message that contains the respond from the server
+	 * @exception printStackTrace
+	 */
 	public static void handle(Message msg) {
 		try {
 			switch (msg.getOperationType()) {
+			case GetStatstic:
+				System.out.println("GetStatstic");
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
+					System.out.println("Successful");
+				} else if (msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
+					
+				} else if (msg.getReturnMessageType() == ReturnMessageType.SuccessfulWithLastSnapshotDate) {
+					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
+					utils.showAlertWithHeaderText(AlertType.WARNING, "",
+							"Can't find this activity date, display last record activity instead");
+				}
+				break;
 			case Login:
-				User user = (User) msg.getObj();
-				ViewStarter.client.mainViewController.onLogin(user);
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					User user = (User) msg.getObj();
+					ViewStarter.client.mainViewController.onLogin(user);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Wrong User Name Or Password!");
+					// alert.error("Wrong User Name Or Password!", "");
+					break;
+				case ClientIsAlreadyLogin:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "User is already login");
+					break;
+				case SubscriberIsLocked:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Can not Login.\n Subscriber status is LOCK! ");
+					break;
+				}
 				break;
 			case SearchBook:
-				List<Book> books = (List<Book>) msg.getObj();
-				ViewStarter.client.searchBookControllerObj.onGetSearchResult(books);
+				switch (msg.getReturnMessageType()) {
+				case BooksFound:
+					List<Book> books = (List<Book>) msg.getObj();
+					ViewStarter.client.searchBookControllerObj.onGetSearchResult(books);
+					break;
+				case BooksNotFound:
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							ViewStarter.client.searchBookControllerObj.getLvBooks().getItems().clear();
+						}
+					});
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Do not found books!");
+					break;
+				}
 				break;
 			case GetSubscriberDetails:
-				Subscriber subscriber = (Subscriber) msg.getObj();
-				ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin(subscriber);
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					Subscriber subscriber = (Subscriber) msg.getObj();
+					ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin(subscriber);
+					break;
+				case Unsuccessful:
+					System.out.println("Error in get subscriber details");
+					break;
+				}
 				break;
 			case EditDetailsBySubscriber:
-				if (msg.getReturnMessageType() == ReturnMessageType.UpdateSuccesfully) {
-					alert.info("Update details succeed!", "");
-
-				} else {
-					alert.error("Update details failed!", "");
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Update details succeed!");
+					// alert.info("Update details succeed!", "");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Update details failed!!");
+					// alert.error("Update details failed!", "");
+					break;
 				}
 				break;
 			case AddNewSubscriberByLibrarian:
-				if (msg.getReturnMessageType() == ReturnMessageType.EmailOrPhoneAreAlreadyExists)
-					alert.error("Email or Phone number are already exists!", "");
-				else if (msg.getReturnMessageType() == ReturnMessageType.SubscriberAddedSuccessfuly)
-					alert.info("Subscriber was added!", "");
-				else
-					alert.error("Adding was failed!", "");
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					// alert.info("Subscriber was added!", "");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Subscriber was added!");
+					ViewStarter.client.librarianClientControllerObj.cleanNewSubscriberFields();
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Adding was failed!");
+					// alert.error("Adding was failed!", "");
+					break;
+				case EmailOrPhoneAreAlreadyExists:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Email or Phone number are already exists!");
+					// alert.error("Email or Phone number are already exists!", "");
+					break;
+				}
 				break;
 
 			case SearchBookOnManageStock:
@@ -58,84 +140,158 @@ public class MessageManager {
 				break;
 			case AddNewBook:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					alert.info("Book added Successfully!", "");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Book added Successfully!");
+					// alert.info("Book added Successfully!", "");
 				} else {
-					alert.error("Book added failed!", "");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book added failed!");
+					// alert.error("Book added failed!", "");
 				}
 				break;
 			case GetCopiesOfSelectedBook:
 				ViewStarter.client.manageStockClientControllerObj.displayCopies((List<Copy>) msg.getObj());
 				break;
 			case SearchSubscriber:
-				ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Subscriber Not Found!");
+					ViewStarter.client.librarianClientControllerObj.cleanAndDisableSearchSubscriberFields();
+					break;
+				}
 				break;
 			case EditDetailsByLibrarian:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+				switch (msg.getReturnMessageType()) {
+				case Successful:
 					ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
-					alert.info("Subscriber details updated successfully!", "");
-				} else {
-					alert.error("Can't update subscriber details", "");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "",
+							"Subscriber details updated successfully!");
+					// alert.info("Subscriber details updated successfully!", "");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Can't update subscriber details");
+					// alert.error("Can't update subscriber details", "");
+					break;
 				}
 				break;
 			case AddNewCopy:
-
-				Utils utils = new Utils(ViewStarter.client.mainViewController);
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					alert.info("Copy added Successfully!","");
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Copy added Successfully!");
+					// alert.info("Copy added Successfully!","");
 					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy) msg.getObj());
-				} else {
+					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
+					break;
+				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy added failed!");
+					break;
 				}
+				ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().clear();
+				ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setDisable(true);
+				break;
 
 			case OrderBook:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful)
-					alert.info("Book was ordered, SMS will be sent when book will arrive!","");
-				else
-					alert.error("Book cannot be ordered!","");
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "",
+							"Book was ordered, Email will be sent when book will arrive!");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book order failed!");
+					break;
+				case SubscriberAlreadyInOrderList:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "",
+							"You are already in the order list for this book!");
+					break;
+				case FullOrderList:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Order List is full!");
+					break;
+				}
+				break;
 
 			case BorrowBookByLibrarian:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					alert.info("Borrow executed successfully","");
+				switch (msg.getReturnMessageType()) {
+				case SubscriberNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber number is not exist!");
+					break;
+				case CopyNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy ID is not exist!");
+					break;
+				case HoldOrLockStatus:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber is Lock or Hold!");
+					break;
+				case CopyIsNotAvailable:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy is not abilable!");
+					break;
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "successfull borrowing");
 					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[]) msg.getObj());
-
-				} else if (msg.getReturnMessageType() == ReturnMessageType.ErrorWhileTyping)
-					alert.error("Error in typing! copy does not exist","");
-				else
-					alert.error("Error in operation!","");
-
-			case DeleteCopy:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					alert.info("Copy was deleted Successfully!","");
-				} else {
-					alert.error("Copy was deleted failed!","");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in operation!");
+					break;
 				}
-
 				break;
 
 			case UpdateBookDetails:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					alert.info("Book update Successfully!","");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Borrow executed successfully");
+					// alert.info("Borrow executed successfully","");
+					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[]) msg.getObj());
+
+				} else if (msg.getReturnMessageType() == ReturnMessageType.ErrorWhileTyping) {
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Error in typing! copy does not exist");
+					// alert.error("Error in typing! copy does not exist","");
 				} else {
-					alert.error("Book update failed!","");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Error in operation!");
+					// alert.error("Error in operation!","");
 				}
-
 				break;
-				
-			case GetStatstic:
+
+			case DeleteCopy:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
-					alert.info("Book update Successfully!","");
-				} else if(msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
-					alert.error("Book update failed!","");
-				
-			} else if(msg.getReturnMessageType() == ReturnMessageType.SuccessfulWithLastSnapshotDate) {
-				//TODO NEED TO DISPLAY WARRNING
-				ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
-			}
+					// alert.info("Copy was deleted Successfully!","");
 
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Copy was deleted Successfully!");
+					ViewStarter.client.manageStockClientControllerObj.removeCopiefromList();
+					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
+
+				} else {
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Copy deleted was failed!");
+					// alert.error("Copy was deleted failed!","");
+				}
+				ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setDisable(true);
 				break;
-			}
 
+			case ReturnBookByLibrarian:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "successfull returning!");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
+					break;
+				case wrongBorrowDetails:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Wrong borrow Details");
+					break;
+				case CopyNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
+					break;
+				case subscriberInWaitingList:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
+							"there is a waiting list to this book\nput the book aside.");
+					break;
+				case ChangeStatusToActive:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
+							"Subscriber status changed to 'Active'.\nSubscriber was late in return");
+					break;
+				case ChangeStatusToLock:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
+							"Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+					break;
+				}
+				break;
+	
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 

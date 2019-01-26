@@ -1,10 +1,14 @@
 package client;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import client.controllers.Client;
 import client.controllers.MainViewController;
+import common.controllers.Message;
+import common.controllers.enums.OperationType;
+import common.entity.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,14 +26,20 @@ public class ViewStarter extends Application {
 		int port = 0; // The port number
 
 		try {
+			if (args[0].equals("autolog"))
+				throw new Exception();
+			
 			port = Integer.parseInt(args[0]);
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (Exception e) {
 			port = DEFAULT_PORT;
 		}
 
 		try {
+			if (args[0].equals("autolog"))
+				throw new Exception();
+
 			host = args[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (Exception e) {
 			host = "localhost";
 		}
 
@@ -44,14 +54,22 @@ public class ViewStarter extends Application {
 		launch(args);
 	}
 
+	@Override
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			Parent root = loader.load(getClass().getResource("/client/boundery/layouts/main_view.fxml"));
-			
+
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("OBL");
 			primaryStage.setResizable(false);
+
+			List<String> args = getParameters().getRaw();
+
+			if (args.contains("autolog")) {
+				System.out.println(args.get(1));
+				client.mainViewController.autolog(args.get(1), args.get(2));
+			}
 
 			primaryStage.show();
 			primaryStage.setScene(scene);
@@ -59,5 +77,11 @@ public class ViewStarter extends Application {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void stop() {
+		User usr = ViewStarter.client.mainViewController.getUser();
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Logout, usr));
 	}
 }

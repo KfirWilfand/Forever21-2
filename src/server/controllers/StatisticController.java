@@ -61,12 +61,12 @@ public class StatisticController {
 			Statistic statistic = new Statistic(popAverage, popMedian, popDistribution, regAverage, regMedian,
 					regDistribution, lateAverage, lateMedian, lateDistribution, activiySnapshot, firstSnapshot,
 					lastSnapshot);
-			
-			if (isGivenDateSnapshot)
+
+			if (isGivenDateSnapshot) {
 				return new Message(OperationType.GetStatstic, statistic, ReturnMessageType.Successful);
-			else
-				return new Message(OperationType.GetStatstic, statistic,
-						ReturnMessageType.SuccessfulWithLastSnapshotDate);
+			}
+
+			return new Message(OperationType.GetStatstic, statistic, ReturnMessageType.SuccessfulWithLastSnapshotDate);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,24 +74,6 @@ public class StatisticController {
 
 		}
 	}
-
-//	private void test() throws Exception {
-//		System.out.println(getDistribution(popularBorrowBookDuration));
-//		System.out.println(getAverage(popularBorrowBookDuration));
-//		System.out.println(getMedian(popularBorrowBookDuration));
-//
-//		System.out.println(getDistribution(regularBorrowBookDuration));
-//		System.out.println(getAverage(regularBorrowBookDuration));
-//		System.out.println(getMedian(regularBorrowBookDuration));
-//
-//		System.out.println(getDistribution(borrowBookLates));
-//		System.out.println(getAverage(borrowBookLates));
-//		System.out.println(getMedian(borrowBookLates));
-//
-//		insertStatisticActiviySnapshot();
-//
-//		System.out.println(readActiviySnapshotByDate(new Date()));
-//	}
 
 	private Date getLastSnapshotDate() throws Exception {
 		String lastSnapshotQuary = "SELECT Max(aDate) FROM obl.activity_statistic;";
@@ -103,7 +85,6 @@ public class StatisticController {
 			throw new Exception("Can't Find last Snapshot date");
 		}
 
-		System.out.println(lastSnapshotQuary_res.getDate(1));
 		return lastSnapshotQuary_res.getDate(1);
 
 	}
@@ -140,12 +121,10 @@ public class StatisticController {
 					activiySnapshotByDateQuary_res.getInt("aActiveSub"),
 					activiySnapshotByDateQuary_res.getInt("aCopies"), activiySnapshotByDateQuary_res.getInt("aLates"));
 
-			System.out.println(activiySnapshot);
 			return activiySnapshot;
 		}
 
 		if (!res) {
-			System.out.println("Can't find given date, display last snapshot");
 			isGivenDateSnapshot = false;
 			return readActiviySnapshotByDate(getLastSnapshotDate());
 		}
@@ -174,7 +153,6 @@ public class StatisticController {
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		LocalDate borrowDate = LocalDate.now();
-		System.out.println(Date.valueOf(borrowDate));
 
 		String quaryInsertNewActivity = "INSERT INTO `obl`.`activity_statistic` (`aDate`, `aLockSub`, `aHoldSub`, `aActiveSub`, `aCopies`, `aLates`) "
 				+ "VALUES ('" + Date.valueOf(borrowDate) + "', '" + aLockSubQuary_res.getInt(1) + "', '"
@@ -186,10 +164,11 @@ public class StatisticController {
 
 	public Map<Integer, List<Integer>> getDistribution(List<Integer> borrowBookDuration) throws Exception {
 
+		Map<Integer, List<Integer>> distribution = new HashMap<Integer, List<Integer>>();
+		if (borrowBookDuration.isEmpty())
+			return distribution;
 		Integer max = Collections.max(borrowBookDuration);
 		float range = ((float) max / 10);
-
-		Map<Integer, List<Integer>> distribution = new HashMap<Integer, List<Integer>>();
 
 		// init map
 		for (int i = 0; i < 10; i++) {
@@ -237,6 +216,8 @@ public class StatisticController {
 	public int getMedian(List<Integer> borrowBookDuration) {
 		int median = 0;
 		Collections.sort(borrowBookDuration);
+		if (borrowBookDuration.size() == 0)
+			return 0;
 
 		if (borrowBookDuration.size() % 2 == 0) {
 			median = borrowBookDuration.get((borrowBookDuration.size() - 1) / 2);
@@ -249,7 +230,7 @@ public class StatisticController {
 	}
 
 	public List<Integer> getBorrowBooksByPopularity(Boolean isPopular) throws SQLException {
-		List<Date[]> borrowDates = new ArrayList<Date[]>();
+		List<List<Date>> borrowDates = new ArrayList<List<Date>>();
 
 		String borrowBookQuaryByPopularity = "SELECT borrowDate,returnDueDate "
 				+ "FROM obl.borrows as a join obl.copeis as b on a.copyID=b.copyID join obl.books as c on b.bCatalogNum=c.bCatalogNum "
@@ -259,10 +240,10 @@ public class StatisticController {
 		ResultSet borrowBook_res = dbControllerObj.query(borrowBookQuaryByPopularity);
 
 		while (borrowBook_res.next()) {
-			Date[] date = new Date[2];
+			List<Date> date = new ArrayList<Date>();
 
-			date[0] = borrowBook_res.getDate("borrowDate");
-			date[1] = borrowBook_res.getDate("returnDueDate");
+			date.add(borrowBook_res.getDate("borrowDate"));
+			date.add(borrowBook_res.getDate("returnDueDate"));
 
 			borrowDates.add(date);
 		}
@@ -271,36 +252,37 @@ public class StatisticController {
 	}
 
 	public List<Integer> getBorrowBooksLates() throws SQLException {
-		List<Date[]> borrowDates = new ArrayList<Date[]>();
+		List<List<Date>> borrowDates = new ArrayList<List<Date>>();
 
 		String borrowBookQuaryLates = "SELECT returnDueDate ,actualReturnDate "
 				+ "FROM obl.borrows as a join obl.copeis as b on a.copyID=b.copyID join obl.books as c on b.bCatalogNum=c.bCatalogNum "
-				+ "where a.actualReturnDate and a.returnDueDate <a.actualReturnDate;";
+				+ "where a.actualReturnDate and a.returnDueDate < a.actualReturnDate;";
 
 		DBcontroller dbControllerObj = DBcontroller.getInstance();
 		ResultSet borrowBook_res = dbControllerObj.query(borrowBookQuaryLates);
 
 		while (borrowBook_res.next()) {
-			Date[] date = new Date[2];
+			List<Date> date = new ArrayList<Date>();
 
-			date[0] = borrowBook_res.getDate("returnDueDate");
-			date[1] = borrowBook_res.getDate("actualReturnDate");
+			date.add(borrowBook_res.getDate("returnDueDate"));
+			date.add(borrowBook_res.getDate("actualReturnDate"));
 
 			borrowDates.add(date);
 		}
-
+	
 		return calcBorrowDuration(borrowDates);
 	}
 
-	private List<Integer> calcBorrowDuration(List<Date[]> borrowBooks) {
+	private List<Integer> calcBorrowDuration(List<List<Date>> borrowDates) {
+		
 		List<Integer> borrowDuration = new ArrayList<Integer>();
 
-		for (Date[] borrowBook : borrowBooks) {
-			Long diff = borrowBook[1].getTime() - borrowBook[0].getTime();
+		for (List<Date> borrowBook : borrowDates) {
+			Long diff = borrowBook.get(1).getTime() - borrowBook.get(0).getTime();
 
 			borrowDuration.add(Math.toIntExact(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)));
 		}
-
+		
 		return borrowDuration;
 	}
 

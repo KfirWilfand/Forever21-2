@@ -6,20 +6,22 @@ public enum ReturnMessageType {
 	UserFailedLogin,
 	BooksFound,
 	BooksNotFound,
-	SubscriberNotFound,
-	SubscriberFound,
-	SubsciberExist,
-	SubsciberNotExist,
-	UpdateSuccesfully,
-	NotUpdateSuccesfully,
-	SubscriberAddedSuccessfuly,
-	SubscriberFailedToAdd, 
+	SubscriberExist,
+	SubscriberNotExist,
 	EmailOrPhoneAreAlreadyExists,
 	BookWasNotFoundOnManageStock,
 	BooksFoundOnManageStock, 
 	Successful,
 	Unsuccessful, 
-	ErrorWhileTyping,SuccessfulWithLastSnapshotDate;
+	SuccessfulWithLastSnapshotDate,
 
 
+	ErrorWhileTyping,
+	ClientIsAlreadyLogin,
+	SubscriberIsLocked, 
+	CopyNotExist,
+	HoldOrLockStatus, 
+	CopyIsNotAvailable, 
+	SubscriberAlreadyInOrderList, wrongBorrowDetails, FullOrderList,
+	ChangeStatusToLock, ChangeStatusToActive, subscriberInWaitingList, GetStatstic
 }

@@ -32,13 +32,13 @@ public class DBcontroller {
     }
 
 	
-	public  void connectDB() {
+	public  void connectDB(String schema,String userName, String password) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (Exception ex) {
 			/* handle the error */}
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/obl", "root", "Aa123456");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/"+schema, userName, password);
 			LOGGER.info("MySql Server connected");
 		} catch (SQLException ex) {/* handle any errors */
 			LOGGER.severe("SQLException: " + ex.getMessage() + "\nSQLState: " + ex.getSQLState() + "\nVendorError: "

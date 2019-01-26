@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class AlertController {
 
@@ -55,84 +56,82 @@ public class AlertController {
 	@FXML
 	public void initialize() {
 		ViewStarter.client.alertClientControllerObj = this;
-		this.paneAlert.setLayoutX(210);
-		this.paneAlert.setLayoutY(120);
+		//this.paneAlert.setLayoutX(210);
+		//this.paneAlert.setLayoutY(120);
 	}
 
-	public void info(String lblTitle, String lblSubTitle) {
-		
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			paneAlert = loader.load(getClass().getResource("/client/boundery/layouts/alert.fxml"));
-
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					
-					ViewStarter.client.alertClientControllerObj.getLblType().setText("Information");
-					
-					ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image("/client/boundery/resources/information.png"));
-				
-					ViewStarter.client.alertClientControllerObj.getLblTitle().setText(lblTitle);
-					ViewStarter.client.alertClientControllerObj.getLblSubTitle().setText(lblSubTitle);
-					
-					ViewStarter.client.mainViewController.getMainView().getChildren().add(paneAlert);
+	public void info(String lblTitleToSet, String lblSubTitleToSet) throws IOException {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Stage primaryStage = new Stage();
+				FXMLLoader loader = new FXMLLoader();
+				Pane root;
+				try {
+					root = loader.load(getClass().getResource("/client/boundery/layouts/alert.fxml").openStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			});
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
+			
+				lblType.setText("Information");
+				ivIcon.setImage(new Image("/client/boundery/resources/information.png"));
+				lblTitle.setText(lblTitleToSet);
+				lblSubTitle.setText(lblSubTitleToSet);	
+				//ViewStarter.client.mainViewController.getMainView().getChildren().add(paneAlert);
+			}
+		
+		});
 
 	}
 	
 	public void error(String lblTitle, String lblSubTitle) {
 		
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			paneAlert = loader.load(getClass().getResource("/client/boundery/layouts/alert.fxml"));
-
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					ViewStarter.client.alertClientControllerObj.getLblType().setText("Error");
-					
-					ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image("/client/boundery/resources/error.png"));
-					ViewStarter.client.alertClientControllerObj.getLblTitle().setText(lblTitle);
-					ViewStarter.client.alertClientControllerObj.getLblSubTitle().setText(lblSubTitle);
-					
-					ViewStarter.client.mainViewController.getMainView().getChildren().add(paneAlert);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Stage primaryStage = new Stage();
+				FXMLLoader loader = new FXMLLoader();
+				try {
+					Pane root = loader.load(getClass().getResource("/client/boundery/layouts/alert.fxml").openStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			});
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
+				ViewStarter.client.alertClientControllerObj.getLblType().setText("Error");
+				
+				ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image("/client/boundery/resources/error.png"));
+				ViewStarter.client.alertClientControllerObj.getLblTitle().setText(lblTitle);
+				ViewStarter.client.alertClientControllerObj.getLblSubTitle().setText(lblSubTitle);
+				
+				ViewStarter.client.mainViewController.getMainView().getChildren().add(paneAlert);
+			}
+		});
 
 	}
 	
 	public void warning(String lblTitle, String lblSubTitle) {
 		
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			paneAlert = loader.load(getClass().getResource("/client/boundery/layouts/alert.fxml"));
-
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					ViewStarter.client.alertClientControllerObj.getLblType().setText("Warning");
-					
-					ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image("/client/boundery/resources/warning.png"));
-					ViewStarter.client.alertClientControllerObj.getLblTitle().setText(lblTitle);
-					ViewStarter.client.alertClientControllerObj.getLblSubTitle().setText(lblSubTitle);
-					
-					ViewStarter.client.mainViewController.getMainView().getChildren().add(paneAlert);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Stage primaryStage = new Stage();
+				FXMLLoader loader = new FXMLLoader();
+				try {
+					Pane root = loader.load(getClass().getResource("/client/boundery/layouts/alert.fxml").openStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			});
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
+				ViewStarter.client.alertClientControllerObj.getLblType().setText("Warning");
+				
+				ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image("/client/boundery/resources/warning.png"));
+				ViewStarter.client.alertClientControllerObj.getLblTitle().setText(lblTitle);
+				ViewStarter.client.alertClientControllerObj.getLblSubTitle().setText(lblSubTitle);
+				
+				ViewStarter.client.mainViewController.getMainView().getChildren().add(paneAlert);
+			}
+		});
 
 	}
     public Pane getPaneAlert() {
