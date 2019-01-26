@@ -58,6 +58,7 @@ public class SearchBookController {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBook, searchQeury));
 	}
 
+	
 	public void onGetSearchResult(List<Book> books) {
 		try {
 			Platform.runLater(new Runnable() {
