@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum SubscriberHistoryType {
-	BooksRequest, BooksApprove, BooksReturn, EditProfile, ChangeStatus;
+	BooksRequest, BooksApprove, BooksReturn, EditProfile, ChangeStatus, BookExtension;
 
 	public static SubscriberHistoryType stringToEnum(String userType) {
 		switch (userType) {

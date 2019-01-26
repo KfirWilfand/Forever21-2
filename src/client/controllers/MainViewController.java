@@ -32,48 +32,62 @@ import javafx.scene.control.ComboBox;
 
 public class MainViewController {
 
+	/** mainView is a anchor pane */
 	@FXML
 	private AnchorPane mainView;
 
 	@FXML
 	private ImageView welcomeImg;
 
+	/** mainPane is a pane */
 	@FXML
 	private Pane mainPane;
 
+	/** btnProfile is a button to profile */
 	@FXML
 	private Button btnProfile;
 
+	/** btnSearchBook is the search book button */
 	@FXML
 	private Button btnSearchBook;
 
+	/** lblSubTitle is a subtitle*/
 	@FXML
 	private Label lblSubTitle;
 
+	/** btnLogin is the login button */
 	@FXML
 	private Button btnLogin;
 	// log in variables
+	/** tfUserName is the username */
 	@FXML
 	private TextField tfUserName;
+	
+	/** tfPassword is the user password */
 	@FXML
 	private TextField tfPassword;
 
+	/** lblLoginAs is the name of the logged user */
 	@FXML
 	private Label lblLoginAs;
 
-
+	/** dialogBoxLogin is the login anchor pance */
 	@FXML
 	private AnchorPane dialogBoxLogin;
 
+	/** btnDialogBoxLogin is the login dialog box button */
 	@FXML
 	private Button btnDialogBoxLogin;
 
+	/** btnCloseLogIN is the close log in button */
 	@FXML
 	private Button btnCloseLogIN;
 
+	/** comboboxLogAs is a combo box */
 	@FXML
 	private ComboBox<String> comboboxLogAs;
 
+	/** btnLogout is the logout button */
 	@FXML
 	private Button btnLogout;
 

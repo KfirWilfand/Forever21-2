@@ -16,10 +16,26 @@ import common.entity.User;
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * The MessageManager class represent the cases of our operations type and how we would handle each one of them on the client side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class MessageManager {
-
+/** alert  */
 	static AlertController alert = new AlertController();
+	
+	/** utils is a static Utils which handles with the operations type  */
 	static Utils utils = new Utils(ViewStarter.client.mainViewController);
+	
+	/**
+	 * handle is checking with switch each possible case of our declared operation type after the return from the server
+	 * @param   msg  a Message that contains the respond from the server
+	 * @exception printStackTrace
+	 */
 	public static void handle(Message msg) {
 		try {
 			switch (msg.getOperationType()) {

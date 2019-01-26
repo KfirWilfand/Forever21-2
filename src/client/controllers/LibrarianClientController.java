@@ -48,139 +48,184 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 public class LibrarianClientController {
-
+	/** tfSubscriberFirstName is the subscriber first name */
 	@FXML
 	private TextField tfSubscriberFirstName;
-
+	
+	/** tfSubscriberLastName is the subscriber last name*/
 	@FXML
 	private TextField tfSubscriberLastName;
 
+	/** tfSubscriberUsrName is the subscriber username */
 	@FXML
 	private TextField tfSubscriberUsrName;
 
+	/** tfSubscruberPhone is the subscriber phone */
 	@FXML
 	private TextField tfSubscruberPhone;
 
+	/** tfSubscriberEmail is the subscriber email */
 	@FXML
 	private TextField tfSubscriberEmail;
 
+	/** tfSubscriberPassword is the password of the subscriber */
 	@FXML
 	private TextField tfSubscriberPassword;
 
+	/** btnCreateSubscrciber is the create subscriber button  */
 	@FXML
 	private Button btnCreateSubscrciber;
 
+	/** btnBorrowBook is the borrow book button */
 	@FXML
 	private Button btnBorrowBook;
 
+	/** tfBorrowBookSubscriberNumber is the subscriber's phone number */
 	@FXML
 	private TextField tfBorrowBookSubscriberNumber;
 
+	/** tfBorrowBookBorrowDate is the borrow date */
 	@FXML
 	private DatePicker tfBorrowBookBorrowDate;
 
+	/** tfBorrowBookEndBorrowDate is the end of borrow date*/
 	@FXML
 	private DatePicker tfBorrowBookEndBorrowDate;
 
+	/** tfBorrowBookCatalogNumber is the book catalog number */
 	@FXML
 	private TextField tfBorrowBookCatalogNumber;
+	
+	/** tfBorrowCopyID is the copyID of the borrowed book */
 	@FXML
 	private TextField tfBorrowCopyID;
 
+	/** txtBorrowBookNotice is a notice while borrowing a book */
 	@FXML
 	private Text txtBorrowBookNotice;
 
+	/** btnReturnBook is the returned button */
 	@FXML
 	private Button btnReturnBook;
 
+	/** tfReturnBookSubscriberNumber is the number of the subscriber that returnes a copy */
 	@FXML
 	private TextField tfReturnBookSubscriberNumber;
 
+	/** tfReturnBookBorrowDate the date of return of the book */
 	@FXML
 	private DatePicker tfReturnBookBorrowDate;
 
+	/** tfReturnBookEndBorrowDate is the date of borrow*/
 	@FXML
 	private DatePicker tfReturnBookEndBorrowDate;
 
+	/** tfReturnBookReturningDate is the returning date of the book */
 	@FXML
 	private DatePicker tfReturnBookReturningDate;
 
+	/** tfReturnBookCatalogNumber is the book catalog number */
 	@FXML
 	private TextField tfReturnBookCatalogNumber;
 
+	/** tfSearchSubscriberNumber is search subscriber by number */
 	@FXML
 	private TextField tfSearchSubscriberNumber;
 
+	/** btnSearchSubscriber is the search subscriber button */
 	@FXML
 	private Button btnSearchSubscriber;
 
+	/** ssTfFirstName is suscriber's name */
 	@FXML
 	private TextField ssTfFirstName;
 
+	/** ssTfLastName is suscriber's last name */
 	@FXML
 	private TextField ssTfLastName;
 
+	/** ssTfPhone is is suscriber's phone number  */
 	@FXML
 	private TextField ssTfPhone;
 
+	/** ssTfUserName is suscriber's username */
 	@FXML
 	private TextField ssTfUserName;
 
+	/** ssTfPassword is subscriber's password */
 	@FXML
 	private TextField ssTfPassword;
 
+	/** ssTfEmail is subscriber mail */
 	@FXML
 	private TextField ssTfEmail;
 
+	/** sslblStatus is the label of subscriber's status */
 	@FXML
 	private Label sslblStatus;
 
+	/** ssCxbHoldSubscriber is a combo box of hold subscriber */
 	@FXML
 	private CheckBox ssCxbHoldSubscriber;
 
+	/** ssLVBookRequest is a list view  of book request on the subscriber history */
 	@FXML
 	private ListView<HistoryItem> ssLVBookRequest;
 
+	/** ssLVBookApprove is a list view of approved books on the subscriber history*/
 	@FXML
 	private ListView<HistoryItem> ssLVBookApprove;
 
+	/** ssLVBookReturn is a list view on the subscriber history */
 	@FXML
 	private ListView<HistoryItem> ssLVBookReturn;
 
+	/** ssLVEditProfile is the edit profile history list view*/
 	@FXML
 	private ListView<HistoryItem> ssLVEditProfile;
 
+	/** ssLVChangeStatus is the list view of change status */
 	@FXML
 	private ListView<HistoryItem> ssLVChangeStatus;
 
+	/** sslblLateReturn is late return label */
 	@FXML
 	private Label sslblLateReturn;
 
+	/** ssPdGraduation is a date picker */
 	@FXML
 	private DatePicker ssPdGraduation;
 
+	/** ssbtnUpdate is the update subscriber button */
 	@FXML
 	private Button ssbtnUpdate;
 
+	/** ancPaneManageStock is the manage stock anchor pane */
 	@FXML
 	private AnchorPane ancPaneManageStock;
 	
+	/** txtAddNewSubscriberEmailError is an email error text */
     @FXML
     private Text txtAddNewSubscriberEmailError;
 
+    /** txtAddNewSubscriberPhoneError is a text that says the phone number is problematic */
     @FXML
     private Text txtAddNewSubscriberPhoneError;
-
+    
+    /** btnManageStockTab is the manage stock tab */
 	@FXML
 	private Tab btnManageStockTab;
 
+	/** dpGraduationDateNewSub is a date picker that contains subscriber graduation date */
     @FXML
     private DatePicker dpGraduationDateNewSub;
     
 	static AlertController alert = new AlertController();
 	
 	
-	
+	 /**
+   	 * initialize the librarian controller
+   	 * */
 	@FXML
 	public void initialize() {
 		ViewStarter.client.librarianClientControllerObj = this;
@@ -194,6 +239,10 @@ public class LibrarianClientController {
 		}
 	}
 	
+	 /**
+   	 * updateReturnUI is updating the gui of the librarian on return procedure
+   	 * @param borrowCopy is the return borrowed cope
+   	 */
 	@FXML
 	public void updateReturnUI(BorrowCopy borrowCopy)
 	{
@@ -203,7 +252,11 @@ public class LibrarianClientController {
 		tfReturnBookReturningDate.setValue(borrowCopy.getActualReturnDate().toLocalDate());
 	}
 	
-
+	 /**
+   	 * onBtnUpdate is updating the subscriber details
+   	 * @param event 
+   	 * @exception IOException 
+   	 */
 	@FXML
 	void onBtnUpdate(ActionEvent event) {
 
@@ -267,7 +320,10 @@ public class LibrarianClientController {
 	}
 
 
-
+	 /**
+   	 * onBorrowBookBtn is the borrow book by librarian procedure
+   	 * event an action event
+   	 */
 	@FXML
 	void onBorrowBookBtn(ActionEvent event) {
 		tfBorrowBookBorrowDate.setValue(null);
@@ -291,6 +347,10 @@ public class LibrarianClientController {
 		}
 	}
 
+	 /**
+   	 * onCreateSubscruberBtn creates a new subscriber
+   	 * event an action event
+   	 */
 	@FXML
 	void onCreateSubscruberBtn(ActionEvent event) {// adding a new subscriber to the DB
 		txtAddNewSubscriberEmailError.setVisible(false);
@@ -351,7 +411,10 @@ public class LibrarianClientController {
 		}
 	}
 
-	
+	 /**
+   	 * onReturnBookBtn is the returning book by librarian procedure
+   	 * event an action event
+   	 */
 	@FXML
 	void onReturnBookBtn(ActionEvent event)
 	{
@@ -374,6 +437,10 @@ public class LibrarianClientController {
 		}
 	}
 
+	 /**
+   	 * onSearchSubscriberBtn is searching a subscriber by librarian procedure
+   	 * event an action event
+   	 */
 	@FXML
 	void onSearchSubscriberBtn(ActionEvent event) {
 		
@@ -397,6 +464,10 @@ public class LibrarianClientController {
 		
 	}
 	
+	 /**
+   	 * updateDetailsOnBorrow is update the detail on borrow by librarian procedure
+   	 * objects is an Object array 
+   	 */
 	public void updateDetailsOnBorrow(Object[] objects) {
 		BorrowCopy bCopy = (BorrowCopy) objects[0];
 		Boolean isPopular = (Boolean) objects[1];
@@ -406,7 +477,11 @@ public class LibrarianClientController {
 			txtBorrowBookNotice.setVisible(true);
 		}
 	}
-
+	
+	 /**
+   	 * updateSearchSubscriberUI is updating the subscriber's history
+   	 * subscriber contains the relevant details of subscriber 
+   	 */
 	public void updateSearchSubscriberUI(Subscriber subscriber) {
 
 		Platform.runLater(new Runnable() {
@@ -461,11 +536,18 @@ public class LibrarianClientController {
 
 				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.ChangeStatus));
 				ssLVChangeStatus.setItems(items);
+				
+				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
+				ssLVChangeStatus.setItems(items);
+				
 			}
 
 		});
 	}
 
+	 /**
+   	 * cleanAndDisableSearchSubscriberFields clean search subscriber field 
+   	 */
 	public void cleanAndDisableSearchSubscriberFields()
 	{
 		ssTfFirstName.setDisable(true);
