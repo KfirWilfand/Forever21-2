@@ -28,22 +28,36 @@ import common.entity.User;
 import common.entity.enums.ReaderCardStatus;
 import common.entity.enums.SubscriberHistoryType;
 import common.entity.enums.UserType;
-
+/**
+ * The LibrarianController class represent the librarian controller on the server side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class LibrarianController {
-
+	/**alert is an object of AlertController */
 	static AlertController alert = new AlertController();
-
+	/**instance is a singleton of the class */
 	private static LibrarianController instance;
 
 	private LibrarianController(){}
-
+	 /**
+	 * getInstance is creating the singleton object of the class
+	 */
 	public static LibrarianController getInstance(){
 		if(instance == null){
 			instance = new LibrarianController();
 		}
 		return instance;
 	}
-
+	/**
+	 * createNewSubscriber is creating a new subscriber 
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message createNewSubscriber (Object msg) throws SQLException
 	{
 		String [] query=(String[])((Message)msg).getObj();
@@ -60,7 +74,12 @@ public class LibrarianController {
 				return new Message(OperationType.AddNewSubscriberByLibrarian, null , ReturnMessageType.Unsuccessful);
 		}
 	}
-	
+	/**
+	 * searchSubscriber is searching a subscriber
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message searchSubscriber(Object msg) throws SQLException
 	{
 		Subscriber subscriber = SubscriberController.getSubscriberById((String)((Message)msg).getObj());
@@ -74,7 +93,12 @@ public class LibrarianController {
 	}
 
 	
-	
+	/**
+	 * borrowBook is place a borrow of a book
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message borrowBook (Object msg) throws SQLException
 	{
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
@@ -143,7 +167,12 @@ public class LibrarianController {
 	}
 	
 		
-	
+	/**
+	 * returnBook is place the return of a borrowed book and checks all the required conditions
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public Message returnBook (Object msg) throws SQLException
 	{
 		DBcontroller dbControllerObj= DBcontroller.getInstance();
