@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Queue;
 
+import common.entity.Book;
+import common.entity.Copy;
 import common.entity.Subscriber;
 
 public class AutomaticFunctions {
@@ -26,7 +28,15 @@ public class AutomaticFunctions {
 	    	 {
 	    		 String updateStatusToHold= "update obl.subscribers set subStatus='Hold' where subNum="+graduateStudents.getString("subNum");
 	    		 boolean isHold= dbControllerObj.update(updateStatusToHold);
-	    		 //TODO SENT mail to the student to return his books !!!!!!
+	    		 //SENT mail to the student to return his books 
+	    		
+	    		Subscriber graduateSub=SubscriberController.getSubscriberById(studentBorrowBook.getString("subNum"));
+	 			String mailSubject="Your need to return your books";
+				String mailBody="Dear Student congrats on graduation,\nYou have books you should return to the library!";
+				SendMailController.sendMailToSubscriber(graduateSub, mailSubject, mailBody);
+	    		System.out.println("EMAIL send to subscriber "+graduateSub.toString()); 
+				
+				
 	    		 if(isHold)
 	    			 System.out.println("subscriber number"+graduateStudents.getString("subNum")+"is hold!!");
 	    		 else
@@ -100,8 +110,16 @@ public class AutomaticFunctions {
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
 	    ResultSet needToreturnTomorrow = dbControllerObj.query(query1);
 	    while(needToreturnTomorrow.next())
-	    {// send mail dont forgettttttttttttttt motherfackerrrrrrr
-	    	System.out.println("mail is send to the subscriber "+needToreturnTomorrow.getString("subNum"));	
+	    {
+	    	Copy copyToReturn=ManageStockController.getCopyById(needToreturnTomorrow.getString("copyID"));
+	    	Book bookToReturn=ManageStockController.getBookByCatalogNumber(copyToReturn.getbCatalogNum());
+	    	Subscriber subscriber=SubscriberController.getSubscriberById(needToreturnTomorrow.getString("subNum"));
+ 			String mailSubject="Reminder: Your need to return your book";
+			String mailBody="Dear Student you need to return the book: "+bookToReturn.getBookName()+" until tomrrow\nOr your reader card will Hold!";
+			
+			SendMailController.sendMailToSubscriber(subscriber, mailSubject, mailBody);
+	    	
+			System.out.println("mail is send to the subscriber "+needToreturnTomorrow.getString("subNum"));	
 	    }
 	        
 	}
@@ -123,6 +141,13 @@ public class AutomaticFunctions {
 	    	Boolean isUpdate=dbControllerObj.update(replaceSubscriberToTheNext);
 	    	String removeFromLine = "delete from obl.books_orders  where boSubNum="+nextInQueue.getSubscriberNum()+" and boCatalogNum="+needToDeleteFromOrderQueue.getInt("catalogNum");
 	    	Boolean isRemoved=dbControllerObj.update(removeFromLine);
+	    	
+	    	//send mail to the next in line
+	    	Book book=ManageStockController.getBookByCatalogNumber(needToDeleteFromOrderQueue.getInt("catalogNum"));
+	    	String mailSubject="Your Book is arraived";
+			String mailBody="Your Book: "+book.getBookName()+"is arraived. You have two days to take it before your order cancelled.";
+			SendMailController.sendMailToSubscriber(orderQueue.peek(), mailSubject, mailBody);
+			
 	    }
 
 	        

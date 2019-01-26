@@ -35,7 +35,6 @@ public class ServerConsole extends AbstractServer {
 	public static ArrayList<Integer> connectedClients;
 	private int port;
 	
-	
 	public ServerConsole(int port) {
 		super(port);
 		connectedClients=new ArrayList<Integer>();
@@ -135,7 +134,7 @@ public class ServerConsole extends AbstractServer {
 	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
 		AutomaticFunctionsController afObj=AutomaticFunctionsController.getInstance();
-		afObj.startExecutionAt(11,10,02);
+		afObj.startExecutionAt(00,00,01);
 	}
 
 	@Override

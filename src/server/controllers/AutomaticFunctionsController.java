@@ -13,8 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 public class AutomaticFunctionsController {
 
-	    
-		
 		ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 	    volatile boolean isStopIssued;
 
@@ -28,7 +26,6 @@ public class AutomaticFunctionsController {
 	        }
 	        return instance;
 	    }
-
 	    
 	    public void startExecutionAt(int targetHour, int targetMin, int targetSec)
 	    {

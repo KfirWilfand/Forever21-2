@@ -319,11 +319,11 @@ public class LibrarianClientController {
 		}
 	}
 
-
 	 /**
    	 * onBorrowBookBtn is the borrow book by librarian procedure
    	 * event an action event
    	 */
+
 	@FXML
 	void onBorrowBookBtn(ActionEvent event) {
 		tfBorrowBookBorrowDate.setValue(null);
