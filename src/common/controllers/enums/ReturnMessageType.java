@@ -19,5 +19,7 @@ public enum ReturnMessageType {
 	BooksFoundOnManageStock, 
 	Successful,
 	Unsuccessful, 
-	ErrorWhileTyping
+	ErrorWhileTyping,SuccessfulWithLastSnapshotDate;
+
+
 }

@@ -15,8 +15,6 @@ public class Subscriber extends User implements Serializable {
 	private Integer subscriberNum;
 	private String phoneNum;
 	private Date graduationDate;
-
-
 	private ReaderCard readerCard;
 
 	public Subscriber(Integer usrId, String usrName, String usrPassword, String usrFirstName, String usrLastName,

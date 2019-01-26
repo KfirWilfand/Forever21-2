@@ -1,6 +1,7 @@
 package server;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import server.controllers.LibrarianController;
 import server.controllers.LibraryManagerController;
 import server.controllers.ManageStockController;
 import server.controllers.ReaderController;
+import server.controllers.StatisticController;
 import server.controllers.SubscriberController;
 
 public class ServerConsole extends AbstractServer {
@@ -75,6 +77,7 @@ public class ServerConsole extends AbstractServer {
 		SubscriberController subscriberControllerObj=SubscriberController.getInstance();
 		LibrarianController librarianControllerObj=LibrarianController.getInstance();
 		ManageStockController manageStockControllerObj=ManageStockController.getInstance();
+		StatisticController statisticController = StatisticController.getInstance();
 		
 		try {
 			switch (((Message) msg).getOperationType()) {
@@ -135,6 +138,10 @@ public class ServerConsole extends AbstractServer {
 				break;
 			case BorrowBookByLibrarian:
 				returnMessageToClient=librarianControllerObj.borrowBook(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;	
+			case GetStatstic:
+				returnMessageToClient=statisticController.getStatstic(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;	
 			}

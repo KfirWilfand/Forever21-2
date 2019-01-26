@@ -1,11 +1,15 @@
 package client.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.itextpdf.text.DocumentException;
+
 import client.ViewStarter;
 import client.controllers.Utils.BorrowBookRowFactory;
+import client.controllers.adapters.PDFGenerator;
 import client.controllers.adapters.QueryBuilder;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
@@ -42,6 +46,13 @@ public class SearchBookController {
 	@FXML
 	private Button btnSearch;
 
+	@FXML
+	private Button btnSavePDF;
+
+	private List<Book> books;
+
+	private static final String PDF_PATH = System.getProperty("user.dir") + "/output/search_result.pdf";
+
 	public void initialize() {
 		ViewStarter.client.searchBookControllerObj = this;
 		ViewStarter.client.utilsControllers.setApListView(apListView);
@@ -55,7 +66,17 @@ public class SearchBookController {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBook, searchQeury));
 	}
 
+	@FXML
+	void onSavePdfBtn(ActionEvent event) throws IOException, DocumentException {
+		if(books.isEmpty()) {
+			return;
+		}
+		new PDFGenerator().createPdf(PDF_PATH, "Search Book Result", this.books);
+
+	}
+
 	public void onGetSearchResult(List<Book> books) {
+		this.books = books;
 		try {
 			Platform.runLater(new Runnable() {
 				@Override

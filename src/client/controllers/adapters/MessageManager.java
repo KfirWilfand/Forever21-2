@@ -10,6 +10,7 @@ import common.entity.Book;
 import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
+import common.entity.Statistic;
 import common.entity.Subscriber;
 import common.entity.User;
 import javafx.scene.control.Alert.AlertType;
@@ -112,13 +113,25 @@ public class MessageManager {
 				break;
 
 			case UpdateBookDetails:
-
-				Utils utils12 = new Utils(ViewStarter.client.mainViewController);
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					alert.info("Book update Successfully!","");
 				} else {
 					alert.error("Book update failed!","");
 				}
+
+				break;
+				
+			case GetStatstic:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
+					alert.info("Book update Successfully!","");
+				} else if(msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
+					alert.error("Book update failed!","");
+				
+			} else if(msg.getReturnMessageType() == ReturnMessageType.SuccessfulWithLastSnapshotDate) {
+				//TODO NEED TO DISPLAY WARRNING
+				ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
+			}
 
 				break;
 			}
