@@ -1,6 +1,7 @@
 package server.controllers;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Queue;
 
 import client.ViewStarter;
+import common.controllers.FilesController;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
@@ -18,6 +20,7 @@ import common.entity.Book;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
 import common.entity.Subscriber;
+import common.entity.TransferFile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
@@ -35,9 +38,19 @@ public class ManageStockController {
 
 	public Message addNewBook(Object msg) throws SQLException 
 	{
-		String query=(String)((Message)msg).getObj();
+		
+		Object[] message=(Object[])((Message)msg).getObj();
+		String query=(String)message[0];
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
 		Boolean res = dbControllerObj.insert(query);
+		
+		FilesController filesControllerObj=FilesController.getInstance();
+		if((TransferFile)message[1]!=null)
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+		if((TransferFile)message[3]!=null)
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
+		
+		
 		if(res)
 		{
 			return new Message(OperationType.AddNewBook, null , ReturnMessageType.Successful); 
@@ -119,9 +132,17 @@ public class ManageStockController {
 
 	public Message updateBookDetails(Object msg) throws SQLException 
 	{
-		String query=(String)((Message)msg).getObj();
+		Object[] message=(Object[])((Message)msg).getObj();
+		String query=(String)message[0];
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
-		Boolean res = dbControllerObj.update(query);
+		Boolean res = dbControllerObj.insert(query);
+		
+		FilesController filesControllerObj=FilesController.getInstance();
+		if((TransferFile)message[1]!= null)
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+		if((TransferFile)message[3]!= null)
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
+		
 		if(res)
 		{
 			return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Successful); 
@@ -189,6 +210,23 @@ public class ManageStockController {
 			borrow=new BorrowCopy(rs.getString("copyID"),rs.getInt("subNum"),rs.getDate("borrowDate"), rs.getDate("returnDueDate"));
 		return borrow ;
 	}
+
+	public Message sendBookPhotoToClient(Message msg) 
+	{
+  		String bookName=(String)msg.getObj();
+		URL url = getClass().getResource("../photos/");
+		String path=url.getPath().toString()+bookName.replace(" ","_")+".png";
+		path=path.replace('/', '\\');
+		path=path.replaceAll("bin", "src");
+  		TransferFile tf=TransferFile.createFileToTransfer(path);
+  		Object[] message=new Object[2];
+  		message[0]=tf;
+  		message[1]=bookName;
+  		if(tf!=null)
+  			return new Message(OperationType.ShowBookPhoto, message , ReturnMessageType.Successful);
+  		else
+  			return new Message(OperationType.ShowBookPhoto, null , ReturnMessageType.Unsuccessful);
+  	}
 
 }
 

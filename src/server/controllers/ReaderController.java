@@ -1,5 +1,6 @@
 package server.controllers;
 
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import common.entity.Book;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
+import common.entity.TransferFile;
 import common.entity.User;
 import common.entity.enums.UserType;
 import server.ServerConsole;
@@ -95,6 +97,23 @@ public class ReaderController {
     		return new Message(OperationType.SearchBook, null, ReturnMessageType.BooksNotFound);
     	}
     }
+    
+  	public Message sendTableOfContantToClient(Message msg)
+  	{
+  		String bookName=(String)msg.getObj();
+		URL url = getClass().getResource("../tableOfContent/");
+		String path=url.getPath().toString()+bookName.replace(" ","_")+".pdf";
+		path=path.replace('/', '\\');
+		path=path.replaceAll("bin", "src");
+  		TransferFile tf=TransferFile.createFileToTransfer(path);
+  		Object[] message=new Object[2];
+  		message[0]=tf;
+  		message[1]=bookName;
+  		if(tf!=null)
+  			return new Message(OperationType.DownloadTableOfContent, message , ReturnMessageType.Successful);
+  		else
+  			return new Message(OperationType.DownloadTableOfContent, null , ReturnMessageType.Unsuccessful);
+  	}
 
 
 }

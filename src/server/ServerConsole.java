@@ -23,6 +23,7 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import server.controllers.AutomaticFunctionsController;
 import server.controllers.DBcontroller;
+import common.controllers.FilesController;
 import server.controllers.LibrarianController;
 import server.controllers.LibraryManagerController;
 import server.controllers.ManageStockController;
@@ -108,6 +109,7 @@ public class ServerConsole extends AbstractServer {
 				break;
 			case UpdateBookDetails:
 				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
+				this.sendToClient(returnMessageToClient, client);
 				break;
 			case OrderBook:
 				returnMessageToClient=subscriberControllerObj.orderBook(msg);
@@ -122,6 +124,14 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=librarianControllerObj.returnBook(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;	
+			case DownloadTableOfContent:
+				returnMessageToClient=readerControllerObj.sendTableOfContantToClient((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case ShowBookPhoto:
+				returnMessageToClient=manageStockControllerObj.sendBookPhotoToClient((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 			}
 			
 		} catch(Exception ex) {

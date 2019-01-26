@@ -62,10 +62,7 @@ public class SearchBookOnManageStockController {
     	if (booksTable != null)
     	{	
     		String getAllBooksQuery = "Select * from obl.books";
-    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, getAllBooksQuery));
-    	
-
-	    	
+    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, getAllBooksQuery));	
     	}
     	   	
 	}
@@ -131,6 +128,8 @@ public class SearchBookOnManageStockController {
 					b.setVisible(true);
 					Book book = booksTable.getSelectionModel().getSelectedItem();
 					ViewStarter.client.updateOrAddBookControllerObj.showSelectedBookDetails(book);
+					
+					
 					
     			}		
     			

@@ -1,7 +1,12 @@
 package client.controllers;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -14,6 +19,7 @@ import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.Book;
+import common.entity.TransferFile;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -146,7 +152,16 @@ public class UpdateOrAddBookController {
 						+ ",0,'"+tfLocationOnShelf.getText()+"','"+tfGenre.getText()+"','"+tfAuthorName.getText()+"'"
 							+ ",'"+dpPurchaseDate.getValue()+"',0,"+cbIsPopular.isSelected()+")";
 			
-			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, addBookQuery));
+			TransferFile tf =TransferFile.createFileToTransfer(tfTableOfContent.getText());
+			TransferFile photo=TransferFile.createFileToTransfer(tfBookImagePath.getText());
+			
+			Object[] msg=new Object[4];
+			msg[0]=addBookQuery;
+			msg[1]=tf;
+			msg[2]=tfBookName.getText();
+			msg[3]=photo;
+			
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, msg));
 		}
     }
 
@@ -181,9 +196,17 @@ public class UpdateOrAddBookController {
     {
     	String query = "UPDATE obl.books SET bName='"+tfBookName.getText()+"',bAuthor='"+tfAuthorName.getText()+"',bGenre='"+tfGenre.getText()+"',bIsPopular="+cbIsPopular.isSelected()+",bEdition='"+tfEditionNumber.getText()+"',bPrintDate='"+dpPrintingDate.getValue()+"',bDescription='"+txteDescription.getText()+"',bPurchaseDate='"+dpPurchaseDate.getValue()+"',bShelfLocation='"+tfLocationOnShelf.getText()+"' WHERE bCatalogNum="+tfCatalogNumber.getText()+";";
     	
-    	
+		TransferFile tf =TransferFile.createFileToTransfer(tfTableOfContent.getText());
+		TransferFile photo=TransferFile.createFileToTransfer(tfBookImagePath.getText());
+		
+		Object[] msg=new Object[4];
+		msg[0]=query;
+		msg[1]=tf;
+		msg[2]=tfBookName.getText();
+		msg[3]=photo;
+		
     	System.out.println(query);
-    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,query ));
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,msg ));
 
     	
     }
@@ -206,6 +229,9 @@ public class UpdateOrAddBookController {
 		       	txteDescription.setText(book.getDescription());
 		       	tfLocationOnShelf.setText(book.getShelfLocation());
 		    	tfCopiesNumber.setText(String.valueOf(book.getCopiesNum()));
+		    	
+		    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ShowBookPhoto, book.getBookName()));
+		    
 			}
     	});
     }
@@ -236,6 +262,8 @@ public class UpdateOrAddBookController {
     			imgByteArr=Files.readAllBytes(selectedFile.toPath());
     			bookImage.setImage(new Image(selectedFile.toURI().toString()));
     		}
+    	
+  	
     }
 
     @FXML
@@ -244,8 +272,19 @@ public class UpdateOrAddBookController {
     	File selectedFile =fc.showOpenDialog(null);
     	if (selectedFile != null)
     		tfTableOfContent.setText(selectedFile.getAbsolutePath());		
+    	
+    }
+    
+    public void showPhoto(String fileName)
+    {
+    	URL url = getClass().getResource("../../client/boundery/photos/");
+		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
+		str=str.replace('/', '\\');
+		str=str.replaceAll("bin", "src");
+    	bookImage.setImage(new Image(new File(str).toURI().toString()));
     }
 	
 
 
+    
 }

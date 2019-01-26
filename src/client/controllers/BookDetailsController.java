@@ -1,5 +1,9 @@
 package client.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -14,6 +18,7 @@ import common.entity.Book;
 import common.entity.BookInOrder;
 import common.entity.Subscriber;
 import common.entity.User;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
 /**
  * The BookDetailsController class represent all the details about a book fxml functionality 
@@ -83,6 +89,8 @@ public class BookDetailsController {
    	 */
 	@FXML
 	public void initialize() {
+		ViewStarter.client.bookDetailsControllerObj=this;
+		
 		paneBookDetails.setTranslateX(100);
 		paneBookDetails.setTranslateY(160);
 		mainView = ViewStarter.client.mainViewController.getMainView();
@@ -117,8 +125,43 @@ public class BookDetailsController {
 	@FXML
 	void onTableOfContentBtn(ActionEvent event) 
 	{
-
+         ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.DownloadTableOfContent, book.getBookName() ));
 	}
+	
+	
+	public void downloadTableOC(String fileName) {
+		
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				
+				FileChooser fileChooser = new FileChooser();
+		        fileChooser.setTitle("Save Table of content");
+		        
+		        URL url = getClass().getResource("../../client/boundery/tableOfContent/");
+				String str=url.getPath().toString()+fileName.replace(" ","_")+".pdf";
+				str=str.replace('/', '\\');
+				str=str.replaceAll("bin", "src");
+				File file = new File(str);
+		        File dest = fileChooser.showSaveDialog(null);
+		        if (dest != null) {
+		            try {
+		                Files.copy(file.toPath(), dest.toPath());
+		            } catch (IOException ex) {
+		                // handle exception...
+		            }
+		        }
+				
+				
+				
+			}
+		});
+	
+	}
+	
+	
+
+		
 	 /**
    	 * onCloseBookDetailsBtn is shutting down the book details window
    	 * @param event is an action event

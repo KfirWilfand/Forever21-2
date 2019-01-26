@@ -5,6 +5,7 @@ import java.util.List;
 import client.ViewStarter;
 import client.controllers.Utils;
 import client.controllers.Utils.SearchBookRowFactory;
+import common.controllers.FilesController;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
@@ -12,6 +13,7 @@ import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
 import common.entity.Subscriber;
+import common.entity.TransferFile;
 import common.entity.User;
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
@@ -47,7 +49,6 @@ public class MessageManager {
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Wrong User Name Or Password!");
-					//alert.error("Wrong User Name Or Password!", "");
 					break;
 				case ClientIsAlreadyLogin:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "User is already login");
@@ -89,46 +90,41 @@ public class MessageManager {
 				switch (msg.getReturnMessageType()) {
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Update details succeed!");
-					//alert.info("Update details succeed!", "");
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Update details failed!!");
-					//alert.error("Update details failed!", "");
 					break;
 				}
 				break;
 			case AddNewSubscriberByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					//alert.info("Subscriber was added!", "");
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Subscriber was added!");
 					ViewStarter.client.librarianClientControllerObj.cleanNewSubscriberFields();
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Adding was failed!");
-					//alert.error("Adding was failed!", "");
 					break;
 				case EmailOrPhoneAreAlreadyExists:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Email or Phone number are already exists!");
-					//alert.error("Email or Phone number are already exists!", "");
 					break;
 				}
-				break;
-					
+				break;			
 			case SearchBookOnManageStock:
 				if (msg.getReturnMessageType() == ReturnMessageType.BooksFoundOnManageStock) {
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((List<Book>) msg.getObj());
 				}
 				break;
 			case AddNewBook:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+				switch (msg.getReturnMessageType()) {
+				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Book added Successfully!");
-					//alert.info("Book added Successfully!", "");
-				} else {
+					break;
+				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Book added failed!");
-					//alert.error("Book added failed!", "");
+					break;
 				}
-				break;	
+				break;
 			case GetCopiesOfSelectedBook:
 				ViewStarter.client.manageStockClientControllerObj.displayCopies((List<Copy>) msg.getObj());
 				break;
@@ -148,11 +144,9 @@ public class MessageManager {
 				case Successful:
 					ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Subscriber details updated successfully!");
-					//alert.info("Subscriber details updated successfully!", "");
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Can't update subscriber details");
-					//alert.error("Can't update subscriber details", "");
 					break;
 				}
 				break;
@@ -160,7 +154,6 @@ public class MessageManager {
 				switch (msg.getReturnMessageType()) {
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy added Successfully!");
-					//alert.info("Copy added Successfully!","");
 					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy) msg.getObj());
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
 					break;
@@ -187,8 +180,7 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Order List is full!");
 					break;
 				}
-				break;
-				
+				break;	
 			case BorrowBookByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case SubscriberNotExist:
@@ -211,39 +203,30 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in operation!");
 					break;	
 				}
-				break;
-				
+				break;	
 			case UpdateBookDetails:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Borrow executed successfully");
-					//alert.info("Borrow executed successfully","");
-					ViewStarter.client.librarianClientControllerObj.updateDetailsOnBorrow((Object[]) msg.getObj());
-
-				} else if (msg.getReturnMessageType() == ReturnMessageType.ErrorWhileTyping) {
-					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Error in typing! copy does not exist");
-					//alert.error("Error in typing! copy does not exist","");
-				}
-				else {
-					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Error in operation!");
-					//alert.error("Error in operation!","");
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Details update successfully");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Details do not update");
+					break;
 				}
 				break;
-				
 			case DeleteCopy:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					//alert.info("Copy was deleted Successfully!","");
-
+				switch (msg.getReturnMessageType()) {
+				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy was deleted Successfully!");
 					ViewStarter.client.manageStockClientControllerObj.removeCopiefromList();
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
-					
-				} else {
+					break;
+				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Copy deleted was failed!");
-					//alert.error("Copy was deleted failed!","");
+					break;
 				}
 				ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setDisable(true);
-				break;
-				
+				break;			
 			case ReturnBookByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
@@ -267,6 +250,31 @@ public class MessageManager {
 					break;
 				}
 				break;
+			case DownloadTableOfContent:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					FilesController fc=FilesController.getInstance();
+					Object[] o=(Object[])msg.getObj();
+					fc.SaveTableOfContent((TransferFile)o[0],(String)o[1], "../../client/boundery/tableOfContent/");
+					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String)o[1]);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "TABLE OF CONTENT DO NOT EXISTS");
+					break;
+				}
+				break;	
+			case ShowBookPhoto:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					FilesController fc=FilesController.getInstance();
+					Object[] o=(Object[])msg.getObj();
+					fc.SavePhoto((TransferFile)o[0],(String)o[1], "../../client/boundery/photos/");
+					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String)o[1]);
+					break;
+				case Unsuccessful:
+					break;
+				}
 			}
 
 		}
