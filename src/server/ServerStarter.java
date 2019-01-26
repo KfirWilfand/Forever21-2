@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import client.ViewStarter;
@@ -14,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import server.controllers.DBcontroller;
+import server.gui.serverGuiController;
 /**
  * The ServerStarter class that extends application represent the server started connection
  * @author  Kfir Wilfand
@@ -26,6 +28,7 @@ public class ServerStarter extends Application {
 	private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 	//final public static int DEFAULT_PORT = 5555;
 	public static ServerConsole server;
+	public static serverGuiController severGui;
 	/**
      * main method
 	 */

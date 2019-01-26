@@ -99,5 +99,12 @@ public class serverGuiController {
     	}
 
     }
+	public void autolog(String password) {
+		btnServerOnOff.setSelected(true);
+		tfPassword.setText(password);
+		
+		onServerOnOffbtn(null);
+		
+	}
 
 }
