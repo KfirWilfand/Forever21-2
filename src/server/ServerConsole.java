@@ -135,7 +135,7 @@ public class ServerConsole extends AbstractServer {
 	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
 		AutomaticFunctionsController afObj=AutomaticFunctionsController.getInstance();
-		afObj.startExecutionAt(11,10,02);
+		afObj.startExecutionAt(12,45,30);
 	}
 
 	@Override

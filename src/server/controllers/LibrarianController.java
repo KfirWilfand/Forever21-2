@@ -73,6 +73,8 @@ public class LibrarianController {
 		} 
 	}
 
+	
+	
 	public Message borrowBook (Object msg) throws SQLException
 	{
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
@@ -159,6 +161,7 @@ public class LibrarianController {
 		
 		Subscriber subscriber=SubscriberController.getSubscriberById(String.valueOf(borrowCopyFromDB.getSubNum()));
 		
+		
 		ReturnMessageType op;
 		if( borrowCopyFromDB.getActualReturnDate().after(borrowCopyFromDB.getReturnDueDate()) )
 		{//return not in time
@@ -179,7 +182,7 @@ public class LibrarianController {
 		//update actual return date in DB
 		String updateActualReturnDate="update obl.borrows set actualReturnDate='"+borrowCopyFromDB.getActualReturnDate()+"' where copyID='"+copy.getCopyID()+"' and subNum='"+subscriber.getSubscriberNum()+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"' and actualReturnDate is null";
 		Boolean updateActualReturnDate_res=dbControllerObj.update(updateActualReturnDate);
-		
+		Book bookDetails=ManageStockController.getBookByCatalogNumber(copy.getbCatalogNum());
 		Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(copy.getbCatalogNum());
 		if(orderQueue.isEmpty())
 		{//there is no subscribers in waiting list
@@ -195,10 +198,17 @@ public class LibrarianController {
 		else
 		{//there is subscriber in orderQueue
 			Subscriber firstInLine = orderQueue.peek();
-			//TODO sand mail that the book is arrived
+			
+			// sand mail that the book is arrived
+			String mailSubject="Your Book is arraived";
+			String mailBody="Your Book: "+bookDetails.getBookName()+"is arraived. You have two days to take it before your order cancelled.";
+			SendMailController.sendMailToSubscriber(firstInLine, mailSubject, mailBody);
+			
+			
 			String query="insert into obl.book_arrived_mail (subNum,catalogNum,reminderDate) values ("+firstInLine.getSubscriberNum()+",'"+copy.getbCatalogNum()+"','"+borrowCopyFromDB.getActualReturnDate()+"')";
 			Boolean insertToBookArrivedMail=dbControllerObj.update(query);
 			op=ReturnMessageType.subscriberInWaitingList;
+			
 		}
 		
 		return new Message(OperationType.ReturnBookByLibrarian, borrowCopyFromDB , op);
