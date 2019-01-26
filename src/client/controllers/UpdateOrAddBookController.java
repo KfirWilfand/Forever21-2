@@ -34,67 +34,93 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
+/**
+ * The UpdateOrAddBookController class represent the update or add new book controller on the client's side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class UpdateOrAddBookController {
-
+	
+	/** tfCatalogNumber is the catalog number text */
     @FXML
     private TextField tfCatalogNumber;
 
+    /** tfBookName is the book name */
     @FXML
     private TextField tfBookName;
 
+    /** tfAuthorName is the author name */
     @FXML
     private TextField tfAuthorName;
 
+    /** tfEditionNumber is the edition number text */
     @FXML
     private TextField tfEditionNumber;
 
+    /** tfLocationOnShelf is the location on sherlf text*/
     @FXML
     private TextField tfLocationOnShelf;
 
+    /** txteDescription is the description of the book */
     @FXML
     private TextArea txteDescription;
     
+    /** tfGenre is the genre of the book */
     @FXML
     private TextField tfGenre;
 
+    /** dpPrintingDate is the date of printing */
     @FXML
     private DatePicker dpPrintingDate;
 
+    /** dpPurchaseDate is the date of purchase date */
     @FXML
     private DatePicker dpPurchaseDate;
 
+    /** tfCopiesNumber is the copies number text */
     @FXML
     private TextField tfCopiesNumber;
 
-
+    /** cbIsPopular is the popularity check box */
 	@FXML
     private CheckBox cbIsPopular;
 
+	/** btnUpdate is the update button */
     @FXML
     private Button btnUpdate;
 
+    /** btnUploadTableOfContent is the upload table of content button */
    	@FXML
     private Button btnUploadTableOfContent;
 
+   	/** btnAddBook is the add book button */
     @FXML
     private Button btnAddBook;
 
-
+    /** btnBack is the back button */
 	@FXML
     private Button btnBack;
 
-
+	/** tfTableOfContent is the table of content text*/
     @FXML
     private TextField tfTableOfContent;
 
+    /** bookImage is the book image */
     @FXML
     private ImageView bookImage;
     
+    /** tfBookImagePath is the book image path */
     @FXML
     private TextField tfBookImagePath;
     
     private byte[] imgByteArr;
 
+    /**
+     * initialize is initializing the update or add controller
+	 */
 	@FXML
 	public void initialize() {
 		ViewStarter.client.updateOrAddBookControllerObj = this;
@@ -114,7 +140,10 @@ public class UpdateOrAddBookController {
 	
 	}
     
-
+	/**
+	 * onClickAddBook is adding a new book to inventory
+	 * @param event is an action event
+	 */
     @FXML
     void onClickAddBook(ActionEvent event) {
     	
@@ -166,7 +195,11 @@ public class UpdateOrAddBookController {
     }
 
 
-
+    /**
+	 * onClickBack going back to the previous page
+	 * @param event is action event
+	 * @exception IOException
+	 */
     @FXML
     void onClickBack(ActionEvent event)
     {
@@ -190,7 +223,10 @@ public class UpdateOrAddBookController {
 			e.printStackTrace();
 		}
     }
-
+    /**
+	 * onClickUpdate updates the book details
+	 * @param event is action event
+	 */
     @FXML
     void onClickUpdate(ActionEvent event) 
     {
@@ -210,7 +246,10 @@ public class UpdateOrAddBookController {
 
     	
     }
-    
+    /**
+	 * showSelectedBookDetails is displaying the details of selected book
+	 * @param book contains the details of the book
+	 */
     public void showSelectedBookDetails(Book book)
     {
     	Platform.runLater(new Runnable() 
@@ -235,23 +274,40 @@ public class UpdateOrAddBookController {
 			}
     	});
     }
-    
+    /**
+	 * btnAddBook is getting the add new book button
+	 * @return the add new book button
+	 */
     public Button getBtnAddBook() {
 		return btnAddBook;
 	}
+    /**
+	 * getBtnUpdate get the update inventory button
+	 * @return btnUpdate the upload button
+	 */
     public Button getBtnUpdate() {
 		return btnUpdate;
 	}
-
+    /**
+	 * getTfCopiesNumber get the number of copies
+	 * @return the copies number
+	 */
     public TextField getTfCopiesNumber() {
 		return tfCopiesNumber;
 	}
 
-
+    /**
+	 * setTfCopiesNumber set the number of cpies per book
+	 * @param tfCopiesNumber contains the number of copies
+	 */
 	public void setTfCopiesNumber(TextField tfCopiesNumber) {
 		this.tfCopiesNumber = tfCopiesNumber;
 	}
 
+	/**
+	 * onUploadImageBtn uploads an image of a book
+	 *@param event action event
+	 */
     @FXML
     void onUploadImageBtn(ActionEvent event) throws IOException {
     	FileChooser fc= new FileChooser();
@@ -265,7 +321,10 @@ public class UpdateOrAddBookController {
     	
   	
     }
-
+    /**
+	 * onUploadTableOfContent upload table of content of added book 
+	 * @param event action event
+	 */
     @FXML
     void onUploadTableOfContent(ActionEvent event) {
     	FileChooser fc= new FileChooser();

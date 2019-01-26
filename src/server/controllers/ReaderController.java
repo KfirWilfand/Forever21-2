@@ -21,13 +21,22 @@ import common.entity.TransferFile;
 import common.entity.User;
 import common.entity.enums.UserType;
 import server.ServerConsole;
-
+/**
+ * The ReaderController class represent the reader card controller on the server side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class ReaderController {
-
+	/**instance is a singleton of the class */
 	private static ReaderController instance;
     
     private ReaderController(){}
-    
+    /**
+	 * getInstance is creating the singleton object of the class
+	 */
     public static ReaderController getInstance(){
         if(instance == null){
             instance = new ReaderController();
@@ -36,7 +45,11 @@ public class ReaderController {
         
     }
   
-    
+    /**
+	 * login method
+	 * @param msg contains the message from the client
+	 * @throws SQLException when occurs
+	 */
     public Message login(Object msg) throws SQLException
     {
     	String loginQuery=(String)((Message)msg).getObj();
@@ -79,6 +92,11 @@ public class ReaderController {
     	return (Message) msg;
     }
     
+    /**
+   	 * searchBook is searching a book 
+   	 * @param msg contains the message from the client
+   	 * @throws SQLException when occurs
+   	 */
     public Message searchBook(Object msg) throws SQLException
     {//TODO :μαγεχ 
     	String searchQuery= (String)((Message)msg).getObj();

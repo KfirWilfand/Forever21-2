@@ -23,34 +23,55 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * The SearchBookOnManageStockController class represent the search book in manage stock client controller
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class SearchBookOnManageStockController {
 
+	/** tfCatalogNumberForSearch is the catalog number for search */
     @FXML
     private TextField tfCatalogNumberForSearch;
 
+    /** btnSearchBook is the search book button */
     @FXML
     private Button btnSearchBook;
     
+    /** tvColumnCatalogNumber is the book catalog number column on table*/
     @FXML
     private TableColumn<Book, Integer> tvColumnCatalogNumber;
 
+    /** tvColumnBookName is the book name column on the table */
     @FXML
     private TableColumn<Book, String> tvColumnBookName;
 
+    /** tvColumnCopiesNumber is copies number column in table */
     @FXML
     private TableColumn<Book, Integer> tvColumnCopiesNumber;
 
+    /** tvColumnEditionNumber column of edition number  */
     @FXML
     private TableColumn<Book, String> tvColumnEditionNumber;
 
+    /** booksTable is table view of books */
     @FXML
     private TableView<Book> booksTable;
     
-
+    /**
+   	 * getBooksTable get the books table view
+   	 * @return books table view
+   	 */
 	public TableView<Book> getBooksTable() {
 		return booksTable;
 	}
 
+	/**
+   	 * initialize the search book on manage stock view 
+   	 */
 	public void initialize() 
     {
 		ViewStarter.client.searchBookOnManageStockControllerObj = this;
@@ -66,7 +87,10 @@ public class SearchBookOnManageStockController {
     	}
     	   	
 	}
-
+	/**
+   	 * onClickSearchBook is placing the search book query
+   	 * @param event action of current event
+   	 */
     @FXML
     void onClickSearchBook(ActionEvent event) {
     	String searchBookQuery;
@@ -78,6 +102,10 @@ public class SearchBookOnManageStockController {
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBookOnManageStock, searchBookQuery));
     }
     
+    /**
+   	 * showBookResult display book search results
+   	 * @param list list of books that match the search
+   	 */
     public void showBookResult(List<Book> list)
     {
     	ObservableList<Book> BookToAdd = FXCollections.observableArrayList();
@@ -86,7 +114,11 @@ public class SearchBookOnManageStockController {
     	booksTable.setItems(BookToAdd);      
     }
     
-
+    /**
+   	 * onChosenRow chose the rows
+   	 * @param event mouse event
+   	 * @exception IOException
+   	 */
     @FXML
     void onChosenRow(MouseEvent event) {
     	if(event.getClickCount() == 1)
@@ -143,7 +175,9 @@ public class SearchBookOnManageStockController {
     }
     
     
-    
+    /**
+   	 * showBookDetails display book details
+   	 */
     public void showBookDetails()
     {
     	

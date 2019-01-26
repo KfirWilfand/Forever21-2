@@ -27,54 +27,84 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+/**
+ * The ManageStockClientController class represent the manage stock client controller
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class ManageStockClientController {
-
+	
+	/** tvCopies is a copies table view */
     @FXML
     private TableView<Copy> tvCopies;
 
-
+    /** tvColumsCopyID is a table column of copy */
 	@FXML
     private TableColumn<Copy, String> tvColumsCopyID;
 
+	/** btnAddNewBook is the add new book button */
     @FXML
     private Button btnAddNewBook;
 
-
+    /** InnerPaneInManageStock is the inner manage stock pane */
 	@FXML
     private Pane InnerPaneInManageStock;
    
+	/** tfEnterNewCopyID is a enter copyid text */
     @FXML
     private TextField tfEnterNewCopyID;
 
+    /** btnAddNewCopy is a add new copy button */
     @FXML
     private Button btnAddNewCopy;
     
-
+    /** btnDeleteCopy is delete cope button */
     @FXML
     private Button btnDeleteCopy;
 
-
+    /**
+   	 * getTfEnterNewCopyID is entering a new copy id
+   	 * @return enter new copy id text
+   	 */
 	public TextField getTfEnterNewCopyID() {
 		return tfEnterNewCopyID;
 	}
 
-
+	 /**
+   	 * getBtnAddNewCopy is getting the add new copy button
+   	 * @return a add new copy button 
+   	 */
 	public Button getBtnAddNewCopy() {
 		return btnAddNewCopy;
 	}
-
+	 /**
+   	 * setBtnAddNewCopy is setting the add new copy button
+   	 * @param btnAddNewCopy button 
+   	 */
 	public void setBtnAddNewCopy(Button btnAddNewCopy) {
 		this.btnAddNewCopy = btnAddNewCopy;
 	}
-
+	 /**
+   	 * getBtnDeleteCopy is getting the delete copy button
+   	 * return delete copy button
+   	 */
 	public Button getBtnDeleteCopy() {
 		return btnDeleteCopy;
 	}
-
+	 /**
+   	 * setBtnDeleteCopy is setting the delete copy button
+   	 * @param btnDeleteCopy 
+   	 */
 	public void setBtnDeleteCopy(Button btnDeleteCopy) {
 		this.btnDeleteCopy = btnDeleteCopy;
 	}
-
+	 /**
+   	 * initialize manage stock
+   	 * @exception IOException 
+   	 */
 	@FXML
 	public void initialize() {
 		ViewStarter.client.manageStockClientControllerObj = this;
@@ -99,6 +129,11 @@ public class ManageStockClientController {
 
 	}
     
+	 /**
+   	 * onClickAddNewBook adding a new book to the inventory
+   	 * @param event action event
+   	 * @exception IOException 
+   	 */
     @FXML
     void onClickAddNewBook(ActionEvent event) {
     	Platform.runLater(new Runnable() {
@@ -128,12 +163,18 @@ public class ManageStockClientController {
 	
 
     }
-    
+    /**
+   	 * getInnerPaneInManageStock is getting the inner pane in manage stock
+   	 * return inner pane
+   	 */
     public Pane getInnerPaneInManageStock() {
 		return InnerPaneInManageStock;
 	}
    
-    
+    /**
+   	 * displayCopies display all the copies
+   	 * @param list of copies
+   	 */
     public void displayCopies(List<Copy> list)
     {
     	if(!list.isEmpty()) {
@@ -147,6 +188,10 @@ public class ManageStockClientController {
     	}
     }
     
+    /**
+   	 * onClickAddCopy adding a new copy to DB
+   	 * @param event action event
+   	 */
     @FXML
     void onClickAddCopy(ActionEvent event) 
     {
@@ -161,10 +206,18 @@ public class ManageStockClientController {
     	
     }
     
+    /**
+   	 * getTvCopies is display the table view of the copies 
+   	 * @return table view of all copies
+   	 */
     public TableView<Copy> getTvCopies() {
 		return tvCopies;
 	}
 
+    /**
+   	 * addCopieToList is adding a new copy to list
+   	 * @param copy contains the details of the chosen copy 
+   	 */
     public void addCopieToList(Copy copy)
     {
     	
@@ -179,6 +232,9 @@ public class ManageStockClientController {
 		});
     }
    
+    /**
+   	 * removeCopiefromList is removing copies from list
+   	 */
     public void removeCopiefromList()
     {
     	
@@ -194,10 +250,10 @@ public class ManageStockClientController {
 		});
     }
     
-    
-    
-    
-    
+    /**
+   	 * onClickDeleteCopy is deleting a copy of a book
+   	 * @param event action event
+   	 */
     @FXML
     void onClickDeleteCopy(ActionEvent event)
     {
@@ -212,7 +268,10 @@ public class ManageStockClientController {
 
     }
     
-    
+    /**
+   	 * onChosenRow is chosing row by the mouse
+   	 * @param event get a mouse event
+   	 */
     @FXML
     void onChosenRow(MouseEvent event) {
 		if(event.getClickCount() == 1)
@@ -225,7 +284,10 @@ public class ManageStockClientController {
 
     }
 
-    
+    /**
+   	 * getBtnAddNewBook is return the add new book button
+   	 * @return add new book button 
+   	 */
     public Button getBtnAddNewBook() {
 		return btnAddNewBook;
 	}

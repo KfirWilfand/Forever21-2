@@ -23,23 +23,38 @@ import common.entity.enums.ReaderCardStatus;
 import common.entity.enums.SubscriberHistoryType;
 import common.entity.enums.UserType;
 
+/**
+ * The SubscriberController class represent the subscriber controller on the server side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class SubscriberController {
-
+	/**instance is a singleton of the class */
 	private static SubscriberController instance;
-
+	/**alert is an object of AlertController */
 	static AlertController alert = new AlertController();
 
 
 	private SubscriberController() {
 	}
-
+	 /**
+	 * getInstance is creating the singleton object of the class
+	 */
 	public static SubscriberController getInstance() {
 		if (instance == null) {
 			instance = new SubscriberController();
 		}
 		return instance;
 	}
-
+	/**
+	 * getSubscriberDetails is getting the subscriber details 
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
 	public Message getSubscriberDetails(Object msg) throws SQLException {
 		Subscriber subscriber = getSubscriberById((String) ((Message) msg).getObj());
 		if (subscriber != null) {
@@ -47,7 +62,12 @@ public class SubscriberController {
 		} else
 			return new Message(OperationType.GetSubscriberDetails, null, ReturnMessageType.Unsuccessful);
 	}
-
+	/**
+	 * getSubscriberById is getting the subscriber ри ID
+	 * @param userId is the user id
+	 * @throws SQLException when occurs
+	 * @return Subscriber
+	 */
 	public static Subscriber getSubscriberById(String userId) throws SQLException {
 
 		String subscriberQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, a.usrType,b.subPhoneNum, b.subLatesCounter, b.subStatus,b.subGraduationDate FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "
@@ -81,7 +101,12 @@ public class SubscriberController {
 		}
 		return null;
 	}
-
+	/**
+	 * updateDetails is updating details of subscriber
+	 * @param msg is the message from the client
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
 	public Message updateDetails(Object msg) throws SQLException {
 		String query = (String) ((Message) msg).getObj();
 		DBcontroller dbControllerObj = DBcontroller.getInstance();
@@ -93,7 +118,12 @@ public class SubscriberController {
 		else
 			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.Unsuccessful);
 	}
-
+	/**
+	 * orderBook is ordering a book by subscriber
+	 * @param msg is the message from the client
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
 	public Message orderBook(Object msg) throws SQLException {
 
 		Message orderMsg=((Message)msg);
