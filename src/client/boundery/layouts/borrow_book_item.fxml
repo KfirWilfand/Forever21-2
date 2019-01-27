@@ -7,41 +7,43 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="tableRow" prefHeight="53.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BookListItemController">
+<AnchorPane id="tableRow" fx:id="tableRowBorrowBook" prefHeight="64.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.adapters.BookListItemController">
 	<children>
 		<ImageView id="ivBook" fx:id="imgBookImage" fitHeight="34.0" fitWidth="34.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-		<Line endX="-100.0" endY="33.0" layoutX="152.0" layoutY="8.0" startX="-100.0" />
-		<Line endX="547.0" layoutX="168.0" layoutY="21.0" startX="-109.0" />
-		<Label id="lblBookName" fx:id="txtBookName" layoutX="59.0" layoutY="4.0" text="Book Name">
+		<Line endX="-100.0" endY="33.0" layoutX="152.0" layoutY="14.0" startX="-100.0" />
+		<Line endX="548.0" endY="1.1444091796875E-5" layoutX="168.0" layoutY="32.0" startX="-109.0" />
+		<Label id="lblBookName" fx:id="txtBookName" layoutX="59.0" layoutY="8.0" text="Book Name">
 			<font>
 				<Font name="System Bold" size="12.0" />
 			</font>
 		</Label>
-		<Label id="lblAuthor" fx:id="txtAutorName" layoutX="133.0" layoutY="4.0" text="Author">
-			<font>
-				<Font name="System Italic" size="12.0" />
-			</font>
-		</Label>
-		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="576.0" layoutY="23.0" mnemonicParsing="false" onAction="#onAskBorrowExtenationBtn" prefHeight="25.0" prefWidth="140.0" text="Ask Borrow Extension" />
-      <Label layoutX="58.0" layoutY="27.0" text="Borrow Date:">
+		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="570.0" layoutY="34.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Ask Borrow Extension">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
+      <Label layoutX="58.0" layoutY="36.0" text="Borrow Date:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="txtBorrowDate" layoutX="138.0" layoutY="27.0" text="05/09/2018" />
-      <Label layoutX="218.0" layoutY="27.0" text="Return Date:">
+      <Label fx:id="txtBorrowDate" layoutX="138.0" layoutY="36.0" text="05/09/2018" />
+      <Label layoutX="218.0" layoutY="36.0" text="Return Date:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="txtReturnDate" layoutX="298.0" layoutY="28.0" text="25/09/2018" />
-      <Line endX="-100.0" endY="16.5" layoutX="308.0" layoutY="26.0" startX="-100.0" startY="4.5" />
-      <Line endX="-100.0" endY="16.5" layoutX="468.0" layoutY="25.0" startX="-100.0" startY="4.5" />
-      <Label layoutX="381.0" layoutY="27.0" text="Time left to return book:">
+      <Label fx:id="txtReturnDate" layoutX="298.0" layoutY="37.0" text="25/09/2018" />
+      <Line endX="-100.0" endY="16.5" layoutX="308.0" layoutY="34.0" startX="-100.0" startY="4.5" />
+      <Line endX="-100.0" endY="16.5" layoutX="468.0" layoutY="34.0" startX="-100.0" startY="4.5" />
+      <Label layoutX="381.0" layoutY="36.0" text="Time left to return book:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="txtTimeToReturn" layoutX="530.0" layoutY="27.0" text="3 days" textFill="RED" />
+      <Label fx:id="txtTimeToReturn" layoutX="530.0" layoutY="36.0" text="3 days" textFill="RED" />
+      <Button fx:id="btnLossReporting" layoutX="570.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Loss Reporting">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
 	</children>
 </AnchorPane>

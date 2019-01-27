@@ -1,10 +1,12 @@
 package client.controllers;
 
 import client.ViewStarter;
+import client.controllers.adapters.BookListItemController;
 import client.controllers.adapters.BookSearchRow;
 import client.controllers.adapters.BorrowBookRow;
 import common.entity.Book;
 import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
@@ -75,6 +77,7 @@ public class Utils {
 						getClass().getResource("/client/boundery/layouts/search_book_item.fxml"));
 				Pane root = (Pane) loader.load();
 				BookSearchRow bookSearchRow = loader.getController();
+
 				return bookSearchRow;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -83,15 +86,14 @@ public class Utils {
 		}
 	}
 
-	public class BorrowBookRowFactory implements Callback<ListView<BorrowBook>, ListCell<BorrowBook>> {
+	public class BorrowBookRowFactory implements Callback<ListView<BorrowCopy>, ListCell<BorrowCopy>> {
 
 		@Override
-		public ListCell<BorrowBook> call(ListView<BorrowBook> param) {
+		public ListCell<BorrowCopy> call(ListView<BorrowCopy> param) {
 			try {
-				FXMLLoader loader = new FXMLLoader(
-						getClass().getResource("/client/boundery/layouts/borrow_book_item.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/boundery/layouts/borrow_book_item.fxml"));
 				Parent root = (Parent) loader.load();
-				BorrowBookRow borrowBookRow = loader.getController();
+				BookListItemController borrowBookRow = loader.getController();
 				return borrowBookRow;
 			} catch (IOException e) {
 				e.printStackTrace();

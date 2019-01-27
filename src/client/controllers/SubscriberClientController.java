@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import client.ViewStarter;
+import client.controllers.Utils.SearchBookRowFactory;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
+import common.entity.Book;
+import common.entity.BorrowCopy;
 import common.entity.HistoryItem;
 import common.entity.Subscriber;
 import common.entity.User;
@@ -17,6 +20,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -80,6 +84,7 @@ public class SubscriberClientController {
 
     @FXML
     private ListView<HistoryItem> ssLVBookApprove;
+  
 
     @FXML
     private ListView<HistoryItem> ssLVBookReturn;
@@ -89,12 +94,18 @@ public class SubscriberClientController {
 
     @FXML
     private ListView<HistoryItem> ssLVChangeStatus;
+
+    @FXML
+    private ListView<BorrowCopy> lvMyBorrowedBooks;
     
     @FXML
     private TabPane tabvSubsciber;
     
     @FXML
     private Tab tabReaderCardHistory;
+    
+    @FXML
+    private Tab btnBorrowedBooksTab;
 
 	private Subscriber mSubscriber;
 	
@@ -111,6 +122,22 @@ public class SubscriberClientController {
 		cmbEditStatus.getItems().addAll(options);
 		ViewStarter.client.subscriberClientControllerObj = this;
 	}
+	
+	
+	
+
+    @FXML
+    void onBorrowedBooksTab(Event event) 
+    {
+    
+    	User usr=ViewStarter.client.mainViewController.getUser();
+    	String query="SELECT c.bName ,a.copyID, a.subNum ,a.borrowDate, a.returnDueDate FROM obl.borrows as a left join obl.copeis as b on a.copyID=b.copyID left join obl.books as c on b.bCatalogNum=c.bCatalogNum where a.subNum= '"+usr.getId()+"' and a.actualReturnDate is null";
+    	System.out.println(query);
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ShowMyBorrowedBooks, query));
+    }
+	
+	
+	
 
 	@FXML // This query update existed subscriber's details (only phone number and email)
 	void onEditSaveBtn(ActionEvent event) {
@@ -210,6 +237,23 @@ System.out.println(subscriber);
 				ssLVChangeStatus.setItems(items);
 			}
 		});
+	}
+	
+	public void onGetBorrowedBooksResult(List<BorrowCopy> BorrowedBooks) {
+		try {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					lvMyBorrowedBooks.getItems().clear();
+					lvMyBorrowedBooks.setCellFactory(ViewStarter.client.utilsControllers.new BorrowBookRowFactory());
+					lvMyBorrowedBooks.getItems().addAll(BorrowedBooks);
+					
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

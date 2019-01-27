@@ -148,7 +148,7 @@ public class Book implements Serializable {
     			books_list.add(new Book(rs.getInt("bCatalogNum"), rs.getString("bName"),  rs.getString("bDescription"), 
     					authors, genres, rs.getInt("bCopiesNum"), rs.getDate("bPurchaseDate"), 
     					rs.getString("bShelfLocation"), rs.getString("bEdition"), rs.getDate("bPrintDate"), rs.getBoolean("bIsPopular"),rs.getInt("bAvilableCopiesNum")));
-
+    			
     		}
 		}
 		return books_list;

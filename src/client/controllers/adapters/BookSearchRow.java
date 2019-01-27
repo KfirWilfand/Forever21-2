@@ -51,6 +51,9 @@ public class BookSearchRow extends ListCell<Book> {
 	@Override
 	protected void updateItem(Book bookItem, boolean empty) {
 		super.updateItem(bookItem, empty);
+		
+		System.out.println(bookItem);
+
 		if (empty) {
 			setText(null);
 			setContentDisplay(ContentDisplay.TEXT_ONLY);

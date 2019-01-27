@@ -214,6 +214,33 @@ public class MessageManager {
 					alert.error("Book return failed!","");
 				}
 				break;
+				
+			case ShowMyBorrowedBooks:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					List<BorrowCopy> borrowBooks = (List<BorrowCopy>) msg.getObj();
+					ViewStarter.client.subscriberClientControllerObj.onGetBorrowedBooksResult(borrowBooks);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
+					break;
+				}
+				break;
+			case LossReporting:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Loss reporting success");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Loss reporting failed!");
+					break;
+				}
+				break;
+				
+				
+		
 			}
 
 		}

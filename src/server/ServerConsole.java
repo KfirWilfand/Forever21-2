@@ -122,6 +122,14 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=librarianControllerObj.returnBook(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;	
+			case ShowMyBorrowedBooks:
+				returnMessageToClient=subscriberControllerObj.showBorrowedBooks(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;	
+			case LossReporting:
+				returnMessageToClient=subscriberControllerObj.lossCopyReport(msg);
+				this.sendToClient(returnMessageToClient, client);
+				
 			}
 			
 		} catch(Exception ex) {
