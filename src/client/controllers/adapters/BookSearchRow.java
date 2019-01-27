@@ -23,31 +23,51 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-public class BookSearchRow extends ListCell<Book> {
 
+/**
+ * The BookSearchRow class that extends ListCell<Book> represents the rows in book search results. 
+ * @author  Kfir Wilfand
+ */
+public class BookSearchRow extends ListCell<Book> {
+	/** tableRow is an anchorPane */
 	@FXML
 	private AnchorPane tableRow;
-
+	
+	/** ivBook is an ImageView that displayed */
 	@FXML
 	private ImageView ivBook;
-
+	
+	/** lblBookName is a label that contains the name of the book */
 	@FXML
 	private Label lblBookName;
 
+	/** lblAuthor is a label that contains the name of the author */
 	@FXML
 	private Label lblAuthor;
 
+	/** lblDescription is a text that contains the description of the book */
 	@FXML
 	private Text lblDescription;
 
+	/** btnBookInfo is a button that redirect to information about the book*/
 	@FXML
 	private Button btnBookInfo;
 
+	
+	
+	
+	
 	@FXML
 	void onBookInfoBtn(ActionEvent event) {
 
 	}
 
+	
+	/**
+	 * updateItem is display book
+	 * @param   bookItem  is book that supposed to be displayed
+	 * @param   empty  tells if there is not such book means if null
+	 */
 	@Override
 	protected void updateItem(Book bookItem, boolean empty) {
 		super.updateItem(bookItem, empty);
@@ -66,7 +86,11 @@ public class BookSearchRow extends ListCell<Book> {
 			// ivBook.setImage(image);
 			
 			this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
+				/**
+				 * handle is displaying the book details 
+				 * @param e  is a  MouseEvent
+				 * @exception  IOException 
+				 */
 				@Override
 				public void handle(MouseEvent e) {
 					try {

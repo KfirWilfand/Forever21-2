@@ -1,6 +1,7 @@
 package client;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import client.controllers.Client;
@@ -15,24 +16,42 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * The ViewStarter class that extends application represent the start view
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class ViewStarter extends Application {
 	private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 	final public static int DEFAULT_PORT = 5555;
 	public static Client client;
-
+	/**
+     * main method
+     * @exception ArrayIndexOutOfBoundsException
+     * @exception IOException
+	 */
 	public static void main(String[] args) {
 		String host = "";
 		int port = 0; // The port number
 
 		try {
+			if (args[0].equals("autolog"))
+				throw new Exception();
+			
 			port = Integer.parseInt(args[0]);
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (Exception e) {
 			port = DEFAULT_PORT;
 		}
 
 		try {
+			if (args[0].equals("autolog"))
+				throw new Exception();
+
 			host = args[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (Exception e) {
 			host = "localhost";
 		}
 
@@ -46,16 +65,26 @@ public class ViewStarter extends Application {
 
 		launch(args);
 	}
-
+	/**
+     * start method
+     * @param primaryStage
+     * @exception Exception
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			Parent root = loader.load(getClass().getResource("/client/boundery/layouts/main_view.fxml"));
-			
+
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("OBL");
 			primaryStage.setResizable(false);
+
+			List<String> args = getParameters().getRaw();
+
+			if (args.contains("autolog")) {
+				client.mainViewController.autolog(args.get(1), args.get(2));
+			}
 
 			primaryStage.show();
 			primaryStage.setScene(scene);
@@ -64,10 +93,12 @@ public class ViewStarter extends Application {
 		}
 
 	}
-	
+	/**
+     * stop method
+	 */
 	@Override
-	public void stop(){
-		User usr=ViewStarter.client.mainViewController.getUser();
-		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Logout, usr));  
+	public void stop() {
+		User usr = ViewStarter.client.mainViewController.getUser();
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Logout, usr));
 	}
 }

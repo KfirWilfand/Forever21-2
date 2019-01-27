@@ -1,11 +1,25 @@
 package common.entity.enums;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The ReaderCardStatus enum represent the reader card status
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public enum ReaderCardStatus {
 	Lock, Hold,Active;
-	
+	/**
+	 * stringToEnum is taking a string and convert to enum
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
 	public static ReaderCardStatus stringToEnum(String userType){
 		switch(userType) {
 		case "Lock":
@@ -18,7 +32,11 @@ public enum ReaderCardStatus {
 		
 		return null;	
 	}
-	
+	/**
+	 * getEnums method get enums
+	 * @throws SQLException when occurs
+	 * @return List of reader card history
+	 */
 	public static List<ReaderCardStatus> getEnums(){
 		List<ReaderCardStatus> list = new ArrayList<ReaderCardStatus>();
 		list.add(Lock);

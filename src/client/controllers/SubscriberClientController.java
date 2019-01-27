@@ -32,89 +32,108 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+/**
+ * The SubscriberClientController class represent the subscriber controller on the client's side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class SubscriberClientController {
 
+	/** tfEditFirstName is the edit subscriber first name */
     @FXML
     private TextField tfEditFirstName;
 
+    /** tfEditLastName is the edit subscriber last name */
     @FXML
     private TextField tfEditLastName;
 
-    @FXML
-    private TextField tfEditGender;
-
-    @FXML
-    private TextField tfEditBirthDat;
-
-    @FXML
-    private TextField tfEditAge;
-
-    @FXML
-    private TextField tfEditStreet;
-
-    @FXML
-    private TextField tfEditCity;
-
+    /** tfEditSubscriberNumber is the edit subscriber number edit */
     @FXML
     private TextField tfEditSubscriberNumber;
 
+    /** tfEditUsrName is the edit username text */
     @FXML
     private TextField tfEditUsrName;
 
+    /** tfEditPhone is the edit phone text */
     @FXML
     private TextField tfEditPhone;
 
+    /** tfEditEmail is the edit email text */
     @FXML
     private TextField tfEditEmail;
 
+    /** cmbEditStatus is thereader card status combo box */
     @FXML
     private ComboBox<ReaderCardStatus> cmbEditStatus;
 
+    /** btnEditSave is the save edit button */
     @FXML
     private Button btnEditSave;
 
+    /** listViewBooksList is the book list history list view */
     @FXML
     private ListView<?> listViewBooksList;
 
+    /** listViewHistoryActivity is the activity history list view */
     @FXML
     private ListView<?> listViewHistoryActivity;
-
+    
+    /** ssLVBookRequest is the book request list view history*/
     @FXML
     private ListView<HistoryItem> ssLVBookRequest;
 
+    /** ssLVBookApprove is the list view of approved books history */
     @FXML
     private ListView<HistoryItem> ssLVBookApprove;
   
 
+    /** ssLVBookReturn is the list view of return book history */
     @FXML
     private ListView<HistoryItem> ssLVBookReturn;
 
+    /** ssLVEditProfile is a list view of edit profile history */
     @FXML
     private ListView<HistoryItem> ssLVEditProfile;
 
+    /** ssLVChangeStatus is the list view of change status history */
     @FXML
     private ListView<HistoryItem> ssLVChangeStatus;
 
     @FXML
     private ListView<BorrowCopy> lvMyBorrowedBooks;
     
+    /** tabvSubsciber is the tab pance of subscriber */
     @FXML
     private TabPane tabvSubsciber;
     
+    /** tabReaderCardHistory is the tab of reader card history */
     @FXML
     private Tab tabReaderCardHistory;
     
+
     @FXML
     private Tab btnBorrowedBooksTab;
 
+
+    /** mSubscriber is object of Subscriber*/
+
 	private Subscriber mSubscriber;
 	
+	/** txtEmailError is the email error text */
     @FXML
     private Text txtEmailError;
 
+    /** txtPhoneError is the text phone error */
     @FXML
     private Text txtPhoneError;
 
+    /**
+   	 * initialize the subscriber status combo box
+   	 */
 	@FXML
 	public void initialize() {
 		// initialize status combo box
@@ -122,6 +141,7 @@ public class SubscriberClientController {
 		cmbEditStatus.getItems().addAll(options);
 		ViewStarter.client.subscriberClientControllerObj = this;
 	}
+
 	
 	
 	
@@ -139,7 +159,12 @@ public class SubscriberClientController {
 	
 	
 
-	@FXML // This query update existed subscriber's details (only phone number and email)
+
+	/**
+   	 * onEditSaveBtn update existed subscriber's details (only phone number and email)
+   	 * @param event action event
+   	 */
+	@FXML 
 	void onEditSaveBtn(ActionEvent event) {
 		tfEditEmail.setStyle(null);
 		tfEditPhone.setStyle(null);
@@ -170,6 +195,10 @@ public class SubscriberClientController {
 		}
 	}
 
+	/**
+   	 * initializeDetailsAtLogin initialize details at login
+   	 * @param subscriber contains the detailes of the logged subscriber
+   	 */
 	public void initializeDetailsAtLogin(Subscriber subscriber) {
 		mSubscriber = subscriber;
 		tfEditFirstName.setText(subscriber.getFirstName());
@@ -193,28 +222,11 @@ public class SubscriberClientController {
 	}
 
 	/**
-	 * This method invoke when ReaderCard History Tab Click. 
-	 * @author kfir3
-	 */
-//    @FXML
-//    void onSubsciberReaderCardHistoryTabClick(ActionEvent event) {
-//		System.out.println(mSubscriber);
-////		if (mSubscriber == null) {
-////			System.out.println("kfir");
-////			ViewStarter.client.alertClientControllerObj.error("Can't find Subscriber", "");
-////			return;
-////		}
-////		
-////		updateSubscriberHistoryUi(mSubscriber);
-//	}
-
-	/**
-	 * This method update Subscriber History Ui 
-	 * @param Subscriber
-	 * @author kfir3
+	 * updateSubscriberHistoryUi update Subscriber History Ui 
+	 * @param subscriber contains details about the logged subscriber
 	 */
 	public void updateSubscriberHistoryUi(Subscriber subscriber) {
-System.out.println(subscriber);
+
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {

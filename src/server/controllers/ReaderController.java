@@ -1,5 +1,6 @@
 package server.controllers;
 
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,16 +17,26 @@ import common.entity.Book;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
+import common.entity.TransferFile;
 import common.entity.User;
 import common.entity.enums.UserType;
 import server.ServerConsole;
-
+/**
+ * The ReaderController class represent the reader card controller on the server side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class ReaderController {
-
+	/**instance is a singleton of the class */
 	private static ReaderController instance;
     
     private ReaderController(){}
-    
+    /**
+	 * getInstance is creating the singleton object of the class
+	 */
     public static ReaderController getInstance(){
         if(instance == null){
             instance = new ReaderController();
@@ -34,7 +45,11 @@ public class ReaderController {
         
     }
   
-    
+    /**
+	 * login method
+	 * @param msg contains the message from the client
+	 * @throws SQLException when occurs
+	 */
     public Message login(Object msg) throws SQLException
     {
     	String loginQuery=(String)((Message)msg).getObj();
@@ -77,6 +92,11 @@ public class ReaderController {
     	return (Message) msg;
     }
     
+    /**
+   	 * searchBook is searching a book 
+   	 * @param msg contains the message from the client
+   	 * @throws SQLException when occurs
+   	 */
     public Message searchBook(Object msg) throws SQLException
     {//TODO :μαγεχ 
     	String searchQuery= (String)((Message)msg).getObj();
@@ -95,6 +115,23 @@ public class ReaderController {
     		return new Message(OperationType.SearchBook, null, ReturnMessageType.BooksNotFound);
     	}
     }
+    
+  	public Message sendTableOfContantToClient(Message msg)
+  	{
+  		String bookName=(String)msg.getObj();
+		URL url = getClass().getResource("../tableOfContent/");
+		String path=url.getPath().toString()+bookName.replace(" ","_")+".pdf";
+		path=path.replace('/', '\\');
+		path=path.replaceAll("bin", "src");
+  		TransferFile tf=TransferFile.createFileToTransfer(path);
+  		Object[] message=new Object[2];
+  		message[0]=tf;
+  		message[1]=bookName;
+  		if(tf!=null)
+  			return new Message(OperationType.DownloadTableOfContent, message , ReturnMessageType.Successful);
+  		else
+  			return new Message(OperationType.DownloadTableOfContent, null , ReturnMessageType.Unsuccessful);
+  	}
 
 
 }

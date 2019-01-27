@@ -19,32 +19,52 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
+/**
+ * The BorrowBookRow class that extends ListCell<BorrowBook> represents the rows in borrow book. 
+ * @author  Kfir Wilfand
+ */
 public class BorrowBookRow extends ListCell<BorrowBook> {
 
+	/** lblBookName is a label that contains book name */
 	@FXML
 	private Label lblBookName;
 
+	/** lblAuthor is a label that contains author  */
 	@FXML
 	private Label lblAuthor;
 
+	/** lblDescription is a text "description" */
 	@FXML
 	private Text lblDescription;
 
+	/** ivBook is a ImageView*/
 	@FXML
 	private ImageView ivBook;
-
+	
+	/** tableRow is a anchor pane*/
 	@FXML
 	private AnchorPane tableRow;
 
+	/** bookDetails is a button*/
 	private Button bookDetails;
 
+	/** mainView is a anchor pane*/
 	private AnchorPane mainView;
 
+	/**
+	 * BorrowBookRow is loading the main view fxml
+	 * @param   mainView  is an anchor pane
+	 */
 	public BorrowBookRow(AnchorPane mainView) {
 		this.mainView = mainView;
 		loadFXML();
 	}
 
+
+	/**
+	 * loadFXML is loading the book list items
+	 * @exception RuntimeException if any run time occurs
+	 */
 	private void loadFXML() {
 		try {
 			Parent loader = FXMLLoader.load(getClass().getResource("/client/gui/layouts/book_list_item.fxml"));
@@ -61,6 +81,11 @@ public class BorrowBookRow extends ListCell<BorrowBook> {
 		}
 	}
 
+	/**
+	 * updateItem is display book
+	 * @param   item  is the borrowed book
+	 * @param   empty  tells if there is not such book means if null
+	 */
 	@Override
 	protected void updateItem(BorrowBook item, boolean empty) {
 		super.updateItem(item, empty);
