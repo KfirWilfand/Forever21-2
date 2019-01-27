@@ -4,7 +4,10 @@ import java.io.IOException;
 
 import client.ViewStarter;
 import client.controllers.BookDetailsController;
+import common.controllers.Message;
+import common.controllers.enums.OperationType;
 import common.entity.Book;
+import common.entity.TransferFile;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -72,7 +75,6 @@ public class BookSearchRow extends ListCell<Book> {
 	protected void updateItem(Book bookItem, boolean empty) {
 		super.updateItem(bookItem, empty);
 		
-		System.out.println(bookItem);
 
 		if (empty) {
 			setText(null);
@@ -82,6 +84,7 @@ public class BookSearchRow extends ListCell<Book> {
 			lblBookName.setText(bookItem.getBookName());
 			lblAuthor.setText(bookItem.getAuthor().toString());
 			lblDescription.setText(bookItem.getDescription());
+			
 			// Image image = new Image(item.getBookImagePath());
 			// ivBook.setImage(image);
 			
@@ -119,8 +122,11 @@ public class BookSearchRow extends ListCell<Book> {
 				}
 			});
 			
+			
+			
 			setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 			setGraphic(tableRow);
+			
 		}
 	}
 }

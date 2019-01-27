@@ -23,6 +23,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -83,6 +85,10 @@ public class BookDetailsController {
 	
 	/** mainView is an anchor pane*/
 	private AnchorPane mainView;
+	
+
+    @FXML
+    private ImageView bookImage;
 
 	 /**
    	 * initialize is check if its a random user or a subscriber in order to set the 'order' button to visible or not
@@ -211,7 +217,17 @@ public class BookDetailsController {
 				txtBookOrderStatusNotice.setVisible(true);
 			}
 		}
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ShowBookPhotoOnSearchBookDetails, book.getBookName()));
 	}
+	
+    public void showPhoto(String fileName)
+    {
+    	URL url = getClass().getResource("../../client/boundery/photos/");
+		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
+		str=str.replace('/', '\\');
+		str=str.replaceAll("bin", "src");
+		bookImage.setImage(new Image(new File(str).toURI().toString()));
+    }
 	
 }
 

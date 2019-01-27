@@ -1,6 +1,8 @@
 package client.controllers.adapters;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -103,6 +106,9 @@ public class BookListItemController extends ListCell<BorrowCopy>
 			setGraphic(tableRowBorrowBook);
 			}
     }
+    
+    
+
 }
 
 

@@ -328,6 +328,18 @@ public class MessageManager {
 					break;
 				}
 				break;
+			case ShowBookPhotoOnSearchBookDetails:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					FilesController fc = FilesController.getInstance();
+					Object[] o = (Object[]) msg.getObj();
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					ViewStarter.client.bookDetailsControllerObj.showPhoto((String) o[1]);
+					break;
+				case Unsuccessful:
+					break;
+				}
+				break;
 				
 				
 		

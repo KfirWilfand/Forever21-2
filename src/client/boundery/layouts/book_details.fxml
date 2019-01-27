@@ -12,7 +12,7 @@
 
 <Pane fx:id="paneBookDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="602.0" style="-fx-background-color: c4e1ef;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BookDetailsController">
    <children>
-      <ImageView fitHeight="168.0" fitWidth="167.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bookImage" fitHeight="167.0" fitWidth="147.0" layoutX="16.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/book-no-image.png" />
          </image>

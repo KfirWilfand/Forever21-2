@@ -166,6 +166,11 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=manageStockControllerObj.sendBookPhotoToClient((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case ShowBookPhotoOnSearchBookDetails:
+				returnMessageToClient=manageStockControllerObj.sendBookPhotoToClient((Message)msg);
+				returnMessageToClient.setOperationType(OperationType.ShowBookPhotoOnSearchBookDetails);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 			case AddHistoryRecord:
 				returnMessageToClient=subscriberControllerObj.addHistoryRecordBySubId((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
