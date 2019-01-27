@@ -18,27 +18,44 @@ import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.ActiviySnapshot;
 import common.entity.Statistic;
-
+/**
+ * The StatisticController class represent the statistic controller on the server's side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class StatisticController {
+	/**instance is a singleton of the class */
 	private static StatisticController instance;
-	private List<Integer> popularBorrowBookDuration;
-	private List<Integer> regularBorrowBookDuration;
-	private List<Integer> borrowBookLates;
-	private boolean isGivenDateSnapshot;
 
+	private boolean isGivenDateSnapshot;
+	
+	private StatisticController(){}
+	/**
+	 * getInstance is creating the singleton object of the class
+	 */
 	public static StatisticController getInstance() {
 		if (instance == null) {
 			instance = new StatisticController();
 		}
 		return instance;
 	}
-
+	
+	/**
+	 * getStatstic is getting the general system statistic details
+	 * 
+	 * @param msg contains the message from the client
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
 	public Message getStatstic(Object msg) {
 		try {
 			// init
-			this.popularBorrowBookDuration = getBorrowBooksByPopularity(Boolean.TRUE);
-			this.regularBorrowBookDuration = getBorrowBooksByPopularity(Boolean.FALSE);
-			this.borrowBookLates = getBorrowBooksLates();
+			List<Integer> popularBorrowBookDuration = getBorrowBooksByPopularity(Boolean.TRUE);
+			List<Integer> regularBorrowBookDuration = getBorrowBooksByPopularity(Boolean.FALSE);
+			List<Integer> borrowBookLates = getBorrowBooksLates();
 
 			float popAverage = getAverage(popularBorrowBookDuration);
 			int popMedian = getMedian(popularBorrowBookDuration);
@@ -74,7 +91,47 @@ public class StatisticController {
 
 		}
 	}
+	
+	/**
+	 * insertStatisticActiviySnapshot use primarily to insert new statistic activity snapshot automatic functions.
+	 * 
+	 * @param msg contains the message from the client
+	 * @throws SQLException when occurs
+	 */
+	public void insertStatisticActiviySnapshot() throws Exception {
+		String aLockSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Lock';";
+		String aHoldSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Hold';";
+		String aActiveSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Avtive';";
+		String aCopiesQuary = "SELECT COUNT(copyId) FROM obl.copeis";
+		String aLatesQuary = "SELECT COUNT(copyId) FROM obl.borrows where returnDueDate <= actualReturnDate;";
 
+		DBcontroller dbControllerObj = DBcontroller.getInstance();
+		ResultSet aLockSubQuary_res = dbControllerObj.query(aLockSubQuary);
+		ResultSet aHoldSubQuary_res = dbControllerObj.query(aHoldSubQuary);
+		ResultSet aActiveSubQuary_res = dbControllerObj.query(aActiveSubQuary);
+		ResultSet aCopiesQuary_res = dbControllerObj.query(aCopiesQuary);
+		ResultSet aLatesQuary_res = dbControllerObj.query(aLatesQuary);
+
+		if (!(aLockSubQuary_res.next() && aHoldSubQuary_res.next() && aActiveSubQuary_res.next()
+				&& aCopiesQuary_res.next() && aLatesQuary_res.next())) {
+			throw new Exception("Some of statistic parmer is missing! Can't insert new Activity to DB!");
+		}
+
+		LocalDate borrowDate = LocalDate.now();
+
+		String quaryInsertNewActivity = "INSERT INTO `obl`.`activity_statistic` (`aDate`, `aLockSub`, `aHoldSub`, `aActiveSub`, `aCopies`, `aLates`) "
+				+ "VALUES ('" + Date.valueOf(borrowDate) + "', '" + aLockSubQuary_res.getInt(1) + "', '"
+				+ aHoldSubQuary_res.getInt(1) + "', '" + aActiveSubQuary_res.getInt(1) + "', '"
+				+ aCopiesQuary_res.getInt(1) + "', '" + aLatesQuary_res.getInt(1) + "');";
+
+		dbControllerObj.insert(quaryInsertNewActivity);
+	}
+
+	/**
+	 * getLastSnapshotDate 
+	 * @throws SQLException when occurs
+	 * @return last snapshot activity date
+	 */
 	private Date getLastSnapshotDate() throws Exception {
 		String lastSnapshotQuary = "SELECT Max(aDate) FROM obl.activity_statistic;";
 
@@ -88,7 +145,11 @@ public class StatisticController {
 		return lastSnapshotQuary_res.getDate(1);
 
 	}
-
+	/**
+	 * getFirstSnapshotDate 
+	 * @throws SQLException when occurs
+	 * @return first snapshot activity date
+	 */
 	private Date getFirstSnapshotDate() throws Exception {
 		String firstSnapshotQuary = "SELECT Min(aDate) FROM obl.activity_statistic;";
 
@@ -101,8 +162,13 @@ public class StatisticController {
 
 		return firstSnapshotQuary_res.getDate(1);
 	}
-
-	public ActiviySnapshot readActiviySnapshotByDate(Date date) throws Exception {
+	/**
+	 * readActiviySnapshotByDate 
+	 * @param date of activity snapshot 
+	 * @throws Exception when occurs
+	 * @return ActiviySnapshot 
+	 */
+	private ActiviySnapshot readActiviySnapshotByDate(Date date) throws Exception {
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -131,38 +197,14 @@ public class StatisticController {
 
 		return null;
 	}
-
-	public void insertStatisticActiviySnapshot() throws Exception {
-		String aLockSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Lock';";
-		String aHoldSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Hold';";
-		String aActiveSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Avtive';";
-		String aCopiesQuary = "SELECT COUNT(copyId) FROM obl.copeis";
-		String aLatesQuary = "SELECT COUNT(copyId) FROM obl.borrows where returnDueDate <= actualReturnDate;";
-
-		DBcontroller dbControllerObj = DBcontroller.getInstance();
-		ResultSet aLockSubQuary_res = dbControllerObj.query(aLockSubQuary);
-		ResultSet aHoldSubQuary_res = dbControllerObj.query(aHoldSubQuary);
-		ResultSet aActiveSubQuary_res = dbControllerObj.query(aActiveSubQuary);
-		ResultSet aCopiesQuary_res = dbControllerObj.query(aCopiesQuary);
-		ResultSet aLatesQuary_res = dbControllerObj.query(aLatesQuary);
-
-		if (!(aLockSubQuary_res.next() && aHoldSubQuary_res.next() && aActiveSubQuary_res.next()
-				&& aCopiesQuary_res.next() && aLatesQuary_res.next())) {
-			throw new Exception("Some of statistic parmer is missing! Can't insert new Activity to DB!");
-		}
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		LocalDate borrowDate = LocalDate.now();
-
-		String quaryInsertNewActivity = "INSERT INTO `obl`.`activity_statistic` (`aDate`, `aLockSub`, `aHoldSub`, `aActiveSub`, `aCopies`, `aLates`) "
-				+ "VALUES ('" + Date.valueOf(borrowDate) + "', '" + aLockSubQuary_res.getInt(1) + "', '"
-				+ aHoldSubQuary_res.getInt(1) + "', '" + aActiveSubQuary_res.getInt(1) + "', '"
-				+ aCopiesQuary_res.getInt(1) + "', '" + aLatesQuary_res.getInt(1) + "');";
-
-		dbControllerObj.insert(quaryInsertNewActivity);
-	}
-
-	public Map<Integer, List<Integer>> getDistribution(List<Integer> borrowBookDuration) throws Exception {
+	
+	/**
+	 * getDistribution return map of list, split by decimal distribution
+	 * @param borrowBookDuration
+	 * @throws Exception when occurs
+	 * @return distribution
+	 */
+	private Map<Integer, List<Integer>> getDistribution(List<Integer> borrowBookDuration) throws Exception {
 
 		Map<Integer, List<Integer>> distribution = new HashMap<Integer, List<Integer>>();
 		if (borrowBookDuration.isEmpty())
@@ -202,8 +244,14 @@ public class StatisticController {
 
 		return distribution;
 	}
-
-	public float getAverage(List<Integer> borrowBookDuration) {
+	
+	/**
+	 * getAverage return average of single list distribution
+	 * @param borrowBookDuration
+     * @throws SQLException when occurs
+	 * @return average
+	 */
+	private float getAverage(List<Integer> borrowBookDuration) {
 		int sum = 0;
 
 		for (Integer duration : borrowBookDuration) {
@@ -212,8 +260,14 @@ public class StatisticController {
 
 		return ((float) sum) / borrowBookDuration.size();
 	}
-
-	public int getMedian(List<Integer> borrowBookDuration) {
+	
+	/**
+	 * getMedian return median of single list distribution
+	 * @param borrowBookDuration
+	 * @throws SQLException when occurs
+	 * @return average
+	 */
+	private int getMedian(List<Integer> borrowBookDuration) {
 		int median = 0;
 		Collections.sort(borrowBookDuration);
 		if (borrowBookDuration.size() == 0)
@@ -228,8 +282,14 @@ public class StatisticController {
 
 		return median;
 	}
-
-	public List<Integer> getBorrowBooksByPopularity(Boolean isPopular) throws SQLException {
+	
+	/**
+	 * getBorrowBooksByPopularity return list of calculate duration borrow books.
+	 * @param isPopular
+	 * @throws SQLException when occurs
+	 * @return list of calculate duration
+	 */
+	private List<Integer> getBorrowBooksByPopularity(Boolean isPopular) throws SQLException {
 		List<List<Date>> borrowDates = new ArrayList<List<Date>>();
 
 		String borrowBookQuaryByPopularity = "SELECT borrowDate,returnDueDate "
@@ -250,8 +310,13 @@ public class StatisticController {
 
 		return calcBorrowDuration(borrowDates);
 	}
-
-	public List<Integer> getBorrowBooksLates() throws SQLException {
+	
+	/**
+	 * getBorrowBooksLates return list of calculate duration late borrow books.
+	 * @throws SQLException when occurs
+	 * @return list of calculate duration
+	 */
+	private List<Integer> getBorrowBooksLates() throws SQLException {
 		List<List<Date>> borrowDates = new ArrayList<List<Date>>();
 
 		String borrowBookQuaryLates = "SELECT returnDueDate ,actualReturnDate "
@@ -272,7 +337,11 @@ public class StatisticController {
 	
 		return calcBorrowDuration(borrowDates);
 	}
-
+	/**
+	 * calcBorrowDuration return list of calculate duration of borrow books.
+	 * @param borrowDates
+	 * @return list of calculate duration
+	 */
 	private List<Integer> calcBorrowDuration(List<List<Date>> borrowDates) {
 		
 		List<Integer> borrowDuration = new ArrayList<Integer>();

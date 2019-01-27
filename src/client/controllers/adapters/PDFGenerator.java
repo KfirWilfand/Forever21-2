@@ -18,6 +18,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import common.entity.Book;
+import server.controllers.ReaderController;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,20 +27,20 @@ import java.io.IOException;
 
 public class PDFGenerator {
 
-//	public static final String DEST = "results/javaone/edition16/hello_table2.pdf";
-
-//	public static void main(String[] args) throws IOException, DocumentException {
-//		File file = new File(DEST);
-//		file.getParentFile().mkdirs();
-//		List<Book> bookList = new ArrayList<Book>();
-//		bookList.add(new Book(34, "bookName", "bookName", new ArrayList<String>(), new ArrayList<String>(), 4,
-//				new Date(34), "dfgdfg", "dfgdfg", new Date(34), false, 2));
-//		bookList.add(new Book(34, "bookName", "bookName", new ArrayList<String>(), new ArrayList<String>(), 4,
-//				new Date(34), "dfgdfg", "dfgdfg", new Date(34), false, 2));
-//
-//		new PDFGenerator().createPdf(DEST, bookList);
-//	}
-
+	/**instance is a singleton of the class */
+	private static PDFGenerator instance;
+    
+    private PDFGenerator(){}
+    /**
+	 * getInstance is creating the singleton object of the class
+	 */
+    public static PDFGenerator getInstance(){
+        if(instance == null){
+            instance = new PDFGenerator();
+        }
+        return instance;
+    }
+        
 	public void createPdf(String dest, String title, List<Book> bookList) throws IOException, DocumentException {
 		File file = new File(dest);
 		file.getParentFile().mkdirs();

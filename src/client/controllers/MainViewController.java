@@ -275,6 +275,7 @@ public class MainViewController {
 					if (user instanceof Librarian) {
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
 						lblLoginAs.setText("Log as Librarian");
+						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();
 					}
 
 					if (user instanceof LibraryManager) {
@@ -314,7 +315,6 @@ public class MainViewController {
 	}
 
 	public void autolog(String usrName,String usrPass) {
-		System.out.println("sdfsdf");
 		tfPassword.setText(usrPass);
 		tfUserName.setText(usrName);
 		onBtnDialogBoxLogin(null);	

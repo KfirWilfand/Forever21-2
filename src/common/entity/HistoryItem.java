@@ -15,8 +15,10 @@ import common.entity.enums.SubscriberHistoryType;
 public class HistoryItem implements Serializable {
 	private Date date;
 	private String description;
+	private SubscriberHistoryType subscriberHistoryType;
+	private Integer subId;
 	/**
-	 * HistoryItem class constructor
+	 * HistoryItem class constructor use for display in ListView
 	 * @param date
 	 * @param description
 	 * @return HistoryItem object
@@ -26,6 +28,18 @@ public class HistoryItem implements Serializable {
 		this.description = description;
 	}
 	/**
+	 * HistoryItem class constructor use for send object from client to server
+	 * @param date
+	 * @param description
+	 * @param subscriberHistoryType
+	 * @return HistoryItem object
+	 */
+	public HistoryItem(Integer subId, String description,SubscriberHistoryType subscriberHistoryType) {
+		this.subId = subId;
+		this.description = description;
+		this.subscriberHistoryType = subscriberHistoryType;
+	}
+	/**
 	 * toString override of the class object
 	 */
 	@Override
@@ -33,4 +47,13 @@ public class HistoryItem implements Serializable {
 		return date + ": " + description;
 	}
 
+	public Integer getSubId() {
+		return subId;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public SubscriberHistoryType getSubscriberHistoryType() {
+		return subscriberHistoryType;
+	}
 }

@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,23 +25,25 @@ import common.entity.enums.SubscriberHistoryType;
 import common.entity.enums.UserType;
 
 /**
- * The SubscriberController class represent the subscriber controller on the server side
- * @author  Kfir Wilfand
+ * The SubscriberController class represent the subscriber controller on the
+ * server side
+ * 
+ * @author Kfir Wilfand
  * @author Bar Korkos
  * @author Zehavit Otmazgin
  * @author Noam Drori
  * @author Sapir Hochma
  */
 public class SubscriberController {
-	/**instance is a singleton of the class */
+	/** instance is a singleton of the class */
 	private static SubscriberController instance;
-	/**alert is an object of AlertController */
+	/** alert is an object of AlertController */
 	static AlertController alert = new AlertController();
-
 
 	private SubscriberController() {
 	}
-	 /**
+
+	/**
 	 * getInstance is creating the singleton object of the class
 	 */
 	public static SubscriberController getInstance() {
@@ -49,9 +52,11 @@ public class SubscriberController {
 		}
 		return instance;
 	}
+
 	/**
-	 * getSubscriberDetails is getting the subscriber details 
-	 * @param msg contains the message from the client 
+	 * getSubscriberDetails is getting the subscriber details
+	 * 
+	 * @param msg contains the message from the client
 	 * @throws SQLException when occurs
 	 * @return Message
 	 */
@@ -62,8 +67,10 @@ public class SubscriberController {
 		} else
 			return new Message(OperationType.GetSubscriberDetails, null, ReturnMessageType.Unsuccessful);
 	}
+
 	/**
 	 * getSubscriberById is getting the subscriber ри ID
+	 * 
 	 * @param userId is the user id
 	 * @throws SQLException when occurs
 	 * @return Subscriber
@@ -101,8 +108,10 @@ public class SubscriberController {
 		}
 		return null;
 	}
+
 	/**
 	 * updateDetails is updating details of subscriber
+	 * 
 	 * @param msg is the message from the client
 	 * @throws SQLException when occurs
 	 * @return Message
@@ -118,35 +127,65 @@ public class SubscriberController {
 		else
 			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.Unsuccessful);
 	}
+
+	/**
+	 * addHistoryRecordBySubId add a new record to subscriber history table
+	 * 
+	 * @param msg is the message from the client with subsciberId, type of history
+	 *            record and description
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
+	public Message addHistoryRecordBySubId(Object msg) throws SQLException {
+
+		Message recordMsg = ((Message) msg);
+		HistoryItem historyItem = ((HistoryItem) recordMsg.getObj());
+
+		String recordQuery = "INSERT INTO `obl`.`subscribers_history` (`subNum`, `actionDate`, `actionDescription`, `actionType`) VALUES ('"
+				+ historyItem.getSubId() + "', '" + LocalDate.now() + "', '" + historyItem.getDescription() + "', '"
+				+ historyItem.getSubscriberHistoryType() + "');";
+		
+		DBcontroller dbControllerObj = DBcontroller.getInstance();
+	
+		if (dbControllerObj.update(recordQuery))// if order executed
+			return new Message(OperationType.AddHistoryRecord, null, ReturnMessageType.Successful);
+		else
+			return new Message(OperationType.AddHistoryRecord, null, ReturnMessageType.Unsuccessful);
+	}
+
 	/**
 	 * orderBook is ordering a book by subscriber
+	 * 
 	 * @param msg is the message from the client
 	 * @throws SQLException when occurs
 	 * @return Message
 	 */
 	public Message orderBook(Object msg) throws SQLException {
 
-		Message orderMsg=((Message)msg);
-		int tempSubNum=((BookInOrder)orderMsg.getObj()).getSubNum();
-		int tempBookCatalogNum=((BookInOrder)orderMsg.getObj()).getbCatalogNum();
-		Timestamp orderDate= ((BookInOrder)orderMsg.getObj()).getDateOfOrder();
-		DBcontroller dbControllerObj= DBcontroller.getInstance();
-		String checkIfOrderAlreadyExist="select boSubNum, boCatalogNum from obl.books_orders where boSubNum="+tempSubNum+" and boCatalogNum='"+tempBookCatalogNum+"'";
-		ResultSet checkIfOrderAlreadyExist_res=dbControllerObj.query(checkIfOrderAlreadyExist);
-		
-		if(checkIfOrderAlreadyExist_res.next())
-			return new Message(OperationType.OrderBook, null , ReturnMessageType.SubscriberAlreadyInOrderList);
-		else
-		{	Book bookToOrder =ManageStockController.getBookByCatalogNumber(checkIfOrderAlreadyExist_res.getInt("boCatalogNum"));
-			Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(bookToOrder.getCatalogNum());
-			if(bookToOrder.getCopiesNum() == orderQueue.size() )
-				return new Message(OperationType.OrderBook, null , ReturnMessageType.FullOrderList);
-			String orderQuery="INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"+tempSubNum+"','"+tempBookCatalogNum+"','"+orderDate+"')";
-			Boolean insertBookInOrder= dbControllerObj.update(orderQuery);
-			if(insertBookInOrder)//if order executed
-				return new Message(OperationType.OrderBook, null , ReturnMessageType.Successful);
+		Message orderMsg = ((Message) msg);
+		int tempSubNum = ((BookInOrder) orderMsg.getObj()).getSubNum();
+		int tempBookCatalogNum = ((BookInOrder) orderMsg.getObj()).getbCatalogNum();
+		Timestamp orderDate = ((BookInOrder) orderMsg.getObj()).getDateOfOrder();
+		DBcontroller dbControllerObj = DBcontroller.getInstance();
+		String checkIfOrderAlreadyExist = "select boSubNum, boCatalogNum from obl.books_orders where boSubNum="
+				+ tempSubNum + " and boCatalogNum='" + tempBookCatalogNum + "'";
+		ResultSet checkIfOrderAlreadyExist_res = dbControllerObj.query(checkIfOrderAlreadyExist);
+
+		if (checkIfOrderAlreadyExist_res.next())
+			return new Message(OperationType.OrderBook, null, ReturnMessageType.SubscriberAlreadyInOrderList);
+		else {
+			Book bookToOrder = ManageStockController
+					.getBookByCatalogNumber(checkIfOrderAlreadyExist_res.getInt("boCatalogNum"));
+			Queue<Subscriber> orderQueue = ManageStockController.getBookOrderQueue(bookToOrder.getCatalogNum());
+			if (bookToOrder.getCopiesNum() == orderQueue.size())
+				return new Message(OperationType.OrderBook, null, ReturnMessageType.FullOrderList);
+			String orderQuery = "INSERT INTO OBL.books_orders (boSubNum, boCatalogNum, dateOfOrder) VALUES('"
+					+ tempSubNum + "','" + tempBookCatalogNum + "','" + orderDate + "')";
+			Boolean insertBookInOrder = dbControllerObj.update(orderQuery);
+			if (insertBookInOrder)// if order executed
+				return new Message(OperationType.OrderBook, null, ReturnMessageType.Successful);
 			else
-				return new Message(OperationType.OrderBook, null , ReturnMessageType.Unsuccessful);
+				return new Message(OperationType.OrderBook, null, ReturnMessageType.Unsuccessful);
 		}
 	}
 }

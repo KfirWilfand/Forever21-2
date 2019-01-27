@@ -189,27 +189,11 @@ public class SubscriberClientController {
 	}
 
 	/**
-	 * This method invoke when ReaderCard History Tab Click. 
-	 * @author kfir3
-	 */
-//    @FXML
-//    void onSubsciberReaderCardHistoryTabClick(ActionEvent event) {
-//		System.out.println(mSubscriber);
-////		if (mSubscriber == null) {
-////			System.out.println("kfir");
-////			ViewStarter.client.alertClientControllerObj.error("Can't find Subscriber", "");
-////			return;
-////		}
-////		
-////		updateSubscriberHistoryUi(mSubscriber);
-//	}
-
-	/**
 	 * updateSubscriberHistoryUi update Subscriber History Ui 
 	 * @param subscriber contains details about the logged subscriber
 	 */
 	public void updateSubscriberHistoryUi(Subscriber subscriber) {
-System.out.println(subscriber);
+
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {

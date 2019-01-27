@@ -83,7 +83,6 @@ public class ViewStarter extends Application {
 			List<String> args = getParameters().getRaw();
 
 			if (args.contains("autolog")) {
-				System.out.println(args.get(1));
 				client.mainViewController.autolog(args.get(1), args.get(2));
 			}
 

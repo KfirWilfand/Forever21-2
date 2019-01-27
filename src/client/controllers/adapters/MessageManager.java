@@ -53,7 +53,7 @@ public class MessageManager {
 					ViewStarter.client.mainViewController.onLogin(user);
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Wrong User Name Or Password!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Wrong User Name Or Password!");
 					break;
 				case ClientIsAlreadyLogin:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "User is already login");
@@ -94,27 +94,27 @@ public class MessageManager {
 			case EditDetailsBySubscriber:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Update details succeed!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Update details succeed!");
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Update details failed!!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Update details failed!!");
 					break;
 				}
 				break;
 			case AddNewSubscriberByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Subscriber was added!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Subscriber was added!");
 					ViewStarter.client.librarianClientControllerObj.cleanNewSubscriberFields();
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Adding was failed!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Adding was failed!");
 					break;
 				case EmailOrPhoneAreAlreadyExists:
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Email or Phone number are already exists!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Email or Phone number are already exists!");
 					break;
 				}
-				break;			
+				break;
 			case SearchBookOnManageStock:
 				if (msg.getReturnMessageType() == ReturnMessageType.BooksFoundOnManageStock) {
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookResult((List<Book>) msg.getObj());
@@ -123,10 +123,10 @@ public class MessageManager {
 			case AddNewBook:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Book added Successfully!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Book added Successfully!");
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Book added failed!");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book added failed!");
 					break;
 				}
 				break;
@@ -148,17 +148,18 @@ public class MessageManager {
 				switch (msg.getReturnMessageType()) {
 				case Successful:
 					ViewStarter.client.librarianClientControllerObj.updateSearchSubscriberUI((Subscriber) msg.getObj());
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Subscriber details updated successfully!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "",
+							"Subscriber details updated successfully!");
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Can't update subscriber details");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Can't update subscriber details");
 					break;
 				}
 				break;
 			case AddNewCopy:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy added Successfully!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Copy added Successfully!");
 					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy) msg.getObj());
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
 					break;
@@ -187,7 +188,7 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Order List is full!");
 					break;
 				}
-				break;	
+				break;
 			case BorrowBookByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case SubscriberNotExist:
@@ -210,21 +211,21 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Error in operation!");
 					break;
 				}
-				break;	
+				break;
 			case UpdateBookDetails:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Details update successfully");
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR,"", "Details do not update");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Details do not update");
 					break;
 				}
 				break;
 			case DeleteCopy:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					utils.showAlertWithHeaderText(AlertType.INFORMATION,"", "Copy was deleted Successfully!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Copy was deleted Successfully!");
 					ViewStarter.client.manageStockClientControllerObj.removeCopiefromList();
 					ViewStarter.client.searchBookOnManageStockControllerObj.showBookDetails();
 					break;
@@ -233,7 +234,7 @@ public class MessageManager {
 					break;
 				}
 				ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setDisable(true);
-				break;			
+				break;
 			case ReturnBookByLibrarian:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
@@ -263,23 +264,21 @@ public class MessageManager {
 			case DownloadTableOfContent:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					FilesController fc=FilesController.getInstance();
-					Object[] o=(Object[])msg.getObj();
-					fc.SaveTableOfContent((TransferFile)o[0],(String)o[1], "../../client/boundery/tableOfContent/");
-					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String)o[1]);
+					FilesController fc = FilesController.getInstance();
+					Object[] o = (Object[]) msg.getObj();
+					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "../../client/boundery/tableOfContent/");
+					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String) o[1]);
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "TABLE OF CONTENT DO NOT EXISTS");
 					break;
 				}
-				break;	
-				case GetStatstic:
-				System.out.println("GetStatstic");
+				break;
+			case GetStatstic:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
 					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
-					System.out.println("Successful");
 				} else if (msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
-					
+
 				} else if (msg.getReturnMessageType() == ReturnMessageType.SuccessfulWithLastSnapshotDate) {
 					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
 					utils.showAlertWithHeaderText(AlertType.WARNING, "",
@@ -287,17 +286,24 @@ public class MessageManager {
 				}
 				break;
 			case ShowBookPhoto:
-				switch (msg.getReturnMessageType()) 
-				{
+				switch (msg.getReturnMessageType()) {
 				case Successful:
-					FilesController fc=FilesController.getInstance();
-					Object[] o=(Object[])msg.getObj();
-					fc.SavePhoto((TransferFile)o[0],(String)o[1], "../../client/boundery/photos/");
-					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String)o[1]);
+					FilesController fc = FilesController.getInstance();
+					Object[] o = (Object[]) msg.getObj();
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
 					break;
 				}
+				break;
+			case AddHistoryRecord:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "History record","History record saved!");
+				} else {
+					utils.showAlertWithHeaderText(AlertType.ERROR, "History record","Can't save history record");
+				}
+				break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

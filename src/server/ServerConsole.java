@@ -21,6 +21,7 @@ import common.entity.LibraryManager;
 import common.entity.Subscriber;
 import common.entity.User;
 import common.entity.enums.UserType;
+import javafx.scene.control.Alert.AlertType;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import server.controllers.AutomaticFunctionsController;
@@ -154,6 +155,10 @@ public class ServerConsole extends AbstractServer {
 				break;
 			case ShowBookPhoto:
 				returnMessageToClient=manageStockControllerObj.sendBookPhotoToClient((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case AddHistoryRecord:
+				returnMessageToClient=subscriberControllerObj.addHistoryRecordBySubId((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
 			}
