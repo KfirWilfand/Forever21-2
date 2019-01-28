@@ -105,6 +105,15 @@
             </ImageView>
          </graphic>
       </Button>
+      <Button fx:id="btnMailBox" layoutX="322.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickMailBox" prefHeight="59.0" prefWidth="62.0" styleClass="btnWithImage">
+         <graphic>
+            <ImageView fitHeight="38.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/button/mail.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
 
 	</children>
 </AnchorPane>

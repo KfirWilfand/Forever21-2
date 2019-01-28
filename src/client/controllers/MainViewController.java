@@ -31,8 +31,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.ComboBox;
 
 /**
- * The MainViewController class represent the main view controller on the client's side
- * @author  Kfir Wilfand
+ * The MainViewController class represent the main view controller on the
+ * client's side
+ * 
+ * @author Kfir Wilfand
  * @author Bar Korkos
  * @author Zehavit Otmazgin
  * @author Noam Drori
@@ -59,7 +61,7 @@ public class MainViewController {
 	@FXML
 	private Button btnSearchBook;
 
-	/** lblSubTitle is a subtitle*/
+	/** lblSubTitle is a subtitle */
 	@FXML
 	private Label lblSubTitle;
 
@@ -70,7 +72,7 @@ public class MainViewController {
 	/** tfUserName is the username */
 	@FXML
 	private TextField tfUserName;
-	
+
 	/** tfPassword is the user password */
 	@FXML
 	private TextField tfPassword;
@@ -99,47 +101,52 @@ public class MainViewController {
 	@FXML
 	private Button btnLogout;
 
-	/** utils object declaration*/
+	@FXML
+	private Button btnMailBox;
+
+	/** utils object declaration */
 	private Utils utils;
 
-	/** user object declaration*/
+	/** user object declaration */
 	private User user;
-	
-	/** btnHomePage homepage button*/
+
+	/** btnHomePage homepage button */
 	@FXML
 	private Button btnHomePage;
 
 	/**
-   	 * getUser returns the current user
-   	 * @return User 
-   	 */
+	 * getUser returns the current user
+	 * 
+	 * @return User
+	 */
 	public User getUser() {
 		return user;
 	}
 
-	
 	/**
-   	 * openLogInForm open the login form
-   	 * @param event action event
-   	 */
+	 * openLogInForm open the login form
+	 * 
+	 * @param event action event
+	 */
 	@FXML
 	void openLogInForm(ActionEvent event) {
 		dialogBoxLogin.setVisible(true);
 	}
-	
+
 	/**
-   	 * onHomePageBtn display the homepage
-   	 * @param event action event
-   	 */
+	 * onHomePageBtn display the homepage
+	 * 
+	 * @param event action event
+	 */
 	@FXML
 	void onHomePageBtn(ActionEvent event) {
-		utils.setBtnPressed(true, false, false);
+		utils.setBtnPressed(true, false, false, false);
 		utils.layoutSwitcher(mainPane, "homepage.fxml", "Library management system");
 	}
 
 	/**
-   	 * initialize the main view controller
-   	 */
+	 * initialize the main view controller
+	 */
 	@FXML
 	public void initialize() {
 		ViewStarter.client.mainViewController = this;
@@ -150,16 +157,29 @@ public class MainViewController {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				utils.setBtnPressed(true, false, false);
+				utils.setBtnPressed(true, false, false, false);
 			}
 		});
 	}
 
 	/**
-   	 * openProfileView open user profile 
-   	 * @param event action of current event
-   	 * @throws IOException 
-   	 */
+	 * onClickMailBox open user MailBox
+	 * 
+	 * @param event action of current event
+	 * @throws IOException
+	 */
+	@FXML
+	void onClickMailBox(ActionEvent event) {
+//TODO
+		utils.setBtnPressed(false, false, false, true);
+	}
+
+	/**
+	 * openProfileView open user profile
+	 * 
+	 * @param event action of current event
+	 * @throws IOException
+	 */
 	@FXML
 	void openProfileView(ActionEvent event) throws IOException {
 		if (this.user != null)
@@ -167,9 +187,10 @@ public class MainViewController {
 	}
 
 	/**
-   	 * onLogoutBtn log out the current user
-   	 * @param event action of current event
-   	 */
+	 * onLogoutBtn log out the current user
+	 * 
+	 * @param event action of current event
+	 */
 	@FXML
 	void onLogoutBtn(ActionEvent event) {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Logout, user));
@@ -178,79 +199,96 @@ public class MainViewController {
 		dialogBoxLogin.setVisible(false);
 		btnLogin.setText("Login");
 		lblLoginAs.setText("");
-		utils.setBtnPressed(true, false, false);
+		utils.setBtnPressed(true, false, false, false);
 		utils.layoutSwitcher(mainPane, "homepage.fxml", "Library management system");
-		user=null;
+		user = null;
 		tfUserName.clear();
-		tfPassword.clear();		
+		tfPassword.clear();
 	}
 
 	/**
-   	 * getLblSubTitle get the user title
-   	 * @return user label
-   	 */
+	 * getLblSubTitle get the user title
+	 * 
+	 * @return user label
+	 */
 	public Label getLblSubTitle() {
 		return lblSubTitle;
 	}
+
 	/**
-   	 * openSearchView open the search view
-   	 * @param event action of current event
-   	 */
+	 * getBtnMailBox get MailBox Button
+	 * 
+	 * @return Button
+	 */
+	public Button getBtnMailBox() {
+		return btnMailBox;
+	}
+
+	/**
+	 * openSearchView open the search view
+	 * 
+	 * @param event action of current event
+	 */
 	@FXML
 	void openSearchView(ActionEvent event) {
-		utils.setBtnPressed(false, true, false);
+		utils.setBtnPressed(false, true, false, false);
 		utils.layoutSwitcher(mainPane, "search.fxml", "Search Book");
 	}
 
 	/**
-   	 * onCloseLogIn close after login the login dialog box
-   	 * @param event action of current event
-   	 */
+	 * onCloseLogIn close after login the login dialog box
+	 * 
+	 * @param event action of current event
+	 */
 	@FXML
 	void onCloseLogIn(ActionEvent event) {
 		dialogBoxLogin.setVisible(false);
 	}
 
 	/**
-   	 * onBtnDialogBoxLogin open login dialog box
-   	 * @param event action of current event
-   	 */
+	 * onBtnDialogBoxLogin open login dialog box
+	 * 
+	 * @param event action of current event
+	 */
 	@FXML
 	void onBtnDialogBoxLogin(ActionEvent event) {
 		tfPassword.setStyle(null);
 		tfUserName.setStyle(null);
-		if(tfPassword.getText().isEmpty())
+		if (tfPassword.getText().isEmpty())
 			tfPassword.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(tfUserName.getText().isEmpty())
+		if (tfUserName.getText().isEmpty())
 			tfUserName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(!tfUserName.getText().isEmpty() && !tfPassword.getText().isEmpty())
-		{	String loginQuery = "Select * FROM obl.`users` where usrName = '" + this.tfUserName.getText()
+		if (!tfUserName.getText().isEmpty() && !tfPassword.getText().isEmpty()) {
+			String loginQuery = "Select * FROM obl.`users` where usrName = '" + this.tfUserName.getText()
 					+ "' AND `usrPassword` = '" + this.tfPassword.getText() + "'";
 			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.Login, loginQuery));
-		}	
+		}
 	}
 
 	/**
-   	 * getBtnProfile presents profile
-   	 * @return button
-   	 */
+	 * getBtnProfile presents profile
+	 * 
+	 * @return button
+	 */
 	public Button getBtnProfile() {
 		return btnProfile;
 	}
 
 	/**
-   	 * getBtnSearchBook get the search book button
-   	 * @return button
-   	 */
+	 * getBtnSearchBook get the search book button
+	 * 
+	 * @return button
+	 */
 	public Button getBtnSearchBook() {
 		return btnSearchBook;
 	}
 
 	/**
-   	 * onLogin make the log in procedure
-   	 * @param user the current logged user
-   	 * @exception Exception
-   	 */
+	 * onLogin make the log in procedure
+	 * 
+	 * @param user the current logged user
+	 * @exception Exception
+	 */
 	public void onLogin(User user) {
 		this.user = user;
 
@@ -258,12 +296,12 @@ public class MainViewController {
 			@Override
 			public void run() {
 				try {
-	
+
 					btnLogout.setVisible(true);
 					mainView.getChildren().remove(dialogBoxLogin);
 					btnLogin.setText(user.getFirstName() + " " + user.getLastName());
 
-					utils.setBtnPressed(false, false, true);
+					utils.setBtnPressed(false, false, true, false);
 
 					if (user instanceof Subscriber) {
 						utils.layoutSwitcher(mainPane, "subscriber.fxml", "Subscriber Profile");
@@ -291,33 +329,36 @@ public class MainViewController {
 	}
 
 	/**
-   	 * getBtnHomePage get the homepage button
-   	 * @return button
-   	 */
+	 * getBtnHomePage get the homepage button
+	 * 
+	 * @return button
+	 */
 	public Button getBtnHomePage() {
 		return btnHomePage;
 	}
 
 	/**
-   	 * getMainView get the main viewbutton
-   	 * @return anchor pane main view
-   	 */
+	 * getMainView get the main viewbutton
+	 * 
+	 * @return anchor pane main view
+	 */
 	public AnchorPane getMainView() {
 		return mainView;
 	}
-	
+
 	/**
-   	 * getLblLoginAs write login as label
-   	 * @return login as label
-   	 */
+	 * getLblLoginAs write login as label
+	 * 
+	 * @return login as label
+	 */
 	public Label getLblLoginAs() {
 		return lblLoginAs;
 	}
 
-	public void autolog(String usrName,String usrPass) {
+	public void autolog(String usrName, String usrPass) {
 		tfPassword.setText(usrPass);
 		tfUserName.setText(usrName);
-		onBtnDialogBoxLogin(null);	
+		onBtnDialogBoxLogin(null);
 	}
 
 }
