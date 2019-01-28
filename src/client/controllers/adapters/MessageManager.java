@@ -339,6 +339,28 @@ public class MessageManager {
 				case Unsuccessful:
 					break;
 				}
+			case ExtensionBookByLibrarian:
+				switch(msg.getReturnMessageType())
+				{
+				 case CopyNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
+					break;
+				 case wrongBorrowDetails:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Wrong Extension Details");
+						break;
+				 case MustReturnBook:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber must return the book!");
+					break;
+				 case PopularBook:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot get an extension because book is popular!");
+					break;
+				 case Unsuccessful:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot get an extension!");
+					break;
+				 case Successful:
+					 utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Book just got 7 days extension!");
+					break;
+				}
 				break;
 				
 				
