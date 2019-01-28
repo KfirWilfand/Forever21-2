@@ -26,7 +26,8 @@ import javafx.scene.layout.AnchorPane;
 
 /**
  * The SearchBookController class represent the search book client controller
- * @author  Kfir Wilfand
+ * 
+ * @author Kfir Wilfand
  * @author Bar Korkos
  * @author Zehavit Otmazgin
  * @author Noam Drori
@@ -37,7 +38,7 @@ public class SearchBookController {
 	/** tfBookName is the book name */
 	@FXML
 	private TextField tfBookName;
-	
+
 	/** tfAuthorName is a the book author name */
 	@FXML
 	private TextField tfAuthorName;
@@ -62,55 +63,56 @@ public class SearchBookController {
 	@FXML
 	private Button btnSearch;
 
+	/** btnSavePDF is save search result to PDF file button */
 	@FXML
 	private Button btnSavePDF;
 
+	/** list that keep the search result */
 	private List<Book> books;
 
+	/** PDF_PATH is the path for saved search result file */
 	private static final String PDF_PATH = System.getProperty("user.dir") + "/output/search_result.pdf";
 
-	 /**
-   	 * initialize the book search view
-   	 */
+	/**
+	 * initialize the book search view
+	 */
 	public void initialize() {
 		ViewStarter.client.searchBookControllerObj = this;
 		ViewStarter.client.utilsControllers.setApListView(apListView);
 	}
-	
+
 	/**
-   	 * onSearch open is placing the book search 
-   	 * @param event action of current event
-   	 */
+	 * onSearch open is placing the book search
+	 * 
+	 * @param event action of current event
+	 */
 	@FXML
 	void onSearch(ActionEvent event) {
 		QueryBuilder qbObj = QueryBuilder.getInstance();
 		String searchQeury = qbObj.searchQuery(tfBookName.getText(), tfAuthorName.getText(), tfBookGenre.getText(),
 				tfTextFree.getText());
-		
+
 		System.out.println(searchQeury);
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBook, searchQeury));
 	}
 
+	/**
+	 * onSavePdfBt save the search result in PDF file.
+	 * 
+	 * @param event action of current event
+	 */
 	@FXML
-	void onSavePdfBtn(ActionEvent event) throws IOException{
-		if(books.isEmpty()) {
-			return;
-		}
-		try {
-			new PDFGenerator().createPdf(PDF_PATH, "Search Book Result", this.books);
-			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.CONFIRMATION, "", "Successful! your search result saved in " +PDF_PATH);
-		} catch (DocumentException e) {
-			e.printStackTrace();
-			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "", "Error, can't save your search result");
-		}
-
+	void onSavePdfBtn(ActionEvent event) throws IOException {
+		PDFGenerator.getInstance().createPdf(PDF_PATH, "Search Book Result", this.books);
 	}
 
 	/**
-   	 * onGetSearchResult display the results
-   	 * @param books is the list view of books
-   	 * @exception Exception
-   	 */
+	 * onGetSearchResult display the results
+	 * 
+	 * @param books is the list view of books
+	 * @exception Exception
+	 */
+
 	public void onGetSearchResult(List<Book> books) {
 		this.books = books;
 		try {
@@ -127,13 +129,14 @@ public class SearchBookController {
 		}
 
 	}
+
 	/**
-   	 * getLvBooks is getting the list view of the search results
-   	 * @return list view of books
-   	 */
+	 * getLvBooks is getting the list view of the search results
+	 * 
+	 * @return list view of books
+	 */
 	public ListView<Book> getLvBooks() {
 		return lvBooks;
 	}
-
 
 };

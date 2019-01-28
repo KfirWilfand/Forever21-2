@@ -107,16 +107,12 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Books List">
+          <Tab fx:id="btnBorrowedBooksTab" onSelectionChanged="#onBorrowedBooksTab" text="My Borrowed Books">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="527.0">
                      <children>
                         <ListView id="lvBookList" fx:id="listViewBooksList" layoutX="1.0" prefHeight="565.0" prefWidth="759.0" />
-                        <Text layoutX="26.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Books List">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
+                        <ListView fx:id="lvMyBorrowedBooks" layoutX="22.0" layoutY="55.0" prefHeight="501.0" prefWidth="719.0" />
                      </children>
                   </AnchorPane>
             </content>

@@ -98,7 +98,7 @@ public class ReaderController {
    	 * @throws SQLException when occurs
    	 */
     public Message searchBook(Object msg) throws SQLException
-    {//TODO :μαγεχ 
+    {
     	String searchQuery= (String)((Message)msg).getObj();
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	ResultSet books_res= dbControllerObj.query(searchQuery);

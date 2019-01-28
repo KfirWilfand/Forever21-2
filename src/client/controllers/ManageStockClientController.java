@@ -64,6 +64,8 @@ public class ManageStockClientController {
     /** btnDeleteCopy is delete cope button */
     @FXML
     private Button btnDeleteCopy;
+    
+
 
     /**
    	 * getTfEnterNewCopyID is entering a new copy id
@@ -101,6 +103,7 @@ public class ManageStockClientController {
 	public void setBtnDeleteCopy(Button btnDeleteCopy) {
 		this.btnDeleteCopy = btnDeleteCopy;
 	}
+	
 	 /**
    	 * initialize manage stock
    	 * @exception IOException 
@@ -128,7 +131,7 @@ public class ManageStockClientController {
 		});
 
 	}
-    
+
 	 /**
    	 * onClickAddNewBook adding a new book to the inventory
    	 * @param event action event

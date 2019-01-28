@@ -56,12 +56,15 @@ import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+
 /**
  * The LibrarianClientController class represent librarian client controller
- * @author  Kfir Wilfand
+ * 
+ * @author Kfir Wilfand
  * @author Bar Korkos
  * @author Zehavit Otmazgin
  * @author Noam Drori
@@ -71,8 +74,8 @@ public class LibrarianClientController {
 	/** tfSubscriberFirstName is the subscriber first name */
 	@FXML
 	private TextField tfSubscriberFirstName;
-	
-	/** tfSubscriberLastName is the subscriber last name*/
+
+	/** tfSubscriberLastName is the subscriber last name */
 	@FXML
 	private TextField tfSubscriberLastName;
 
@@ -92,7 +95,7 @@ public class LibrarianClientController {
 	@FXML
 	private TextField tfSubscriberPassword;
 
-	/** btnCreateSubscrciber is the create subscriber button  */
+	/** btnCreateSubscrciber is the create subscriber button */
 	@FXML
 	private Button btnCreateSubscrciber;
 
@@ -108,14 +111,14 @@ public class LibrarianClientController {
 	@FXML
 	private DatePicker tfBorrowBookBorrowDate;
 
-	/** tfBorrowBookEndBorrowDate is the end of borrow date*/
+	/** tfBorrowBookEndBorrowDate is the end of borrow date */
 	@FXML
 	private DatePicker tfBorrowBookEndBorrowDate;
 
 	/** tfBorrowBookCatalogNumber is the book catalog number */
 	@FXML
 	private TextField tfBorrowBookCatalogNumber;
-	
+
 	/** tfBorrowCopyID is the copyID of the borrowed book */
 	@FXML
 	private TextField tfBorrowCopyID;
@@ -128,7 +131,10 @@ public class LibrarianClientController {
 	@FXML
 	private Button btnReturnBook;
 
-	/** tfReturnBookSubscriberNumber is the number of the subscriber that returnes a copy */
+	/**
+	 * tfReturnBookSubscriberNumber is the number of the subscriber that returnes a
+	 * copy
+	 */
 	@FXML
 	private TextField tfReturnBookSubscriberNumber;
 
@@ -136,7 +142,7 @@ public class LibrarianClientController {
 	@FXML
 	private DatePicker tfReturnBookBorrowDate;
 
-	/** tfReturnBookEndBorrowDate is the date of borrow*/
+	/** tfReturnBookEndBorrowDate is the date of borrow */
 	@FXML
 	private DatePicker tfReturnBookEndBorrowDate;
 
@@ -164,7 +170,7 @@ public class LibrarianClientController {
 	@FXML
 	private TextField ssTfLastName;
 
-	/** ssTfPhone is is suscriber's phone number  */
+	/** ssTfPhone is is suscriber's phone number */
 	@FXML
 	private TextField ssTfPhone;
 
@@ -188,11 +194,13 @@ public class LibrarianClientController {
 	@FXML
 	private CheckBox ssCxbHoldSubscriber;
 
-	/** ssLVBookRequest is a list view  of book request on the subscriber history */
+	/** ssLVBookRequest is a list view of book request on the subscriber history */
 	@FXML
 	private ListView<HistoryItem> ssLVBookRequest;
 
-	/** ssLVBookApprove is a list view of approved books on the subscriber history*/
+	/**
+	 * ssLVBookApprove is a list view of approved books on the subscriber history
+	 */
 	@FXML
 	private ListView<HistoryItem> ssLVBookApprove;
 
@@ -200,7 +208,7 @@ public class LibrarianClientController {
 	@FXML
 	private ListView<HistoryItem> ssLVBookReturn;
 
-	/** ssLVEditProfile is the edit profile history list view*/
+	/** ssLVEditProfile is the edit profile history list view */
 	@FXML
 	private ListView<HistoryItem> ssLVEditProfile;
 
@@ -223,16 +231,19 @@ public class LibrarianClientController {
 	/** ancPaneManageStock is the manage stock anchor pane */
 	@FXML
 	private AnchorPane ancPaneManageStock;
-	
-	/** txtAddNewSubscriberEmailError is an email error text */
-    @FXML
-    private Text txtAddNewSubscriberEmailError;
 
-    /** txtAddNewSubscriberPhoneError is a text that says the phone number is problematic */
-    @FXML
-    private Text txtAddNewSubscriberPhoneError;
-    
-    /** btnManageStockTab is the manage stock tab */
+	/** txtAddNewSubscriberEmailError is an email error text */
+	@FXML
+	private Text txtAddNewSubscriberEmailError;
+
+	/**
+	 * txtAddNewSubscriberPhoneError is a text that says the phone number is
+	 * problematic
+	 */
+	@FXML
+	private Text txtAddNewSubscriberPhoneError;
+
+	/** btnManageStockTab is the manage stock tab */
 	@FXML
 	private Tab btnManageStockTab;
 
@@ -295,17 +306,21 @@ public class LibrarianClientController {
 	@FXML
 	private NumberAxis yAxisLate;
 
+	@FXML
+	private TabPane tvSubsciber;
 
-	/** dpGraduationDateNewSub is a date picker that contains subscriber graduation date */
-    @FXML
-    private DatePicker dpGraduationDateNewSub;
-    
+	/**
+	 * dpGraduationDateNewSub is a date picker that contains subscriber graduation
+	 * date
+	 */
+	@FXML
+	private DatePicker dpGraduationDateNewSub;
+
 	static AlertController alert = new AlertController();
-	
-	
-	 /**
-   	 * initialize the librarian controller
-   	 * */
+
+	/**
+	 * initialize the librarian controller
+	 */
 	@FXML
 	public void initialize() {
 		ViewStarter.client.librarianClientControllerObj = this;
@@ -319,11 +334,20 @@ public class LibrarianClientController {
 		}
 
 	}
-
-	@FXML
-	void onStatsticTab(Event event) {
-		ViewStarter.client
-		.handleMessageFromClientUI(new Message(OperationType.GetStatstic,Date.valueOf(LocalDate.now()))); // sending
+	
+	/**
+	 * initialize the librarian UI at login
+	 */
+	public void initializeDetailsAtLogin() {
+		tvSubsciber.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+			@Override
+			public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+				if (t1.equals(btnStatisticTab)) {
+					ViewStarter.client.handleMessageFromClientUI(
+							new Message(OperationType.GetStatstic, Date.valueOf(LocalDate.now()))); // sending
+				}
+			}
+		});
 
 		dpActivityStatistic.valueProperty().addListener(new ChangeListener<LocalDate>() {
 
@@ -334,63 +358,65 @@ public class LibrarianClientController {
 						.handleMessageFromClientUI(new Message(OperationType.GetStatstic, Date.valueOf(newValue))); // sending
 			}
 		});
-
 	}
-	
-	 /**
-   	 * updateReturnUI is updating the gui of the librarian on return procedure
-   	 * @param borrowCopy is the return borrowed cope
-   	 */
-	@FXML
-	public void updateReturnUI(BorrowCopy borrowCopy)
-	{
+
+	/**
+	 * updateReturnUI is updating the gui of the librarian on return procedure
+	 * 
+	 * @param borrowCopy is the return borrowed cope
+	 */
+	public void updateReturnUI(BorrowCopy borrowCopy) {
 		tfReturnBookSubscriberNumber.setText(String.valueOf(borrowCopy.getSubNum()));
 		tfReturnBookBorrowDate.setValue(borrowCopy.getBorrowDate().toLocalDate());
 		tfReturnBookEndBorrowDate.setValue(borrowCopy.getReturnDueDate().toLocalDate());
 		tfReturnBookReturningDate.setValue(borrowCopy.getActualReturnDate().toLocalDate());
 	}
-	
-	 /**
-   	 * onBtnUpdate is updating the subscriber details
-   	 * @param event 
-   	 * @exception IOException 
-   	 */
+
+	/**
+	 * onBtnUpdate is updating the subscriber details
+	 * 
+	 * @param event
+	 * @exception IOException
+	 */
 	@FXML
 	void onBtnUpdate(ActionEvent event) {
 
 		Utils utils = new Utils(ViewStarter.client.mainViewController);
-		List<Control> tflist= new ArrayList<Control>(Arrays.asList(ssTfUserName,ssTfPassword,ssTfFirstName,ssTfLastName,ssTfEmail,ssPdGraduation,ssTfPhone));
-		utils.setStyleToList(tflist,null);
-		
-		boolean isEmailCorrect=utils.isValidEmail(ssTfEmail.getText());
-		boolean isPhoneCorrect=utils.validatePhoneNumber(ssTfPhone.getText());
-		
-		tflist.clear();
-		if(ssTfUserName.getText().isEmpty())
-			tflist.add(ssTfUserName);
-		if(ssTfPassword.getText().isEmpty())
-			tflist.add(ssTfPassword);
-		if(ssTfFirstName.getText().isEmpty())
-			tflist.add(ssTfFirstName);
-		if(ssTfLastName.getText().isEmpty())
-			tflist.add(ssTfLastName);
-		if(!isEmailCorrect)
-			tflist.add(ssTfEmail);
-		if(!isPhoneCorrect)
-			tflist.add(ssTfPhone);
-		if(ssPdGraduation.getValue()== null)
-			tflist.add(ssPdGraduation);
-		
-		
-		utils.setStyleToList(tflist,"-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		
-		if(!ssTfUserName.getText().isEmpty() && !ssTfPassword.getText().isEmpty() && !ssTfFirstName.getText().isEmpty() && !ssTfLastName.getText().isEmpty() && isEmailCorrect && isPhoneCorrect && ssPdGraduation.getValue() != null )	
-		{	String updateUserDetailsQuery = " UPDATE `obl`.`users`" + " SET `usrName` = '" + ssTfUserName.getText()
-			+ "', `usrPassword` = '" + ssTfPassword.getText() + "', `usrFirstName` = '" + ssTfFirstName.getText()
-			+ "', `usrLastName` = '" + ssTfLastName.getText() + "', `usrEmail` = '" + ssTfEmail.getText()
-			+ "' WHERE (`usrId` = " + tfSearchSubscriberNumber.getText() + ");";
+		List<Control> tflist = new ArrayList<Control>(Arrays.asList(ssTfUserName, ssTfPassword, ssTfFirstName,
+				ssTfLastName, ssTfEmail, ssPdGraduation, ssTfPhone));
+		utils.setStyleToList(tflist, null);
 
-			String updateSubscriberQuery = " UPDATE `obl`.`subscribers`" + " SET `subPhoneNum` = '" + ssTfPhone.getText();
+		boolean isEmailCorrect = utils.isValidEmail(ssTfEmail.getText());
+		boolean isPhoneCorrect = utils.validatePhoneNumber(ssTfPhone.getText());
+
+		tflist.clear();
+		if (ssTfUserName.getText().isEmpty())
+			tflist.add(ssTfUserName);
+		if (ssTfPassword.getText().isEmpty())
+			tflist.add(ssTfPassword);
+		if (ssTfFirstName.getText().isEmpty())
+			tflist.add(ssTfFirstName);
+		if (ssTfLastName.getText().isEmpty())
+			tflist.add(ssTfLastName);
+		if (!isEmailCorrect)
+			tflist.add(ssTfEmail);
+		if (!isPhoneCorrect)
+			tflist.add(ssTfPhone);
+		if (ssPdGraduation.getValue() == null)
+			tflist.add(ssPdGraduation);
+
+		utils.setStyleToList(tflist, "-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+
+		if (!ssTfUserName.getText().isEmpty() && !ssTfPassword.getText().isEmpty() && !ssTfFirstName.getText().isEmpty()
+				&& !ssTfLastName.getText().isEmpty() && isEmailCorrect && isPhoneCorrect
+				&& ssPdGraduation.getValue() != null) {
+			String updateUserDetailsQuery = " UPDATE `obl`.`users`" + " SET `usrName` = '" + ssTfUserName.getText()
+					+ "', `usrPassword` = '" + ssTfPassword.getText() + "', `usrFirstName` = '"
+					+ ssTfFirstName.getText() + "', `usrLastName` = '" + ssTfLastName.getText() + "', `usrEmail` = '"
+					+ ssTfEmail.getText() + "' WHERE (`usrId` = " + tfSearchSubscriberNumber.getText() + ");";
+
+			String updateSubscriberQuery = " UPDATE `obl`.`subscribers`" + " SET `subPhoneNum` = '"
+					+ ssTfPhone.getText();
 
 			if (!ssCxbHoldSubscriber.isDisable()) {
 				if (ssCxbHoldSubscriber.isSelected())
@@ -400,7 +426,7 @@ public class LibrarianClientController {
 			}
 
 			updateSubscriberQuery = updateSubscriberQuery + "', `subGraduationDate` = '" + ssPdGraduation.getValue()
-			+ "' WHERE (`subNum` = " + tfSearchSubscriberNumber.getText() + ");";
+					+ "' WHERE (`subNum` = " + tfSearchSubscriberNumber.getText() + ");";
 
 			try {
 				String[] params = new String[3];
@@ -413,90 +439,88 @@ public class LibrarianClientController {
 			} catch (IOException e) {
 
 				e.printStackTrace();
-				}
+			}
 		}
 	}
 
-	 /**
-   	 * onBorrowBookBtn is the borrow book by librarian procedure
-   	 * event an action event
-   	 */
+	/**
+	 * onBorrowBookBtn is the borrow book by librarian procedure event an action
+	 * event
+	 */
 
 	@FXML
 	void onBorrowBookBtn(ActionEvent event) {
 		tfBorrowBookBorrowDate.setValue(null);
 		tfBorrowBookEndBorrowDate.setValue(null);
 		txtBorrowBookNotice.setVisible(false);
-		
+
 		tfBorrowCopyID.setStyle(null);
 		tfBorrowBookSubscriberNumber.setStyle(null);
-		
-		if(tfBorrowCopyID.getText().isEmpty())
+
+		if (tfBorrowCopyID.getText().isEmpty())
 			tfBorrowCopyID.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		if(tfBorrowBookSubscriberNumber.getText().isEmpty())
-			tfBorrowBookSubscriberNumber.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		
-		if(!tfBorrowCopyID.getText().isEmpty() && !tfBorrowBookSubscriberNumber.getText().isEmpty())
-		{	
+		if (tfBorrowBookSubscriberNumber.getText().isEmpty())
+			tfBorrowBookSubscriberNumber
+					.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+
+		if (!tfBorrowCopyID.getText().isEmpty() && !tfBorrowBookSubscriberNumber.getText().isEmpty()) {
 			LocalDate borrowDate = LocalDate.now();
 			Date date = Date.valueOf(borrowDate);
-			BorrowCopy borrowCopy = new BorrowCopy(tfBorrowCopyID.getText(),Integer.parseInt(tfBorrowBookSubscriberNumber.getText()), date, null);
+			BorrowCopy borrowCopy = new BorrowCopy(tfBorrowCopyID.getText(),
+					Integer.parseInt(tfBorrowBookSubscriberNumber.getText()), date, null);
 			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.BorrowBookByLibrarian, borrowCopy));
 		}
 	}
 
-	 /**
-   	 * onCreateSubscruberBtn creates a new subscriber
-   	 * event an action event
-   	 */
+	/**
+	 * onCreateSubscruberBtn creates a new subscriber event an action event
+	 */
 	@FXML
 	void onCreateSubscruberBtn(ActionEvent event) {// adding a new subscriber to the DB
 		txtAddNewSubscriberEmailError.setVisible(false);
 		txtAddNewSubscriberPhoneError.setVisible(false);
-		
-		
+
 		Utils utils = new Utils(ViewStarter.client.mainViewController);
-		List<Control> tflist= new ArrayList<Control>(Arrays.asList(tfSubscriberFirstName,tfSubscriberLastName,tfSubscriberUsrName,tfSubscriberPassword,tfSubscruberPhone,tfSubscriberEmail,dpGraduationDateNewSub));
-		utils.setStyleToList(tflist,null);
+		List<Control> tflist = new ArrayList<Control>(
+				Arrays.asList(tfSubscriberFirstName, tfSubscriberLastName, tfSubscriberUsrName, tfSubscriberPassword,
+						tfSubscruberPhone, tfSubscriberEmail, dpGraduationDateNewSub));
+		utils.setStyleToList(tflist, null);
 
+		boolean isPhoneCorrect = utils.validatePhoneNumber(tfSubscruberPhone.getText());
+		boolean isEmailCoorect = utils.isValidEmail(tfSubscriberEmail.getText());
 
-		boolean isPhoneCorrect=utils.validatePhoneNumber(tfSubscruberPhone.getText());
-		boolean isEmailCoorect=utils.isValidEmail(tfSubscriberEmail.getText());
-		
-		
 		tflist.clear();
-		
-		if(tfSubscriberFirstName.getText().isEmpty())
+
+		if (tfSubscriberFirstName.getText().isEmpty())
 			tflist.add(tfSubscriberFirstName);
-		if(tfSubscriberLastName.getText().isEmpty())
+		if (tfSubscriberLastName.getText().isEmpty())
 			tflist.add(tfSubscriberLastName);
-		if(tfSubscriberUsrName.getText().isEmpty())
+		if (tfSubscriberUsrName.getText().isEmpty())
 			tflist.add(tfSubscriberUsrName);
-		if(tfSubscriberPassword.getText().isEmpty())
+		if (tfSubscriberPassword.getText().isEmpty())
 			tflist.add(tfSubscriberPassword);
-		if(!isPhoneCorrect)
-		{
+		if (!isPhoneCorrect) {
 			tflist.add(tfSubscruberPhone);
-			txtAddNewSubscriberPhoneError.setVisible(true);	
+			txtAddNewSubscriberPhoneError.setVisible(true);
 		}
-		if(!isEmailCoorect)
-		{
+		if (!isEmailCoorect) {
 			tflist.add(tfSubscriberEmail);
-				txtAddNewSubscriberEmailError.setVisible(true);
+			txtAddNewSubscriberEmailError.setVisible(true);
 		}
-		if(dpGraduationDateNewSub.getValue()==null)
+		if (dpGraduationDateNewSub.getValue() == null)
 			tflist.add(dpGraduationDateNewSub);
 
-		utils.setStyleToList(tflist,"-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		
-		
-		if(dpGraduationDateNewSub.getValue() != null && isEmailCoorect &&  isPhoneCorrect && !tfSubscriberPassword.getText().isEmpty() && !tfSubscriberUsrName.getText().isEmpty() && !tfSubscriberLastName.getText().isEmpty() && !tfSubscriberFirstName.getText().isEmpty())
-		{	String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail,usrType) VALUES ('"
+		utils.setStyleToList(tflist, "-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+
+		if (dpGraduationDateNewSub.getValue() != null && isEmailCoorect && isPhoneCorrect
+				&& !tfSubscriberPassword.getText().isEmpty() && !tfSubscriberUsrName.getText().isEmpty()
+				&& !tfSubscriberLastName.getText().isEmpty() && !tfSubscriberFirstName.getText().isEmpty()) {
+			String createNewSubscriberQueryUserTable = "INSERT INTO obl.users (usrName, usrPassword,usrFirstName, usrLastName,usrEmail,usrType) VALUES ('"
 					+ tfSubscriberUsrName.getText() + "', '" + tfSubscriberPassword.getText() + "', '"
 					+ tfSubscriberFirstName.getText() + "','" + tfSubscriberLastName.getText() + "','"
 					+ tfSubscriberEmail.getText() + "', 'Subscriber'); ";
 			String createNewSubscriberQuerySubscriberTable = "INSERT INTO obl.subscribers (subNum, subPhoneNum, subGraduationDate) VALUES (LAST_INSERT_ID(), '"
-					+ tfSubscruberPhone.getText() + "', '"+ Date.valueOf(dpGraduationDateNewSub.getValue())+"');";
+					+ tfSubscruberPhone.getText() + "', '" + Date.valueOf(dpGraduationDateNewSub.getValue()) + "');";
 			String checkEmailAndPhoneQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, b.subPhoneNum, a.usrType, b.subStatus FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrEmail='"
 					+ tfSubscriberEmail.getText() + "' or b.subPhoneNum='" + tfSubscruberPhone.getText()
 					+ "' or usrName='" + tfSubscriberUsrName.getText() + "';";
@@ -505,67 +529,65 @@ public class LibrarianClientController {
 			queryArr[1] = createNewSubscriberQuerySubscriberTable;
 			queryArr[2] = checkEmailAndPhoneQuery;
 
-			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr));
+			ViewStarter.client
+					.handleMessageFromClientUI(new Message(OperationType.AddNewSubscriberByLibrarian, queryArr));
 		}
 	}
 
-	 /**
-   	 * onReturnBookBtn is the returning book by librarian procedure
-   	 * event an action event
-   	 */
+	/**
+	 * onReturnBookBtn is the returning book by librarian procedure event an action
+	 * event
+	 */
 	@FXML
-	void onReturnBookBtn(ActionEvent event)
-	{
+	void onReturnBookBtn(ActionEvent event) {
 		tfReturnBookSubscriberNumber.clear();
 		tfReturnBookBorrowDate.setValue(null);
 		tfReturnBookEndBorrowDate.setValue(null);
 		tfReturnBookReturningDate.setValue(null);
-		
-		
+
 		tfReturnBookCatalogNumber.setStyle(null);
-		
-		if(tfReturnBookCatalogNumber.getText().isEmpty())
-			tfReturnBookCatalogNumber.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
-		else
-		{
+
+		if (tfReturnBookCatalogNumber.getText().isEmpty())
+			tfReturnBookCatalogNumber
+					.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		else {
 			LocalDate actualReturnDate = LocalDate.now();
 			Date date = Date.valueOf(actualReturnDate);
-			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(),date);
+			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
 			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ReturnBookByLibrarian, borrowCopy));
 		}
 	}
 
-	 /**
-   	 * onSearchSubscriberBtn is searching a subscriber by librarian procedure
-   	 * event an action event
-   	 */
+	/**
+	 * onSearchSubscriberBtn is searching a subscriber by librarian procedure event
+	 * an action event
+	 */
 	@FXML
 	void onSearchSubscriberBtn(ActionEvent event) {
-		
+
 		cleanAndDisableSearchSubscriberFields();
-		
+
 		String searchSubscriberUsrId = tfSearchSubscriberNumber.getText();
-		if(!searchSubscriberUsrId.isEmpty())
-		{
+		if (!searchSubscriberUsrId.isEmpty()) {
 			ssTfFirstName.setDisable(false);
 			ssTfLastName.setDisable(false);
 			ssTfPhone.setDisable(false);
 			ssTfUserName.setDisable(false);
-			//ssTfPassword.setDisable(false);
+			// ssTfPassword.setDisable(false);
 			ssTfEmail.setDisable(false);
 			ssPdGraduation.setDisable(false);
 			ssbtnUpdate.setDisable(false);
-			
-			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberUsrId));
+
+			ViewStarter.client
+					.handleMessageFromClientUI(new Message(OperationType.SearchSubscriber, searchSubscriberUsrId));
 		}
-		
-		
+
 	}
-	
-	 /**
-   	 * updateDetailsOnBorrow is update the detail on borrow by librarian procedure
-   	 * objects is an Object array 
-   	 */
+
+	/**
+	 * updateDetailsOnBorrow is update the detail on borrow by librarian procedure
+	 * objects is an Object array
+	 */
 	public void updateDetailsOnBorrow(Object[] objects) {
 		BorrowCopy bCopy = (BorrowCopy) objects[0];
 		Boolean isPopular = (Boolean) objects[1];
@@ -576,6 +598,10 @@ public class LibrarianClientController {
 		}
 	}
 
+	/**
+	 * updateSearchStatsticUI is updating the statistic page
+	 * @param statistic
+	 */
 	public void updateSearchStatsticUI(Statistic statistic) {
 
 		Platform.runLater(new Runnable() {
@@ -587,37 +613,37 @@ public class LibrarianClientController {
 				String[] regDistributionRange = getDistraibutionRanges(statistic.getRegDistribution());
 				String[] lateDistributionRange = getDistraibutionRanges(statistic.getLateDistribution());
 
-				if(!popDistributionRange[0].equals("No data to display")) {
-				xAxisPop.setCategories(FXCollections.<String>observableArrayList(popDistributionRange));
-				xAxisPop.setLabel("Days");
-				bcStatisticPopularBooks.getData().clear();
-				bcStatisticPopularBooks.getData()
-						.add(getDistributionDataByDecimalRange(statistic.getPopDistribution(), popDistributionRange));
+				if (!popDistributionRange[0].equals("No data to display")) {
+					xAxisPop.setCategories(FXCollections.<String>observableArrayList(popDistributionRange));
+					xAxisPop.setLabel("Days");
+					bcStatisticPopularBooks.getData().clear();
+					bcStatisticPopularBooks.getData().add(
+							getDistributionDataByDecimalRange(statistic.getPopDistribution(), popDistributionRange));
 				}
-				
-				if(!regDistributionRange[0].equals("No data to display")) {
-				xAxisReg.setCategories(FXCollections.<String>observableArrayList(regDistributionRange));
-				xAxisReg.setLabel("Days");
-				bcStatisticRegularBooks.getData().clear();
-				bcStatisticRegularBooks.getData()
-						.add(getDistributionDataByDecimalRange(statistic.getRegDistribution(), regDistributionRange));
-				}
-				
-				if(!lateDistributionRange[0].equals("No data to display")) {
-				xAxisLate.setCategories(FXCollections.<String>observableArrayList(lateDistributionRange));
-				xAxisLate.setLabel("Days");
-				bcStatisticReturnLates.getData().clear();
-				bcStatisticReturnLates.getData().add(
-						getDistributionDataByDecimalRange(statistic.getLateDistribution(), lateDistributionRange));
-				}
-				// Activity
-			
 
-				// Preparing ObservbleList object
+				if (!regDistributionRange[0].equals("No data to display")) {
+					xAxisReg.setCategories(FXCollections.<String>observableArrayList(regDistributionRange));
+					xAxisReg.setLabel("Days");
+					bcStatisticRegularBooks.getData().clear();
+					bcStatisticRegularBooks.getData().add(
+							getDistributionDataByDecimalRange(statistic.getRegDistribution(), regDistributionRange));
+				}
+
+				if (!lateDistributionRange[0].equals("No data to display")) {
+					xAxisLate.setCategories(FXCollections.<String>observableArrayList(lateDistributionRange));
+					xAxisLate.setLabel("Days");
+					bcStatisticReturnLates.getData().clear();
+					bcStatisticReturnLates.getData().add(
+							getDistributionDataByDecimalRange(statistic.getLateDistribution(), lateDistributionRange));
+				}
+		
 				ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-						new PieChart.Data("Active " + statistic.getActiviySnapshot().getActive(), statistic.getActiviySnapshot().getActive()),
-						new PieChart.Data("Hold "+statistic.getActiviySnapshot().getHold(), statistic.getActiviySnapshot().getHold()),
-						new PieChart.Data("Lock "+statistic.getActiviySnapshot().getLock(), statistic.getActiviySnapshot().getLock()));
+						new PieChart.Data("Active " + statistic.getActiviySnapshot().getActive(),
+								statistic.getActiviySnapshot().getActive()),
+						new PieChart.Data("Hold " + statistic.getActiviySnapshot().getHold(),
+								statistic.getActiviySnapshot().getHold()),
+						new PieChart.Data("Lock " + statistic.getActiviySnapshot().getLock(),
+								statistic.getActiviySnapshot().getLock()));
 
 				pcSubscriberStatus.setData(pieChartData);
 
@@ -637,31 +663,40 @@ public class LibrarianClientController {
 				lblStatisticAverageReturnLates.setText(new DecimalFormat("#.##").format(statistic.getLateAverage()));
 
 			}
-
+			
+			/**
+			 * getDistributionDataByDecimalRange help to generate the chart series to display in the BarCharts.
+			 * @param distribution is the data to display
+			 * @param distributionRange is a list of string that contain decimal calculated range.
+			 */
 			private XYChart.Series<String, Integer> getDistributionDataByDecimalRange(
-					Map<Integer, List<Integer>> distribution, String[] popDistributionRange) {
-				
+					Map<Integer, List<Integer>> distribution, String[] distributionRange) {
+
 				XYChart.Series<String, Integer> series = new XYChart.Series<>();
 				series.setName("Books");
-				for (int i = 0; i < popDistributionRange.length; i++) {
-					series.getData().add(new XYChart.Data<>(popDistributionRange[i], distribution.get(i).size()));
+				for (int i = 0; i < distributionRange.length; i++) {
+					series.getData().add(new XYChart.Data<>(distributionRange[i], distribution.get(i).size()));
 				}
 				return series;
 			}
+			
+			/**
+			 * getDistraibutionRanges decimal calculated range distribution
+			 * @param distribution is the data to display
+			 * @param distributionRange is a list of string that contain decimal calculated range.
+			 * @return list of string that contain decimal calculated ranges.
+			 */
+			private String[] getDistraibutionRanges(Map<Integer, List<Integer>> distribution) {
 
-			private String[] getDistraibutionRanges(Map<Integer, List<Integer>> distribution) {		
-				
 				String[] ranges = new String[10];
-				
-				if(distribution.isEmpty()) {
+
+				if (distribution.isEmpty()) {
 					ranges[0] = "No data to display";
 					return ranges;
 				}
-				
+
 				Integer max = Collections.max(distribution.get(9));
 				float range = ((float) max / 10);
-
-		
 
 				float min = 0;
 				float tempRange = range;
@@ -680,17 +715,15 @@ public class LibrarianClientController {
 		});
 	}
 
-	
-	 /**
-   	 * updateSearchSubscriberUI is updating the subscriber's history
-   	 * subscriber contains the relevant details of subscriber 
-   	 */
+	/**
+	 * updateSearchSubscriberUI is updating the subscriber's history subscriber
+	 * contains the relevant details of subscriber
+	 */
 	public void updateSearchSubscriberUI(Subscriber subscriber) {
 
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-
 				switch (subscriber.getReaderCard().getStatus()) {
 				case Hold:
 					sslblStatus.setText("Hold");
@@ -739,40 +772,40 @@ public class LibrarianClientController {
 
 				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.ChangeStatus));
 				ssLVChangeStatus.setItems(items);
-				
+
 				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
 				ssLVChangeStatus.setItems(items);
-				
+
 			}
 
 		});
 	}
 
-	 /**
-   	 * cleanAndDisableSearchSubscriberFields clean search subscriber field 
-   	 */
-	public void cleanAndDisableSearchSubscriberFields()
-	{
+	/**
+	 * cleanAndDisableSearchSubscriberFields clean search subscriber field
+	 */
+	public void cleanAndDisableSearchSubscriberFields() {
 		ssTfFirstName.setDisable(true);
 		ssTfLastName.setDisable(true);
 		ssTfPhone.setDisable(true);
 		ssTfUserName.setDisable(true);
-		//ssTfPassword.setDisable(true);
+		// ssTfPassword.setDisable(true);
 		ssTfEmail.setDisable(true);
 		ssPdGraduation.setDisable(true);
 		ssbtnUpdate.setDisable(true);
-		
+
 		ssTfFirstName.clear();
 		ssTfLastName.clear();
 		ssTfPhone.clear();
 		ssTfUserName.clear();
 		ssTfPassword.clear();
 		ssTfEmail.clear();
-		ssPdGraduation.setValue(null);	
+		ssPdGraduation.setValue(null);
 	}
-	 /**
-   	 * cleanNewSubscriberFields clean subscriber fields
-   	 */
+
+	/**
+	 * cleanNewSubscriberFields clean subscriber fields
+	 */
 	public void cleanNewSubscriberFields() {
 		tfSubscriberFirstName.clear();
 		tfSubscriberLastName.clear();

@@ -21,6 +21,7 @@ import common.entity.LibraryManager;
 import common.entity.Subscriber;
 import common.entity.User;
 import common.entity.enums.UserType;
+import javafx.scene.control.Alert.AlertType;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import server.controllers.AutomaticFunctionsController;
@@ -148,12 +149,30 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=librarianControllerObj.returnBook(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;	
+			case ShowMyBorrowedBooks:
+				returnMessageToClient=subscriberControllerObj.showBorrowedBooks(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;	
+			case LossReporting:
+				returnMessageToClient=subscriberControllerObj.lossCopyReport(msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+
 			case DownloadTableOfContent:
 				returnMessageToClient=readerControllerObj.sendTableOfContantToClient((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
 			case ShowBookPhoto:
 				returnMessageToClient=manageStockControllerObj.sendBookPhotoToClient((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case ShowBookPhotoOnSearchBookDetails:
+				returnMessageToClient=manageStockControllerObj.sendBookPhotoToClient((Message)msg);
+				returnMessageToClient.setOperationType(OperationType.ShowBookPhotoOnSearchBookDetails);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case AddHistoryRecord:
+				returnMessageToClient=subscriberControllerObj.addHistoryRecordBySubId((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
 			}
