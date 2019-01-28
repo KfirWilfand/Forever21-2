@@ -19,8 +19,10 @@ import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
+import common.entity.HistoryItem;
 import common.entity.Subscriber;
 import common.entity.TransferFile;
+import common.entity.enums.SubscriberHistoryType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 /**
@@ -115,6 +117,10 @@ public class ManageStockController {
 
 		Boolean res0 = dbControllerObj.update(params[1]);
 		Boolean res1 = dbControllerObj.update(params[2]);
+		
+		SubscriberController scObj=SubscriberController.getInstance();
+		HistoryItem hRecord=new HistoryItem(Integer.valueOf(params[0]),"librarian update subscriber details",SubscriberHistoryType.EditProfile);
+		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 
 		if(res0 && res1) 
 			return new Message(OperationType.EditDetailsByLibrarian, SubscriberController.getSubscriberById(params[0]) , ReturnMessageType.Successful); 
@@ -133,7 +139,9 @@ public class ManageStockController {
 		Object[] m=(Object[])((Message)msg).getObj();
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
 		Boolean res1=dbControllerObj.insert((String)m[0]);
-		Boolean res2=dbControllerObj.update((String)m[1]);	
+		Boolean res2=dbControllerObj.update((String)m[1]);
+		//Copy copy = getCopyById(((Copy)m[2]).getCopyID());
+		
 
 		if(res1 && res2)
 			return new Message(OperationType.AddNewCopy, (Copy)m[2] , ReturnMessageType.Successful);

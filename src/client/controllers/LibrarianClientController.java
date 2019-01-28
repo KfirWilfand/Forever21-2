@@ -608,7 +608,7 @@ public class LibrarianClientController {
 			@Override
 			public void run() {
 				dpActivityStatistic.setValue(statistic.getActiviySnapshot().getaDate().toLocalDate());
-
+				
 				String[] popDistributionRange = getDistraibutionRanges(statistic.getPopDistribution());
 				String[] regDistributionRange = getDistraibutionRanges(statistic.getRegDistribution());
 				String[] lateDistributionRange = getDistraibutionRanges(statistic.getLateDistribution());
@@ -773,8 +773,8 @@ public class LibrarianClientController {
 				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.ChangeStatus));
 				ssLVChangeStatus.setItems(items);
 
-				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
-				ssLVChangeStatus.setItems(items);
+//				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
+//				ssLVChangeStatus.setItems(items);
 
 			}
 

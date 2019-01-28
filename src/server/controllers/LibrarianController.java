@@ -160,6 +160,12 @@ public class LibrarianController {
 			Object[] arr= new Object[2];
 			arr[0]=((BorrowCopy)queryMsg.getObj());
 			arr[1]=book.isPopular();
+			
+			//insert to the history
+			SubscriberController scObj=SubscriberController.getInstance();
+			HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"The book: "+book.getBookName()+" was borrowed",SubscriberHistoryType.BooksApprove);
+			scObj.addHistoryRecordBySubId(new Message(OperationType.BorrowBookByLibrarian,hRecord ));
+			
 			return new Message(OperationType.BorrowBookByLibrarian, arr , ReturnMessageType.Successful);
 		}
 		return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.Unsuccessful);
@@ -175,6 +181,8 @@ public class LibrarianController {
 	 */
 	public Message returnBook (Object msg) throws SQLException
 	{
+		
+		SubscriberController scObj=SubscriberController.getInstance();
 		DBcontroller dbControllerObj= DBcontroller.getInstance();
 		Message copyIDofReturnedBook=((Message)msg);
 		String copyIDtemp=((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID();
@@ -205,6 +213,9 @@ public class LibrarianController {
 					String updateSubscriberDetails="update obl.subscribers set subLatesCounter=subLatesCounter+1 subStatuse='Active' where subNum='"+subscriber.getSubscriberNum()+"'";
 					Boolean isUpdate=dbControllerObj.update(updateSubscriberDetails);
 					op=ReturnMessageType.ChangeStatusToActive;
+					//add to history status changing
+					HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"Status changed from Hold to Active",SubscriberHistoryType.ChangeStatus);
+					scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 				}
 		}
 		
@@ -239,6 +250,16 @@ public class LibrarianController {
 			op=ReturnMessageType.subscriberInWaitingList;
 			
 		}
+		
+		//add return to history
+		String historyMsg="The book: "+bookDetails.getBookName()+" returned.";
+		if(op==ReturnMessageType.ChangeStatusToActive || op==ReturnMessageType.ChangeStatusToLock)
+			historyMsg=historyMsg+" the subscriber was late in return.";
+	
+		HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),historyMsg,SubscriberHistoryType.BooksReturn);
+		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+		
+		
 		
 		return new Message(OperationType.ReturnBookByLibrarian, borrowCopyFromDB , op);
 	}
