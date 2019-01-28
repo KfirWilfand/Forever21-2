@@ -304,6 +304,45 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "History record","Can't save history record");
 				}
 				break;
+				
+			case ShowMyBorrowedBooks:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					List<BorrowCopy> borrowBooks = (List<BorrowCopy>) msg.getObj();
+					ViewStarter.client.subscriberClientControllerObj.onGetBorrowedBooksResult(borrowBooks);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
+					break;
+				}
+				break;
+			case LossReporting:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Loss reporting success");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Loss reporting failed!");
+					break;
+				}
+				break;
+			case ShowBookPhotoOnSearchBookDetails:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					FilesController fc = FilesController.getInstance();
+					Object[] o = (Object[]) msg.getObj();
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					ViewStarter.client.bookDetailsControllerObj.showPhoto((String) o[1]);
+					break;
+				case Unsuccessful:
+					break;
+				}
+				break;
+				
+				
+		
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

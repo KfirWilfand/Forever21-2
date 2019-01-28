@@ -188,4 +188,31 @@ public class SubscriberController {
 				return new Message(OperationType.OrderBook, null, ReturnMessageType.Unsuccessful);
 		}
 	}
+	
+	public Message showBorrowedBooks(Object msg) throws SQLException
+    {
+    	String borrowQuery= (String)((Message)msg).getObj();
+    	DBcontroller dbControllerObj= DBcontroller.getInstance();
+    	ResultSet books_res= dbControllerObj.query(borrowQuery);
+    	List<BorrowCopy> BorrowBooks_list = BorrowCopy.resultSetToList(books_res);
+    	System.out.println(BorrowBooks_list);
+    	if(!BorrowBooks_list.isEmpty())
+    			return new Message(OperationType.ShowMyBorrowedBooks, BorrowBooks_list, ReturnMessageType.Successful);   		
+    	else
+    		return new Message(OperationType.ShowMyBorrowedBooks, null, ReturnMessageType.Unsuccessful);
+    }
+	
+	public Message lossCopyReport(Object msg) throws SQLException
+	{
+		Object[] updateLossCopyQuery=(Object[])((Message)msg).getObj();
+    	DBcontroller dbControllerObj= DBcontroller.getInstance();
+    	boolean query_res1= dbControllerObj.update((String)updateLossCopyQuery[0]);
+    	boolean query_res2= dbControllerObj.update((String)updateLossCopyQuery[1]);
+    	if (query_res1&&query_res2)
+				return new Message(OperationType.LossReporting, null , ReturnMessageType.Successful);
+		else
+				return new Message(OperationType.LossReporting, null , ReturnMessageType.Unsuccessful);
+    		
+	}
+
 }

@@ -112,6 +112,7 @@ public class SearchBookController {
 	 * @param books is the list view of books
 	 * @exception Exception
 	 */
+
 	public void onGetSearchResult(List<Book> books) {
 		this.books = books;
 		try {

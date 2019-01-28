@@ -15,5 +15,11 @@ AddNewCopy,
 DeleteCopy, 
 UpdateBookDetails,
 OrderBook,
-BorrowBookByLibrarian, ReturnBookByLibrarian, Logout, DownloadTableOfContent, ShowBookPhoto,GetStatstic, AddHistoryRecord,
+BorrowBookByLibrarian, 
+ReturnBookByLibrarian, 
+Logout, 
+ShowMyBorrowedBooks,
+LossReporting,
+DownloadTableOfContent, ShowBookPhoto,GetStatstic, AddHistoryRecord, ShowBookPhotoOnSearchBookDetails,
+
 }
