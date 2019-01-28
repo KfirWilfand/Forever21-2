@@ -5,10 +5,21 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
 <Pane prefHeight="543.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.SearchBookOnManageStockController">
    <children>
+      <Button fx:id="btnSavePDF" layoutX="498.0" layoutY="16.0" onAction="#onClickSavePDF" text="Save">
+         <graphic>
+            <ImageView fitHeight="22.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/button/pdf.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
       <TextField fx:id="tfCatalogNumberForSearch" layoutX="17.0" layoutY="17.0" promptText="Enter Catalog Number" />
       <Button fx:id="btnSearchBook" layoutX="179.0" layoutY="17.0" mnemonicParsing="false" onAction="#onClickSearchBook" text="Search" />
       <TableView fx:id="booksTable" layoutX="17.0" layoutY="68.0" onMouseClicked="#onChosenRow" prefHeight="475.0" prefWidth="545.0">
@@ -19,6 +30,6 @@
             <TableColumn fx:id="tvColumnEditionNumber" prefWidth="141.0" text="Edition Number" />
          </columns>
       </TableView>
-      <Label layoutX="313.0" layoutY="42.0" text="for update book details press on the book" />
+      <Label layoutX="17.0" layoutY="48.0" text="*for update book details press on the book" />
    </children>
 </Pane>
