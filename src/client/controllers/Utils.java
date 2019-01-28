@@ -206,17 +206,19 @@ public class Utils {
 			return false;
 
 	}
-
+	
 	/**
      * setBtnPressed is set button pressed
      * @param setBtnPressed
      * @param isSearchPressed
      * @param isProfilePressed
+     * @param isMailBox
 	 */
-	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed) {
+	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed,boolean isMailBox) {
 		replaceBtnImg(isHomePagePressed, mController.getBtnHomePage());
 		replaceBtnImg(isSearchPressed, mController.getBtnSearchBook());
 		replaceBtnImg(isProfilePressed, mController.getBtnProfile());
+		replaceBtnImg(isMailBox, mController.getBtnMailBox());
 	}
 	/**
      * replaceBtnImg replacing image 
