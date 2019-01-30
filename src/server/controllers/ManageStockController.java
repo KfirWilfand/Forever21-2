@@ -63,9 +63,9 @@ public class ManageStockController {
 		
 		FilesController filesControllerObj=FilesController.getInstance();
 		if((TransferFile)message[1]!=null)
-			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"/TableOfContent/");
 		if((TransferFile)message[3]!=null)
-			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"/BooksImages/");
 		
 		
 		if(res)
@@ -181,13 +181,12 @@ public class ManageStockController {
 		String query=(String)message[0];
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
 		Boolean res = dbControllerObj.insert(query);
-		
 		FilesController filesControllerObj=FilesController.getInstance();
 		if((TransferFile)message[1]!= null)
-			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"/TableOfContent/");
+
 		if((TransferFile)message[3]!= null)
-			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
-		
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"/BooksImages/");
 		if(res)
 		{
 			return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Successful); 
@@ -279,9 +278,9 @@ public class ManageStockController {
 	public Message sendBookPhotoToClient(Message msg) 
 	{
   		String bookName=(String)msg.getObj();
-		URL url = getClass().getResource("../photos/");
+		URL url = getClass().getResource("/BooksImages/");
 		String path=url.getPath().toString()+bookName.replace(" ","_")+".png";
-		path=path.replace('/', '\\');
+		//path=path.replace('/', '\\');
 		path=path.replaceAll("bin", "src");
   		TransferFile tf=TransferFile.createFileToTransfer(path);
   		Object[] message=new Object[2];

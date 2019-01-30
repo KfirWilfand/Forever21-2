@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,7 +10,7 @@
 <AnchorPane id="tableRow" prefHeight="53.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.BookListItemController">
 	<children>
 		<Line endX="-100.0" endY="33.0" layoutX="111.0" layoutY="8.0" startX="-100.0" stroke="#616161" />
-		<Line endX="564.0" layoutX="131.0" layoutY="24.0" startX="-109.0" stroke="#616161" />
+		<Line endX="415.0" layoutX="131.0" layoutY="24.0" startX="-109.0" stroke="#616161" />
 		<Label id="lblBookName" fx:id="txtBookName" layoutX="22.0" layoutY="4.0" text="Book Name">
 			<font>
 				<Font name="System Bold" size="12.0" />
@@ -20,7 +21,11 @@
 				<Font name="System Italic" size="12.0" />
 			</font>
 		</Label>
-		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="557.0" layoutY="25.0" mnemonicParsing="false" onAction="#onAskBorrowExtenationBtn" prefHeight="25.0" prefWidth="140.0" text="Ask Borrow Extension" />
+		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="558.0" layoutY="12.0" mnemonicParsing="false" onAction="#onAskBorrowExtenationBtn" prefHeight="25.0" prefWidth="140.0" stylesheets="@../styles/mainView.css" text="Ask Borrow Extension">
+         <styleClass>
+            <String fx:value="btnWithImageWithBorder" />
+            <String fx:value="buttonShadow" />
+         </styleClass></Button>
       <Label layoutX="21.0" layoutY="27.0" text="Borrow Date:">
          <font>
             <Font name="System Bold" size="12.0" />

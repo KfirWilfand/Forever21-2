@@ -12,6 +12,7 @@ import common.entity.Book;
 import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
+import common.entity.InboxMsgItem;
 import common.entity.Statistic;
 import common.entity.Subscriber;
 import common.entity.TransferFile;
@@ -49,8 +50,8 @@ public class MessageManager {
 			case Login:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					User user = (User) msg.getObj();
-					ViewStarter.client.mainViewController.onLogin(user);
+					Object[] objMsg=(Object[])msg.getObj();
+					ViewStarter.client.mainViewController.onLogin(objMsg);
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Wrong User Name Or Password!");
@@ -266,7 +267,7 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "../../client/boundery/tableOfContent/");
+					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "/TableOfContent/");
 					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -290,7 +291,7 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
 					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -333,16 +334,24 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
 					ViewStarter.client.bookDetailsControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
 					break;
 				}
 				break;
+			case GetInboxMsg:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.inboxControllerObj.showInboxMessages((List<InboxMsgItem>)msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "No Messages");
+					break;
+				}
+				break;
 				
-				
-		
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

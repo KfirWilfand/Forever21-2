@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -70,17 +69,5 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Text>
-      <Text layoutX="389.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Newsletter">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Text>
-      <ImageView fitHeight="17.0" fitWidth="60.0" layoutX="365.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/newsletter.png" />
-         </image>
-      </ImageView>
-      <Line endX="258.00006103515625" layoutX="467.0" layoutY="70.0" startX="-100.0" />
-      <ListView layoutX="366.0" layoutY="78.0" prefHeight="273.0" prefWidth="359.0" />
    </children>
     </AnchorPane>

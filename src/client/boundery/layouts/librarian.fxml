@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -117,10 +118,14 @@
                            </children>
                         </GridPane>
                         <Text fill="#f50606" layoutX="25.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*  - Required" />
-                        <Button fx:id="btnCreateSubscrciber" layoutX="610.0" layoutY="513.0" mnemonicParsing="false" onAction="#onCreateSubscruberBtn" text="Create Subscriber">
+                        <Button fx:id="btnCreateSubscrciber" layoutX="602.0" layoutY="509.0" mnemonicParsing="false" onAction="#onCreateSubscruberBtn" prefHeight="29.0" prefWidth="124.0" stylesheets="@../styles/mainView.css" text="Create Subscriber">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
                         </Button>
                         <Text layoutX="25.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Subscriber">
                            <font>
@@ -135,10 +140,14 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="527.0">
                      <children>
-                        <Button fx:id="btnBorrowBook" layoutX="265.0" layoutY="188.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" text="Borrow Book">
+                        <Button fx:id="btnBorrowBook" layoutX="265.0" layoutY="188.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" stylesheets="@../styles/mainView.css" text="Borrow Book">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
                         </Button>
                         <Text layoutX="22.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrowing Details ">
                            <font>
@@ -185,10 +194,14 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnReturnBook" layoutX="251.0" layoutY="132.0" mnemonicParsing="false" onAction="#onReturnBookBtn" text="Return Book">
+                        <Button fx:id="btnReturnBook" layoutX="251.0" layoutY="132.0" mnemonicParsing="false" onAction="#onReturnBookBtn" stylesheets="@../styles/mainView.css" text="Return Book">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
                         </Button>
                         <Text layoutX="19.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Book Details ">
                            <font>
@@ -235,7 +248,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="tfSearchSubscriberNumber" layoutX="516.0" layoutY="15.0" prefHeight="25.0" prefWidth="135.0" promptText="Subscriber Number" />
+                        <TextField fx:id="tfSearchSubscriberNumber" layoutX="547.0" layoutY="15.0" prefHeight="25.0" prefWidth="135.0" promptText="Subscriber Number" />
                         <GridPane layoutX="19.0" layoutY="89.0" prefHeight="247.0" prefWidth="231.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="97.39998779296874" />
@@ -295,10 +308,17 @@
                               <DatePicker fx:id="ssPdGraduation" disable="true" opacity="0.71" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
-                        <Button fx:id="btnSearchSubscriber" layoutX="674.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search">
+                        <Button fx:id="btnSearchSubscriber" layoutX="680.0" layoutY="10.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="28.0" prefWidth="49.0" styleClass="btnWithImage" stylesheets="@../styles/mainView.css">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Button>
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="23.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/button/serach-btn.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                         <Text layoutX="19.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Subscriber">
                            <font>
                               <Font name="System Bold" size="20.0" />
@@ -363,7 +383,11 @@
                               </Tab>
                           </tabs>
                         </TabPane>
-                        <Button fx:id="ssbtnUpdate" disable="true" layoutX="186.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUpdate" opacity="0.71" text="Update" />
+                        <Button fx:id="ssbtnUpdate" disable="true" layoutX="186.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUpdate" opacity="0.71" stylesheets="@../styles/mainView.css" text="Update">
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass></Button>
                         <Label layoutX="14.0" layoutY="376.0" text="Reader Card Details:">
                            <font>
                               <Font name="System Bold" size="15.0" />
@@ -606,10 +630,14 @@
                                              </font>
                                           </Text>
                                           <TextField fx:id="tfSearchSubscriberNumber1" layoutX="507.0" layoutY="110.0" prefHeight="25.0" prefWidth="135.0" promptText="Book Id" />
-                                          <Button fx:id="btnSearchSubscriber1" layoutX="659.0" layoutY="109.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search">
+                                          <Button fx:id="btnSearchSubscriber1" layoutX="652.0" layoutY="109.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" stylesheets="@../styles/mainView.css" text="Search">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
+                                             <styleClass>
+                                                <String fx:value="btnWithImageWithBorder" />
+                                                <String fx:value="buttonShadow" />
+                                             </styleClass>
                                           </Button>
                                           <Text layoutX="145.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Books">
                                              <font>
@@ -741,15 +769,20 @@
                                                 <ListView fx:id="ssLVBookRequest1" prefHeight="166.0" prefWidth="166.0" />
                                              </content>
                                           </ScrollPane>
-                                          <Button layoutX="634.0" layoutY="415.0" mnemonicParsing="false" text="Save">
+                                          <Button layoutX="654.0" layoutY="442.0" mnemonicParsing="false" styleClass="btnWithImage" stylesheets="@../styles/mainView.css">
                                              <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="43.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../resources/button/pdf.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
                                           </Button>
+                                          <Text layoutX="670.0" layoutY="501.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Text>
                                        </children>
                                     </AnchorPane>
                                  </content>

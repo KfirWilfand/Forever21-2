@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+
+
 import client.ViewStarter;
 import client.controllers.Utils;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
+import common.entity.InboxMsgItem;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
@@ -24,6 +27,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -113,6 +118,30 @@ public class MainViewController {
 	/** btnHomePage homepage button */
 	@FXML
 	private Button btnHomePage;
+	
+    @FXML
+    private Circle redCircel;
+
+    @FXML
+    private Text txtNumberOfMsg;
+    
+    public Circle getRedCircel() {
+		return redCircel;
+	}
+
+	public void setRedCircel(Circle redCircel) {
+		this.redCircel = redCircel;
+	}
+
+	public Text getTxtNumberOfMsg() {
+		return txtNumberOfMsg;
+	}
+
+	public void setTxtNumberOfMsg(Text txtNumberOfMsg) {
+		this.txtNumberOfMsg = txtNumberOfMsg;
+	}
+
+	private List<InboxMsgItem> msgList;
 
 	/**
 	 * getUser returns the current user
@@ -172,6 +201,12 @@ public class MainViewController {
 	void onClickMailBox(ActionEvent event) {
 //TODO
 		utils.setBtnPressed(false, false, false, true);
+		
+		
+		utils.layoutSwitcher(mainPane, "inbox.fxml", "My Inbox");
+		
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetInboxMsg, this.user));
+		
 	}
 
 	/**
@@ -183,7 +218,12 @@ public class MainViewController {
 	@FXML
 	void openProfileView(ActionEvent event) throws IOException {
 		if (this.user != null)
-			onLogin(user);
+			{
+				Object[] objMsg= new Object[2];
+				objMsg[0]=user;
+				objMsg[1]=msgList;
+				onLogin(objMsg);
+			}
 	}
 
 	/**
@@ -204,6 +244,10 @@ public class MainViewController {
 		user = null;
 		tfUserName.clear();
 		tfPassword.clear();
+		btnMailBox.setVisible(false);
+		redCircel.setVisible(false);
+		txtNumberOfMsg.setVisible(false);
+		
 	}
 
 	/**
@@ -286,17 +330,35 @@ public class MainViewController {
 	/**
 	 * onLogin make the log in procedure
 	 * 
-	 * @param user the current logged user
+	 * @param objMsg the current logged user
 	 * @exception Exception
 	 */
-	public void onLogin(User user) {
-		this.user = user;
+	public void onLogin(Object[] objMsg) {
+		this.user=(User) objMsg[0];
+		this.msgList = (List<InboxMsgItem>) objMsg[1];
 
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-
+					
+					int counter=0;
+					if(!msgList.isEmpty())
+						{	txtNumberOfMsg.setVisible(true);
+							for(InboxMsgItem msg: msgList )
+							{
+								if(!msg.isIs_read())
+									counter++;
+							}
+							if(counter!=0)
+							{
+								txtNumberOfMsg.setText(String.valueOf(counter));
+								redCircel.setVisible(true);
+							}
+						}
+					
+						
+					btnMailBox.setVisible(true);
 					btnLogout.setVisible(true);
 					mainView.getChildren().remove(dialogBoxLogin);
 					btnLogin.setText(user.getFirstName() + " " + user.getLastName());

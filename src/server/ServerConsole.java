@@ -129,6 +129,8 @@ public class ServerConsole extends AbstractServer {
 				this.sendToClient(returnMessageToClient, client);				
 				break;
 			case UpdateBookDetails:
+				
+
 				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
@@ -157,7 +159,6 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=subscriberControllerObj.lossCopyReport(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
-
 			case DownloadTableOfContent:
 				returnMessageToClient=readerControllerObj.sendTableOfContantToClient((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
@@ -175,6 +176,14 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=subscriberControllerObj.addHistoryRecordBySubId((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case GetInboxMsg:
+				returnMessageToClient=readerControllerObj.getInboxMessage((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;	
+			case makeAsRead:
+				readerControllerObj.makeAsRead((Message)msg);
+				break;	
+							
 			}
 			
 		} catch(Exception ex) {

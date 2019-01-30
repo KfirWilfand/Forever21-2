@@ -61,8 +61,8 @@ public class PDFGenerator {
 			Font boldFont = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
 			Font normalFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
 
-			Image img = Image
-					.getInstance(System.getProperty("user.dir") + "/src/client/boundery/resources/logo-small.png");
+//			Image img = Image
+//					.getInstance(System.getProperty("user.dir") + "/client/boundery/resources/logo-small.png");
 			Paragraph para = new Paragraph(new Phrase(title, titleFont));
 			para.setAlignment(Element.ALIGN_CENTER);
 
@@ -70,7 +70,7 @@ public class PDFGenerator {
 			PdfWriter.getInstance(document, new FileOutputStream(dest));
 			document.open();
 
-			document.add(img);
+			//document.add(img);
 			document.add(para);
 
 			for (Book book : bookList) {

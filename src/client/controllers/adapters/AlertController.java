@@ -100,7 +100,7 @@ public class AlertController {
 				}
 				ViewStarter.client.alertClientControllerObj.getLblType().setText("Error");
 				
-				ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image("/client/boundery/resources/error.png"));
+				ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image(getClass().getResource("/client/boundery/resources/error.png").toString()));
 				ViewStarter.client.alertClientControllerObj.getLblTitle().setText(lblTitle);
 				ViewStarter.client.alertClientControllerObj.getLblSubTitle().setText(lblSubTitle);
 				
@@ -125,7 +125,7 @@ public class AlertController {
 				}
 				ViewStarter.client.alertClientControllerObj.getLblType().setText("Warning");
 				
-				ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image("/client/boundery/resources/warning.png"));
+				ViewStarter.client.alertClientControllerObj.getIvIcon().setImage(new Image(getClass().getResource("/client/boundery/resources/warning.png").toString()));
 				ViewStarter.client.alertClientControllerObj.getLblTitle().setText(lblTitle);
 				ViewStarter.client.alertClientControllerObj.getLblSubTitle().setText(lblSubTitle);
 				
