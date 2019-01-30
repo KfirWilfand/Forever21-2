@@ -20,6 +20,14 @@ ReturnBookByLibrarian,
 Logout, 
 ShowMyBorrowedBooks,
 LossReporting,
-DownloadTableOfContent, ShowBookPhoto,GetStatstic, AddHistoryRecord, ShowBookPhotoOnSearchBookDetails, GetInboxMsg, makeAsRead,
+
+DownloadTableOfContent,
+ShowBookPhoto,
+GetStatstic, 
+AddHistoryRecord, 
+ShowBookPhotoOnSearchBookDetails, 
+GetInboxMsg, makeAsRead, 
+ExtensionBookByLibrarian,
+
 
 }

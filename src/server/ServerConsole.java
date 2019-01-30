@@ -183,7 +183,10 @@ public class ServerConsole extends AbstractServer {
 			case makeAsRead:
 				readerControllerObj.makeAsRead((Message)msg);
 				break;	
-							
+			case ExtensionBookByLibrarian:
+				returnMessageToClient=librarianControllerObj.extensionBookManually((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
 			}
 			
 		} catch(Exception ex) {
