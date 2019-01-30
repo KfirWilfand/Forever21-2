@@ -1,6 +1,14 @@
 package client.controllers;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -11,6 +19,7 @@ import client.ViewStarter;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.Book;
+import common.entity.TransferFile;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,59 +30,97 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
+/**
+ * The UpdateOrAddBookController class represent the update or add new book controller on the client's side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class UpdateOrAddBookController {
-
+	
+	/** tfCatalogNumber is the catalog number text */
     @FXML
     private TextField tfCatalogNumber;
 
+    /** tfBookName is the book name */
     @FXML
     private TextField tfBookName;
 
+    /** tfAuthorName is the author name */
     @FXML
     private TextField tfAuthorName;
 
+    /** tfEditionNumber is the edition number text */
     @FXML
     private TextField tfEditionNumber;
 
+    /** tfLocationOnShelf is the location on sherlf text*/
     @FXML
     private TextField tfLocationOnShelf;
 
+    /** txteDescription is the description of the book */
     @FXML
     private TextArea txteDescription;
     
+    /** tfGenre is the genre of the book */
     @FXML
     private TextField tfGenre;
 
+    /** dpPrintingDate is the date of printing */
     @FXML
     private DatePicker dpPrintingDate;
 
+    /** dpPurchaseDate is the date of purchase date */
     @FXML
     private DatePicker dpPurchaseDate;
 
+    /** tfCopiesNumber is the copies number text */
     @FXML
     private TextField tfCopiesNumber;
 
-
+    /** cbIsPopular is the popularity check box */
 	@FXML
     private CheckBox cbIsPopular;
 
+	/** btnUpdate is the update button */
     @FXML
     private Button btnUpdate;
 
+    /** btnUploadTableOfContent is the upload table of content button */
    	@FXML
     private Button btnUploadTableOfContent;
 
+   	/** btnAddBook is the add book button */
     @FXML
     private Button btnAddBook;
 
-
+    /** btnBack is the back button */
 	@FXML
     private Button btnBack;
 
+	/** tfTableOfContent is the table of content text*/
+    @FXML
+    private TextField tfTableOfContent;
 
-  
+    /** bookImage is the book image */
+    @FXML
+    private ImageView bookImage;
+    
+    /** tfBookImagePath is the book image path */
+    @FXML
+    private TextField tfBookImagePath;
+    
+    private byte[] imgByteArr;
 
+    /**
+     * initialize is initializing the update or add controller
+	 */
 	@FXML
 	public void initialize() {
 		ViewStarter.client.updateOrAddBookControllerObj = this;
@@ -93,7 +140,10 @@ public class UpdateOrAddBookController {
 	
 	}
     
-
+	/**
+	 * onClickAddBook is adding a new book to inventory
+	 * @param event is an action event
+	 */
     @FXML
     void onClickAddBook(ActionEvent event) {
     	
@@ -130,13 +180,26 @@ public class UpdateOrAddBookController {
 					+ "values ('"+ tfBookName.getText() +"','"+ txteDescription.getText() +"','"+ tfEditionNumber.getText() +"','"+ dpPrintingDate.getValue()+"'"
 						+ ",0,'"+tfLocationOnShelf.getText()+"','"+tfGenre.getText()+"','"+tfAuthorName.getText()+"'"
 							+ ",'"+dpPurchaseDate.getValue()+"',0,"+cbIsPopular.isSelected()+")";
-    	
-			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, addBookQuery));
+			
+			TransferFile tf =TransferFile.createFileToTransfer(tfTableOfContent.getText());
+			TransferFile photo=TransferFile.createFileToTransfer(tfBookImagePath.getText());
+			
+			Object[] msg=new Object[4];
+			msg[0]=addBookQuery;
+			msg[1]=tf;
+			msg[2]=tfBookName.getText();
+			msg[3]=photo;
+			
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewBook, msg));
 		}
     }
 
 
-
+    /**
+	 * onClickBack going back to the previous page
+	 * @param event is action event
+	 * @exception IOException
+	 */
     @FXML
     void onClickBack(ActionEvent event)
     {
@@ -160,19 +223,33 @@ public class UpdateOrAddBookController {
 			e.printStackTrace();
 		}
     }
-
+    /**
+	 * onClickUpdate updates the book details
+	 * @param event is action event
+	 */
     @FXML
     void onClickUpdate(ActionEvent event) 
     {
     	String query = "UPDATE obl.books SET bName='"+tfBookName.getText()+"',bAuthor='"+tfAuthorName.getText()+"',bGenre='"+tfGenre.getText()+"',bIsPopular="+cbIsPopular.isSelected()+",bEdition='"+tfEditionNumber.getText()+"',bPrintDate='"+dpPrintingDate.getValue()+"',bDescription='"+txteDescription.getText()+"',bPurchaseDate='"+dpPurchaseDate.getValue()+"',bShelfLocation='"+tfLocationOnShelf.getText()+"' WHERE bCatalogNum="+tfCatalogNumber.getText()+";";
     	
-    	
+		TransferFile tf =TransferFile.createFileToTransfer(tfTableOfContent.getText());
+		TransferFile photo=TransferFile.createFileToTransfer(tfBookImagePath.getText());
+		
+		Object[] msg=new Object[4];
+		msg[0]=query;
+		msg[1]=tf;
+		msg[2]=tfBookName.getText();
+		msg[3]=photo;
+		
     	System.out.println(query);
-    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,query ));
+    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,msg ));
 
     	
     }
-    
+    /**
+	 * showSelectedBookDetails is displaying the details of selected book
+	 * @param book contains the details of the book
+	 */
     public void showSelectedBookDetails(Book book)
     {
     	Platform.runLater(new Runnable() 
@@ -191,25 +268,85 @@ public class UpdateOrAddBookController {
 		       	txteDescription.setText(book.getDescription());
 		       	tfLocationOnShelf.setText(book.getShelfLocation());
 		    	tfCopiesNumber.setText(String.valueOf(book.getCopiesNum()));
+		    	
+		    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ShowBookPhoto, book.getBookName()));
+		    
 			}
     	});
     }
-    
+    /**
+	 * btnAddBook is getting the add new book button
+	 * @return the add new book button
+	 */
     public Button getBtnAddBook() {
 		return btnAddBook;
 	}
+    /**
+	 * getBtnUpdate get the update inventory button
+	 * @return btnUpdate the upload button
+	 */
     public Button getBtnUpdate() {
 		return btnUpdate;
 	}
-
+    /**
+	 * getTfCopiesNumber get the number of copies
+	 * @return the copies number
+	 */
     public TextField getTfCopiesNumber() {
 		return tfCopiesNumber;
 	}
 
-
+    /**
+	 * setTfCopiesNumber set the number of cpies per book
+	 * @param tfCopiesNumber contains the number of copies
+	 */
 	public void setTfCopiesNumber(TextField tfCopiesNumber) {
 		this.tfCopiesNumber = tfCopiesNumber;
 	}
 
+	/**
+	 * onUploadImageBtn uploads an image of a book
+	 *@param event action event
+	 */
+    @FXML
+    void onUploadImageBtn(ActionEvent event) throws IOException {
+    	FileChooser fc= new FileChooser();
+    	File selectedFile =fc.showOpenDialog(null);
+    	if (selectedFile != null)
+    		{
+    			tfBookImagePath.setText(selectedFile.getCanonicalPath());
+    			//imgByteArr=Files.readAllBytes(selectedFile.toPath());
+    			bookImage.setImage(new Image(selectedFile.toURI().toString()));
+    		}
+    	
+  	
+    }
+    /**
+	 * onUploadTableOfContent upload table of content of added book 
+	 * @param event action event
+	 */
+    @FXML
+    void onUploadTableOfContent(ActionEvent event) {
+    	FileChooser fc= new FileChooser();
+    	File selectedFile =fc.showOpenDialog(null);
+    	if (selectedFile != null)
+    			tfTableOfContent.setText(selectedFile.getAbsolutePath());		
+    
+    	
+    }
+    
+    public void showPhoto(String fileName)
+    {
+    	URL url = getClass().getResource("/BooksImages/");
+    	
+		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
+		//str=str.replace('/', '\\');
+		str=str.replaceAll("bin", "src");
+		System.out.println(str);
+    	bookImage.setImage(new Image(new File(str).toURI().toString()));
+    }
+	
 
+
+    
 }

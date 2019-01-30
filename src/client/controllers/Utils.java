@@ -1,10 +1,12 @@
 package client.controllers;
 
 import client.ViewStarter;
+import client.controllers.adapters.BookListItemController;
 import client.controllers.adapters.BookSearchRow;
 import client.controllers.adapters.BorrowBookRow;
 import common.entity.Book;
 import common.entity.BorrowBook;
+import common.entity.BorrowCopy;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
@@ -42,7 +44,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
+/**
+ * The Utils class represent all the utils function 
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class Utils {
+	/** LOGGER is giving information */
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private AnchorPane apListView;
 
@@ -51,7 +62,11 @@ public class Utils {
 	public Utils(MainViewController mController) {
 		this.mController = mController;
 	}
-
+	/**
+     * getButtons is getting the root and return all the child buttons
+     * @param root
+     * @return list of children buttons
+	 */
 	public List<Button> getButtons(Parent root) {// get a root and return all the child buttons
 		List<Button> buttons = new ArrayList<Button>();
 		for (Node node : root.getChildrenUnmodifiable()) {
@@ -60,14 +75,27 @@ public class Utils {
 		}
 		return buttons;
 	}
-
+	/**
+     * paneViewSwitcher is switching between pane views
+     * @param container is the current
+     * @param newLoadedPane is the one we want to switch to
+	 */
 	public void paneViewSwitcher(Pane container, Parent newLoadedPane) {
 		container.getChildren().clear();
 		container.getChildren().add(newLoadedPane);
 	}
-
+	/**
+     * SearchBookRowFactory class represents book row factory that implements CallBack and ListCell
+     * @author kfir wilfand
+	 */
 	public class SearchBookRowFactory implements Callback<ListView<Book>, ListCell<Book>> {
 
+		/**
+	     * call call list cell of books
+	     * @param param list view of books
+	     * @return ListCell
+	     * @exception IOException
+		 */
 		@Override
 		public ListCell<Book> call(ListView<Book> param) {
 			try {
@@ -75,6 +103,7 @@ public class Utils {
 						getClass().getResource("/client/boundery/layouts/search_book_item.fxml"));
 				Pane root = (Pane) loader.load();
 				BookSearchRow bookSearchRow = loader.getController();
+
 				return bookSearchRow;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -83,15 +112,26 @@ public class Utils {
 		}
 	}
 
-	public class BorrowBookRowFactory implements Callback<ListView<BorrowBook>, ListCell<BorrowBook>> {
 
+	/**
+     * BorrowBookRowFactory class represents borrow book row factory that implements CallBack and ListCell
+     * @author kfir wilfand
+	 */
+	public class BorrowBookRowFactory implements Callback<ListView<BorrowCopy>, ListCell<BorrowCopy>> {
+
+
+		/**
+	     * call call list cell of borrowed books
+	     * @param param list view of books
+	     * @return ListCell
+	     * @exception IOException
+		 */
 		@Override
-		public ListCell<BorrowBook> call(ListView<BorrowBook> param) {
+		public ListCell<BorrowCopy> call(ListView<BorrowCopy> param) {
 			try {
-				FXMLLoader loader = new FXMLLoader(
-						getClass().getResource("/client/boundery/layouts/borrow_book_item.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/boundery/layouts/borrow_book_item.fxml"));
 				Parent root = (Parent) loader.load();
-				BorrowBookRow borrowBookRow = loader.getController();
+				BookListItemController borrowBookRow = loader.getController();
 				return borrowBookRow;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -100,8 +140,15 @@ public class Utils {
 		}
 	}
 
+	/**
+     * showAlertWithHeaderText pops up pops up when needed
+     * @param alertType the type of alert
+     * @param title the title 
+     * @param text the text in the alert
+     * @exception Exception
+	 */
 	public void showAlertWithHeaderText(AlertType alertType, String title, String text) {// this alert function pops up
-																							// an alert type dialog box
+																							// pops up
 																							// when needed
 		try {
 
@@ -122,6 +169,11 @@ public class Utils {
 
 	}
 
+	/**
+     * isValidEmail returns if an email is correct
+     * @param email email of specific subscriber
+     * @return boolean
+	 */
 	public boolean isValidEmail(String email) { // checks if an email address is valid
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
 				+ "A-Z]{2,7}$";
@@ -131,7 +183,11 @@ public class Utils {
 			return false;
 		return pat.matcher(email).matches();
 	}
-
+	/**
+     * validatePhoneNumber returns if phone number is correct
+     * @param phoneNo phone number of specific subscriber
+     * @return boolean
+	 */
 	public boolean validatePhoneNumber(String phoneNo) {// checks phone number input
 		// validate phone numbers of format "1234567890"
 		if (phoneNo.matches("\\d{10}"))
@@ -150,13 +206,25 @@ public class Utils {
 			return false;
 
 	}
-
-	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed) {
+	
+	/**
+     * setBtnPressed is set button pressed
+     * @param setBtnPressed
+     * @param isSearchPressed
+     * @param isProfilePressed
+     * @param isMailBox
+	 */
+	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed,boolean isMailBox) {
 		replaceBtnImg(isHomePagePressed, mController.getBtnHomePage());
 		replaceBtnImg(isSearchPressed, mController.getBtnSearchBook());
 		replaceBtnImg(isProfilePressed, mController.getBtnProfile());
+		replaceBtnImg(isMailBox, mController.getBtnMailBox());
 	}
-
+	/**
+     * replaceBtnImg replacing image 
+     * @param isPressed
+     * @param btn 
+	 */
 	private void replaceBtnImg(boolean isPressed, Button btn) {
 		List<Node> btnChildren = btn.getChildrenUnmodifiable();
 		if (btnChildren.get(0) instanceof ImageView) {
@@ -175,11 +243,19 @@ public class Utils {
 			iv.setImage(image);
 		}
 	}
-
+	/**
+     * setApListView is setting a list view
+     * @param apListView is an anchor pane
+	 */
 	public void setApListView(AnchorPane apListView) {
 		this.apListView = apListView;
 	}
-
+	/**
+     * layoutSwitcher is switching between layouts 
+     * @param parent
+     * @param layout
+     * @param subTitle
+	 */
 	public void layoutSwitcher(Pane parent, String layout,String subTitle) {
 		
 		mController.getLblSubTitle().setText(subTitle);
@@ -192,7 +268,11 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+     *setStyleToList is set style to list
+     * @param setStyleToList
+     * @param setStyleToList
+	 */
 	public void setStyleToList(List<Control> txtfields,String css)
 	{
 		for(Control tf :txtfields)

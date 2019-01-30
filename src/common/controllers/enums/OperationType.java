@@ -11,11 +11,23 @@ AddNewSubscriberByLibrarian,
 SearchBookOnManageStock,
 AddNewBook,
 GetCopiesOfSelectedBook,
-
 AddNewCopy,
 DeleteCopy, 
 UpdateBookDetails,
-
 OrderBook,
-BorrowBookByLibrarian, ReturnBookByLibrarian, Logout,
+BorrowBookByLibrarian, 
+ReturnBookByLibrarian, 
+Logout, 
+ShowMyBorrowedBooks,
+LossReporting,
+
+DownloadTableOfContent,
+ShowBookPhoto,
+GetStatstic, 
+AddHistoryRecord, 
+ShowBookPhotoOnSearchBookDetails, 
+GetInboxMsg, makeAsRead, 
+ExtensionBookByLibrarian,
+
+
 }

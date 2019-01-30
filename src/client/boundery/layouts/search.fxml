@@ -8,6 +8,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <VBox prefHeight="600.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.SearchBookController">
   <children>
@@ -21,7 +23,21 @@
               <content>
                 <AnchorPane fx:id="apListView" minHeight="0.0" minWidth="0.0" prefHeight="534.0" prefWidth="746.0">
                      <children>
-                        <ListView id="lvSearchBook" fx:id="lvBooks" layoutX="-4.0" layoutY="3.0" opacity="0.75" prefHeight="526.0" prefWidth="755.0" />
+                        <ListView id="lvSearchBook" fx:id="lvBooks" layoutX="-3.0" opacity="0.75" prefHeight="538.0" prefWidth="755.0" />
+                        <Button fx:id="btnSavePDF" layoutX="662.0" layoutY="459.0" mnemonicParsing="false" onAction="#onSavePdfBtn" prefHeight="58.0" prefWidth="79.0" styleClass="btnWithImage" stylesheets="@../styles/mainView.css">
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/button/pdf.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text layoutX="690.0" layoutY="522.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
               </content>

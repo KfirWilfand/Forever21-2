@@ -46,6 +46,6 @@
          </font>
       </Text>
       <ToggleButton fx:id="btnServerOnOff" layoutX="489.0" layoutY="71.0" mnemonicParsing="false" onAction="#onServerOnOffbtn" prefHeight="29.0" prefWidth="51.0" style="-fx-border-radius: 20px;" text="ON" textFill="WHITE" />
-      <Button fx:id="btnDisconnectClients" layoutX="367.0" layoutY="194.0" mnemonicParsing="false" onAction="#onDisconnectClientBtn" prefHeight="40.0" prefWidth="140.0" text="Disconnect all Clients" />
+      <Button fx:id="btnDisconnectClients" layoutX="367.0" layoutY="194.0" mnemonicParsing="false" onAction="#onDisconnectClientBtn" prefHeight="40.0" prefWidth="140.0" text="Disconnect all Clients" visible="false" />
    </children>
 </AnchorPane>
