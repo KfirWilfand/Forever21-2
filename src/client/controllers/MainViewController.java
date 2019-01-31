@@ -204,6 +204,11 @@ public class MainViewController {
 		
 		
 		utils.layoutSwitcher(mainPane, "inbox.fxml", "My Inbox");
+		if(Integer.parseInt(getTxtNumberOfMsg().getText())==0)
+		{
+			getRedCircel().setVisible(false);
+			getTxtNumberOfMsg().setVisible(false);
+		}
 		
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetInboxMsg, this.user));
 		

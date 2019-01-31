@@ -113,7 +113,7 @@ public class LibrarianController {
 		if(copy == null)
 			return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.CopyNotExist);
 		
-		if(subscriber.getReaderCard().getStatus() != ReaderCardStatus.Active)
+		if(!subscriber.getReaderCard().getStatus().equals(ReaderCardStatus.Active))
 			return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.HoldOrLockStatus);
 		
 		if(!copy.isAvilabale())
@@ -187,6 +187,7 @@ public class LibrarianController {
 		Message copyIDofReturnedBook=((Message)msg);
 		String copyIDtemp=((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID();
 		Copy copy=ManageStockController.getCopyById(copyIDtemp);
+	//check if copy id is correct
 		if(copy == null)
 			return new Message(OperationType.ReturnBookByLibrarian, null , ReturnMessageType.CopyNotExist);
 		
@@ -198,31 +199,40 @@ public class LibrarianController {
 		
 		Subscriber subscriber=SubscriberController.getSubscriberById(String.valueOf(borrowCopyFromDB.getSubNum()));
 		
-		
 		ReturnMessageType op;
-		if( borrowCopyFromDB.getActualReturnDate().after(borrowCopyFromDB.getReturnDueDate()) )
-		{//return not in time
-			if (subscriber.getReaderCard().getLateReturnsBookCounter()>=2)
-				{
-					String updateSubscriberDetails="update obl.subscribers set subLatesCounter=subLatesCounter+1 subStatuse='Lock' where subNum='"+subscriber.getSubscriberNum()+"'";
-					Boolean isUpdate=dbControllerObj.update(updateSubscriberDetails);
-					op=ReturnMessageType.ChangeStatusToLock;
-				}
-			else
-				{
-					String updateSubscriberDetails="update obl.subscribers set subLatesCounter=subLatesCounter+1 subStatuse='Active' where subNum='"+subscriber.getSubscriberNum()+"'";
-					Boolean isUpdate=dbControllerObj.update(updateSubscriberDetails);
-					op=ReturnMessageType.ChangeStatusToActive;
-					//add to history status changing
-					HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"Status changed from Hold to Active",SubscriberHistoryType.ChangeStatus);
-					scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
-				}
+		ArrayList<String> booksArray = null;
+		if(subscriber.getGraduationDate().equals(borrowCopyFromDB.getActualReturnDate()))
+		{//student that graduate
+			booksArray = new ArrayList<String>();
+			String query= "SELECT copyID FROM obl.borrows where copyID='"+borrowCopyFromDB.getCopyID()+"' and actualReturnDate is null ";
+			ResultSet subscriberBorrowbooks=dbControllerObj.query(query);
+			while(subscriberBorrowbooks.next())
+				booksArray.add(subscriberBorrowbooks.getString("copyID"));				
+			if(booksArray.size()>1)
+				op=ReturnMessageType.GraduateWithMoreBooksToReturn;
+			else 
+			{
+				String updateGraduateSubscriberStatus="update obl.subscribers set subStatuse='Lock' where subNum='"+subscriber.getSubscriberNum()+"'";
+				Boolean isUpdate=dbControllerObj.update(updateGraduateSubscriberStatus);
+				op=ReturnMessageType.ChangeGraduateStatusToLock;
+			}		
+		}
+		else
+		{//regular subscriber
+			if( borrowCopyFromDB.getActualReturnDate().after(borrowCopyFromDB.getReturnDueDate()) && subscriber.getReaderCard().getStatus().equals(ReaderCardStatus.Hold))
+			{//return not in time
+				String updateSubscriberStatus="update obl.subscribers set subStatuse='Active' where subNum='"+subscriber.getSubscriberNum()+"'";
+				Boolean isUpdate=dbControllerObj.update(updateSubscriberStatus);
+				//add to history status changing
+				HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"Status changed from Hold to Active",SubscriberHistoryType.ChangeStatus);
+				scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+				op=ReturnMessageType.ChangeStatusToActive;
+			}
 		}
 		
-		//update actual return date in DB
-		String updateActualReturnDate="update obl.borrows set actualReturnDate='"+borrowCopyFromDB.getActualReturnDate()+"' where copyID='"+copy.getCopyID()+"' and subNum='"+subscriber.getSubscriberNum()+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"' and actualReturnDate is null";
-		Boolean updateActualReturnDate_res=dbControllerObj.update(updateActualReturnDate);
+		
 		Book bookDetails=ManageStockController.getBookByCatalogNumber(copy.getbCatalogNum());
+		
 		Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(copy.getbCatalogNum());
 		if(orderQueue.isEmpty())
 		{//there is no subscribers in waiting list
@@ -233,6 +243,7 @@ public class LibrarianController {
 			//update copy to be available
 			String returnToCopeisTable="update obl.copeis set isAvilable=1 where copyID='"+copy.getCopyID()+"'";
 			Boolean returnToCopeisTable_res=dbControllerObj.update(returnToCopeisTable);
+			
 			op=ReturnMessageType.Successful;
 		}
 		else
@@ -244,8 +255,7 @@ public class LibrarianController {
 			String mailBody="Your Book: "+bookDetails.getBookName()+"is arraived. You have two days to take it before your order cancelled.";
 			SendMailController.sendMailToSubscriber(firstInLine, mailSubject, mailBody);
 			
-			
-			String query="insert into obl.book_arrived_mail (subNum,catalogNum,reminderDate) values ("+firstInLine.getSubscriberNum()+",'"+copy.getbCatalogNum()+"','"+borrowCopyFromDB.getActualReturnDate()+"')";
+			String query="insert into obl.book_arrived_mail (subNum,copyID,reminderDate) values ("+firstInLine.getSubscriberNum()+",'"+copy.getCopyID()+"','"+borrowCopyFromDB.getActualReturnDate()+"')";
 			Boolean insertToBookArrivedMail=dbControllerObj.update(query);
 			op=ReturnMessageType.subscriberInWaitingList;
 			
@@ -253,13 +263,24 @@ public class LibrarianController {
 		
 		//add return to history
 		String historyMsg="The book: "+bookDetails.getBookName()+" returned.";
-		if(op==ReturnMessageType.ChangeStatusToActive || op==ReturnMessageType.ChangeStatusToLock)
+		if(op.equals(ReturnMessageType.ChangeStatusToActive))
 			historyMsg=historyMsg+" the subscriber was late in return.";
 	
 		HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),historyMsg,SubscriberHistoryType.BooksReturn);
 		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 		
+		//update actual return date in DB
+		String updateActualReturnDate="update obl.borrows set actualReturnDate='"+borrowCopyFromDB.getActualReturnDate()+"' where copyID='"+copy.getCopyID()+"' and subNum='"+subscriber.getSubscriberNum()+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"' and actualReturnDate is null";
+		Boolean updateActualReturnDate_res=dbControllerObj.update(updateActualReturnDate);
 		
+		
+		if(op.equals(ReturnMessageType.GraduateWithMoreBooksToReturn))
+		{
+			Object[] msgObj=new Object[2];
+			msgObj[0]=borrowCopyFromDB;
+			msgObj[1]=booksArray;
+			return new Message(OperationType.ReturnBookByLibrarian, msgObj , op);
+		}
 		
 		return new Message(OperationType.ReturnBookByLibrarian, borrowCopyFromDB , op);
 	}

@@ -27,7 +27,9 @@ GetStatstic,
 AddHistoryRecord, 
 ShowBookPhotoOnSearchBookDetails, 
 GetInboxMsg, makeAsRead, 
-ExtensionBookByLibrarian,
+ExtensionBookByLibrarian, 
+LockReaderCard, 
+ChangeToActiveReaderCard,
 
 
 }

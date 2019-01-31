@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
+//import com.itextpdf.layout.element.Image;
+import javafx.scene.image.Image;
 import client.controllers.Client;
 import client.controllers.MainViewController;
 import common.controllers.Message;
@@ -79,7 +81,7 @@ public class ViewStarter extends Application {
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("OBL");
 			primaryStage.setResizable(false);
-
+			primaryStage.getIcons().add(new Image(getClass().getResource("boundery/resources/logo.png").toString()));
 			List<String> args = getParameters().getRaw();
 
 			if (args.contains("autolog")) {

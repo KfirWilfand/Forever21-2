@@ -1,5 +1,6 @@
 package client.controllers.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import client.ViewStarter;
@@ -249,17 +250,23 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
 					break;
 				case subscriberInWaitingList:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
-							"there is a waiting list to this book\nput the book aside.");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","there is a waiting list to this book\nput the book aside.");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
 				case ChangeStatusToActive:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "",
 							"Subscriber status changed to 'Active'.\nSubscriber was late in return");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
-				case ChangeStatusToLock:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
-							"Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+				case ChangeGraduateStatusToLock:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
+				case GraduateWithMoreBooksToReturn:
+					Object[] o = (Object[]) msg.getObj();
+					ArrayList<String> arr=(ArrayList<String>)o[1];
+					String listString = String.join(", ", arr);
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Graduate need to return the following books :"+listString);
 				}
 				break;
 			case DownloadTableOfContent:
@@ -340,6 +347,7 @@ public class MessageManager {
 				case Unsuccessful:
 					break;
 				}
+				break;
 			case ExtensionBookByLibrarian:
 				switch(msg.getReturnMessageType())
 				{
@@ -373,7 +381,29 @@ public class MessageManager {
 					break;
 				}
 				break;
-				
+			case LockReaderCard:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Reader Card Lock Successfully");
+					ViewStarter.client.inboxControllerObj.getBtnLock().setDisable(true);
+					ViewStarter.client.inboxControllerObj.getBtnActive().setDisable(false);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Fail to Lock Reader Card");
+					break;	
+				}		
+				break;
+			case ChangeToActiveReaderCard:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Reader Card Status Change To 'Active' Successfully");
+					ViewStarter.client.inboxControllerObj.getBtnLock().setDisable(false);
+					ViewStarter.client.inboxControllerObj.getBtnActive().setDisable(true);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Fail to change Reader Card status");
+					break;	
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

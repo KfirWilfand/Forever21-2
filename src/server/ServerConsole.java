@@ -72,6 +72,7 @@ public class ServerConsole extends AbstractServer {
 		LibrarianController librarianControllerObj=LibrarianController.getInstance();
 		ManageStockController manageStockControllerObj=ManageStockController.getInstance();
 		StatisticController statisticController = StatisticController.getInstance();
+		LibraryManagerController libraryManagerControllerObj = LibraryManagerController.getInstance();
 		
 		try {
 			switch (((Message) msg).getOperationType()) {
@@ -129,8 +130,6 @@ public class ServerConsole extends AbstractServer {
 				this.sendToClient(returnMessageToClient, client);				
 				break;
 			case UpdateBookDetails:
-				
-
 				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
@@ -185,6 +184,14 @@ public class ServerConsole extends AbstractServer {
 				break;	
 			case ExtensionBookByLibrarian:
 				returnMessageToClient=librarianControllerObj.extensionBookManually((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case LockReaderCard:
+				returnMessageToClient=libraryManagerControllerObj.lockReaderCard((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case ChangeToActiveReaderCard:
+				returnMessageToClient=libraryManagerControllerObj.changeToActiveReaderCard((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
 			}

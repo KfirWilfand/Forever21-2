@@ -173,6 +173,8 @@ public class SearchBookOnManageStockController {
 			ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setVisible(false);
 			ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setVisible(false);
 			ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().setVisible(false);
+			ViewStarter.client.manageStockClientControllerObj.getLabel1().setVisible(false);
+			ViewStarter.client.manageStockClientControllerObj.getLabel2().setVisible(false);
 			try {
 				Parent newPane = FXMLLoader
 						.load(getClass().getResource("/client/boundery/layouts/updateOrAddBook.fxml"));

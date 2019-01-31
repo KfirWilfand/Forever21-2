@@ -181,7 +181,7 @@ public class SubscriberController {
 			return new Message(OperationType.OrderBook, null, ReturnMessageType.SubscriberAlreadyInOrderList);
 		else {
 			Book bookToOrder = ManageStockController
-					.getBookByCatalogNumber(checkIfOrderAlreadyExist_res.getInt("boCatalogNum"));
+					.getBookByCatalogNumber(tempBookCatalogNum);
 			Queue<Subscriber> orderQueue = ManageStockController.getBookOrderQueue(bookToOrder.getCatalogNum());
 			if (bookToOrder.getCopiesNum() == orderQueue.size())
 				return new Message(OperationType.OrderBook, null, ReturnMessageType.FullOrderList);

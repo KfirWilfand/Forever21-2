@@ -23,5 +23,5 @@ public enum ReturnMessageType {
 	HoldOrLockStatus, 
 	CopyIsNotAvailable, 
 	SubscriberAlreadyInOrderList, wrongBorrowDetails, FullOrderList,
-	ChangeStatusToLock, ChangeStatusToActive, subscriberInWaitingList, GetStatstic, MustReturnBook, PopularBook
+	ChangeStatusToLock, ChangeStatusToActive, subscriberInWaitingList, GetStatstic, MustReturnBook, PopularBook, GraduateWithMoreBooksToReturn, ChangeGraduateStatusToLock
 }

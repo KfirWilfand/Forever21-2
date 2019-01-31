@@ -59,6 +59,7 @@ public class ServerStarter extends Application {
 
 			primaryStage.show();
 			primaryStage.setScene(scene);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

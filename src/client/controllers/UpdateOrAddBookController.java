@@ -211,6 +211,8 @@ public class UpdateOrAddBookController {
         	ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setVisible(true);
         	ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setVisible(true);
         	ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().setVisible(true);
+			ViewStarter.client.manageStockClientControllerObj.getLabel1().setVisible(true);
+			ViewStarter.client.manageStockClientControllerObj.getLabel2().setVisible(true);
     		ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
 			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/searchBook_by_number_at_manageStock.fxml"));
 			if(ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock() != null)

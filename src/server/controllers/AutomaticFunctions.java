@@ -71,7 +71,7 @@ public class AutomaticFunctions {
 	    	if(!isUpdate)
 	    	{
 	    		System.out.println("ERROR in update the number of lates - subscriber number"+lateInReturnBorrow.getString("subNum"));
-	    		return;
+	    		continue;
 	    	}
 	    	String howManyLates = "select subLatesCounter from obl.subscribers where subNum="+lateInReturnBorrow.getString("subNum");
 	    	ResultSet latesCnt = dbControllerObj.query(howManyLates);
@@ -80,24 +80,25 @@ public class AutomaticFunctions {
 	    		int latesCounter = latesCnt.getInt("subLatesCounter");
 	    		if(latesCounter >= 3)
 	    		{
-	    			 String updateStatusToLock= "update obl.subscribers set subStatus='Lock' where subNum="+lateInReturnBorrow.getString("subNum");
-		    		 boolean isLock= dbControllerObj.update(updateStatusToLock);
-		    		 if(isLock)
-		    			 System.out.println("subscriber number"+lateInReturnBorrow.getString("subNum")+"is Lock!!");
-		    		 else
-		    			 System.out.println("ERROR in locking - subscriber number"+lateInReturnBorrow.getString("subNum"));
-		    		 return;
+	    			SendMailController.sendLockInboxToLibraryManager(lateInReturnBorrow.getInt("subNum"));
+		    		 continue;
 	    		}
 	    		 String updateStatusToHold= "update obl.subscribers set subStatus='Hold' where subNum="+lateInReturnBorrow.getString("subNum");
 	    		 boolean isHold= dbControllerObj.update(updateStatusToHold);
 	    		 if(isHold)
-	    			 System.out.println("subscriber number"+lateInReturnBorrow.getString("subNum")+"is Hold!!");
+	    		 { 
+	       			 System.out.println("subscriber number"+lateInReturnBorrow.getString("subNum")+"is Hold!!");
+	    		 }
 	    		 else
 	    			 System.out.println("ERROR in holding - subscriber number"+lateInReturnBorrow.getString("subNum"));
-	    		 return;		
+	    		 Copy copy=ManageStockController.getCopyById(lateInReturnBorrow.getString("copyID"));
+    			 Book book=ManageStockController.getBookByCatalogNumber(copy.getbCatalogNum());
+    			 SendMailController.sendAlertInbox(lateInReturnBorrow.getInt("subNum"), "Late In Return", "Your reader card is HOLD , you are late in returning the book :"+book.getBookName());
+    			
+	    		 continue;		
 	    	}
 	    	System.out.println("ERROR in search how many lates "+lateInReturnBorrow.getString("subNum"));
-	    	return;
+	    	
 	    }	    
 	}
 	
@@ -119,7 +120,7 @@ public class AutomaticFunctions {
 			String mailBody="Dear Student you need to return the book: "+bookToReturn.getBookName()+" until tomrrow\nOr your reader card will Hold!";
 			
 			SendMailController.sendMailToSubscriber(subscriber, mailSubject, mailBody);
-	    	
+			SendMailController.sendReminderInbox(needToreturnTomorrow.getInt("subNum"), "The return date is comming", "You need to return the book :"+bookToReturn.getBookName());
 			System.out.println("mail is send to the subscriber "+needToreturnTomorrow.getString("subNum"));	
 	    }
 	        
@@ -136,18 +137,20 @@ public class AutomaticFunctions {
 	    ResultSet needToDeleteFromOrderQueue = dbControllerObj.query(query1);
 	    while(needToDeleteFromOrderQueue.next())
 	    {
-	    	Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(needToDeleteFromOrderQueue.getInt("catalogNum"));
+	    	Copy copy=ManageStockController.getCopyById(needToDeleteFromOrderQueue.getString("copyID"));
+	    	Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(copy.getbCatalogNum());
 	    	Subscriber nextInQueue=orderQueue.remove();
-	    	String replaceSubscriberToTheNext = "update obl.book_arrived_mail set subNum="+orderQueue.peek().getSubscriberNum()+", reminderDate='"+todayDate+"' where subNum="+nextInQueue.getSubscriberNum()+" and catalogNum="+needToDeleteFromOrderQueue.getInt("catalogNum");
+	    	String replaceSubscriberToTheNext = "update obl.book_arrived_mail set subNum="+orderQueue.peek().getSubscriberNum()+", reminderDate='"+todayDate+"' where subNum="+nextInQueue.getSubscriberNum()+" and copyID="+needToDeleteFromOrderQueue.getInt("copyID");
 	    	Boolean isUpdate=dbControllerObj.update(replaceSubscriberToTheNext);
 	    	String removeFromLine = "delete from obl.books_orders  where boSubNum="+nextInQueue.getSubscriberNum()+" and boCatalogNum="+needToDeleteFromOrderQueue.getInt("catalogNum");
 	    	Boolean isRemoved=dbControllerObj.update(removeFromLine);
 	    	
 	    	//send mail to the next in line
-	    	Book book=ManageStockController.getBookByCatalogNumber(needToDeleteFromOrderQueue.getInt("catalogNum"));
+	    	Book book=ManageStockController.getBookByCatalogNumber(copy.getbCatalogNum());
 	    	String mailSubject="Your Book is arraived";
 			String mailBody="Your Book: "+book.getBookName()+"is arraived. You have two days to take it before your order cancelled.";
 			SendMailController.sendMailToSubscriber(orderQueue.peek(), mailSubject, mailBody);
+			SendMailController.sendReminderInbox(orderQueue.peek().getSubscriberNum(), mailSubject,mailBody);
 			
 	    }
 

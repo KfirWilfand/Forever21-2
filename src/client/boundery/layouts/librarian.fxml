@@ -27,7 +27,7 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="594.0" prefWidth="759.0" style="-fx-background-color: WHITE;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LibrarianClientController">
       <children>
-      <TabPane id="tpSubscriber" fx:id="tvSubsciber" prefHeight="594.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane id="tpSubscriber" fx:id="tvSubsciber" prefHeight="594.0" prefWidth="759.0" stylesheets="@../styles/mainView.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Add New Subsriber">
             <content>
@@ -194,7 +194,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnReturnBook" layoutX="251.0" layoutY="132.0" mnemonicParsing="false" onAction="#onReturnBookBtn" stylesheets="@../styles/mainView.css" text="Return Book">
+                        <Button fx:id="btnReturnBook" layoutX="244.0" layoutY="132.0" mnemonicParsing="false" onAction="#onReturnBookBtn" prefHeight="30.0" prefWidth="96.0" stylesheets="@../styles/mainView.css" text="Return Book">
 
                            <font>
                               <Font name="System Bold" size="12.0" />
@@ -241,10 +241,14 @@
                         </Text>
                         <Line endX="-100.0" endY="451.0" layoutX="472.0" layoutY="72.0" startX="-100.0" stroke="#a4a4a4" />
                         <Text fill="#ff0505" layoutX="242.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-                        <Button fx:id="btnExtensionBook" layoutX="185.0" layoutY="147.0" mnemonicParsing="false" onAction="#onExtensionBookBtn" prefHeight="25.0" prefWidth="91.0" text="Extension">
+                        <Button fx:id="btnExtensionBook" layoutX="137.0" layoutY="131.0" mnemonicParsing="false" onAction="#onExtensionBookBtn" prefHeight="31.0" prefWidth="95.0" stylesheets="@../styles/mainView.css" text="Extension">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
                         </Button>
                      </children>
                   </AnchorPane>
