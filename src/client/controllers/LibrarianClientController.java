@@ -223,10 +223,10 @@ public class LibrarianClientController {
 
 	@FXML
 	private Tab btnManageStockTab;
-	
+
 	/** btnExtensionBook is the extension book button */
-    @FXML
-    private Button btnExtensionBook;
+	@FXML
+	private Button btnExtensionBook;
 
 	/**
 	 * dpGraduationDateNewSub is a date picker that contains subscriber graduation
@@ -237,9 +237,11 @@ public class LibrarianClientController {
 
 	@FXML
 	private Tab btnStatisticTab;
-	
+
 	@FXML
 	private AnchorPane ancStatistic;
+
+	private boolean mIsLibrarianManager;
 
 	static AlertController alert = new AlertController();
 
@@ -255,17 +257,24 @@ public class LibrarianClientController {
 	 * initialize the librarian UI at login
 	 */
 	public void initializeDetailsAtLogin() {
-		
+
 		try {
 			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
-			FXMLLoader statisticPaneloadder = new FXMLLoader(getClass().getResource("/client/boundery/layouts/statistic_libraian.fxml"));
-			Parent statisticPane = statisticPaneloadder.load();
-			
 			if (ancPaneManageStock != null)
 				ancPaneManageStock.getChildren().setAll(newPane);
-			if (ancStatistic != null) {
-				ancStatistic.getChildren().setAll(statisticPane);
-				statisticPaneloadder.<StatisticController>getController().initializeDetailsOnStatisticClick();		
+
+			if (mIsLibrarianManager) {
+				btnStatisticTab.setDisable(false);
+				
+				FXMLLoader statisticPaneloadder = new FXMLLoader(
+						getClass().getResource("/client/boundery/layouts/statistic_libraian.fxml"));
+				Parent statisticPane = statisticPaneloadder.load();
+				if (ancStatistic != null) {
+					ancStatistic.getChildren().setAll(statisticPane);
+					statisticPaneloadder.<StatisticController>getController().initializeDetailsOnStatisticClick();
+				}
+			}else {
+				btnStatisticTab.setDisable(true);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -611,13 +620,13 @@ public class LibrarianClientController {
 		tfSubscriberEmail.clear();
 		dpGraduationDateNewSub.getEditor().clear();
 	}
-	
+
 	/**
 	 * onExtensionBookBtn executing manual book extension by the librarian
 	 */
-    @FXML
-    void onExtensionBookBtn(ActionEvent event) {
-    	tfReturnBookSubscriberNumber.clear();
+	@FXML
+	void onExtensionBookBtn(ActionEvent event) {
+		tfReturnBookSubscriberNumber.clear();
 		tfReturnBookBorrowDate.setValue(null);
 		tfReturnBookEndBorrowDate.setValue(null);
 		tfReturnBookReturningDate.setValue(null);
@@ -630,8 +639,14 @@ public class LibrarianClientController {
 			LocalDate currentDate = LocalDate.now();
 			Date date = Date.valueOf(currentDate);
 			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
-			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ExtensionBookByLibrarian, borrowCopy));
+			ViewStarter.client
+					.handleMessageFromClientUI(new Message(OperationType.ExtensionBookByLibrarian, borrowCopy));
 		}
 
-    }
+	}
+
+	public void setLibrarianManager(boolean isLibrarianManager) {
+		mIsLibrarianManager = isLibrarianManager;
+	}
+
 }
