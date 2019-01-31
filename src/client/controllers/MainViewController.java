@@ -311,6 +311,7 @@ public class MainViewController {
 					}
 
 					if (user instanceof Librarian) {
+					
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
 						lblLoginAs.setText("Log as Librarian");
 						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();

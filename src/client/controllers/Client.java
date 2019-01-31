@@ -32,6 +32,7 @@ public class Client extends AbstractClient {
 	public SearchBookOnManageStockController searchBookOnManageStockControllerObj;
 	public AlertController alertClientControllerObj;
 	public BookDetailsController bookDetailsControllerObj;
+	public StatisticController statisticClientControllerObj;
 
 	 /**
    	 * Client is execute the connection to the server

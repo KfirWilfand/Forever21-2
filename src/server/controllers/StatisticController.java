@@ -17,22 +17,28 @@ import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.ActiviySnapshot;
+import common.entity.BookSelected;
+import common.entity.BookStatistic;
 import common.entity.Statistic;
+import common.entity.enums.BookStatsticType;
+
 /**
- * The StatisticController class represent the statistic controller on the server's side
- * @author  Kfir Wilfand
+ * The StatisticController class represent the statistic controller on the
+ * server's side
+ * 
+ * @author Kfir Wilfand
  * @author Bar Korkos
  * @author Zehavit Otmazgin
  * @author Noam Drori
  * @author Sapir Hochma
  */
 public class StatisticController {
-	/**instance is a singleton of the class */
+	/** instance is a singleton of the class */
 	private static StatisticController instance;
 
-	private boolean isGivenDateSnapshot;
-	
-	private StatisticController(){}
+	private StatisticController() {
+	}
+
 	/**
 	 * getInstance is creating the singleton object of the class
 	 */
@@ -42,58 +48,82 @@ public class StatisticController {
 		}
 		return instance;
 	}
-	
+
 	/**
-	 * getStatstic is getting the general system statistic details
+	 * getBookStatstic is getting the general system Book statistic details
 	 * 
 	 * @param msg contains the message from the client
 	 * @throws SQLException when occurs
 	 * @return Message
 	 */
-	public Message getStatstic(Object msg) {
+	public Message getBookStatstic(Object msg) {
+
 		try {
-			// init
-			List<Integer> popularBorrowBookDuration = getBorrowBooksByPopularity(Boolean.TRUE);
-			List<Integer> regularBorrowBookDuration = getBorrowBooksByPopularity(Boolean.FALSE);
-			List<Integer> borrowBookLates = getBorrowBooksLates();
+			List<Integer> duration = null;
 
-			float popAverage = getAverage(popularBorrowBookDuration);
-			int popMedian = getMedian(popularBorrowBookDuration);
-			Map<Integer, List<Integer>> popDistribution = getDistribution(popularBorrowBookDuration);
-
-			float regAverage = getAverage(regularBorrowBookDuration);
-			int regMedian = getMedian(regularBorrowBookDuration);
-			Map<Integer, List<Integer>> regDistribution = getDistribution(regularBorrowBookDuration);
-
-			float lateAverage = getAverage(borrowBookLates);
-			int lateMedian = getMedian(borrowBookLates);
-			Map<Integer, List<Integer>> lateDistribution = getDistribution(borrowBookLates);
-
-			isGivenDateSnapshot = true;
-			ActiviySnapshot activiySnapshot = readActiviySnapshotByDate((Date) ((Message) msg).getObj());
-
-			Date firstSnapshot = getFirstSnapshotDate();
-			Date lastSnapshot = getLastSnapshotDate();
-
-			Statistic statistic = new Statistic(popAverage, popMedian, popDistribution, regAverage, regMedian,
-					regDistribution, lateAverage, lateMedian, lateDistribution, activiySnapshot, firstSnapshot,
-					lastSnapshot);
-
-			if (isGivenDateSnapshot) {
-				return new Message(OperationType.GetStatstic, statistic, ReturnMessageType.Successful);
+			switch ((BookStatsticType) ((Message) msg).getObj()) {
+			case Popular:
+				duration = getBorrowBooksByPopularity(Boolean.TRUE);
+				break;
+			case Regular:
+				duration = getBorrowBooksByPopularity(Boolean.FALSE);
+				break;
+			case Late:
+				duration = getBorrowBooksLates();
+				break;
 			}
 
-			return new Message(OperationType.GetStatstic, statistic, ReturnMessageType.SuccessfulWithLastSnapshotDate);
+			if (duration == null)
+				return new Message(OperationType.GetBookStatstic, null, ReturnMessageType.Unsuccessful);
 
+			float average = getAverage(duration);
+			int median = getMedian(duration);
+			Map<Integer, List<Integer>> distribution = getDistribution(duration);
+
+			BookStatistic bookStatistic = new BookStatistic(distribution, average, median,
+					(BookStatsticType) ((Message) msg).getObj());
+
+			return new Message(OperationType.GetBookStatstic, bookStatistic, ReturnMessageType.Successful);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Message(OperationType.GetStatstic, null, ReturnMessageType.Unsuccessful);
-
+			return new Message(OperationType.GetBookStatstic, null, ReturnMessageType.Unsuccessful);
 		}
 	}
-	
+
 	/**
-	 * insertStatisticActiviySnapshot use primarily to insert new statistic activity snapshot automatic functions.
+	 * getLateBookStatsticByCatId is get Book Statistic obj by catalog num
+	 * 
+	 * @param msg contains the message from the client
+	 * @throws SQLException when occurs
+	 * @return Message with BookStatistic
+	 */
+	public Message getLateBookStatsticByCatId(Object msg) {
+
+		try {
+			List<Integer> duration = null;
+			duration = getLateBooksByCatId((String) ((Message) msg).getObj());
+
+			if (duration == null || duration.isEmpty())
+				return new Message(OperationType.GetAllLatesReturnBySingleBookCatId, null,
+						ReturnMessageType.Unsuccessful);
+
+			float average = getAverage(duration);
+			int median = getMedian(duration);
+			Map<Integer, List<Integer>> distribution = getDistribution(duration);
+
+			BookStatistic bookStatistic = new BookStatistic(distribution, average, median, BookStatsticType.SingleLate);
+
+			return new Message(OperationType.GetAllLatesReturnBySingleBookCatId, bookStatistic,
+					ReturnMessageType.Successful);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Message(OperationType.GetAllLatesReturnBySingleBookCatId, null, ReturnMessageType.Unsuccessful);
+		}
+	}
+
+	/**
+	 * insertStatisticActiviySnapshot use primarily to insert new statistic activity
+	 * snapshot automatic functions.
 	 * 
 	 * @param msg contains the message from the client
 	 * @throws SQLException when occurs
@@ -128,7 +158,8 @@ public class StatisticController {
 	}
 
 	/**
-	 * getLastSnapshotDate 
+	 * getLastSnapshotDate
+	 * 
 	 * @throws SQLException when occurs
 	 * @return last snapshot activity date
 	 */
@@ -145,8 +176,10 @@ public class StatisticController {
 		return lastSnapshotQuary_res.getDate(1);
 
 	}
+
 	/**
-	 * getFirstSnapshotDate 
+	 * getFirstSnapshotDate
+	 * 
 	 * @throws SQLException when occurs
 	 * @return first snapshot activity date
 	 */
@@ -162,44 +195,39 @@ public class StatisticController {
 
 		return firstSnapshotQuary_res.getDate(1);
 	}
+
 	/**
-	 * readActiviySnapshotByDate 
-	 * @param date of activity snapshot 
+	 * getActivitySnapshotByDate
+	 * 
+	 * @param date of activity snapshot
 	 * @throws Exception when occurs
-	 * @return ActiviySnapshot 
+	 * @return ActiviySnapshot
+	 * @throws SQLException
 	 */
-	private ActiviySnapshot readActiviySnapshotByDate(Date date) throws Exception {
+	public ActiviySnapshot getActivitySnapshotByDate(Date date) throws SQLException {
+		ActiviySnapshot activiySnapshot = null;
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 		String activiySnapshotByDateQuary = "SELECT `aDate`, `aLockSub`, `aHoldSub`, `aActiveSub`, `aCopies`, `aLates` "
 				+ "FROM obl.activity_statistic Where aDate = '" + dateFormat.format(date) + "';";
 
 		DBcontroller dbControllerObj = DBcontroller.getInstance();
 		ResultSet activiySnapshotByDateQuary_res = dbControllerObj.query(activiySnapshotByDateQuary);
 
-		boolean res;
-		ActiviySnapshot activiySnapshot;
-		while (res = activiySnapshotByDateQuary_res.next()) {
+		while (activiySnapshotByDateQuary_res.next()) {
 			activiySnapshot = new ActiviySnapshot(activiySnapshotByDateQuary_res.getDate("aDate"),
 					activiySnapshotByDateQuary_res.getInt("aLockSub"),
 					activiySnapshotByDateQuary_res.getInt("aHoldSub"),
 					activiySnapshotByDateQuary_res.getInt("aActiveSub"),
 					activiySnapshotByDateQuary_res.getInt("aCopies"), activiySnapshotByDateQuary_res.getInt("aLates"));
-
-			return activiySnapshot;
 		}
 
-		if (!res) {
-			isGivenDateSnapshot = false;
-			return readActiviySnapshotByDate(getLastSnapshotDate());
-		}
-
-		return null;
+		return activiySnapshot;
 	}
-	
+
 	/**
 	 * getDistribution return map of list, split by decimal distribution
+	 * 
 	 * @param borrowBookDuration
 	 * @throws Exception when occurs
 	 * @return distribution
@@ -244,11 +272,12 @@ public class StatisticController {
 
 		return distribution;
 	}
-	
+
 	/**
 	 * getAverage return average of single list distribution
+	 * 
 	 * @param borrowBookDuration
-     * @throws SQLException when occurs
+	 * @throws SQLException when occurs
 	 * @return average
 	 */
 	private float getAverage(List<Integer> borrowBookDuration) {
@@ -260,9 +289,10 @@ public class StatisticController {
 
 		return ((float) sum) / borrowBookDuration.size();
 	}
-	
+
 	/**
 	 * getMedian return median of single list distribution
+	 * 
 	 * @param borrowBookDuration
 	 * @throws SQLException when occurs
 	 * @return average
@@ -282,19 +312,19 @@ public class StatisticController {
 
 		return median;
 	}
-	
+
 	/**
 	 * getBorrowBooksByPopularity return list of calculate duration borrow books.
+	 * 
 	 * @param isPopular
 	 * @throws SQLException when occurs
 	 * @return list of calculate duration
 	 */
 	private List<Integer> getBorrowBooksByPopularity(Boolean isPopular) throws SQLException {
 		List<List<Date>> borrowDates = new ArrayList<List<Date>>();
-
 		String borrowBookQuaryByPopularity = "SELECT borrowDate,returnDueDate "
 				+ "FROM obl.borrows as a join obl.copeis as b on a.copyID=b.copyID join obl.books as c on b.bCatalogNum=c.bCatalogNum "
-				+ "where c.bIsPopular = " + isPopular + ";";
+				+ "where c.bIsPopular = " + isPopular.toString() + ";";
 
 		DBcontroller dbControllerObj = DBcontroller.getInstance();
 		ResultSet borrowBook_res = dbControllerObj.query(borrowBookQuaryByPopularity);
@@ -310,9 +340,40 @@ public class StatisticController {
 
 		return calcBorrowDuration(borrowDates);
 	}
-	
+
+	/**
+	 * getBorrowBooksByPopularity return list of calculate duration borrow books.
+	 * 
+	 * @param isPopular
+	 * @throws SQLException when occurs
+	 * @return list of calculate duration
+	 */
+	private List<Integer> getLateBooksByCatId(String bCatalogNum) throws SQLException {
+		List<List<Date>> borrowDates = new ArrayList<List<Date>>();
+
+		String borrowBookQuaryLate = "SELECT c.bCatalogNum ,c.bName ,a.borrowDate, a.returnDueDate, a.actualReturnDate"
+				+ " FROM obl.borrows as a join obl.copeis as b on a.copyID=b.copyID join obl.books as c on b.bCatalogNum=c.bCatalogNum"
+				+ " where a.actualReturnDate and a.returnDueDate < a.actualReturnDate AND c.bCatalogNum = '"
+				+ bCatalogNum + "';";
+
+		DBcontroller dbControllerObj = DBcontroller.getInstance();
+		ResultSet borrowBook_res = dbControllerObj.query(borrowBookQuaryLate);
+
+		while (borrowBook_res.next()) {
+			List<Date> date = new ArrayList<Date>();
+
+			date.add(borrowBook_res.getDate("borrowDate"));
+			date.add(borrowBook_res.getDate("returnDueDate"));
+
+			borrowDates.add(date);
+		}
+
+		return calcBorrowDuration(borrowDates);
+	}
+
 	/**
 	 * getBorrowBooksLates return list of calculate duration late borrow books.
+	 * 
 	 * @throws SQLException when occurs
 	 * @return list of calculate duration
 	 */
@@ -334,16 +395,18 @@ public class StatisticController {
 
 			borrowDates.add(date);
 		}
-	
+
 		return calcBorrowDuration(borrowDates);
 	}
+
 	/**
 	 * calcBorrowDuration return list of calculate duration of borrow books.
+	 * 
 	 * @param borrowDates
 	 * @return list of calculate duration
 	 */
 	private List<Integer> calcBorrowDuration(List<List<Date>> borrowDates) {
-		
+
 		List<Integer> borrowDuration = new ArrayList<Integer>();
 
 		for (List<Date> borrowBook : borrowDates) {
@@ -351,8 +414,131 @@ public class StatisticController {
 
 			borrowDuration.add(Math.toIntExact(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)));
 		}
-		
+
 		return borrowDuration;
 	}
+	/**
+	 * getAllLatesReturnBySingleBookCatId return Single Book of calculate duration of borrow books.
+	 * 
+	 * @param borrowDates
+	 * @return list of calculate duration
+	 */
+	public Message getAllLatesReturnBySingleBookCatId(Message msg) {
+		try {
+			String bCatalogNum = (String) msg.getObj();
+			List<List<Date>> borrowDates = new ArrayList<List<Date>>();
+			String borrowBookQuaryLates = "SELECT c.bCatalogNum ,c.bName ,a.borrowDate, a.returnDueDate, a.actualReturnDate"
+					+ " FROM obl.borrows as a join obl.copeis as b on a.copyID=b.copyID join obl.books as c on b.bCatalogNum=c.bCatalogNum"
+					+ " where a.actualReturnDate and a.returnDueDate < a.actualReturnDate AND c.bCatalogNum = '"
+					+ bCatalogNum + "';";
 
+			DBcontroller dbControllerObj = DBcontroller.getInstance();
+			ResultSet borrowBook_res = dbControllerObj.query(borrowBookQuaryLates);
+
+			while (borrowBook_res.next()) {
+				List<Date> date = new ArrayList<Date>();
+
+				date.add(borrowBook_res.getDate("returnDueDate"));
+				date.add(borrowBook_res.getDate("actualReturnDate"));
+
+				borrowDates.add(date);
+			}
+
+			BookSelected bookSelected = new BookSelected(borrowBook_res.getInt("bCatalogNum"),
+					borrowBook_res.getString("bName"), borrowBook_res.getDate("borrowDate"),
+					borrowBook_res.getDate("returnDueDate"), borrowBook_res.getDate("actualReturnDate"),
+					getAverage(calcBorrowDuration(borrowDates)), getMedian(calcBorrowDuration(borrowDates)),
+					getDistribution(calcBorrowDuration(borrowDates)));
+
+			return new Message(OperationType.GetAllLatesReturnBySingleBookCatId, bookSelected,
+					ReturnMessageType.Successful);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Message(OperationType.GetAllLatesReturnBySingleBookCatId, null, ReturnMessageType.Unsuccessful);
+		}
+
+	}
+	/**
+	 * getSingleActiviySnapshotByPeriod return List of ActiviySnapshot between given period dates
+	 * 
+	 * @param borrowDates
+	 * @return Message with list of calculate duration
+	 */
+	public Message getSingleActiviySnapshotByPeriod(Object msg) throws SQLException {
+
+		Date[] snapshotDates = (Date[]) ((Message) msg).getObj();
+
+		String borrowBookQuaryLates = "SELECT `aDate`, `aLockSub`, `aHoldSub`, `aActiveSub`, `aCopies`, `aLates`"
+				+ " FROM obl.activity_statistic as a" + " WHERE  a.aDate >= '" + snapshotDates[0] + "' AND a.aDate <= '"
+				+ snapshotDates[1] + "';";
+
+		DBcontroller dbControllerObj = DBcontroller.getInstance();
+		ResultSet activiySnapshot_res = dbControllerObj.query(borrowBookQuaryLates);
+
+		List<ActiviySnapshot> activiySnapshots = new ArrayList<ActiviySnapshot>();
+
+		while (activiySnapshot_res.next()) {
+			activiySnapshots.add(
+					new ActiviySnapshot(activiySnapshot_res.getDate("aDate"), activiySnapshot_res.getInt("aLockSub"),
+							activiySnapshot_res.getInt("aHoldSub"), activiySnapshot_res.getInt("aActiveSub"),
+							activiySnapshot_res.getInt("aCopies"), activiySnapshot_res.getInt("aLates")));
+		}
+
+		if (activiySnapshots.isEmpty())
+			return new Message(OperationType.GetActiviySnapshotsByPeriod, null, ReturnMessageType.Unsuccessful);
+
+		return new Message(OperationType.GetActiviySnapshotsByPeriod, activiySnapshots, ReturnMessageType.Successful);
+	}
+	/**
+	 * getSingleActiviySnapshotByDate return Single Activity Snapshot by date
+	 * if the Activity do not exist return the last activity record
+	 * 
+	 * @param Message with dates
+	 * @throw Exception , SQLException when occurs
+	 * @return Message with list of calculate duration
+	 */
+	public Message getSingleActiviySnapshotByDate(Message msg) {
+		boolean isGivenDateSnapshot =true;
+		
+		try {
+			ActiviySnapshot activitySnapshot = getActivitySnapshotByDate((Date) msg.getObj());
+			if (activitySnapshot == null) {
+				isGivenDateSnapshot = false;
+				activitySnapshot = getActivitySnapshotByDate(getLastSnapshotDate());
+			}
+
+			if (isGivenDateSnapshot) {
+				return new Message(OperationType.GetActiviySnapshotByDate, activitySnapshot,
+						ReturnMessageType.Successful);
+			} else {
+				return new Message(OperationType.GetActiviySnapshotByDate, activitySnapshot,
+						ReturnMessageType.SuccessfulWithLastSnapshotDate);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Message(OperationType.GetActiviySnapshotByDate, null, ReturnMessageType.Unsuccessful);
+
+		}
+	}
+	/**
+	 * getLastActiviySnapshotRecord return the last activity record 
+	 * 
+	 * @param Message with empty object
+	 * @throw Exception , SQLException when occurs
+	 * @return Message with list of calculate duration
+	 */
+	public Message getLastActiviySnapshotRecord(Message msg) {
+		try {
+			ActiviySnapshot activitySnapshot = getActivitySnapshotByDate(getLastSnapshotDate());
+
+			return new Message(OperationType.GetLastActiviySnapshotRecord, activitySnapshot,
+					ReturnMessageType.Successful);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Message(OperationType.GetActiviySnapshotByDate, null, ReturnMessageType.Unsuccessful);
+		}
+
+	}
 }
