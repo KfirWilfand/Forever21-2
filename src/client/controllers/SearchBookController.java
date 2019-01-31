@@ -103,7 +103,8 @@ public class SearchBookController {
 	 */
 	@FXML
 	void onSavePdfBtn(ActionEvent event) throws IOException {
-		PDFGenerator.getInstance().createPdf(PDF_PATH, "Search Book Result", this.books);
+		System.out.println(PDF_PATH);
+		PDFGenerator.getInstance().createPdf("/output/1.pdf", "Search Book Result", this.books);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,10 +16,14 @@
 				<Font name="System Bold" size="12.0" />
 			</font>
 		</Label>
-		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="572.0" layoutY="35.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Ask Borrow Extension">
+		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="572.0" layoutY="35.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" stylesheets="@../styles/mainView.css" text="Ask Borrow Extension">
          <font>
             <Font size="11.0" />
-         </font></Button>
+         </font>
+         <styleClass>
+            <String fx:value="btnWithImageWithBorder" />
+            <String fx:value="buttonShadow" />
+         </styleClass></Button>
       <Label layoutX="25.0" layoutY="36.0" text="Borrow Date:">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -39,9 +44,13 @@
          </font>
       </Label>
       <Label fx:id="txtTimeToReturn" layoutX="497.0" layoutY="36.0" text="3 days" textFill="RED" />
-      <Button fx:id="btnLossReporting" layoutX="572.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Loss Reporting">
+      <Button fx:id="btnLossReporting" layoutX="572.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" stylesheets="@../styles/mainView.css" text="Loss Reporting">
          <font>
             <Font size="11.0" />
-         </font></Button>
+         </font>
+         <styleClass>
+            <String fx:value="btnWithImageWithBorder" />
+            <String fx:value="buttonShadow" />
+         </styleClass></Button>
 	</children>
 </AnchorPane>

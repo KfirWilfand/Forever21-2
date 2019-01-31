@@ -77,7 +77,7 @@ public class PDFGenerator {
 			PdfWriter.getInstance(document, new FileOutputStream(dest));
 			document.open();
 
-			document.add(img);
+			//document.add(img);
 			document.add(para);
 
 			for (Book book : bookList) {

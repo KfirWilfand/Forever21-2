@@ -17,6 +17,7 @@ import common.entity.BookStatistic;
 import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
+import common.entity.InboxMsgItem;
 import common.entity.Statistic;
 import common.entity.Subscriber;
 import common.entity.TransferFile;
@@ -54,8 +55,8 @@ public class MessageManager {
 			case Login:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					User user = (User) msg.getObj();
-					ViewStarter.client.mainViewController.onLogin(user);
+					Object[] objMsg=(Object[])msg.getObj();
+					ViewStarter.client.mainViewController.onLogin(objMsg);
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Wrong User Name Or Password!");
@@ -271,7 +272,7 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "../../client/boundery/tableOfContent/");
+					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "/TableOfContent/");
 					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -284,7 +285,7 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
 					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -325,10 +326,42 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
 					ViewStarter.client.bookDetailsControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
+					break;
+				}
+			case ExtensionBookByLibrarian:
+				switch(msg.getReturnMessageType())
+				{
+				 case CopyNotExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
+					break;
+				 case wrongBorrowDetails:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Wrong Extension Details");
+						break;
+				 case MustReturnBook:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber must return the book!");
+					break;
+				 case PopularBook:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot get an extension because book is popular!");
+					break;
+				 case Unsuccessful:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot get an extension!");
+					break;
+				 case Successful:
+					 utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Book just got 7 days extension!");
+					break;
+				}
+				break;
+			case GetInboxMsg:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.inboxControllerObj.showInboxMessages((List<InboxMsgItem>)msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "No Messages");
 					break;
 				}
 				break;

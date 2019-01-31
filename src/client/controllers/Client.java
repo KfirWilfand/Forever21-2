@@ -33,7 +33,7 @@ public class Client extends AbstractClient {
 	public AlertController alertClientControllerObj;
 	public BookDetailsController bookDetailsControllerObj;
 	public StatisticController statisticClientControllerObj;
-
+	public InboxController inboxControllerObj;
 	 /**
    	 * Client is execute the connection to the server
    	 * @param host is the host ip number

@@ -19,8 +19,10 @@ import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
+import common.entity.HistoryItem;
 import common.entity.Subscriber;
 import common.entity.TransferFile;
+import common.entity.enums.SubscriberHistoryType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 /**
@@ -61,9 +63,9 @@ public class ManageStockController {
 		
 		FilesController filesControllerObj=FilesController.getInstance();
 		if((TransferFile)message[1]!=null)
-			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"/TableOfContent/");
 		if((TransferFile)message[3]!=null)
-			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"/BooksImages/");
 		
 		
 		if(res)
@@ -115,6 +117,10 @@ public class ManageStockController {
 
 		Boolean res0 = dbControllerObj.update(params[1]);
 		Boolean res1 = dbControllerObj.update(params[2]);
+		
+		SubscriberController scObj=SubscriberController.getInstance();
+		HistoryItem hRecord=new HistoryItem(Integer.valueOf(params[0]),"librarian update subscriber details",SubscriberHistoryType.EditProfile);
+		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 
 		if(res0 && res1) 
 			return new Message(OperationType.EditDetailsByLibrarian, SubscriberController.getSubscriberById(params[0]) , ReturnMessageType.Successful); 
@@ -133,7 +139,9 @@ public class ManageStockController {
 		Object[] m=(Object[])((Message)msg).getObj();
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
 		Boolean res1=dbControllerObj.insert((String)m[0]);
-		Boolean res2=dbControllerObj.update((String)m[1]);	
+		Boolean res2=dbControllerObj.update((String)m[1]);
+		//Copy copy = getCopyById(((Copy)m[2]).getCopyID());
+		
 
 		if(res1 && res2)
 			return new Message(OperationType.AddNewCopy, (Copy)m[2] , ReturnMessageType.Successful);
@@ -173,13 +181,12 @@ public class ManageStockController {
 		String query=(String)message[0];
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
 		Boolean res = dbControllerObj.insert(query);
-		
 		FilesController filesControllerObj=FilesController.getInstance();
 		if((TransferFile)message[1]!= null)
-			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"../../server/tableOfContent/");
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"/TableOfContent/");
+
 		if((TransferFile)message[3]!= null)
-			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"../../server/photos/");
-		
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"/BooksImages/");
 		if(res)
 		{
 			return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Successful); 
@@ -271,9 +278,9 @@ public class ManageStockController {
 	public Message sendBookPhotoToClient(Message msg) 
 	{
   		String bookName=(String)msg.getObj();
-		URL url = getClass().getResource("../photos/");
+		URL url = getClass().getResource("/BooksImages/");
 		String path=url.getPath().toString()+bookName.replace(" ","_")+".png";
-		path=path.replace('/', '\\');
+		//path=path.replace('/', '\\');
 		path=path.replaceAll("bin", "src");
   		TransferFile tf=TransferFile.createFileToTransfer(path);
   		Object[] message=new Object[2];

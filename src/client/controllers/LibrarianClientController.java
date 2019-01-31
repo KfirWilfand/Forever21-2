@@ -223,6 +223,12 @@ public class LibrarianClientController {
 
 	@FXML
 	private Tab btnManageStockTab;
+	@FXML
+	private TabPane tvSubsciber;
+	
+	/** btnExtensionBook is the extension book button */
+    @FXML
+    private Button btnExtensionBook;
 
 	/**
 	 * dpGraduationDateNewSub is a date picker that contains subscriber graduation
@@ -565,8 +571,8 @@ public class LibrarianClientController {
 				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.ChangeStatus));
 				ssLVChangeStatus.setItems(items);
 
-				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
-				ssLVChangeStatus.setItems(items);
+//				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
+//				ssLVChangeStatus.setItems(items);
 
 			}
 
@@ -608,6 +614,26 @@ public class LibrarianClientController {
 		dpGraduationDateNewSub.getEditor().clear();
 	}
 	
-	
+	/**
+	 * onExtensionBookBtn executing manual book extension by the librarian
+	 */
+    @FXML
+    void onExtensionBookBtn(ActionEvent event) {
+    	tfReturnBookSubscriberNumber.clear();
+		tfReturnBookBorrowDate.setValue(null);
+		tfReturnBookEndBorrowDate.setValue(null);
+		tfReturnBookReturningDate.setValue(null);
+		tfReturnBookCatalogNumber.setStyle(null);
 
+		if (tfReturnBookCatalogNumber.getText().isEmpty())
+			tfReturnBookCatalogNumber
+					.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		else {
+			LocalDate currentDate = LocalDate.now();
+			Date date = Date.valueOf(currentDate);
+			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ExtensionBookByLibrarian, borrowCopy));
+		}
+
+    }
 }

@@ -160,6 +160,12 @@ public class LibrarianController {
 			Object[] arr= new Object[2];
 			arr[0]=((BorrowCopy)queryMsg.getObj());
 			arr[1]=book.isPopular();
+			
+			//insert to the history
+			SubscriberController scObj=SubscriberController.getInstance();
+			HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"The book: "+book.getBookName()+" was borrowed",SubscriberHistoryType.BooksApprove);
+			scObj.addHistoryRecordBySubId(new Message(OperationType.BorrowBookByLibrarian,hRecord ));
+			
 			return new Message(OperationType.BorrowBookByLibrarian, arr , ReturnMessageType.Successful);
 		}
 		return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.Unsuccessful);
@@ -175,6 +181,8 @@ public class LibrarianController {
 	 */
 	public Message returnBook (Object msg) throws SQLException
 	{
+		
+		SubscriberController scObj=SubscriberController.getInstance();
 		DBcontroller dbControllerObj= DBcontroller.getInstance();
 		Message copyIDofReturnedBook=((Message)msg);
 		String copyIDtemp=((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID();
@@ -205,6 +213,9 @@ public class LibrarianController {
 					String updateSubscriberDetails="update obl.subscribers set subLatesCounter=subLatesCounter+1 subStatuse='Active' where subNum='"+subscriber.getSubscriberNum()+"'";
 					Boolean isUpdate=dbControllerObj.update(updateSubscriberDetails);
 					op=ReturnMessageType.ChangeStatusToActive;
+					//add to history status changing
+					HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"Status changed from Hold to Active",SubscriberHistoryType.ChangeStatus);
+					scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 				}
 		}
 		
@@ -240,7 +251,109 @@ public class LibrarianController {
 			
 		}
 		
+		//add return to history
+		String historyMsg="The book: "+bookDetails.getBookName()+" returned.";
+		if(op==ReturnMessageType.ChangeStatusToActive || op==ReturnMessageType.ChangeStatusToLock)
+			historyMsg=historyMsg+" the subscriber was late in return.";
+	
+		HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),historyMsg,SubscriberHistoryType.BooksReturn);
+		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+		
+		
+		
 		return new Message(OperationType.ReturnBookByLibrarian, borrowCopyFromDB , op);
 	}
-
+	
+<<<<<<< HEAD
+//	public Message returnBook (Object msg) throws SQLException
+//	{
+//		Message copyIDofReturnedBook=((Message)msg);
+//		String copyIDtemp=((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID();	
+//		Date returnActual;
+//		LocalDate returnDate=((BorrowCopy)copyIDofReturnedBook.getObj()).getActualReturnDate().toLocalDate();
+//		returnActual=Date.valueOf(returnDate);
+//		((BorrowCopy)copyIDofReturnedBook.getObj()).setActualReturnDate(returnActual);
+//		DBcontroller dbControllerObj= DBcontroller.getInstance();
+//		String returnToCopeisTable="update obl.copeis set isAvilable=1 where copyID='"+((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID()+"'";
+//		Boolean returnToCopeisTable_res=dbControllerObj.update(returnToCopeisTable);
+//		String getCatalogNum="select bCatalogNum from obl.copeis where copyID='"+((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID()+"'";
+//		ResultSet getCatalogNum_res= dbControllerObj.query(getCatalogNum);
+//		if (getCatalogNum_res.next())
+//		{
+//			int catalogNum=getCatalogNum_res.getInt(1);
+//			String incOnBooksAviableCopy="update obl.books set bAvilableCopiesNum=bAvilableCopiesNum+1 where bCatalogNum='"+catalogNum+"'";
+//			Boolean incOnBooksAviableCopy_res=dbControllerObj.update(incOnBooksAviableCopy);
+//			String updateActualReturnDate="update obl.borrows set actualReturnDate='"+
+//
+//		}
+//		
+//
+//		
+//		
+//		Boolean isIncreasedAviableCopy="update obl.books set bAvilableCopiesNum=bAvilableCopiesNum+1 where bCatalogNum="
+//			
+	
+//
+//		
+//		
+//		
+//		
+//		
+//		
+//	}
+	
+	
+	
+	
+	
+	
+	
+=======
+	/**
+	 * extensionBookManually is a fuunction that check all the extension criteria and according to it choose if to make an extension 
+	 * @param msg contains the message from the client 
+	 * @throws SQLException when occurs
+	 * @return Message to the client
+	 */
+	public Message extensionBookManually(Message msg) throws SQLException 
+	{
+		DBcontroller dbControllerObj= DBcontroller.getInstance();
+		Message copyIDforExtensionBook=((Message)msg);		
+		String copyIDtemp=((BorrowCopy)copyIDforExtensionBook.getObj()).getCopyID();//copy id string
+		Date currentDate=((BorrowCopy)copyIDforExtensionBook.getObj()).getActualReturnDate();//current date
+		Copy copy=ManageStockController.getCopyById(copyIDtemp);//get copy object
+		BorrowCopy borrowCopyFromDB=ManageStockController.getBorrowCopyByCopyID(copyIDtemp);	
+		if(copy == null)
+			return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.CopyNotExist);
+//		if(borrowCopyFromDB==null)
+//			return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.wrongBorrowDetails);
+		Date returnDue =borrowCopyFromDB.getReturnDueDate();//getting determined return date
+		if(currentDate.after(returnDue))//if today's date is greater then the determined scheduled return date
+			return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.MustReturnBook);
+		//check if book is popular
+		String checkIfPopular="select bIsPopular from obl.books where bCatalogNum='"+copy.getbCatalogNum()+"'";
+		ResultSet checkIfPopular_res = dbControllerObj.query(checkIfPopular);
+		if(checkIfPopular_res.next())
+		{
+			int popular = (int) checkIfPopular_res.getObject("bIsPopular");
+			if(popular==1)
+				return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.PopularBook);
+			//check if book in order queue
+			String checkIfBookInOrderQueue="select boSubNum from obl.books_orders where boCatalogNum='"+copy.getbCatalogNum()+"'";
+			ResultSet checkIfBookInOrderQueue_res = dbControllerObj.query(checkIfBookInOrderQueue);
+			if(checkIfBookInOrderQueue_res.next())//if has next, means waiting list, return can't return book
+				return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
+			//if extension approved by the system
+			LocalDate returnDateUpdated=borrowCopyFromDB.getReturnDueDate().toLocalDate().plusDays(7L); //set the returnDueDate to plus 7 days
+			((BorrowCopy)copyIDforExtensionBook.getObj()).setReturnDueDate(Date.valueOf(returnDateUpdated));
+			String extendBookDate="update obl.borrows set returnDueDate='"+((BorrowCopy)copyIDforExtensionBook.getObj()).getReturnDueDate()+"' where copyId='"+copyIDtemp+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"'";
+			Boolean extendBookDateBoolean=dbControllerObj.update(extendBookDate);
+			if(extendBookDateBoolean)
+				return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Successful);
+			else
+				return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
+		}return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
+		
+	}
+>>>>>>> branch 'master' of https://github.com/kfir333/Forever21-2.git
 }
