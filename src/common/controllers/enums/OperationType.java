@@ -23,13 +23,12 @@ LossReporting,
 
 DownloadTableOfContent,
 ShowBookPhoto,
-GetStatstic, 
+GetBookStatstic,
+GetActiviySnapshotByDate, GetAllLatesReturnBySingleBookCatId, GetLastActiviySnapshotRecord, GetActiviySnapshotsByPeriod,
 AddHistoryRecord, 
 ShowBookPhotoOnSearchBookDetails, 
 GetInboxMsg, makeAsRead, 
 ExtensionBookByLibrarian, 
 LockReaderCard, 
 ChangeToActiveReaderCard,
-
-
 }

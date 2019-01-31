@@ -378,14 +378,18 @@ public class MainViewController {
 					}
 
 					if (user instanceof Librarian) {
+					
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
 						lblLoginAs.setText("Log as Librarian");
+						ViewStarter.client.librarianClientControllerObj.setLibrarianManager(false);
 						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();
 					}
 
 					if (user instanceof LibraryManager) {
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Library Manager Profile");
 						lblLoginAs.setText("Log as LibraryManager");
+						ViewStarter.client.librarianClientControllerObj.setLibrarianManager(true);
+						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();
 					}
 				} catch (Exception e) {
 					System.out.println(e);
