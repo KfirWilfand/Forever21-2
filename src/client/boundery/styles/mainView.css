@@ -4,7 +4,19 @@
 }
 
 .btnWithImageWithBorder{
-	-fx-border-color: #8CA6ED;
-	-fx-background-color: #8CA6ED;
+	-fx-border-radius: 8px;
+	-fx-border-color: #DCDCDC;
+	-fx-background-color: #DCDCDC;
 }
 
+.loginPane{
+	-fx-effect: dropshadow(three-pass-box, GREY, 15, 0, 0, 0);
+}
+
+.buttonShadow{
+	-fx-effect: dropshadow(three-pass-box, GREY, 5, 0, 0, 0);
+}
+
+.SearchPane{
+	-fx-effect: dropshadow(three-pass-box, black, 700, 0, 0, 0);
+}

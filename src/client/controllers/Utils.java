@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.css.Styleable;
 import javafx.event.ActionEvent;
@@ -32,9 +34,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -45,8 +50,9 @@ import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
 /**
- * The Utils class represent all the utils function 
- * @author  Kfir Wilfand
+ * The Utils class represent all the utils function
+ * 
+ * @author Kfir Wilfand
  * @author Bar Korkos
  * @author Zehavit Otmazgin
  * @author Noam Drori
@@ -62,10 +68,12 @@ public class Utils {
 	public Utils(MainViewController mController) {
 		this.mController = mController;
 	}
+
 	/**
-     * getButtons is getting the root and return all the child buttons
-     * @param root
-     * @return list of children buttons
+	 * getButtons is getting the root and return all the child buttons
+	 * 
+	 * @param root
+	 * @return list of children buttons
 	 */
 	public List<Button> getButtons(Parent root) {// get a root and return all the child buttons
 		List<Button> buttons = new ArrayList<Button>();
@@ -75,26 +83,32 @@ public class Utils {
 		}
 		return buttons;
 	}
+
 	/**
-     * paneViewSwitcher is switching between pane views
-     * @param container is the current
-     * @param newLoadedPane is the one we want to switch to
+	 * paneViewSwitcher is switching between pane views
+	 * 
+	 * @param container     is the current
+	 * @param newLoadedPane is the one we want to switch to
 	 */
 	public void paneViewSwitcher(Pane container, Parent newLoadedPane) {
 		container.getChildren().clear();
 		container.getChildren().add(newLoadedPane);
 	}
+
 	/**
-     * SearchBookRowFactory class represents book row factory that implements CallBack and ListCell
-     * @author kfir wilfand
+	 * SearchBookRowFactory class represents book row factory that implements
+	 * CallBack and ListCell
+	 * 
+	 * @author kfir wilfand
 	 */
 	public class SearchBookRowFactory implements Callback<ListView<Book>, ListCell<Book>> {
 
 		/**
-	     * call call list cell of books
-	     * @param param list view of books
-	     * @return ListCell
-	     * @exception IOException
+		 * call call list cell of books
+		 * 
+		 * @param param list view of books
+		 * @return ListCell
+		 * @exception IOException
 		 */
 		@Override
 		public ListCell<Book> call(ListView<Book> param) {
@@ -112,24 +126,26 @@ public class Utils {
 		}
 	}
 
-
 	/**
-     * BorrowBookRowFactory class represents borrow book row factory that implements CallBack and ListCell
-     * @author kfir wilfand
+	 * BorrowBookRowFactory class represents borrow book row factory that implements
+	 * CallBack and ListCell
+	 * 
+	 * @author kfir wilfand
 	 */
 	public class BorrowBookRowFactory implements Callback<ListView<BorrowCopy>, ListCell<BorrowCopy>> {
 
-
 		/**
-	     * call call list cell of borrowed books
-	     * @param param list view of books
-	     * @return ListCell
-	     * @exception IOException
+		 * call call list cell of borrowed books
+		 * 
+		 * @param param list view of books
+		 * @return ListCell
+		 * @exception IOException
 		 */
 		@Override
 		public ListCell<BorrowCopy> call(ListView<BorrowCopy> param) {
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/boundery/layouts/borrow_book_item.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						getClass().getResource("/client/boundery/layouts/borrow_book_item.fxml"));
 				Parent root = (Parent) loader.load();
 				BookListItemController borrowBookRow = loader.getController();
 				return borrowBookRow;
@@ -141,11 +157,12 @@ public class Utils {
 	}
 
 	/**
-     * showAlertWithHeaderText pops up pops up when needed
-     * @param alertType the type of alert
-     * @param title the title 
-     * @param text the text in the alert
-     * @exception Exception
+	 * showAlertWithHeaderText pops up pops up when needed
+	 * 
+	 * @param alertType the type of alert
+	 * @param title     the title
+	 * @param text      the text in the alert
+	 * @exception Exception
 	 */
 	public void showAlertWithHeaderText(AlertType alertType, String title, String text) {// this alert function pops up
 																							// pops up
@@ -170,9 +187,10 @@ public class Utils {
 	}
 
 	/**
-     * isValidEmail returns if an email is correct
-     * @param email email of specific subscriber
-     * @return boolean
+	 * isValidEmail returns if an email is correct
+	 * 
+	 * @param email email of specific subscriber
+	 * @return boolean
 	 */
 	public boolean isValidEmail(String email) { // checks if an email address is valid
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
@@ -183,10 +201,12 @@ public class Utils {
 			return false;
 		return pat.matcher(email).matches();
 	}
+
 	/**
-     * validatePhoneNumber returns if phone number is correct
-     * @param phoneNo phone number of specific subscriber
-     * @return boolean
+	 * validatePhoneNumber returns if phone number is correct
+	 * 
+	 * @param phoneNo phone number of specific subscriber
+	 * @return boolean
 	 */
 	public boolean validatePhoneNumber(String phoneNo) {// checks phone number input
 		// validate phone numbers of format "1234567890"
@@ -206,24 +226,28 @@ public class Utils {
 			return false;
 
 	}
-	
+
 	/**
-     * setBtnPressed is set button pressed
-     * @param setBtnPressed
-     * @param isSearchPressed
-     * @param isProfilePressed
-     * @param isMailBox
+	 * setBtnPressed is set button pressed
+	 * 
+	 * @param setBtnPressed
+	 * @param isSearchPressed
+	 * @param isProfilePressed
+	 * @param isMailBox
 	 */
-	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed,boolean isMailBox) {
+	public void setBtnPressed(boolean isHomePagePressed, boolean isSearchPressed, boolean isProfilePressed,
+			boolean isMailBox) {
 		replaceBtnImg(isHomePagePressed, mController.getBtnHomePage());
 		replaceBtnImg(isSearchPressed, mController.getBtnSearchBook());
 		replaceBtnImg(isProfilePressed, mController.getBtnProfile());
 		replaceBtnImg(isMailBox, mController.getBtnMailBox());
 	}
+
 	/**
-     * replaceBtnImg replacing image 
-     * @param isPressed
-     * @param btn 
+	 * replaceBtnImg replacing image
+	 * 
+	 * @param isPressed
+	 * @param btn
 	 */
 	private void replaceBtnImg(boolean isPressed, Button btn) {
 		List<Node> btnChildren = btn.getChildrenUnmodifiable();
@@ -243,23 +267,27 @@ public class Utils {
 			iv.setImage(image);
 		}
 	}
+
 	/**
-     * setApListView is setting a list view
-     * @param apListView is an anchor pane
+	 * setApListView is setting a list view
+	 * 
+	 * @param apListView is an anchor pane
 	 */
 	public void setApListView(AnchorPane apListView) {
 		this.apListView = apListView;
 	}
+
 	/**
-     * layoutSwitcher is switching between layouts 
-     * @param parent
-     * @param layout
-     * @param subTitle
+	 * layoutSwitcher is switching between layouts
+	 * 
+	 * @param parent
+	 * @param layout
+	 * @param subTitle
 	 */
-	public void layoutSwitcher(Pane parent, String layout,String subTitle) {
-		
+	public void layoutSwitcher(Pane parent, String layout, String subTitle) {
+
 		mController.getLblSubTitle().setText(subTitle);
-		
+
 		try {
 			Parent newLoadedPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/" + layout));
 			parent.getChildren().setAll(newLoadedPane);
@@ -268,20 +296,20 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
+
 	/**
-     *setStyleToList is set style to list
-     * @param setStyleToList
-     * @param setStyleToList
+	 * setStyleToList is set style to list
+	 * 
+	 * @param setStyleToList
+	 * @param setStyleToList
 	 */
-	public void setStyleToList(List<Control> txtfields,String css)
-	{
-		for(Control tf :txtfields)
-		{
+	public void setStyleToList(List<Control> txtfields, String css) {
+		for (Control tf : txtfields) {
 			tf.setStyle(css);
 		}
-		
+
 	}
-	
+
 
 
 }

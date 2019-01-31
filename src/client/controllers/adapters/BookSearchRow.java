@@ -105,6 +105,7 @@ public class BookSearchRow extends ListCell<Book> {
 						loader.setLocation(getClass().getResource("/client/boundery/layouts/book_details.fxml"));
 						Pane bookDetails = loader.load();
 						
+						
 						// get book_details Controller
 						BookDetailsController bookDetailsController = loader.<BookDetailsController>getController();
 

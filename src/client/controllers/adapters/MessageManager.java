@@ -1,5 +1,6 @@
 package client.controllers.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import client.ViewStarter;
@@ -7,11 +8,16 @@ import client.controllers.Utils;
 import client.controllers.Utils.SearchBookRowFactory;
 import common.controllers.FilesController;
 import common.controllers.Message;
+import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
+import common.entity.ActiviySnapshot;
 import common.entity.Book;
+import common.entity.BookSelected;
+import common.entity.BookStatistic;
 import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
+import common.entity.InboxMsgItem;
 import common.entity.Statistic;
 import common.entity.Subscriber;
 import common.entity.TransferFile;
@@ -49,8 +55,8 @@ public class MessageManager {
 			case Login:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
-					User user = (User) msg.getObj();
-					ViewStarter.client.mainViewController.onLogin(user);
+					Object[] objMsg=(Object[])msg.getObj();
+					ViewStarter.client.mainViewController.onLogin(objMsg);
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Wrong User Name Or Password!");
@@ -266,7 +272,7 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "../../client/boundery/tableOfContent/");
+					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "/TableOfContent/");
 					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -274,23 +280,12 @@ public class MessageManager {
 					break;
 				}
 				break;
-			case GetStatstic:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
-				} else if (msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
-
-				} else if (msg.getReturnMessageType() == ReturnMessageType.SuccessfulWithLastSnapshotDate) {
-					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
-					utils.showAlertWithHeaderText(AlertType.WARNING, "",
-							"Can't find this activity date, display last record activity instead");
-				}
-				break;
 			case ShowBookPhoto:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
 					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -299,15 +294,14 @@ public class MessageManager {
 				break;
 			case AddHistoryRecord:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "History record","History record saved!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "History record", "History record saved!");
 				} else {
-					utils.showAlertWithHeaderText(AlertType.ERROR, "History record","Can't save history record");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "History record", "Can't save history record");
 				}
 				break;
-				
+
 			case ShowMyBorrowedBooks:
-				switch (msg.getReturnMessageType()) 
-				{
+				switch (msg.getReturnMessageType()) {
 				case Successful:
 					List<BorrowCopy> borrowBooks = (List<BorrowCopy>) msg.getObj();
 					ViewStarter.client.subscriberClientControllerObj.onGetBorrowedBooksResult(borrowBooks);
@@ -318,8 +312,7 @@ public class MessageManager {
 				}
 				break;
 			case LossReporting:
-				switch (msg.getReturnMessageType()) 
-				{
+				switch (msg.getReturnMessageType()) {
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Loss reporting success");
 					break;
@@ -333,7 +326,7 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "../../client/boundery/photos/");
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
 					ViewStarter.client.bookDetailsControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -362,9 +355,78 @@ public class MessageManager {
 					break;
 				}
 				break;
-				
-				
-		
+			case GetInboxMsg:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.inboxControllerObj.showInboxMessages((List<InboxMsgItem>)msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "No Messages");
+					break;
+				}
+				break;
+			case GetBookStatstic:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					ViewStarter.client.statisticClientControllerObj.updateBookStatsticUI((BookStatistic) msg.getObj());
+				} else if (msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Book Statstic", "No data to display");
+				}
+				break;
+			case GetActiviySnapshotByDate:
+				ActiviySnapshot activiySnapshot;
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					activiySnapshot = (ActiviySnapshot) msg.getObj();
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByDate(activiySnapshot);
+					break;
+				case SuccessfulWithLastSnapshotDate:
+					utils.showAlertWithHeaderText(AlertType.WARNING, "Activiy Snapshot",
+							"Can't find this activity date or there is no daily activity yet , display last record activity instead");
+					activiySnapshot = (ActiviySnapshot) msg.getObj();
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByDate(activiySnapshot);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Activiy Snapshot",
+							"Can't find any activiy snapshot recoed");
+					break;
+				}
+				break;
+			case GetActiviySnapshotsByPeriod:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByPeriod((List<ActiviySnapshot>)  msg.getObj());
+					break;
+				case Unsuccessful:
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByPeriodUnsuccessful();
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Activiy Snapshot",
+							"Can't find any activiy in this snapshot period");
+					break;
+				}
+				break;
+			case GetLastActiviySnapshotRecord:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByDate((ActiviySnapshot) msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Activiy Snapshot",
+							"Can't find any activiy snapshot recoed");
+					break;
+				}
+				break;
+			case GetAllLatesReturnBySingleBookCatId:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					BookStatistic bookSelected = (BookStatistic) msg.getObj();
+					ViewStarter.client.statisticClientControllerObj.updateBookStatsticUI(bookSelected);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Search Single Book",
+							"Can't find data on this book!");
+					break;
+				}
+				break;
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

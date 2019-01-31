@@ -2,47 +2,26 @@ package client.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import client.ViewStarter;
 import client.controllers.adapters.AlertController;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.HistoryItem;
-import common.entity.Statistic;
 import common.entity.Subscriber;
-import common.entity.User;
 import common.entity.enums.SubscriberHistoryType;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
@@ -50,15 +29,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.util.StringConverter;
-import javafx.util.converter.LocalDateStringConverter;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 /**
@@ -245,69 +219,10 @@ public class LibrarianClientController {
 
 	/** btnManageStockTab is the manage stock tab */
 	@FXML
-	private Tab btnManageStockTab;
-
-	@FXML
-	private Tab btnStatisticTab;
-
-	@FXML
-	private PieChart pcSubscriberStatus;
-
-	@FXML
-	private DatePicker dpActivityStatistic;
-
-	@FXML
-	private Label lblStatisticSubLatesNumCopies;
-
-	@FXML
-	private Label lblStatisticNumCopies;
-
-	@FXML
-	private Label lblStatisticMedianPopularBooks;
-
-	@FXML
-	private Label lblStatisticAveragePopularBooks;
-
-	@FXML
-	private Label lblStatisticMedianRegularBooks;
-
-	@FXML
-	private Label lblStatisticAverageRegularBooks;
-
-	@FXML
-	private BarChart<String, Integer> bcStatisticRegularBooks;
-
-	@FXML
-	private BarChart<String, Integer> bcStatisticPopularBooks;
-
-	@FXML
-	private Label lblStatisticMedianReturnLates;
-
-	@FXML
-	private Label lblStatisticAverageReturnLates;
-
-	@FXML
-	private BarChart<String, Integer> bcStatisticReturnLates;
-
-	@FXML
-	private CategoryAxis xAxisReg;
-
-	@FXML
-	private NumberAxis yAxisReg;
-
-	@FXML
-	private CategoryAxis xAxisPop;
-
-	@FXML
-	private NumberAxis yAxisPop;
-	@FXML
-	private CategoryAxis xAxisLate;
-
-	@FXML
-	private NumberAxis yAxisLate;
-
-	@FXML
 	private TabPane tvSubsciber;
+
+	@FXML
+	private Tab btnManageStockTab;
 	
 	/** btnExtensionBook is the extension book button */
     @FXML
@@ -320,6 +235,12 @@ public class LibrarianClientController {
 	@FXML
 	private DatePicker dpGraduationDateNewSub;
 
+	@FXML
+	private Tab btnStatisticTab;
+	
+	@FXML
+	private AnchorPane ancStatistic;
+
 	static AlertController alert = new AlertController();
 
 	/**
@@ -328,40 +249,28 @@ public class LibrarianClientController {
 	@FXML
 	public void initialize() {
 		ViewStarter.client.librarianClientControllerObj = this;
-		try {
-			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
-			if (ancPaneManageStock != null)
-				ancPaneManageStock.getChildren().setAll(newPane);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
-	
+
 	/**
 	 * initialize the librarian UI at login
 	 */
 	public void initializeDetailsAtLogin() {
-		tvSubsciber.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
-			@Override
-			public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
-				if (t1.equals(btnStatisticTab)) {
-					ViewStarter.client.handleMessageFromClientUI(
-							new Message(OperationType.GetStatstic, Date.valueOf(LocalDate.now()))); // sending
-				}
+		
+		try {
+			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/manageStock.fxml"));
+			FXMLLoader statisticPaneloadder = new FXMLLoader(getClass().getResource("/client/boundery/layouts/statistic_libraian.fxml"));
+			Parent statisticPane = statisticPaneloadder.load();
+			
+			if (ancPaneManageStock != null)
+				ancPaneManageStock.getChildren().setAll(newPane);
+			if (ancStatistic != null) {
+				ancStatistic.getChildren().setAll(statisticPane);
+				statisticPaneloadder.<StatisticController>getController().initializeDetailsOnStatisticClick();		
 			}
-		});
-
-		dpActivityStatistic.valueProperty().addListener(new ChangeListener<LocalDate>() {
-
-			@Override
-			public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue,
-					LocalDate newValue) {
-				ViewStarter.client
-						.handleMessageFromClientUI(new Message(OperationType.GetStatstic, Date.valueOf(newValue))); // sending
-			}
-		});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -603,123 +512,6 @@ public class LibrarianClientController {
 	}
 
 	/**
-	 * updateSearchStatsticUI is updating the statistic page
-	 * @param statistic
-	 */
-	public void updateSearchStatsticUI(Statistic statistic) {
-
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				dpActivityStatistic.setValue(statistic.getActiviySnapshot().getaDate().toLocalDate());
-
-				String[] popDistributionRange = getDistraibutionRanges(statistic.getPopDistribution());
-				String[] regDistributionRange = getDistraibutionRanges(statistic.getRegDistribution());
-				String[] lateDistributionRange = getDistraibutionRanges(statistic.getLateDistribution());
-
-				if (!popDistributionRange[0].equals("No data to display")) {
-					xAxisPop.setCategories(FXCollections.<String>observableArrayList(popDistributionRange));
-					xAxisPop.setLabel("Days");
-					bcStatisticPopularBooks.getData().clear();
-					bcStatisticPopularBooks.getData().add(
-							getDistributionDataByDecimalRange(statistic.getPopDistribution(), popDistributionRange));
-				}
-
-				if (!regDistributionRange[0].equals("No data to display")) {
-					xAxisReg.setCategories(FXCollections.<String>observableArrayList(regDistributionRange));
-					xAxisReg.setLabel("Days");
-					bcStatisticRegularBooks.getData().clear();
-					bcStatisticRegularBooks.getData().add(
-							getDistributionDataByDecimalRange(statistic.getRegDistribution(), regDistributionRange));
-				}
-
-				if (!lateDistributionRange[0].equals("No data to display")) {
-					xAxisLate.setCategories(FXCollections.<String>observableArrayList(lateDistributionRange));
-					xAxisLate.setLabel("Days");
-					bcStatisticReturnLates.getData().clear();
-					bcStatisticReturnLates.getData().add(
-							getDistributionDataByDecimalRange(statistic.getLateDistribution(), lateDistributionRange));
-				}
-		
-				ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-						new PieChart.Data("Active " + statistic.getActiviySnapshot().getActive(),
-								statistic.getActiviySnapshot().getActive()),
-						new PieChart.Data("Hold " + statistic.getActiviySnapshot().getHold(),
-								statistic.getActiviySnapshot().getHold()),
-						new PieChart.Data("Lock " + statistic.getActiviySnapshot().getLock(),
-								statistic.getActiviySnapshot().getLock()));
-
-				pcSubscriberStatus.setData(pieChartData);
-
-				lblStatisticSubLatesNumCopies.setText(Integer.toString(statistic.getActiviySnapshot().getLates()));
-				lblStatisticNumCopies.setText(Integer.toString(statistic.getActiviySnapshot().getCopies()));
-
-				lblStatisticMedianPopularBooks.setText(Integer.toString(statistic.getPopMedian()));
-
-				lblStatisticAveragePopularBooks.setText(new DecimalFormat("#.##").format(statistic.getPopAverage()));
-
-				lblStatisticMedianRegularBooks.setText(Integer.toString(statistic.getRegMedian()));
-
-				lblStatisticAverageRegularBooks.setText(new DecimalFormat("#.##").format(statistic.getRegAverage()));
-
-				lblStatisticMedianReturnLates.setText(Integer.toString(statistic.getLateMedian()));
-
-				lblStatisticAverageReturnLates.setText(new DecimalFormat("#.##").format(statistic.getLateAverage()));
-
-			}
-			
-			/**
-			 * getDistributionDataByDecimalRange help to generate the chart series to display in the BarCharts.
-			 * @param distribution is the data to display
-			 * @param distributionRange is a list of string that contain decimal calculated range.
-			 */
-			private XYChart.Series<String, Integer> getDistributionDataByDecimalRange(
-					Map<Integer, List<Integer>> distribution, String[] distributionRange) {
-
-				XYChart.Series<String, Integer> series = new XYChart.Series<>();
-				series.setName("Books");
-				for (int i = 0; i < distributionRange.length; i++) {
-					series.getData().add(new XYChart.Data<>(distributionRange[i], distribution.get(i).size()));
-				}
-				return series;
-			}
-			
-			/**
-			 * getDistraibutionRanges decimal calculated range distribution
-			 * @param distribution is the data to display
-			 * @param distributionRange is a list of string that contain decimal calculated range.
-			 * @return list of string that contain decimal calculated ranges.
-			 */
-			private String[] getDistraibutionRanges(Map<Integer, List<Integer>> distribution) {
-
-				String[] ranges = new String[10];
-
-				if (distribution.isEmpty()) {
-					ranges[0] = "No data to display";
-					return ranges;
-				}
-
-				Integer max = Collections.max(distribution.get(9));
-				float range = ((float) max / 10);
-
-				float min = 0;
-				float tempRange = range;
-
-				for (int i = 0; i < 10; i++) {
-					ranges[i] = new DecimalFormat("#.##").format(min) + "-"
-							+ new DecimalFormat("#.##").format(tempRange);
-
-					min += range;
-					tempRange += range;
-				}
-
-				return ranges;
-			}
-
-		});
-	}
-
-	/**
 	 * updateSearchSubscriberUI is updating the subscriber's history subscriber
 	 * contains the relevant details of subscriber
 	 */
@@ -777,8 +569,8 @@ public class LibrarianClientController {
 				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.ChangeStatus));
 				ssLVChangeStatus.setItems(items);
 
-				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
-				ssLVChangeStatus.setItems(items);
+//				items = FXCollections.observableArrayList(history.get(SubscriberHistoryType.BookExtension));
+//				ssLVChangeStatus.setItems(items);
 
 			}
 

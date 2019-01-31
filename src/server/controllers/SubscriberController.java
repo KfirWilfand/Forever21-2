@@ -122,6 +122,11 @@ public class SubscriberController {
 		String[] arr = query.split(";");
 		Boolean res = dbControllerObj.update(arr[0]);
 		Boolean res1 = dbControllerObj.update(arr[1]);
+		
+		SubscriberController scObj=SubscriberController.getInstance();
+		HistoryItem hRecord=new HistoryItem(Integer.valueOf(arr[2]),"subscriber update his profile details",SubscriberHistoryType.EditProfile);
+		scObj.addHistoryRecordBySubId(new Message(OperationType.EditDetailsBySubscriber,hRecord ));
+		
 		if (res && res1)
 			return new Message(OperationType.EditDetailsBySubscriber, null, ReturnMessageType.Successful);
 		else
@@ -140,9 +145,10 @@ public class SubscriberController {
 
 		Message recordMsg = ((Message) msg);
 		HistoryItem historyItem = ((HistoryItem) recordMsg.getObj());
-
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		
 		String recordQuery = "INSERT INTO `obl`.`subscribers_history` (`subNum`, `actionDate`, `actionDescription`, `actionType`) VALUES ('"
-				+ historyItem.getSubId() + "', '" + LocalDate.now() + "', '" + historyItem.getDescription() + "', '"
+				+ historyItem.getSubId() + "', '" + timestamp+ "', '" + historyItem.getDescription() + "', '"
 				+ historyItem.getSubscriberHistoryType() + "');";
 		
 		DBcontroller dbControllerObj = DBcontroller.getInstance();
@@ -208,6 +214,10 @@ public class SubscriberController {
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	boolean query_res1= dbControllerObj.update((String)updateLossCopyQuery[0]);
     	boolean query_res2= dbControllerObj.update((String)updateLossCopyQuery[1]);
+//		SubscriberController scObj=SubscriberController.getInstance();
+//		HistoryItem hRecord=new HistoryItem(Integer.valueOf(arr[2]),"subscriber lost book: ",SubscriberHistoryType.EditProfile);
+//		scObj.addHistoryRecordBySubId(new Message(OperationType.EditDetailsBySubscriber,hRecord ));
+    	
     	if (query_res1&&query_res2)
 				return new Message(OperationType.LossReporting, null , ReturnMessageType.Successful);
 		else
