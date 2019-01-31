@@ -264,51 +264,7 @@ public class LibrarianController {
 		return new Message(OperationType.ReturnBookByLibrarian, borrowCopyFromDB , op);
 	}
 	
-<<<<<<< HEAD
-//	public Message returnBook (Object msg) throws SQLException
-//	{
-//		Message copyIDofReturnedBook=((Message)msg);
-//		String copyIDtemp=((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID();	
-//		Date returnActual;
-//		LocalDate returnDate=((BorrowCopy)copyIDofReturnedBook.getObj()).getActualReturnDate().toLocalDate();
-//		returnActual=Date.valueOf(returnDate);
-//		((BorrowCopy)copyIDofReturnedBook.getObj()).setActualReturnDate(returnActual);
-//		DBcontroller dbControllerObj= DBcontroller.getInstance();
-//		String returnToCopeisTable="update obl.copeis set isAvilable=1 where copyID='"+((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID()+"'";
-//		Boolean returnToCopeisTable_res=dbControllerObj.update(returnToCopeisTable);
-//		String getCatalogNum="select bCatalogNum from obl.copeis where copyID='"+((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID()+"'";
-//		ResultSet getCatalogNum_res= dbControllerObj.query(getCatalogNum);
-//		if (getCatalogNum_res.next())
-//		{
-//			int catalogNum=getCatalogNum_res.getInt(1);
-//			String incOnBooksAviableCopy="update obl.books set bAvilableCopiesNum=bAvilableCopiesNum+1 where bCatalogNum='"+catalogNum+"'";
-//			Boolean incOnBooksAviableCopy_res=dbControllerObj.update(incOnBooksAviableCopy);
-//			String updateActualReturnDate="update obl.borrows set actualReturnDate='"+
-//
-//		}
-//		
-//
-//		
-//		
-//		Boolean isIncreasedAviableCopy="update obl.books set bAvilableCopiesNum=bAvilableCopiesNum+1 where bCatalogNum="
-//			
-	
-//
-//		
-//		
-//		
-//		
-//		
-//		
-//	}
-	
-	
-	
-	
-	
-	
-	
-=======
+
 	/**
 	 * extensionBookManually is a fuunction that check all the extension criteria and according to it choose if to make an extension 
 	 * @param msg contains the message from the client 
@@ -355,5 +311,5 @@ public class LibrarianController {
 		}return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
 		
 	}
->>>>>>> branch 'master' of https://github.com/kfir333/Forever21-2.git
+
 }

@@ -223,8 +223,6 @@ public class LibrarianClientController {
 
 	@FXML
 	private Tab btnManageStockTab;
-	@FXML
-	private TabPane tvSubsciber;
 	
 	/** btnExtensionBook is the extension book button */
     @FXML
