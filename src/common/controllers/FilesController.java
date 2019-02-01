@@ -31,7 +31,7 @@ public class FilesController {
 		URL url = getClass().getResource(path);
 		String str=url.getPath().toString()+bookName.replace(" ","_")+".pdf";
 		
-		str=str.replace('/', '\\');
+		//str=str.replace('/', '\\');
 		str=str.replaceAll("bin", "src");
 		File file = new File(str);
  
@@ -54,14 +54,13 @@ public class FilesController {
 			int fileSize = tf.getSize();
 			URL url = getClass().getResource(path);
 			String str=url.getPath().toString()+bookName.replace(" ","_")+".png";
-			
 			str=str.replace('/', '\\');
 			str=str.replaceAll("bin", "src");
 			File file = new File(str);
-		      
 			try {
 		  		FileOutputStream fis = new FileOutputStream(file);
 		  		try {
+		  			
 		  			fis.write(tf.getMybytearray(),0,tf.getSize());
 		  		} catch (IOException e) {
 		  			// TODO Auto-generated catch block

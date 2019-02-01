@@ -1,3 +1,4 @@
+
 package client.controllers.adapters;
 
 import java.io.IOException;
@@ -175,6 +176,4 @@ public class BookListItemController extends ListCell<BorrowCopy>
 
     }
 }
-
-
 

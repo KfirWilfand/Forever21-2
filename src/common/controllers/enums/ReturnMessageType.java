@@ -14,8 +14,6 @@ public enum ReturnMessageType {
 	Successful,
 	Unsuccessful, 
 	SuccessfulWithLastSnapshotDate,
-
-
 	ErrorWhileTyping,
 	ClientIsAlreadyLogin,
 	SubscriberIsLocked, 
@@ -30,5 +28,9 @@ public enum ReturnMessageType {
 	subscriberInWaitingList, 
 	GetStatstic,
 	BookHaveWaitingList,
-	SubscriberStatusNotActive
+	SubscriberStatusNotActive,
+	MustReturnBook,
+	PopularBook,
+	GraduateWithMoreBooksToReturn,
+	ChangeGraduateStatusToLock,
 }

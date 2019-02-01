@@ -39,12 +39,18 @@ public class AutomaticFunctionsController {
 						AutomaticFunctions.checkLatesInReturns();
 						AutomaticFunctions.remainderOneDayBeforeReturns();
 						AutomaticFunctions.moveToTheNextSubscriberInQueue();
+						
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-	                
-	                //startExecutionAt(targetHour, targetMin, targetSec);
+	                try {
+	                	TimeUnit.SECONDS.sleep(1);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+	                startExecutionAt(targetHour, targetMin, targetSec);
 	            }
 
 	        };

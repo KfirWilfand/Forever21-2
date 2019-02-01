@@ -16,22 +16,17 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/libExtra/javax.mail.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="src/mysql-connector-java-5.1.46.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="src/libExtra/io-7.1.4.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="src/libExtra/itextpdf-5.5.9.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/libExtra/javax.mail.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -52,6 +47,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="src/libExtra/pdftest-7.1.4.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/mysql-connector-java-5.1.46.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

@@ -8,26 +8,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tableRow" prefHeight="66.0" prefWidth="739.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.adapters.BookSearchRow">
+<AnchorPane fx:id="tableRow" prefHeight="66.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.adapters.BookSearchRow">
 	<children>
-		<ImageView fx:id="ivBook" fitHeight="54.0" fitWidth="54.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-		<Line endX="-99.99999237060547" endY="47.4000129699707" layoutX="170.0" layoutY="11.0" startX="-99.99999237060547" startY="-4.599987983703613" />
-		<Line endX="548.0" endY="-1.1444091796875E-5" layoutX="184.0" layoutY="31.0" startX="-100.0" />
-		<Label fx:id="lblBookName" layoutX="83.0" layoutY="3.0" text="Book Name">
+		<Line endX="-99.99999237060547" endY="47.4000129699707" layoutX="116.0" layoutY="11.0" startX="-99.99999237060547" startY="-4.599987983703613" stroke="#6f6f6f" />
+		<Line endX="579.0" layoutX="126.0" layoutY="31.0" startX="-100.0" stroke="#6f6f6f" />
+		<Label fx:id="lblBookName" layoutX="25.0" layoutY="3.0" text="Book Name">
 			<font>
 				<Font name="System Bold" size="12.0" />
 			</font>
 		</Label>
-		<Label fx:id="lblAuthor" layoutX="83.0" layoutY="16.0" text="Author">
+		<Label fx:id="lblAuthor" layoutX="25.0" layoutY="16.0" text="Author">
 			<font>
 				<Font name="System Italic" size="10.0" />
 			</font>
 		</Label>
-		<Text fx:id="lblDescription" layoutX="83.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An actor is a person who portrays a character in a performance (also actress; see below). The actor performs &quot;in the flesh&quot; in the traditional medium of the theatre or in modern media such as film, radio, and television." wrappingWidth="627.6141929626465">
+		<Text fx:id="lblDescription" layoutX="26.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An actor is a person who portrays a character in a performance (also actress; see below). The actor performs &quot;in the flesh&quot; in the traditional medium of the theatre or in modern media such as film, radio, and television." wrappingWidth="693.6141929626465">
          <font>
             <Font size="11.0" />
          </font></Text>
-				<ImageView fitHeight="18.0" fitWidth="19.0" layoutX="717.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" styleClass="btnWithImage">
+				<ImageView fitHeight="18.0" fitWidth="19.0" layoutX="710.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" styleClass="btnWithImage">
 					<image>
 						<Image url="@../resources/button/information-button.png" />
 					</image>

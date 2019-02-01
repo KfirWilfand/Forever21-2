@@ -63,14 +63,14 @@ public class SearchBookController {
 	@FXML
 	private Button btnSearch;
 
-	/** btnSavePDF is save search result to PDF file button*/
+	/** btnSavePDF is save search result to PDF file button */
 	@FXML
 	private Button btnSavePDF;
-	
-	/** list that keep the search result*/
+
+	/** list that keep the search result */
 	private List<Book> books;
-	
-	/** PDF_PATH is the path for saved search result file*/
+
+	/** PDF_PATH is the path for saved search result file */
 	private static final String PDF_PATH = System.getProperty("user.dir") + "/output/search_result.pdf";
 
 	/**
@@ -95,7 +95,7 @@ public class SearchBookController {
 		System.out.println(searchQeury);
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBook, searchQeury));
 	}
-	
+
 	/**
 	 * onSavePdfBt save the search result in PDF file.
 	 * 
@@ -103,19 +103,8 @@ public class SearchBookController {
 	 */
 	@FXML
 	void onSavePdfBtn(ActionEvent event) throws IOException {
-		if (books.isEmpty()) {
-			return;
-		}
-		try {
-			PDFGenerator.getInstance().createPdf(PDF_PATH, "Search Book Result", this.books);
-			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.CONFIRMATION, "",
-					"Successful! your search result saved in " + PDF_PATH);
-		} catch (DocumentException e) {
-			e.printStackTrace();
-			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "",
-					"Error, can't save your search result");
-		}
-
+		System.out.println(PDF_PATH);
+		PDFGenerator.getInstance().createPdf("/output/1.pdf", "Search Book Result", this.books);
 	}
 
 	/**

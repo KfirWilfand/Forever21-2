@@ -19,10 +19,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -64,7 +66,24 @@ public class ManageStockClientController {
     /** btnDeleteCopy is delete cope button */
     @FXML
     private Button btnDeleteCopy;
+    
+    @FXML
+    private Label label2;
 
+
+	@FXML
+    private Label label1;
+	
+    public Label getLabel2() {
+		return label2;
+	}
+
+	public Label getLabel1() {
+		return label1;
+	}
+
+	
+	
     /**
    	 * getTfEnterNewCopyID is entering a new copy id
    	 * @return enter new copy id text
@@ -101,6 +120,7 @@ public class ManageStockClientController {
 	public void setBtnDeleteCopy(Button btnDeleteCopy) {
 		this.btnDeleteCopy = btnDeleteCopy;
 	}
+	
 	 /**
    	 * initialize manage stock
    	 * @exception IOException 
@@ -128,7 +148,7 @@ public class ManageStockClientController {
 		});
 
 	}
-    
+
 	 /**
    	 * onClickAddNewBook adding a new book to the inventory
    	 * @param event action event
@@ -145,6 +165,8 @@ public class ManageStockClientController {
 					btnDeleteCopy.setVisible(false);
 					tfEnterNewCopyID.setVisible(false);
 					btnAddNewBook.setVisible(false);
+					getLabel1().setVisible(false);
+					getLabel2().setVisible(false);
 					Parent newPane=FXMLLoader.load(getClass().getResource("/client/boundery/layouts/updateOrAddBook.fxml"));
 					if (InnerPaneInManageStock != null)
 						InnerPaneInManageStock.getChildren().setAll(newPane);
@@ -195,10 +217,30 @@ public class ManageStockClientController {
     @FXML
     void onClickAddCopy(ActionEvent event) 
     {
+    	tfEnterNewCopyID.setStyle(null);
+    	if(tfEnterNewCopyID.getText().isEmpty())
+    		{	tfEnterNewCopyID.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+    			return;
+    		}
+    	Book selectedBook=ViewStarter.client.searchBookOnManageStockControllerObj.getBooksTable().getSelectionModel().getSelectedItem();
+    	if(selectedBook==null)
+    		{Utils utils = new Utils(ViewStarter.client.mainViewController);
+    		utils.showAlertWithHeaderText(AlertType.ERROR, "", "No book selected! please select book");
+    		return;
+    		}
+    	
     	Object[] queryArr=new Object[3];
-    	int catlogNumOfSelectedBook=ViewStarter.client.searchBookOnManageStockControllerObj.getBooksTable().getSelectionModel().getSelectedItem().getCatalogNum();
-    	int copiesNumOfSelectedBook=ViewStarter.client.searchBookOnManageStockControllerObj.getBooksTable().getSelectionModel().getSelectedItem().getCopiesNum();
-    	int avilableCopiesNumOfSelectedBook=ViewStarter.client.searchBookOnManageStockControllerObj.getBooksTable().getSelectionModel().getSelectedItem().getAvilableCopiesNum();
+    	
+    	int copiesNumOfSelectedBook=selectedBook.getCopiesNum();
+    	int avilableCopiesNumOfSelectedBook=selectedBook.getAvilableCopiesNum();
+    	int catlogNumOfSelectedBook=selectedBook.getCatalogNum();
+    	for (Copy cp: tvCopies.getItems())
+    		if (cp.getCopyID().equals(tfEnterNewCopyID.getText()))
+    				{
+    					Utils utils = new Utils(ViewStarter.client.mainViewController);
+    					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Copy already exists!");
+    					return;
+    				}
     	queryArr[0]="INSERT INTO obl.copeis (copyID,bCatalogNum, isAvilable) Values('"+tfEnterNewCopyID.getText()+"',"+catlogNumOfSelectedBook+",1);";
     	queryArr[1]="UPDATE obl.books SET bCopiesNum="+(copiesNumOfSelectedBook+1)+",bAvilableCopiesNum="+(avilableCopiesNumOfSelectedBook+1)+" WHERE bCatalogNum="+catlogNumOfSelectedBook+";";
     	queryArr[2]= new Copy(tfEnterNewCopyID.getText(),catlogNumOfSelectedBook,true);
@@ -257,10 +299,24 @@ public class ManageStockClientController {
     @FXML
     void onClickDeleteCopy(ActionEvent event)
     {
-    	String copyIDofSelected=tvCopies.getSelectionModel().getSelectedItem().getCopyID();
-    	int catlogNumOfSelectedBook=tvCopies.getSelectionModel().getSelectedItem().getbCatalogNum();
-      	int copiesNumOfSelectedBook=ViewStarter.client.searchBookOnManageStockControllerObj.getBooksTable().getSelectionModel().getSelectedItem().getCopiesNum();
-    	int avilableCopiesNumOfSelectedBook=ViewStarter.client.searchBookOnManageStockControllerObj.getBooksTable().getSelectionModel().getSelectedItem().getAvilableCopiesNum();
+    	Copy selectedCopy=tvCopies.getSelectionModel().getSelectedItem();
+    	if(selectedCopy==null)
+    	{
+    		Utils utils = new Utils(ViewStarter.client.mainViewController);
+    		utils.showAlertWithHeaderText(AlertType.ERROR, "", "No copy selected! please select copy");
+    		return;	
+    	}
+    	String copyIDofSelected=selectedCopy.getCopyID();
+    	Book selectedBook=ViewStarter.client.searchBookOnManageStockControllerObj.getBooksTable().getSelectionModel().getSelectedItem();
+     	if(selectedBook==null)
+    	{
+    		Utils utils = new Utils(ViewStarter.client.mainViewController);
+    		utils.showAlertWithHeaderText(AlertType.ERROR, "", "No book selected! please select book");
+    		return;	
+    	}
+    	int catlogNumOfSelectedBook=selectedCopy.getbCatalogNum();
+      	int copiesNumOfSelectedBook=selectedBook.getCopiesNum();
+    	int avilableCopiesNumOfSelectedBook=selectedBook.getAvilableCopiesNum();
     	String[] copyArr= new String[2];
     	copyArr[0]="Delete from obl.copeis where copyID='"+copyIDofSelected+"';";
     	copyArr[1]="UPDATE obl.books SET bCopiesNum="+(copiesNumOfSelectedBook-1)+",bAvilableCopiesNum="+(avilableCopiesNumOfSelectedBook-1)+" WHERE bCatalogNum="+catlogNumOfSelectedBook+";";

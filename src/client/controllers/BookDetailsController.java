@@ -1,5 +1,6 @@
 package client.controllers;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +24,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -83,6 +86,10 @@ public class BookDetailsController {
 	
 	/** mainView is an anchor pane*/
 	private AnchorPane mainView;
+	
+
+    @FXML
+    private ImageView bookImage;
 
 	 /**
    	 * initialize is check if its a random user or a subscriber in order to set the 'order' button to visible or not
@@ -91,7 +98,7 @@ public class BookDetailsController {
 	public void initialize() {
 		ViewStarter.client.bookDetailsControllerObj=this;
 		
-		paneBookDetails.setTranslateX(100);
+		paneBookDetails.setTranslateX(125);
 		paneBookDetails.setTranslateY(160);
 		mainView = ViewStarter.client.mainViewController.getMainView();
 		String loginLabel=ViewStarter.client.mainViewController.getLblLoginAs().getText();	//checks if someone is logged in or if it's a randomly reader
@@ -138,21 +145,17 @@ public class BookDetailsController {
 				FileChooser fileChooser = new FileChooser();
 		        fileChooser.setTitle("Save Table of content");
 		        
-		        URL url = getClass().getResource("../../client/boundery/tableOfContent/");
+		        URL url = getClass().getResource("/TableOfContent/");
 				String str=url.getPath().toString()+fileName.replace(" ","_")+".pdf";
 				str=str.replace('/', '\\');
 				str=str.replaceAll("bin", "src");
 				File file = new File(str);
-		        File dest = fileChooser.showSaveDialog(null);
-		        if (dest != null) {
-		            try {
-		                Files.copy(file.toPath(), dest.toPath());
-		            } catch (IOException ex) {
-		                // handle exception...
-		            }
-		        }
-				
-				
+				try {
+					Desktop.getDesktop().open(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 			}
 		});
@@ -211,7 +214,17 @@ public class BookDetailsController {
 				txtBookOrderStatusNotice.setVisible(true);
 			}
 		}
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ShowBookPhotoOnSearchBookDetails, book.getBookName()));
 	}
+	
+    public void showPhoto(String fileName)
+    {
+    	URL url = getClass().getResource("/BooksImages/");
+		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
+		//str=str.replace('/', '\\');
+		str=str.replaceAll("bin", "src");
+		bookImage.setImage(new Image(new File(str).toURI().toString()));
+    }
 	
 }
 

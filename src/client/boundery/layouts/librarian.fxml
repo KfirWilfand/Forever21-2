@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -21,10 +22,12 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="594.0" prefWidth="759.0" style="-fx-background-color: WHITE;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LibrarianClientController">
       <children>
-      <TabPane id="tpSubscriber" fx:id="tvSubsciber" prefHeight="594.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane id="tpSubscriber" fx:id="tvSubsciber" prefHeight="594.0" prefWidth="759.0" stylesheets="@../styles/mainView.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Add New Subsriber">
             <content>
@@ -115,10 +118,14 @@
                            </children>
                         </GridPane>
                         <Text fill="#f50606" layoutX="25.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*  - Required" />
-                        <Button fx:id="btnCreateSubscrciber" layoutX="610.0" layoutY="513.0" mnemonicParsing="false" onAction="#onCreateSubscruberBtn" text="Create Subscriber">
+                        <Button fx:id="btnCreateSubscrciber" layoutX="602.0" layoutY="509.0" mnemonicParsing="false" onAction="#onCreateSubscruberBtn" prefHeight="29.0" prefWidth="124.0" stylesheets="@../styles/mainView.css" text="Create Subscriber">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
                         </Button>
                         <Text layoutX="25.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Subscriber">
                            <font>
@@ -133,10 +140,14 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="527.0">
                      <children>
-                        <Button fx:id="btnBorrowBook" layoutX="265.0" layoutY="188.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" text="Borrow Book">
+                        <Button fx:id="btnBorrowBook" layoutX="265.0" layoutY="188.0" mnemonicParsing="false" onAction="#onBorrowBookBtn" stylesheets="@../styles/mainView.css" text="Borrow Book">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
                         </Button>
                         <Text layoutX="22.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrowing Details ">
                            <font>
@@ -183,10 +194,15 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnReturnBook" layoutX="251.0" layoutY="132.0" mnemonicParsing="false" onAction="#onReturnBookBtn" text="Return Book">
+                        <Button fx:id="btnReturnBook" layoutX="244.0" layoutY="132.0" mnemonicParsing="false" onAction="#onReturnBookBtn" prefHeight="30.0" prefWidth="96.0" stylesheets="@../styles/mainView.css" text="Return Book">
+
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
                         </Button>
                         <Text layoutX="19.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Book Details ">
                            <font>
@@ -225,6 +241,15 @@
                         </Text>
                         <Line endX="-100.0" endY="451.0" layoutX="472.0" layoutY="72.0" startX="-100.0" stroke="#a4a4a4" />
                         <Text fill="#ff0505" layoutX="242.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+                        <Button fx:id="btnExtensionBook" layoutX="137.0" layoutY="131.0" mnemonicParsing="false" onAction="#onExtensionBookBtn" prefHeight="31.0" prefWidth="95.0" stylesheets="@../styles/mainView.css" text="Extension">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass>
+                        </Button>
                      </children>
                   </AnchorPane>
               </content>
@@ -233,7 +258,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="tfSearchSubscriberNumber" layoutX="516.0" layoutY="15.0" prefHeight="25.0" prefWidth="135.0" promptText="Subscriber Number" />
+                        <TextField fx:id="tfSearchSubscriberNumber" layoutX="547.0" layoutY="15.0" prefHeight="25.0" prefWidth="135.0" promptText="Subscriber Number" />
                         <GridPane layoutX="19.0" layoutY="89.0" prefHeight="247.0" prefWidth="231.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="97.39998779296874" />
@@ -293,10 +318,17 @@
                               <DatePicker fx:id="ssPdGraduation" disable="true" opacity="0.71" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
-                        <Button fx:id="btnSearchSubscriber" layoutX="674.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="27.0" prefWidth="62.0" text="Search">
+                        <Button fx:id="btnSearchSubscriber" layoutX="680.0" layoutY="10.0" mnemonicParsing="false" onAction="#onSearchSubscriberBtn" prefHeight="28.0" prefWidth="49.0" styleClass="btnWithImage" stylesheets="@../styles/mainView.css">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Button>
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="23.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/button/serach-btn.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                         <Text layoutX="19.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Subscriber">
                            <font>
                               <Font name="System Bold" size="20.0" />
@@ -361,7 +393,11 @@
                               </Tab>
                           </tabs>
                         </TabPane>
-                        <Button fx:id="ssbtnUpdate" disable="true" layoutX="186.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUpdate" opacity="0.71" text="Update" />
+                        <Button fx:id="ssbtnUpdate" disable="true" layoutX="186.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUpdate" opacity="0.71" stylesheets="@../styles/mainView.css" text="Update">
+                           <styleClass>
+                              <String fx:value="btnWithImageWithBorder" />
+                              <String fx:value="buttonShadow" />
+                           </styleClass></Button>
                         <Label layoutX="14.0" layoutY="376.0" text="Reader Card Details:">
                            <font>
                               <Font name="System Bold" size="15.0" />
@@ -425,193 +461,7 @@
             </Tab>
             <Tab fx:id="btnStatisticTab" text="Statistic">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="645.0">
-                     <children>
-                        <TabPane layoutX="-1.0" prefHeight="564.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
-                          <tabs>
-                            <Tab text="Activity">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="358.0" prefWidth="759.0">
-                                       <children>
-                                          <PieChart fx:id="pcSubscriberStatus" layoutX="65.0" layoutY="77.0" prefHeight="396.0" prefWidth="393.0" title="Subscriber Status" />
-                                          <DatePicker fx:id="dpActivityStatistic" layoutX="562.0" layoutY="21.0" />
-                                          <GridPane layoutX="518.0" layoutY="103.0" prefHeight="187.0" prefWidth="131.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.39996337890625" minWidth="10.0" prefWidth="118.400048828125" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="7.399999999999999" prefHeight="29.5999755859375" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="81.0" minHeight="10.0" prefHeight="44.000006103515624" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="81.0" minHeight="0.0" prefHeight="44.000006103515624" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                             <children>
-                                                <Label text="Subsciber Lates" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticSubLatesNumCopies" text="123" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                                <Label text="Copies" GridPane.halignment="CENTER">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticNumCopies" text="123" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                             </children>
-                                          </GridPane>
-                                          <Label layoutX="461.0" layoutY="22.0" text="Pick a date:">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Activity Statistic">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </AnchorPane>
-                              </content>
-                            </Tab>
-                            <Tab text="Borrow">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="438.0" prefWidth="759.0">
-                                       <children>
-                                          <GridPane layoutX="447.0" layoutY="394.0" prefHeight="58.0" prefWidth="234.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.39996337890625" minWidth="10.0" prefWidth="118.400048828125" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.39996337890625" minWidth="10.0" prefWidth="118.400048828125" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="7.399999999999999" prefHeight="29.5999755859375" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                             <children>
-                                                <Label text="Median" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticMedianPopularBooks" text="123" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                                <Label text="Average" GridPane.halignment="CENTER">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticAveragePopularBooks" text="123" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                             </children>
-                                          </GridPane>
-                                          <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Statistic">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                          <Line endX="-100.0" endY="358.0" layoutX="471.0" layoutY="96.0" startX="-100.0" />
-                                          <Text layoutX="494.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Popular Books">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                          <Text layoutX="112.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Regular Books">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                          <GridPane layoutX="78.0" layoutY="401.0" prefHeight="58.0" prefWidth="234.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.39996337890625" minWidth="10.0" prefWidth="118.400048828125" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.39996337890625" minWidth="10.0" prefWidth="118.400048828125" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="7.399999999999999" prefHeight="29.5999755859375" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                             <children>
-                                                <Label text="Median" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticMedianRegularBooks" text="123" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                                <Label text="Average" GridPane.halignment="CENTER">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticAverageRegularBooks" text="123" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                             </children>
-                                          </GridPane>
-                                          <BarChart fx:id="bcStatisticRegularBooks" layoutX="16.0" layoutY="118.0" prefHeight="273.0" prefWidth="328.0">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" fx:id="xAxisReg" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis fx:id="yAxisReg" side="LEFT" />
-                                            </yAxis>
-                                          </BarChart>
-                                          <BarChart fx:id="bcStatisticPopularBooks" layoutX="400.0" layoutY="118.0" prefHeight="273.0" prefWidth="328.0">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" fx:id="xAxisPop" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis fx:id="yAxisPop" side="LEFT" />
-                                            </yAxis>
-                                          </BarChart>
-                                       </children>
-                                    </AnchorPane>
-                              </content>
-                            </Tab>
-                              <Tab text="Return Lates">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="438.0" prefWidth="759.0">
-                                       <children>
-                                          <GridPane layoutX="523.0" layoutY="158.0" prefHeight="151.0" prefWidth="120.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.39996337890625" minWidth="10.0" prefWidth="118.400048828125" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="7.399999999999999" prefHeight="29.5999755859375" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="53.8000244140625" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                             <children>
-                                                <Label text="Median" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticMedianReturnLates" text="123" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                                <Label text="Average" GridPane.halignment="CENTER">
-                                                   <font>
-                                                      <Font name="System Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblStatisticAverageReturnLates" text="123" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                             </children>
-                                          </GridPane>
-                                          <BarChart fx:id="bcStatisticReturnLates" layoutX="103.0" layoutY="130.0" prefHeight="273.0" prefWidth="328.0">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" fx:id="xAxisLate" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis fx:id="yAxisLate" side="LEFT" />
-                                            </yAxis>
-                                          </BarChart>
-                                          <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Lates Statistic">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </Tab>
-                          </tabs>
-                        </TabPane>
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane fx:id="ancStatistic" minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="645.0" />
                </content>
             </Tab>
         </tabs>

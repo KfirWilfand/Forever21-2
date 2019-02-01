@@ -5,12 +5,32 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane prefHeight="543.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.SearchBookOnManageStockController">
+<Pane prefHeight="543.0" prefWidth="687.0" stylesheets="@../styles/mainView.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.SearchBookOnManageStockController">
    <children>
-      <TextField fx:id="tfCatalogNumberForSearch" layoutX="17.0" layoutY="17.0" promptText="Enter Catalog Number" />
-      <Button fx:id="btnSearchBook" layoutX="179.0" layoutY="17.0" mnemonicParsing="false" onAction="#onClickSearchBook" text="Search" />
+      <Button fx:id="btnSavePDF" layoutX="617.0" layoutY="9.0" onAction="#onClickSavePDF" prefHeight="38.0" prefWidth="45.0" styleClass="btnWithImage" stylesheets="@../styles/mainView.css">
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/button/pdf.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <TextField fx:id="tfCatalogNumberForSearch" layoutX="17.0" layoutY="17.0" prefHeight="25.0" prefWidth="157.0" promptText="Enter Catalog Number" />
+      <Button fx:id="btnSearchBook" layoutX="170.0" layoutY="16.0" mnemonicParsing="false" onAction="#onClickSearchBook" prefHeight="27.0" prefWidth="32.0" styleClass="btnWithImage" stylesheets="@../styles/mainView.css">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/button/serach-btn.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <TableView fx:id="booksTable" layoutX="17.0" layoutY="68.0" onMouseClicked="#onChosenRow" prefHeight="475.0" prefWidth="545.0">
          <columns>
             <TableColumn fx:id="tvColumnCatalogNumber" prefWidth="130.0" text="Catalog Number" />
@@ -19,6 +39,11 @@
             <TableColumn fx:id="tvColumnEditionNumber" prefWidth="141.0" text="Edition Number" />
          </columns>
       </TableView>
-      <Label layoutX="313.0" layoutY="42.0" text="for update book details press on the book" />
+      <Label layoutX="17.0" layoutY="48.0" text="*for update book details press twice on the book" />
+      <Text layoutX="630.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save">
+         <font>
+            <Font name="System Bold" size="11.0" />
+         </font>
+      </Text>
    </children>
 </Pane>

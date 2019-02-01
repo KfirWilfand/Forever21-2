@@ -211,6 +211,8 @@ public class UpdateOrAddBookController {
         	ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setVisible(true);
         	ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setVisible(true);
         	ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().setVisible(true);
+			ViewStarter.client.manageStockClientControllerObj.getLabel1().setVisible(true);
+			ViewStarter.client.manageStockClientControllerObj.getLabel2().setVisible(true);
     		ViewStarter.client.manageStockClientControllerObj.getTvCopies().getItems().clear();
 			Parent newPane = FXMLLoader.load(getClass().getResource("/client/boundery/layouts/searchBook_by_number_at_manageStock.fxml"));
 			if(ViewStarter.client.manageStockClientControllerObj.getInnerPaneInManageStock() != null)
@@ -315,7 +317,7 @@ public class UpdateOrAddBookController {
     	if (selectedFile != null)
     		{
     			tfBookImagePath.setText(selectedFile.getCanonicalPath());
-    			imgByteArr=Files.readAllBytes(selectedFile.toPath());
+    			//imgByteArr=Files.readAllBytes(selectedFile.toPath());
     			bookImage.setImage(new Image(selectedFile.toURI().toString()));
     		}
     	
@@ -330,16 +332,19 @@ public class UpdateOrAddBookController {
     	FileChooser fc= new FileChooser();
     	File selectedFile =fc.showOpenDialog(null);
     	if (selectedFile != null)
-    		tfTableOfContent.setText(selectedFile.getAbsolutePath());		
+    			tfTableOfContent.setText(selectedFile.getAbsolutePath());		
+    
     	
     }
     
     public void showPhoto(String fileName)
     {
-    	URL url = getClass().getResource("../../client/boundery/photos/");
+    	URL url = getClass().getResource("/BooksImages/");
+    	
 		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
-		str=str.replace('/', '\\');
+		//str=str.replace('/', '\\');
 		str=str.replaceAll("bin", "src");
+		System.out.println(str);
     	bookImage.setImage(new Image(new File(str).toURI().toString()));
     }
 	

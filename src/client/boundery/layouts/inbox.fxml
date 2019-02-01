@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.InboxController">
+   <children>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="766.0" style="-fx-background-color: WHITE;">
+         <children>
+            <ListView fx:id="lvMessages" layoutX="26.0" layoutY="28.0" onMouseClicked="#onClickMsg" prefHeight="566.0" prefWidth="262.0" />
+            <Pane fx:id="messagePane" layoutX="314.0" layoutY="41.0" prefHeight="235.0" prefWidth="425.0" visible="false">
+               <children>
+                  <Text fx:id="txtTitle" layoutX="17.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" wrappingWidth="391.44140625">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="txtBody" layoutX="21.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="body" wrappingWidth="330.4414065107703">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Line endX="304.0" fill="#949494" layoutX="105.0" layoutY="48.0" startX="-100.0" stroke="#7c7c7c" />
+               </children>
+            </Pane>
+            <Line endX="-100.0" endY="576.0" layoutX="405.0" layoutY="36.0" startX="-100.0" startY="-17.0" stroke="#868686" />
+            <Pane fx:id="loadedPane" layoutX="319.0" layoutY="310.0" prefHeight="268.0" prefWidth="425.0" visible="false">
+               <children>
+                  <Text layoutX="24.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Do you want to Lock this readar card?" wrappingWidth="323.0000050961971">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="btnLock" layoutX="136.0" layoutY="60.0" mnemonicParsing="false" onAction="#onLockReaderBtn" prefHeight="57.0" prefWidth="59.0" stylesheets="@../styles/mainView.css">
+                     <graphic>
+                        <ImageView fitHeight="44.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/button/Green_check.svg.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="btnWithImage" />
+                        <String fx:value="buttonShadow" />
+                        <String fx:value="btnWithImageWithBorder" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="btnActive" layoutX="213.0" layoutY="60.0" mnemonicParsing="false" onAction="#onUnlockReaderBtn" prefHeight="57.0" prefWidth="62.0" stylesheets="@../styles/mainView.css">
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/button/x.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="btnWithImage" />
+                        <String fx:value="btnWithImageWithBorder" />
+                        <String fx:value="buttonShadow" />
+                     </styleClass>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

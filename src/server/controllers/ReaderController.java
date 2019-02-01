@@ -3,6 +3,7 @@ package server.controllers;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -14,11 +15,13 @@ import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.Book;
+import common.entity.InboxMsgItem;
 import common.entity.Librarian;
 import common.entity.LibraryManager;
 import common.entity.Subscriber;
 import common.entity.TransferFile;
 import common.entity.User;
+import common.entity.enums.InboxMsgType;
 import common.entity.enums.UserType;
 import server.ServerConsole;
 /**
@@ -73,18 +76,33 @@ public class ReaderController {
     			}
     			
     			User user = SubscriberController.getSubscriberById(user_res.getString("usrId"));
-    			return new Message(OperationType.Login, user, ReturnMessageType.Successful);	
+    			List<InboxMsgItem> msgList=getInboxMessagesByID(user.getId());
+    			Object[] msgObj=new Object[2];
+    			msgObj[0]=user;
+    			msgObj[1]=msgList;
+    			
+    			return new Message(OperationType.Login, msgObj, ReturnMessageType.Successful);	
     		}
 		
     		if (user_res.getString("usrType").equals("Librarian")) {
     			User user = new Librarian(user_res.getInt("usrId"), user_res.getString("usrName"),  user_res.getString("usrPassword"), user_res.getString("usrFirstName"), user_res.getString("usrLastName"), user_res.getString("usrEmail"), UserType.stringToEnum(user_res.getString("usrType")));
-    			return new Message(OperationType.Login, user, ReturnMessageType.Successful);
+    			List<InboxMsgItem> msgList=getInboxMessagesByID(user.getId());
+    			Object[] msgObj=new Object[2];
+    			msgObj[0]=user;
+    			msgObj[1]=msgList;
+    			
+    			return new Message(OperationType.Login, msgObj, ReturnMessageType.Successful);
     		}
 
     		if (user_res.getString("usrType").equals("LibraryManager")) {
     			User user = new LibraryManager(user_res.getInt("usrId"), user_res.getString("usrName"), user_res.getString("usrPassword"),
     					user_res.getString("usrFirstName"), user_res.getString("usrLastName"), user_res.getString("usrEmail"), UserType.stringToEnum(user_res.getString("usrType")));
-    			return new Message(OperationType.Login, user, ReturnMessageType.Successful);
+    			List<InboxMsgItem> msgList=getInboxMessagesByID(user.getId());
+    			Object[] msgObj=new Object[2];
+    			msgObj[0]=user;
+    			msgObj[1]=msgList;
+    			
+    			return new Message(OperationType.Login, msgObj, ReturnMessageType.Successful);
     		}	
     	}else {
     		return new Message(OperationType.Login, null, ReturnMessageType.Unsuccessful);	
@@ -98,7 +116,7 @@ public class ReaderController {
    	 * @throws SQLException when occurs
    	 */
     public Message searchBook(Object msg) throws SQLException
-    {//TODO :μαγεχ 
+    {
     	String searchQuery= (String)((Message)msg).getObj();
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	ResultSet books_res= dbControllerObj.query(searchQuery);
@@ -119,7 +137,7 @@ public class ReaderController {
   	public Message sendTableOfContantToClient(Message msg)
   	{
   		String bookName=(String)msg.getObj();
-		URL url = getClass().getResource("../tableOfContent/");
+		URL url = getClass().getResource("/TableOfContent/");
 		String path=url.getPath().toString()+bookName.replace(" ","_")+".pdf";
 		path=path.replace('/', '\\');
 		path=path.replaceAll("bin", "src");
@@ -133,5 +151,39 @@ public class ReaderController {
   			return new Message(OperationType.DownloadTableOfContent, null , ReturnMessageType.Unsuccessful);
   	}
 
+  	
+  	public List<InboxMsgItem> getInboxMessagesByID(int id) throws SQLException
+  	{
+  		String query="select * from obl.inbox_msg where usrID="+String.valueOf(id);
+  		DBcontroller dbControllerObj= DBcontroller.getInstance();
+    	ResultSet msg_res= dbControllerObj.query(query);
+    	List<InboxMsgItem> msgList=new ArrayList<InboxMsgItem>();
+    	while(msg_res.next())
+    	{
+    		msgList.add(new InboxMsgItem(msg_res.getInt("usrID"), msg_res.getString("Title"), msg_res.getString("body"), InboxMsgType.stringToEnum(msg_res.getString("type")) , msg_res.getBoolean("is_read"), msg_res.getTimestamp("date")));
+    	}
+    	return msgList;
+  	}
+  	
+  	
+  	
+  	public Message getInboxMessage(Message msg) throws SQLException
+  	{
+    	List<InboxMsgItem> msgList=getInboxMessagesByID(((User)msg.getObj()).getId());
+
+    	if (msgList.isEmpty())
+    		return new Message(OperationType.GetInboxMsg, null , ReturnMessageType.Unsuccessful);
+    	else
+    		return new Message(OperationType.GetInboxMsg, msgList , ReturnMessageType.Successful);
+  		
+  	}
+	public void makeAsRead(Message msg) {
+		String query= "Update obl.inbox_msg set is_read=1 where usrID='"+((InboxMsgItem)msg.getObj()).getUserID()+"'and date='"+((InboxMsgItem)msg.getObj()).getTime()+"'";
+		System.out.println(query);
+		DBcontroller dbControllerObj= DBcontroller.getInstance();
+		Boolean isUpdate=dbControllerObj.update(query);
+		if(!isUpdate)
+			System.out.println("ERROR: makeAsRead function");
+	}
 
 }

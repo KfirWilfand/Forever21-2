@@ -173,6 +173,7 @@ public class SubscriberClientController {
 		Utils utils = new Utils(ViewStarter.client.mainViewController);
 		String checkPhoneValid = tfEditPhone.getText();
 		String checkEmailValid = tfEditEmail.getText();
+		
 		Boolean[] check = new Boolean[2];
 		check[0] = utils.isValidEmail(checkEmailValid);
 		check[1] = utils.validatePhoneNumber(checkPhoneValid);
@@ -189,7 +190,7 @@ public class SubscriberClientController {
 		if(check[0] && check[1])
 		{	String editSubscriberDetailsQuery = "UPDATE obl.subscribers SET subPhoneNum='" + tfEditPhone.getText()
 				+ "' WHERE subNum=" + tfEditSubscriberNumber.getText() + ";UPDATE obl.users SET usrEmail='"
-				+ tfEditEmail.getText() + "' WHERE usrID=" + tfEditSubscriberNumber.getText() + ";";
+				+ tfEditEmail.getText() + "' WHERE usrID=" + tfEditSubscriberNumber.getText() + ";"+tfEditSubscriberNumber.getText();
 				ViewStarter.client.handleMessageFromClientUI(
 				new Message(OperationType.EditDetailsBySubscriber, editSubscriberDetailsQuery));
 		}
