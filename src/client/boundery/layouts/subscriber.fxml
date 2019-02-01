@@ -18,7 +18,7 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="594.0" prefWidth="759.0" style="-fx-background-color: WHITE;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.SubscriberClientController">
       <children>
-      <TabPane id="tpSubscriber" fx:id="tabvSubsciber" prefHeight="594.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane id="tpSubscriber" fx:id="tabvSubsciber" prefHeight="594.0" prefWidth="759.0" stylesheets="@../styles/mainView.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Edit Profile">
             <content>

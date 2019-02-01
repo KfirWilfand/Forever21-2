@@ -2,6 +2,8 @@ package client.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import client.ViewStarter;
 import common.controllers.Message;
@@ -12,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -22,18 +25,27 @@ public class InboxController {
     @FXML
     private ListView<InboxMsgItem> lvMessages;
 
-    @FXML
+  
+
+	@FXML
     private Pane messagePane;
 
     @FXML
     private Text txtTitle;
 
-    @FXML
+
+	@FXML
     private Text txtBody;
 
     @FXML
     private Pane loadedPane;
     
+
+    @FXML
+    private Button btnLock;
+
+    @FXML
+    private Button btnActive;
 
     
 	@FXML
@@ -43,32 +55,52 @@ public class InboxController {
 	
 
     @FXML
-    void onLockReaderBtn(ActionEvent event) {
-
+    void onLockReaderBtn(ActionEvent event)
+    {
+    	String mydata = txtBody.getText();
+    	Pattern pattern = Pattern.compile("'(.*?)'");
+    	Matcher matcher = pattern.matcher(mydata);
+    	if (matcher.find())
+    	{
+    		String subscriberNum=matcher.group(1).replaceAll("'", "");
+    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.LockReaderCard, subscriberNum ));
+    	}
     }
 
     @FXML
-    void onUnlockReaderBtn(ActionEvent event) {
-
+    void onUnlockReaderBtn(ActionEvent event) 
+    {
+    	String mydata = txtBody.getText();
+    	Pattern pattern = Pattern.compile("'(.*?)'");
+    	Matcher matcher = pattern.matcher(mydata);
+    	if (matcher.find())
+    	{
+    		String subscriberNum=matcher.group(1).replaceAll("'", "");
+    		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ChangeToActiveReaderCard, subscriberNum ));
+    	}
     }
 
-	
     @FXML
     void onClickMsg(MouseEvent event) {
     	InboxMsgItem msgItem=lvMessages.getSelectionModel().getSelectedItem();
+		getTxtBody().setVisible(true);
+		getTxtTitle().setVisible(true);
     	messagePane.setVisible(true);
 		txtTitle.setText(msgItem.getTitle());
 		txtBody.setText(msgItem.getBody());
 		lvMessages.getSelectionModel().getSelectedItem().setIs_read(true);
-		int numberOfUnreadMsg=Integer.parseInt(ViewStarter.client.mainViewController.getTxtNumberOfMsg().getText())-1;
-		ViewStarter.client.mainViewController.getTxtNumberOfMsg().setText(String.valueOf(numberOfUnreadMsg));
-		if(numberOfUnreadMsg==0)
+		if(Integer.parseInt(ViewStarter.client.mainViewController.getTxtNumberOfMsg().getText())!=0)
 		{
-			ViewStarter.client.mainViewController.getRedCircel().setVisible(false);
-			ViewStarter.client.mainViewController.getTxtNumberOfMsg().setVisible(false);	
+			int numberOfUnreadMsg=Integer.parseInt(ViewStarter.client.mainViewController.getTxtNumberOfMsg().getText())-1;
+			ViewStarter.client.mainViewController.getTxtNumberOfMsg().setText(String.valueOf(numberOfUnreadMsg));
+			if(numberOfUnreadMsg<=0)
+			{
+				ViewStarter.client.mainViewController.getRedCircel().setVisible(false);
+				ViewStarter.client.mainViewController.getTxtNumberOfMsg().setVisible(false);	
+			}
 		}
 		
-		if(msgItem.getType()==InboxMsgType.LockReader)
+		if(msgItem.getType().equals(InboxMsgType.LockReader))
 			loadedPane.setVisible(true);
 		else
 			loadedPane.setVisible(false);
@@ -87,5 +119,24 @@ public class InboxController {
 			//if(msgItem.isIs_read())	
 		}	
 	}
+	
+	 public Button getBtnLock() {
+			return btnLock;
+		}
+
+
+		public Button getBtnActive() {
+			return btnActive;
+		}
+		
+	    public Text getTxtTitle() {
+			return txtTitle;
+		}
+
+
+		public Text getTxtBody() {
+			return txtBody;
+		}
 
 }
+

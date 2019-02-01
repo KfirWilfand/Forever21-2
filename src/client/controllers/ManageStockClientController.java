@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -66,8 +67,23 @@ public class ManageStockClientController {
     @FXML
     private Button btnDeleteCopy;
     
+    @FXML
+    private Label label2;
 
 
+	@FXML
+    private Label label1;
+	
+    public Label getLabel2() {
+		return label2;
+	}
+
+	public Label getLabel1() {
+		return label1;
+	}
+
+	
+	
     /**
    	 * getTfEnterNewCopyID is entering a new copy id
    	 * @return enter new copy id text
@@ -149,6 +165,8 @@ public class ManageStockClientController {
 					btnDeleteCopy.setVisible(false);
 					tfEnterNewCopyID.setVisible(false);
 					btnAddNewBook.setVisible(false);
+					getLabel1().setVisible(false);
+					getLabel2().setVisible(false);
 					Parent newPane=FXMLLoader.load(getClass().getResource("/client/boundery/layouts/updateOrAddBook.fxml"));
 					if (InnerPaneInManageStock != null)
 						InnerPaneInManageStock.getChildren().setAll(newPane);

@@ -203,7 +203,16 @@ public class MainViewController {
 		utils.setBtnPressed(false, false, false, true);
 		
 		
+		
+		
 		utils.layoutSwitcher(mainPane, "inbox.fxml", "My Inbox");
+		ViewStarter.client.inboxControllerObj.getTxtBody().setVisible(false);
+		ViewStarter.client.inboxControllerObj.getTxtTitle().setVisible(false);
+		if(Integer.parseInt(getTxtNumberOfMsg().getText())==0)
+		{
+			getRedCircel().setVisible(false);
+			getTxtNumberOfMsg().setVisible(false);
+		}
 		
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetInboxMsg, this.user));
 		
@@ -356,8 +365,7 @@ public class MainViewController {
 								redCircel.setVisible(true);
 							}
 						}
-					
-						
+								
 					btnMailBox.setVisible(true);
 					btnLogout.setVisible(true);
 					mainView.getChildren().remove(dialogBoxLogin);
@@ -373,14 +381,18 @@ public class MainViewController {
 					}
 
 					if (user instanceof Librarian) {
+					
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
 						lblLoginAs.setText("Log as Librarian");
+						ViewStarter.client.librarianClientControllerObj.setLibrarianManager(false);
 						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();
 					}
 
 					if (user instanceof LibraryManager) {
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Library Manager Profile");
 						lblLoginAs.setText("Log as LibraryManager");
+						ViewStarter.client.librarianClientControllerObj.setLibrarianManager(true);
+						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();
 					}
 				} catch (Exception e) {
 					System.out.println(e);

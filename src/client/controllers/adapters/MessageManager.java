@@ -1,5 +1,6 @@
 package client.controllers.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import client.ViewStarter;
@@ -7,8 +8,12 @@ import client.controllers.Utils;
 import client.controllers.Utils.SearchBookRowFactory;
 import common.controllers.FilesController;
 import common.controllers.Message;
+import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
+import common.entity.ActiviySnapshot;
 import common.entity.Book;
+import common.entity.BookSelected;
+import common.entity.BookStatistic;
 import common.entity.BorrowBook;
 import common.entity.BorrowCopy;
 import common.entity.Copy;
@@ -249,17 +254,23 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
 					break;
 				case subscriberInWaitingList:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
-							"there is a waiting list to this book\nput the book aside.");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","there is a waiting list to this book\nput the book aside.");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
 				case ChangeStatusToActive:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "",
 							"Subscriber status changed to 'Active'.\nSubscriber was late in return");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
-				case ChangeStatusToLock:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
-							"Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+				case ChangeGraduateStatusToLock:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
+				case GraduateWithMoreBooksToReturn:
+					Object[] o = (Object[]) msg.getObj();
+					ArrayList<String> arr=(ArrayList<String>)o[1];
+					String listString = String.join(", ", arr);
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Graduate need to return the following books :"+listString);
 				}
 				break;
 			case DownloadTableOfContent:
@@ -273,17 +284,6 @@ public class MessageManager {
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "TABLE OF CONTENT DO NOT EXISTS");
 					break;
-				}
-				break;
-			case GetStatstic:
-				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
-				} else if (msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
-
-				} else if (msg.getReturnMessageType() == ReturnMessageType.SuccessfulWithLastSnapshotDate) {
-					ViewStarter.client.librarianClientControllerObj.updateSearchStatsticUI((Statistic) msg.getObj());
-					utils.showAlertWithHeaderText(AlertType.WARNING, "",
-							"Can't find this activity date, display last record activity instead");
 				}
 				break;
 			case ShowBookPhoto:
@@ -300,27 +300,24 @@ public class MessageManager {
 				break;
 			case AddHistoryRecord:
 				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "History record","History record saved!");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "History record", "History record saved!");
 				} else {
-					utils.showAlertWithHeaderText(AlertType.ERROR, "History record","Can't save history record");
+					utils.showAlertWithHeaderText(AlertType.ERROR, "History record", "Can't save history record");
 				}
 				break;
-				
 			case ShowMyBorrowedBooks:
-				switch (msg.getReturnMessageType()) 
-				{
+				switch (msg.getReturnMessageType()) {
 				case Successful:
 					List<BorrowCopy> borrowBooks = (List<BorrowCopy>) msg.getObj();
 					ViewStarter.client.subscriberClientControllerObj.onGetBorrowedBooksResult(borrowBooks);
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
+					//utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
 					break;
 				}
 				break;
 			case LossReporting:
-				switch (msg.getReturnMessageType()) 
-				{
+				switch (msg.getReturnMessageType()) {
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Loss reporting success");
 					break;
@@ -328,6 +325,26 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Loss reporting failed!");
 					break;
 				}
+				break;
+			case AutomaticBorrowExtenation:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Automatic Borrow Extenation success");
+					
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Automatic Borrow Extenation failed!");
+					break;
+				case BookHaveWaitingList:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "This Book has waiting list , Sorry!");
+					break;
+				case SubscriberStatusNotActive:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Your Reader Card is Hold!");
+					break;
+				
+				}
+				//ViewStarter.client.bookListItemControllerObj.getBtnAskBorrowExtenation().setDisable(true);
 				break;
 			case ShowBookPhotoOnSearchBookDetails:
 				switch (msg.getReturnMessageType()) {
@@ -340,6 +357,7 @@ public class MessageManager {
 				case Unsuccessful:
 					break;
 				}
+				break;
 			case ExtensionBookByLibrarian:
 				switch(msg.getReturnMessageType())
 				{
@@ -373,7 +391,91 @@ public class MessageManager {
 					break;
 				}
 				break;
-				
+			case LockReaderCard:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Reader Card Lock Successfully");
+					ViewStarter.client.inboxControllerObj.getBtnLock().setDisable(true);
+					ViewStarter.client.inboxControllerObj.getBtnActive().setDisable(false);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Fail to Lock Reader Card");
+					break;	
+				}		
+				break;
+			case ChangeToActiveReaderCard:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Reader Card Status Change To 'Active' Successfully");
+					ViewStarter.client.inboxControllerObj.getBtnLock().setDisable(false);
+					ViewStarter.client.inboxControllerObj.getBtnActive().setDisable(true);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Fail to change Reader Card status");
+					break;	
+				}
+				break;
+			case GetBookStatstic:
+				if (msg.getReturnMessageType() == ReturnMessageType.Successful) {
+					ViewStarter.client.statisticClientControllerObj.updateBookStatsticUI((BookStatistic) msg.getObj());
+				} else if (msg.getReturnMessageType() == ReturnMessageType.Unsuccessful) {
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Book Statstic", "No data to display");
+				}
+				break;
+			case GetActiviySnapshotByDate:
+				ActiviySnapshot activiySnapshot;
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					activiySnapshot = (ActiviySnapshot) msg.getObj();
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByDate(activiySnapshot);
+					break;
+				case SuccessfulWithLastSnapshotDate:
+					utils.showAlertWithHeaderText(AlertType.WARNING, "Activiy Snapshot",
+							"Can't find this activity date or there is no daily activity yet , display last record activity instead");
+					activiySnapshot = (ActiviySnapshot) msg.getObj();
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByDate(activiySnapshot);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Activiy Snapshot",
+							"Can't find any activiy snapshot recoed");
+					break;
+				}
+				break;
+			case GetActiviySnapshotsByPeriod:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByPeriod((List<ActiviySnapshot>)  msg.getObj());
+					break;
+				case Unsuccessful:
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByPeriodUnsuccessful();
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Activiy Snapshot",
+							"Can't find any activiy in this snapshot period");
+					break;
+				}
+				break;
+			case GetLastActiviySnapshotRecord:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					ViewStarter.client.statisticClientControllerObj.onReturnActivitySnapshotByDate((ActiviySnapshot) msg.getObj());
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Activiy Snapshot",
+							"Can't find any activiy snapshot recoed");
+					break;
+				}
+				break;
+			case GetAllLatesReturnBySingleBookCatId:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					BookStatistic bookSelected = (BookStatistic) msg.getObj();
+					ViewStarter.client.statisticClientControllerObj.updateBookStatsticUI(bookSelected);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Search Single Book",
+							"Can't find data on this book!");
+					break;
+				}
+				break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -52,16 +52,16 @@
 			</font>
 		</Label>
 		<Line endX="326.0" layoutX="461.0" layoutY="136.0" startX="-436.0" stroke="#022b3a" />
-		<Button fx:id="btnLogin" alignment="BOTTOM_LEFT" ellipsisString="" layoutX="699.0" layoutY="21.0" mnemonicParsing="false" onAction="#openLogInForm" prefHeight="36.0" prefWidth="101.0" styleClass="btnWithImage" text="Login">
-			<font>
-				<Font name="System Bold" size="12.0" />
-			</font>
+		<Button fx:id="btnLogin" alignment="BOTTOM_LEFT" ellipsisString="" layoutX="699.0" layoutY="21.0" mnemonicParsing="false" onAction="#openLogInForm" prefHeight="36.0" prefWidth="101.0" styleClass="btnWithImage" text="Login" underline="true">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
 		</Button>
 		<Label fx:id="lblLoginAs" layoutX="705.0" layoutY="51.0" prefHeight="18.0" prefWidth="90.0" textAlignment="CENTER">
          <font>
             <Font size="10.0" />
          </font></Label>
-		<AnchorPane fx:id="dialogBoxLogin" layoutX="562.0" layoutY="87.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="288.0" prefWidth="224.0" style="-fx-background-color: white; -fx-background-radius: 18px; -fx-border-style: groove; -fx-border-color: #022b3a; -fx-border-width: 3px; -fx-border-radius: 18px;" styleClass="loginPane" stylesheets="@../styles/mainView.css" visible="false">
+		<AnchorPane fx:id="dialogBoxLogin" layoutX="562.0" layoutY="87.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="288.0" prefWidth="224.0" style="-fx-background-color: #F5F5F5; -fx-background-radius: 10; -fx-border-style: groove; -fx-border-color: #022b3a; -fx-border-width: 3px; -fx-border-radius: 10px;" styleClass="loginPane" stylesheets="@../styles/mainView.css" visible="false">
 			<children>
 				<Label layoutX="63.0" layoutY="23.0" prefHeight="46.0" prefWidth="101.0" text="Login" textFill="#022b3a">
 					<font>
@@ -89,7 +89,7 @@
 				</Button>
 			</children>
 		</AnchorPane>
-      <Button fx:id="btnLogout" layoutX="695.0" layoutY="61.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#onLogoutBtn" prefHeight="27.0" prefWidth="63.0" styleClass="btnWithImage" text="Logout" textAlignment="CENTER" visible="false">
+      <Button fx:id="btnLogout" layoutX="695.0" layoutY="61.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#onLogoutBtn" prefHeight="27.0" prefWidth="63.0" styleClass="btnWithImage" text="Logout" textAlignment="CENTER" underline="true" visible="false">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
