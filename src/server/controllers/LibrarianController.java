@@ -200,7 +200,7 @@ public class LibrarianController {
 
 		ReturnMessageType op;
 		ArrayList<String> booksArray = null;
-		if(subscriber.getGraduationDate().equals(borrowCopyFromDB.getActualReturnDate()))
+		if(subscriber.getGraduationDate().before(borrowCopyFromDB.getActualReturnDate()) || subscriber.getGraduationDate().equals(borrowCopyFromDB.getActualReturnDate()))
 		{//student that graduate
 			booksArray = new ArrayList<String>();
 			String query= "SELECT copyID FROM obl.borrows where copyID='"+borrowCopyFromDB.getCopyID()+"' and actualReturnDate is null ";

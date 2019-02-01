@@ -215,12 +215,16 @@ public class SubscriberController {
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	boolean query_res1= dbControllerObj.update((String)updateLossCopyQuery[0]);
     	boolean query_res2= dbControllerObj.update((String)updateLossCopyQuery[1]);
-//		SubscriberController scObj=SubscriberController.getInstance();
-//		HistoryItem hRecord=new HistoryItem(Integer.valueOf(arr[2]),"subscriber lost book: ",SubscriberHistoryType.EditProfile);
-//		scObj.addHistoryRecordBySubId(new Message(OperationType.EditDetailsBySubscriber,hRecord ));
+    	int subNum=(Integer)updateLossCopyQuery[2];
+    	String bookNameLoss=(String)updateLossCopyQuery[3];
+
     	
     	if (query_res1&&query_res2)
-				return new Message(OperationType.LossReporting, null , ReturnMessageType.Successful);
+    	{
+	    		HistoryItem hRecord=new HistoryItem(subNum,"Subscriber Loss the book "+bookNameLoss,SubscriberHistoryType.BooksReturn);
+	    		addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+	    		return new Message(OperationType.LossReporting, null , ReturnMessageType.Successful);
+    	}
 		else
 				return new Message(OperationType.LossReporting, null , ReturnMessageType.Unsuccessful);
     		
@@ -241,7 +245,16 @@ public class SubscriberController {
 	    		boolean query_res= dbControllerObj.update((String)borrowExtenationQ[0]);
 	    		if(query_res==true)
 	    		{
-	    			return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.Successful);
+	    			HistoryItem hRecord=new HistoryItem((int)borrowExtenationQ[2],"Subscriber get extenation to the book: "+(String)borrowExtenationQ[3],SubscriberHistoryType.BooksReturn);
+		    		addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+		    		String bringAllLibrarians= "SELECT usrId from users where usrType='Librarian'";
+		    		ResultSet librarians= dbControllerObj.query(bringAllLibrarians);
+		    		while(librarians.next())
+		    		{
+		    			SendMailController.sendReminderInbox(librarians.getInt("usrID"), "Extenation Approve", "Subscriber number "+(int)borrowExtenationQ[2]+" get extenation to the book: "+(String)borrowExtenationQ[3]);
+		    			System.out.println("mail sent to the librarian number:"+librarians.getInt("usrID")+" inbox ");
+		    		}
+		    		return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.Successful);
 	    		}
 	    		return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.Unsuccessful);
 	    	}	

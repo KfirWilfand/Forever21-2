@@ -203,7 +203,11 @@ public class MainViewController {
 		utils.setBtnPressed(false, false, false, true);
 		
 		
+		
+		
 		utils.layoutSwitcher(mainPane, "inbox.fxml", "My Inbox");
+		ViewStarter.client.inboxControllerObj.getTxtBody().setVisible(false);
+		ViewStarter.client.inboxControllerObj.getTxtTitle().setVisible(false);
 		if(Integer.parseInt(getTxtNumberOfMsg().getText())==0)
 		{
 			getRedCircel().setVisible(false);
@@ -361,8 +365,7 @@ public class MainViewController {
 								redCircel.setVisible(true);
 							}
 						}
-					
-						
+								
 					btnMailBox.setVisible(true);
 					btnLogout.setVisible(true);
 					mainView.getChildren().remove(dialogBoxLogin);
