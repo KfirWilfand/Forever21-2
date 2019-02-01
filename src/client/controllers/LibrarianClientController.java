@@ -265,13 +265,14 @@ public class LibrarianClientController {
 
 			if (mIsLibrarianManager) {
 				btnStatisticTab.setDisable(false);
-				
+				ssCxbHoldSubscriber.setDisable(false);
 				FXMLLoader statisticPaneloadder = new FXMLLoader(
 						getClass().getResource("/client/boundery/layouts/statistic_libraian.fxml"));
 				Parent statisticPane = statisticPaneloadder.load();
 				if (ancStatistic != null) {
 					ancStatistic.getChildren().setAll(statisticPane);
 					statisticPaneloadder.<StatisticController>getController().initializeDetailsOnStatisticClick();
+					
 				}
 			}else {
 				btnStatisticTab.setDisable(true);
@@ -342,7 +343,7 @@ public class LibrarianClientController {
 
 			if (!ssCxbHoldSubscriber.isDisable()) {
 				if (ssCxbHoldSubscriber.isSelected())
-					updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Hold";
+					updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Lock";
 				else
 					updateSubscriberQuery = updateSubscriberQuery + "', `subStatus` = 'Active";
 			}
@@ -533,7 +534,7 @@ public class LibrarianClientController {
 				case Hold:
 					sslblStatus.setText("Hold");
 					sslblStatus.setTextFill(Color.web("#FFBE0B"));
-					ssCxbHoldSubscriber.setSelected(true);
+					ssCxbHoldSubscriber.setSelected(false);
 					ssCxbHoldSubscriber.setDisable(false);
 
 					break;
@@ -546,10 +547,16 @@ public class LibrarianClientController {
 				case Lock:
 					sslblStatus.setText("Lock");
 					sslblStatus.setTextFill(Color.web("#CE0E0E"));
-					ssCxbHoldSubscriber.setDisable(true);
-					ssCxbHoldSubscriber.setSelected(false);
+					ssCxbHoldSubscriber.setDisable(false);
+					ssCxbHoldSubscriber.setSelected(true);
 					break;
 				}
+				
+
+				if (mIsLibrarianManager) 
+					ssCxbHoldSubscriber.setDisable(false);
+				else
+					ssCxbHoldSubscriber.setDisable(true);
 
 				ssTfFirstName.setText(subscriber.getFirstName());
 				ssTfLastName.setText(subscriber.getLastName());

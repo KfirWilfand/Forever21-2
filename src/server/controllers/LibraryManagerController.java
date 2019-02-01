@@ -31,7 +31,8 @@ public class LibraryManagerController {
 		 String updateLatesCnt= "update obl.subscribers set subLatesCounter=0 where subNum="+(String)msg.getObj();
 		 boolean isUpdateCnt= db.update(updateLatesCnt);
 		 if(isLock && isUpdateCnt)
-		 {	SubscriberController scObj=SubscriberController.getInstance();
+		 {	
+			SubscriberController scObj=SubscriberController.getInstance();
 			HistoryItem hRecord=new HistoryItem(Integer.valueOf((String)msg.getObj()),"Subscriber status was cahnged to Lock",SubscriberHistoryType.ChangeStatus);
 			scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 			 return new Message(OperationType.LockReaderCard, null , ReturnMessageType.Successful);

@@ -318,7 +318,7 @@ public class LibrarianController {
 			if (!(checkSubStatus_res.getString("subStatus").equals("Active")))//if subscriber is not active
 				return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.MustReturnBook);
 			//check if book is popular
-			String checkIfPopular="select bIsPopular from obl.books where bCatalogNum='"+copy.getbCatalogNum()+"'";
+			String checkIfPopular="select bIsPopular, bName from obl.books where bCatalogNum='"+copy.getbCatalogNum()+"'";
 			ResultSet checkIfPopular_res = dbControllerObj.query(checkIfPopular);
 			if(checkIfPopular_res.next())
 			{
@@ -336,7 +336,12 @@ public class LibrarianController {
 				String extendBookDate="update obl.borrows set returnDueDate='"+((BorrowCopy)copyIDforExtensionBook.getObj()).getReturnDueDate()+"' where copyId='"+copyIDtemp+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"'";
 				Boolean extendBookDateBoolean=dbControllerObj.update(extendBookDate);
 				if(extendBookDateBoolean)
+				{	
+					SubscriberController scObj=SubscriberController.getInstance();
+	    			HistoryItem hRecord=new HistoryItem(checkIfBookInOrderQueue_res.getInt("boSubNum"),"Subscriber got extenation for the book"+checkIfPopular_res.getString("bName"),SubscriberHistoryType.BookExtension);
+	    			scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 					return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Successful);
+				}
 				else
 					return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
 			}return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);

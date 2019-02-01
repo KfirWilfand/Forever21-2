@@ -80,8 +80,6 @@ public class InboxController {
     	}
     }
 
-	
-
     @FXML
     void onClickMsg(MouseEvent event) {
     	InboxMsgItem msgItem=lvMessages.getSelectionModel().getSelectedItem();

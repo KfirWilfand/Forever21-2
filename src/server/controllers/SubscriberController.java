@@ -190,7 +190,12 @@ public class SubscriberController {
 					+ tempSubNum + "','" + tempBookCatalogNum + "','" + orderDate + "')";
 			Boolean insertBookInOrder = dbControllerObj.update(orderQuery);
 			if (insertBookInOrder)// if order executed
+			{
+	    		SubscriberController scObj=SubscriberController.getInstance();
+	    		HistoryItem hRecord=new HistoryItem(tempSubNum,"Subscriber order the book: "+bookToOrder.getBookName(),SubscriberHistoryType.BooksRequest);
+	    		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 				return new Message(OperationType.OrderBook, null, ReturnMessageType.Successful);
+			}
 			else
 				return new Message(OperationType.OrderBook, null, ReturnMessageType.Unsuccessful);
 		}
