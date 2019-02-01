@@ -67,7 +67,7 @@ public class BookListItemController extends ListCell<BorrowCopy>
     @FXML
     private Label txtTimeToReturn;
 
-    @FXML
+	@FXML
     private Button btnLossReporting;
     
     static Utils utils = new Utils(ViewStarter.client.mainViewController);
@@ -126,11 +126,13 @@ public class BookListItemController extends ListCell<BorrowCopy>
 			    {
 			    	DropShadow shadow = new DropShadow();
 			    	btnLossReporting.setEffect(shadow);
-			    	Object[] queryArr=new Object[2];
+			    	Object[] queryArr=new Object[4];
 			    	queryArr[0]="UPDATE obl.books as a left join obl.copeis as b"
 			    			+ " on a.bCatalogNum=b.bCatalogNum SET a.bCopiesNum=a.bCopiesNum-1"
 			    			+ " WHERE b.copyID='"+bookItem.getCopyID()+"'";
 			    	queryArr[1]="update obl.borrows set actualReturnDate=0000-00-00 where copyID='"+bookItem.getCopyID()+"' and subNum="+bookItem.getSubNum()+" and borrowDate='"+bookItem.getBorrowDate()+"'";
+			    	queryArr[2]=bookItem.getSubNum();
+			    	queryArr[3]=bookItem.getBookName();
 			    	btnLossReporting.setDisable(true);
 			    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.LossReporting, queryArr));
 			    		
@@ -144,7 +146,7 @@ public class BookListItemController extends ListCell<BorrowCopy>
 			    {
 			    	DropShadow shadow1 = new DropShadow();
 			    	btnAskBorrowExtenation.setEffect(shadow1);
-			    	Object[] query=new Object[3];
+			    	Object[] query=new Object[4];
 			    	if(bookItem.isPopular()==true)
 			   			utils.showAlertWithHeaderText(AlertType.ERROR, "", "This book is popular! Extenation is not permitted.");
 			    	else 
@@ -152,6 +154,7 @@ public class BookListItemController extends ListCell<BorrowCopy>
 						query[0]= "UPDATE obl.borrows SET returnDueDate=DATE_ADD('"+bookItem.getReturnDueDate()+"', INTERVAL 7 DAY) where subNum="+bookItem.getSubNum()+" and copyID='"+bookItem.getCopyID()+"' and returnDueDate='"+bookItem.getReturnDueDate()+"'";					    	
 						query[1]=bookItem.getCatalogNumber();
 						query[2]=bookItem.getSubNum();
+						query[3]=bookItem.getBookName();
 						btnAskBorrowExtenation.setDisable(true);
 						ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AutomaticBorrowExtenation, query));
 			    	}					    	
@@ -175,5 +178,8 @@ public class BookListItemController extends ListCell<BorrowCopy>
     
 
     }
+    
+    
+
 }
 

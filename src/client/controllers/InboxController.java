@@ -25,8 +25,7 @@ public class InboxController {
     @FXML
     private ListView<InboxMsgItem> lvMessages;
 
-   
-
+  
 
 	@FXML
     private Pane messagePane;
@@ -34,7 +33,8 @@ public class InboxController {
     @FXML
     private Text txtTitle;
 
-    @FXML
+
+	@FXML
     private Text txtBody;
 
     @FXML
@@ -80,10 +80,11 @@ public class InboxController {
     	}
     }
 
-	
     @FXML
     void onClickMsg(MouseEvent event) {
     	InboxMsgItem msgItem=lvMessages.getSelectionModel().getSelectedItem();
+		getTxtBody().setVisible(true);
+		getTxtTitle().setVisible(true);
     	messagePane.setVisible(true);
 		txtTitle.setText(msgItem.getTitle());
 		txtBody.setText(msgItem.getBody());
@@ -126,6 +127,15 @@ public class InboxController {
 
 		public Button getBtnActive() {
 			return btnActive;
+		}
+		
+	    public Text getTxtTitle() {
+			return txtTitle;
+		}
+
+
+		public Text getTxtBody() {
+			return txtBody;
 		}
 
 }

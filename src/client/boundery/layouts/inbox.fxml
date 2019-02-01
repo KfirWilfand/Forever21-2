@@ -16,7 +16,7 @@
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="766.0" style="-fx-background-color: WHITE;">
          <children>
             <ListView fx:id="lvMessages" layoutX="26.0" layoutY="28.0" onMouseClicked="#onClickMsg" prefHeight="566.0" prefWidth="262.0" />
-            <Pane fx:id="messagePane" layoutX="314.0" layoutY="41.0" prefHeight="235.0" prefWidth="425.0" visible="false">
+            <Pane fx:id="messagePane" layoutX="314.0" layoutY="41.0" prefHeight="235.0" prefWidth="425.0">
                <children>
                   <Text fx:id="txtTitle" layoutX="17.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" wrappingWidth="391.44140625">
                      <font>

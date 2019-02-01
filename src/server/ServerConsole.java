@@ -61,6 +61,7 @@ public class ServerConsole extends AbstractServer {
 	 */
 	public ServerConsole(int port) {
 		super(port);
+
 		connectedClients = new ArrayList<Integer>();
 	}
 
@@ -224,8 +225,7 @@ public class ServerConsole extends AbstractServer {
 			case AutomaticBorrowExtenation:
 				returnMessageToClient=subscriberControllerObj.askForBorrowExtenation((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
-				break;
-				
+				break;	
 			}
 
 		} catch (Exception ex) {
@@ -241,7 +241,7 @@ public class ServerConsole extends AbstractServer {
 	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
 		AutomaticFunctionsController afObj = AutomaticFunctionsController.getInstance();
-		afObj.startExecutionAt(00, 00, 01);
+		//afObj.startExecutionAt(00, 00, 01);
 	}
 
 	/**
@@ -252,5 +252,7 @@ public class ServerConsole extends AbstractServer {
 		ServerStarter.server.stopListening();
 		LOGGER.log(Level.INFO, "Server has stopped listening for connections.");
 	}
+	
+
 
 }

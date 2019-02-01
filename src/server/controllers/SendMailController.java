@@ -1,5 +1,6 @@
 package server.controllers;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.*;
 import javax.mail.*;
@@ -89,30 +90,34 @@ public class SendMailController {
     public static void sendLockInboxToLibraryManager(int subscriberNumber)
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
-    	java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
+    	Timestamp today= new Timestamp(System.currentTimeMillis());
+    	//java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
     	String title="Lock subscriber request";
     	String body="Subscriber number '"+subscriberNumber+"' late in returning 3 times.You have the option to lock his reader card";
-    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values(18,'"+title+"','"+body+"','LockReader',0,'"+today+"')";
+    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values(18,'"+title+"',\""+body+"\",'LockReader',0,'"+today+"')";
+    	System.out.println(query);
     	DBcObj.update(query);
     }
     
     public static void sendReminderInbox(int usrID,String msgTitle, String msgBody)
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
-    	java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
+    	Timestamp today= new Timestamp(System.currentTimeMillis());
+    	//java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
     	String title="Reminder: "+msgTitle;
     	String body=msgBody;
-    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values(18,'"+title+"','"+body+"','Reminder',0,'"+today+"')";
+    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values("+usrID+",'"+title+"','"+body+"','Reminder',0,'"+today+"')";
     	DBcObj.update(query);
     }
     
     public static void sendAlertInbox(int usrID,String msgTitle, String msgBody)
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
-    	java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
+    	Timestamp today= new Timestamp(System.currentTimeMillis());
+    	//java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
     	String title="Alert: "+msgTitle;
     	String body=msgBody;
-    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values(18,'"+title+"','"+body+"','Alert',0,'"+today+"')";
+    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values("+usrID+",'"+title+"','"+body+"','Alert',0,'"+today+"')";
     	DBcObj.update(query);
     }
     

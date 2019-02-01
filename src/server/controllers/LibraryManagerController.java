@@ -1,8 +1,12 @@
 package server.controllers;
 
+import java.sql.SQLException;
+
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
+import common.entity.HistoryItem;
+import common.entity.enums.SubscriberHistoryType;
 
 public class LibraryManagerController {
 
@@ -18,7 +22,7 @@ public class LibraryManagerController {
 		}
 		return instance;
 	}
-	public Message lockReaderCard(Message msg) 
+	public Message lockReaderCard(Message msg) throws SQLException
 	{
 		
 		 String updateStatusToLock= "update obl.subscribers set subStatus='Lock' where subNum="+(String)msg.getObj();
@@ -27,21 +31,31 @@ public class LibraryManagerController {
 		 String updateLatesCnt= "update obl.subscribers set subLatesCounter=0 where subNum="+(String)msg.getObj();
 		 boolean isUpdateCnt= db.update(updateLatesCnt);
 		 if(isLock && isUpdateCnt)
+		 {	
+			SubscriberController scObj=SubscriberController.getInstance();
+			HistoryItem hRecord=new HistoryItem(Integer.valueOf((String)msg.getObj()),"Subscriber status was cahnged to Lock",SubscriberHistoryType.ChangeStatus);
+			scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 			 return new Message(OperationType.LockReaderCard, null , ReturnMessageType.Successful);
+		 }
 		 else
 			 return new Message(OperationType.LockReaderCard, null , ReturnMessageType.Unsuccessful);
 	}
 	
-	public Message changeToActiveReaderCard(Message msg) 
+	public Message changeToActiveReaderCard(Message msg) throws SQLException 
 	{
+		
 		
 		String updateStatusToLock= "update obl.subscribers set subStatus='Active' where subNum="+(String)msg.getObj();
 		 DBcontroller db=DBcontroller.getInstance();
-		 boolean isLock= db.update(updateStatusToLock);
+		 boolean isActive= db.update(updateStatusToLock);
 		 String updateLatesCnt= "update obl.subscribers set subLatesCounter=0 where subNum="+(String)msg.getObj();
 		 boolean isUpdateCnt= db.update(updateLatesCnt);
-		 if(isLock && isUpdateCnt)
-			 return new Message(OperationType.ChangeToActiveReaderCard, null , ReturnMessageType.Successful);
+		 if(isActive && isUpdateCnt)
+		 {	SubscriberController scObj=SubscriberController.getInstance();
+			HistoryItem hRecord=new HistoryItem(Integer.valueOf((String)msg.getObj()),"Subscriber status was cahnged to Lock",SubscriberHistoryType.ChangeStatus);
+			scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+			return new Message(OperationType.ChangeToActiveReaderCard, null , ReturnMessageType.Successful);
+		 }
 		 else
 			 return new Message(OperationType.ChangeToActiveReaderCard, null , ReturnMessageType.Unsuccessful);
 	}

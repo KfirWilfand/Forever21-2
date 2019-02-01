@@ -1,5 +1,7 @@
 package client.controllers;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -110,7 +112,14 @@ public class SearchBookOnManageStockController {
 	 */
 	@FXML
 	void onClickSavePDF(ActionEvent event) {
-			PDFGenerator.getInstance().createPdf(PDF_PATH, "Book Stock Result", booksTable.getItems());
+		PDFGenerator.getInstance().createPdf(PDF_PATH, "Book Stock Result", booksTable.getItems());
+		File file = new File(PDF_PATH);
+		try {
+			Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

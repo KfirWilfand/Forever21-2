@@ -312,7 +312,7 @@ public class MessageManager {
 					ViewStarter.client.subscriberClientControllerObj.onGetBorrowedBooksResult(borrowBooks);
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
+					//utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
 					break;
 				}
 				break;
@@ -331,11 +331,14 @@ public class MessageManager {
 				{
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Automatic Borrow Extenation success");
+					
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Automatic Borrow Extenation failed!");
+					break;
 				case BookHaveWaitingList:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "This Book has waiting list , Sorry!");
+					break;
 				case SubscriberStatusNotActive:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Your Reader Card is Hold!");
 					break;

@@ -35,7 +35,7 @@ public class AutomaticFunctionsController {
 	            public void run() 
 	            {
 	                try {
-						AutomaticFunctions.checkStudentsGraduate();
+	                	System.out.println("function strat!!!");
 						AutomaticFunctions.checkLatesInReturns();
 						AutomaticFunctions.remainderOneDayBeforeReturns();
 						AutomaticFunctions.moveToTheNextSubscriberInQueue();
@@ -50,7 +50,7 @@ public class AutomaticFunctionsController {
 						e.printStackTrace();
 					}
 
-	                startExecutionAt(targetHour, targetMin, targetSec);
+	                //startExecutionAt(targetHour, targetMin, targetSec);
 	            }
 
 	        };
@@ -62,11 +62,12 @@ public class AutomaticFunctionsController {
 	    {
 	        LocalDateTime localNow = LocalDateTime.now();
 	        ZoneId currentZone = ZoneId.systemDefault();
+	        
 	        ZonedDateTime zonedNow = ZonedDateTime.of(localNow, currentZone);
+	        
 	        ZonedDateTime zonedNextTarget = zonedNow.withHour(targetHour).withMinute(targetMin).withSecond(targetSec);
 	        if(zonedNow.compareTo(zonedNextTarget) > 0)
 	            zonedNextTarget = zonedNextTarget.plusDays(1);
-
 	        Duration duration = Duration.between(zonedNow, zonedNextTarget);
 	        return duration.getSeconds();
 	    }
