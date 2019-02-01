@@ -77,7 +77,8 @@ public class SubscriberController {
 	 */
 	public static Subscriber getSubscriberById(String userId) throws SQLException {
 
-		String subscriberQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, a.usrType,b.subPhoneNum, b.subLatesCounter, b.subStatus,b.subGraduationDate FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "
+		String subscriberQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, a.usrType,b.subPhoneNum, b.subLatesCounter, b.subStatus"
+				+ ",b.subGraduationDate FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "
 				+ userId;
 
 		DBcontroller dbControllerObj = DBcontroller.getInstance();
@@ -214,5 +215,30 @@ public class SubscriberController {
 				return new Message(OperationType.LossReporting, null , ReturnMessageType.Unsuccessful);
     		
 	}
-
+	
+	public Message askForBorrowExtenation(Object msg) throws SQLException
+	{
+		Object[] borrowExtenationQ=(Object[])((Message)msg).getObj();
+		int num=(int)borrowExtenationQ[1];
+    	Queue<Subscriber> q=ManageStockController.getBookOrderQueue(num);
+    	String subNum_query=Integer.toString((int)borrowExtenationQ[2]);
+    	ReaderCardStatus status=getSubscriberById(subNum_query).getReaderCard().getStatus();
+    	if(status==ReaderCardStatus.Active)
+    	{
+	    	if(q.isEmpty()==true)
+	    	{
+	    		DBcontroller dbControllerObj= DBcontroller.getInstance();
+	    		boolean query_res= dbControllerObj.update((String)borrowExtenationQ[0]);
+	    		if(query_res==true)
+	    		{
+	    			return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.Successful);
+	    		}
+	    		return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.Unsuccessful);
+	    	}	
+	    	return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.BookHaveWaitingList);
+    	}
+    	return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.SubscriberStatusNotActive);
+	}
 }
+    	
+	

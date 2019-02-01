@@ -170,6 +170,11 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=subscriberControllerObj.addHistoryRecordBySubId((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case AutomaticBorrowExtenation:
+				returnMessageToClient=subscriberControllerObj.askForBorrowExtenation((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+				
 			}
 			
 		} catch(Exception ex) {

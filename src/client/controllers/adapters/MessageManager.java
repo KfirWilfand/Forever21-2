@@ -328,6 +328,23 @@ public class MessageManager {
 					break;
 				}
 				break;
+			case AutomaticBorrowExtenation:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Automatic Borrow Extenation success");
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Automatic Borrow Extenation failed!");
+				case BookHaveWaitingList:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "This Book has waiting list , Sorry!");
+				case SubscriberStatusNotActive:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Your Reader Card is Hold!");
+					break;
+				
+				}
+				//ViewStarter.client.bookListItemControllerObj.getBtnAskBorrowExtenation().setDisable(true);
+				break;
 				
 				
 		

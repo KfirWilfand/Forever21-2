@@ -17,9 +17,9 @@
 				<Font name="System Bold" size="12.0" />
 			</font>
 		</Label>
-		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="570.0" layoutY="34.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Ask Borrow Extension">
+		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" alignment="BASELINE_LEFT" disable="true" ellipsisString="" layoutX="420.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="154.0" styleClass="btnWithImage" text="Ask Borrow Extension" underline="true">
          <font>
-            <Font size="11.0" />
+            <Font name="System Bold" size="12.0" />
          </font></Button>
       <Label layoutX="58.0" layoutY="36.0" text="Borrow Date:">
          <font>
@@ -40,10 +40,19 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="txtTimeToReturn" layoutX="530.0" layoutY="36.0" text="3 days" textFill="RED" />
-      <Button fx:id="btnLossReporting" layoutX="570.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Loss Reporting">
+      <Label fx:id="txtTimeToReturn" layoutX="527.0" layoutY="36.0" text="day" textFill="RED">
          <font>
-            <Font size="11.0" />
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Button fx:id="btnLossReporting" alignment="BOTTOM_LEFT" ellipsisString="" layoutX="585.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="140.0" styleClass="btnWithImage" text="Loss Reporting" underline="true">
+         <font>
+            <Font name="System Bold" size="12.0" />
          </font></Button>
+      <Label layoutX="548.0" layoutY="36.0" text="days" textFill="RED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Line endX="-100.0" endY="33.0" layoutX="680.0" layoutY="-1.0" startX="-100.0" />
 	</children>
 </AnchorPane>
