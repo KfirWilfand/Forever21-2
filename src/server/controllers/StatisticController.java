@@ -128,7 +128,7 @@ public class StatisticController {
 	 * @param msg contains the message from the client
 	 * @throws SQLException when occurs
 	 */
-	public void insertStatisticActiviySnapshot() throws Exception {
+	public static void insertStatisticActiviySnapshot() throws Exception {
 		String aLockSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Lock';";
 		String aHoldSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Hold';";
 		String aActiveSubQuary = "SELECT COUNT(subStatus) FROM obl.subscribers as a Where a.subStatus='Avtive';";
