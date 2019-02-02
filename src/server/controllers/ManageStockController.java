@@ -1,6 +1,8 @@
 package server.controllers;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Queue;
 
 import client.ViewStarter;
+import client.controllers.BookDetailsController;
 import common.controllers.FilesController;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
@@ -52,8 +55,9 @@ public class ManageStockController {
 	 * @param msg contains the message from the client 
 	 * @throws SQLException when occurs
 	 * @return Message to the client
+	 * @throws URISyntaxException 
 	 */
-	public Message addNewBook(Object msg) throws SQLException 
+	public Message addNewBook(Object msg) throws SQLException, URISyntaxException 
 	{
 		
 		Object[] message=(Object[])((Message)msg).getObj();
@@ -63,9 +67,23 @@ public class ManageStockController {
 		
 		FilesController filesControllerObj=FilesController.getInstance();
 		if((TransferFile)message[1]!=null)
-			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"/TableOfContent/");
+		{
+	    	String path="";
+			try {
+				path = (ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],path);
+		}
 		if((TransferFile)message[3]!=null)
-			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"/BooksImages/");
+		{
+			String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+	  		path = path.substring(0, path.lastIndexOf("/"));
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],path+"/BooksImages/");
+		}
 		
 		
 		if(res)
@@ -174,8 +192,9 @@ public class ManageStockController {
 	 * @param msg contains the message from the client 
 	 * @throws SQLException when occurs
 	 * @return Message to the client
+	 * @throws URISyntaxException 
 	 */
-	public Message updateBookDetails(Object msg) throws SQLException 
+	public Message updateBookDetails(Object msg) throws SQLException, URISyntaxException 
 	{
 		Object[] message=(Object[])((Message)msg).getObj();
 		String query=(String)message[0];
@@ -183,10 +202,25 @@ public class ManageStockController {
 		Boolean res = dbControllerObj.insert(query);
 		FilesController filesControllerObj=FilesController.getInstance();
 		if((TransferFile)message[1]!= null)
-			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],"/TableOfContent/");
+		{
+
+	    	String path="";
+			try {
+				path = (BookDetailsController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],path);
+		}
 
 		if((TransferFile)message[3]!= null)
-			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],"/BooksImages/");
+		{
+	  		String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+	  		path = path.substring(0, path.lastIndexOf("/"));
+			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],path+"/BooksImages/");
+		}
 		if(res)
 		{
 			return new Message(OperationType.UpdateBookDetails, null , ReturnMessageType.Successful); 
@@ -275,14 +309,15 @@ public class ManageStockController {
 		return borrow ;
 	}
 
-	public Message sendBookPhotoToClient(Message msg) 
+	public Message sendBookPhotoToClient(Message msg) throws URISyntaxException 
 	{
+		System.out.println("!!!!!!!!!!!");
   		String bookName=(String)msg.getObj();
-		URL url = getClass().getResource("/BooksImages/");
-		String path=url.getPath().toString()+bookName.replace(" ","_")+".png";
-		//path=path.replace('/', '\\');
-		path=path.replaceAll("bin", "src");
-  		TransferFile tf=TransferFile.createFileToTransfer(path);
+  		
+  		String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+  		path = path.substring(0, path.lastIndexOf("/"));
+  		System.out.println(path);
+  		TransferFile tf=TransferFile.createFileToTransfer(path+"/BooksImages/"+bookName.replace(" ","_")+".png");
   		Object[] message=new Object[2];
   		message[0]=tf;
   		message[1]=bookName;

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -33,6 +34,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import server.controllers.ManageStockController;
 
 /**
  * The UpdateOrAddBookController class represent the update or add new book controller on the client's side
@@ -337,13 +339,13 @@ public class UpdateOrAddBookController {
     	
     }
     
-    public void showPhoto(String fileName)
+    public void showPhoto(String fileName) throws URISyntaxException
     {
     	URL url = getClass().getResource("/BooksImages/");
     	
-		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
-		//str=str.replace('/', '\\');
-		str=str.replaceAll("bin", "src");
+    	String path =(UpdateOrAddBookController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+  		path = path.substring(0, path.lastIndexOf("/"))+"/BooksImages/";
+		String str=path+fileName.replace(" ","_")+".png";
 		System.out.println(str);
     	bookImage.setImage(new Image(new File(str).toURI().toString()));
     }

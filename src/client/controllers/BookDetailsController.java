@@ -3,6 +3,7 @@ package client.controllers;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.sql.Date;
@@ -13,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 import client.ViewStarter;
+import client.controllers.adapters.MessageManager;
 import common.controllers.Message;
 import common.controllers.enums.OperationType;
 import common.entity.Book;
@@ -145,10 +147,16 @@ public class BookDetailsController {
 				FileChooser fileChooser = new FileChooser();
 		        fileChooser.setTitle("Save Table of content");
 		        
-		        URL url = getClass().getResource("/TableOfContent/");
-				String str=url.getPath().toString()+fileName.replace(" ","_")+".pdf";
-				str=str.replace('/', '\\');
-				str=str.replaceAll("bin", "src");
+		    	String path="";
+				try {
+					path = (BookDetailsController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+				String str=path+fileName.replace(" ","_")+".pdf";
+		        
 				File file = new File(str);
 				try {
 					Desktop.getDesktop().open(file);
@@ -214,15 +222,18 @@ public class BookDetailsController {
 				txtBookOrderStatusNotice.setVisible(true);
 			}
 		}
+		
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ShowBookPhotoOnSearchBookDetails, book.getBookName()));
 	}
 	
-    public void showPhoto(String fileName)
+    public void showPhoto(String fileName) throws URISyntaxException
     {
-    	URL url = getClass().getResource("/BooksImages/");
-		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
-		//str=str.replace('/', '\\');
-		str=str.replaceAll("bin", "src");
+    	System.out.println("4");
+    	
+    	String path =(BookDetailsController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+  		path = path.substring(0, path.lastIndexOf("/"))+"/BooksImages/";
+		String str=path+fileName.replace(" ","_")+".png";
+		System.out.println(str);
 		bookImage.setImage(new Image(new File(str).toURI().toString()));
     }
 	

@@ -1,7 +1,10 @@
 package client.controllers.adapters;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -13,6 +16,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -26,7 +30,6 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.WritableImage;
 import java.io.FileOutputStream;
-
 
 public class PDFGenerator {
 
@@ -50,34 +53,32 @@ public class PDFGenerator {
 		}
 		return instance;
 	}
+
 	/**
 	 * Generate a PDF of books
+	 * 
 	 * @param dest: path to save the file
 	 * @param title: PDF title
 	 * @param bookList: List of book to print
 	 */
-	public void createPdf(String dest, String title, List<Book> bookList) {
+	public File createPdf(String dest, String title, List<Book> bookList) {
+		File file = new File(dest);
 		try {
 
 			if (bookList.isEmpty()) {
 				ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "Empty List Error",
 						"Error, can't save empty book list");
-				return;
+				return null;
 			}
 
-			File file = new File(dest);
-			file.getParentFile().mkdirs();
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 
-			Image img = Image
-					.getInstance(System.getProperty("user.dir") + "/src/client/boundery/resources/logo-small.png");
+			document.open();
+
 			Paragraph para = new Paragraph(new Phrase(title, titleFont));
 			para.setAlignment(Element.ALIGN_CENTER);
 
-			Document document = new Document();
-			PdfWriter.getInstance(document, new FileOutputStream(dest));
-			document.open();
-
-			//document.add(img);
 			document.add(para);
 
 			for (Book book : bookList) {
@@ -145,22 +146,28 @@ public class PDFGenerator {
 			e.printStackTrace();
 			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "File Error",
 					"Error, file save path not found or in use.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "Search List is Empty",
+					"Error, Search List is Empty.");
 		}
+		return file;
 	}
+
 	/**
-	 * Generate a PDF file with statistic report, all data comes from 
-	 * statistic controller, include what to insert to file.
-	 * @param dest: path to save the file
-	 * @param title: PDF title
+	 * Generate a PDF file with statistic report, all data comes from statistic
+	 * controller, include what to insert to file.
+	 * 
+	 * @param                     dest: path to save the file
+	 * @param                     title: PDF title
 	 * @param StatisticController
 	 */
-	public void createPdf(String dest, String title, StatisticController statis)
+	public File createPdf(String dest, String title, StatisticController statis)
 			throws DocumentException, MalformedURLException, IOException {
-		
+
 		File file = new File(dest);
 		file.getParentFile().mkdirs();
 
-		Image img = Image.getInstance(System.getProperty("user.dir") + "/src/client/boundery/resources/logo-small.png");
 		Paragraph para = new Paragraph(new Phrase(title, titleFont));
 		para.setAlignment(Element.ALIGN_CENTER);
 
@@ -168,7 +175,6 @@ public class PDFGenerator {
 		PdfWriter.getInstance(document, new FileOutputStream(dest));
 		document.open();
 
-		document.add(img);
 		document.add(para);
 
 		List<ActiviySnapshot> mSnapshot = statis.getActiviySnapshot();
@@ -239,23 +245,22 @@ public class PDFGenerator {
 			cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell1.setBorder(2);
 			table.addCell(cell1);
-			
 
 			if (statis.getCbBorrRegReportDecDist().isSelected()) {
 				Image iTextImage = getImageByNode(statis.getBcStatisticRegularBooks());
 				if (iTextImage != null) {
-					PdfPCell cell2 =  new PdfPCell(iTextImage, true);
+					PdfPCell cell2 = new PdfPCell(iTextImage, true);
 					cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell1.setBorder(0);
 					cell2.setColspan(4);
-					table.addCell(cell2);	
+					table.addCell(cell2);
 				}
 			}
-			
+
 			if (statis.getCbBorrRegReportAvg().isSelected()) {
 				table.addCell(new Phrase("Average: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticAverageRegularBooks().getText(), normalFont));
-				if(!statis.getCbBorrRegReportMed().isSelected()) {
+				if (!statis.getCbBorrRegReportMed().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
@@ -264,14 +269,14 @@ public class PDFGenerator {
 			if (statis.getCbBorrRegReportMed().isSelected()) {
 				table.addCell(new Phrase("Median: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticMedianRegularBooks().getText(), normalFont));
-				if(!statis.getCbBorrRegReportAvg().isSelected()) {
+				if (!statis.getCbBorrRegReportAvg().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
 			}
-			
+
 			document.add(table);
-			
+
 		}
 
 		// Popular Book
@@ -289,18 +294,18 @@ public class PDFGenerator {
 			if (statis.getCbBorrPopReportDecDist().isSelected()) {
 				Image iTextImage = getImageByNode(statis.getBcStatisticPopularBooks());
 				if (iTextImage != null) {
-					PdfPCell cell2 =  new PdfPCell(iTextImage, true);
+					PdfPCell cell2 = new PdfPCell(iTextImage, true);
 					cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell1.setBorder(0);
 					cell2.setColspan(4);
-					table.addCell(cell2);	
+					table.addCell(cell2);
 				}
 			}
 
 			if (statis.getCbBorrPopReportAvg().isSelected()) {
 				table.addCell(new Phrase("Average: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticAveragePopularBooks().getText(), normalFont));
-				if(!statis.getCbBorrPopReportMed().isSelected()) {
+				if (!statis.getCbBorrPopReportMed().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
@@ -309,12 +314,12 @@ public class PDFGenerator {
 			if (statis.getCbBorrPopReportMed().isSelected()) {
 				table.addCell(new Phrase("Median: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticMedianPopularBooks().getText(), normalFont));
-				if(!statis.getCbBorrPopReportAvg().isSelected()) {
+				if (!statis.getCbBorrPopReportAvg().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
 			}
-			
+
 			document.add(table);
 		}
 
@@ -334,18 +339,18 @@ public class PDFGenerator {
 			if (statis.getCbAllLateRegReportDecDist().isSelected()) {
 				Image iTextImage = getImageByNode(statis.getBcStatisticRegularBooks());
 				if (iTextImage != null) {
-					PdfPCell cell2 =  new PdfPCell(iTextImage, true);
+					PdfPCell cell2 = new PdfPCell(iTextImage, true);
 					cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell1.setBorder(0);
 					cell2.setColspan(4);
-					table.addCell(cell2);	
+					table.addCell(cell2);
 				}
 			}
 
 			if (statis.getCbAllLateRegReportAvg().isSelected()) {
 				table.addCell(new Phrase("Average: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticAverageReturnLates().getText(), normalFont));
-				if(!statis.getCbAllLatesRegReportMed().isSelected()) {
+				if (!statis.getCbAllLatesRegReportMed().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
@@ -355,12 +360,12 @@ public class PDFGenerator {
 			if (statis.getCbAllLatesRegReportMed().isSelected()) {
 				table.addCell(new Phrase("Median: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticMedianReturnLates().getText(), normalFont));
-				if(!statis.getCbAllLateRegReportAvg().isSelected()) {
+				if (!statis.getCbAllLateRegReportAvg().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
 			}
-			
+
 			document.add(table);
 		}
 
@@ -381,18 +386,18 @@ public class PDFGenerator {
 			if (statis.getCbLateSingleBooksDist().isSelected()) {
 				Image iTextImage = getImageByNode(statis.getBcStatisticReturnLatesSingle());
 				if (iTextImage != null) {
-					PdfPCell cell2 =  new PdfPCell(iTextImage, true);
+					PdfPCell cell2 = new PdfPCell(iTextImage, true);
 					cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell1.setBorder(0);
 					cell2.setColspan(4);
-					table.addCell(cell2);	
+					table.addCell(cell2);
 				}
 			}
-			
+
 			if (statis.getCbLateSingleBooksAvg().isSelected()) {
 				table.addCell(new Phrase("Average: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticSingleBookAverageReturnLates().getText(), normalFont));
-				if(!statis.getCbLateSingleBooksMed().isSelected()) {
+				if (!statis.getCbLateSingleBooksMed().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
@@ -401,20 +406,22 @@ public class PDFGenerator {
 			if (statis.getCbLateSingleBooksMed().isSelected()) {
 				table.addCell(new Phrase("Median: ", boldFont));
 				table.addCell(new Phrase(statis.getLblStatisticSingleBookMedianReturnLates().getText(), normalFont));
-				if(!statis.getCbLateSingleBooksAvg().isSelected()) {
+				if (!statis.getCbLateSingleBooksAvg().isSelected()) {
 					table.addCell(new Phrase(" ", boldFont));
 					table.addCell(new Phrase(" ", boldFont));
 				}
 			}
-			
+
 			document.add(table);
 		}
 
 		document.close();
-
+		return file;
 	}
+
 	/**
 	 * getImageByNode
+	 * 
 	 * @param Node
 	 * @return Image
 	 */

@@ -1,5 +1,6 @@
 package client.controllers.adapters;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import common.entity.TransferFile;
 import common.entity.User;
 import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
+import server.controllers.ManageStockController;
 
 /**
  * The MessageManager class represent the cases of our operations type and how
@@ -278,7 +280,17 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1], "/TableOfContent/");
+					
+			    	String path="";
+					try {
+						path = (MessageManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+					} catch (URISyntaxException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+					
+					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1],path);
 					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -291,7 +303,10 @@ public class MessageManager {
 				case Successful:
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
+					String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+			  		path = path.substring(0, path.lastIndexOf("/"));
+	
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], path+"/BooksImages/");
 					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
@@ -349,12 +364,16 @@ public class MessageManager {
 			case ShowBookPhotoOnSearchBookDetails:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
+					System.out.println("onn success");
 					FilesController fc = FilesController.getInstance();
 					Object[] o = (Object[]) msg.getObj();
-					fc.SavePhoto((TransferFile) o[0], (String) o[1], "/BooksImages/");
+					String path =(MessageManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+			  		path = path.substring(0, path.lastIndexOf("/"));
+					fc.SavePhoto((TransferFile) o[0], (String) o[1], path+"/BooksImages/");
 					ViewStarter.client.bookDetailsControllerObj.showPhoto((String) o[1]);
 					break;
 				case Unsuccessful:
+					System.out.println("failllll!!!!");
 					break;
 				}
 				break;
@@ -471,8 +490,7 @@ public class MessageManager {
 					ViewStarter.client.statisticClientControllerObj.updateBookStatsticUI(bookSelected);
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Search Single Book",
-							"Can't find data on this book!");
+				//	ViewStarter.client.statisticClientControllerObj.updateBookStatsticUIUnsuccessful(bookSelected);
 					break;
 				}
 				break;
