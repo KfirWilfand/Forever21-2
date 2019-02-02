@@ -500,7 +500,9 @@ public class MessageManager {
 					ViewStarter.client.statisticClientControllerObj.updateBookStatsticUI(bookSelected);
 					break;
 				case Unsuccessful:
-				//	ViewStarter.client.statisticClientControllerObj.updateBookStatsticUIUnsuccessful(bookSelected);
+				//	ViewStarter.client.statisticClientControllerObj.updateBookStatsticUIUnsuccessful();
+					ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "Search Single Book",
+							"Can't find data on this book!");
 					break;
 				}
 				break;

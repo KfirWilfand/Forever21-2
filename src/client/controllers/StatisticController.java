@@ -200,7 +200,6 @@ public class StatisticController {
 	private List<ActiviySnapshot> mActiviySnapshot;
 	protected boolean isTabReturnLatesPressed = false;
 	protected boolean isTabBorrowPressed = false;
-	private boolean isContextFromMainView = true;
 
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 	/** PDF_PATH is the path for saved stock result file */
@@ -471,12 +470,6 @@ public class StatisticController {
 		});
 	}
 
-	public void updateBookStatsticUIUnsuccessful(BookStatistic bookSelected) {
-		if(isContextFromMainView ) {
-		ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "Search Single Book",
-				"Can't find data on this book!");
-		}
-	}
 
 	/**
 	 * getDistributionDataByDecimalRange help to generate the chart series to
