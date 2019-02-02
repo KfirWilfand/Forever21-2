@@ -46,9 +46,8 @@ public class AutomaticFunctionsController {
 						AutomaticFunctions.checkLatesInReturns();
 						AutomaticFunctions.remainderOneDayBeforeReturns();
 						AutomaticFunctions.moveToTheNextSubscriberInQueue();
-						
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
+						StatisticController.insertStatisticActiviySnapshot();
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 	                try {
