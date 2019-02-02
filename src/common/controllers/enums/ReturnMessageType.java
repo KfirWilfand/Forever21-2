@@ -14,14 +14,23 @@ public enum ReturnMessageType {
 	Successful,
 	Unsuccessful, 
 	SuccessfulWithLastSnapshotDate,
-
-
 	ErrorWhileTyping,
 	ClientIsAlreadyLogin,
 	SubscriberIsLocked, 
 	CopyNotExist,
 	HoldOrLockStatus, 
 	CopyIsNotAvailable, 
-	SubscriberAlreadyInOrderList, wrongBorrowDetails, FullOrderList,
-	ChangeStatusToLock, ChangeStatusToActive, subscriberInWaitingList, MustReturnBook, PopularBook
+	SubscriberAlreadyInOrderList, 
+	wrongBorrowDetails,
+	FullOrderList,
+	ChangeStatusToLock,
+	ChangeStatusToActive, 
+	subscriberInWaitingList, 
+	GetStatstic,
+	BookHaveWaitingList,
+	SubscriberStatusNotActive,
+	MustReturnBook,
+	PopularBook,
+	GraduateWithMoreBooksToReturn,
+	ChangeGraduateStatusToLock,
 }

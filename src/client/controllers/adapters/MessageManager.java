@@ -254,17 +254,23 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
 					break;
 				case subscriberInWaitingList:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
-							"there is a waiting list to this book\nput the book aside.");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","there is a waiting list to this book\nput the book aside.");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
 				case ChangeStatusToActive:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "",
 							"Subscriber status changed to 'Active'.\nSubscriber was late in return");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
-				case ChangeStatusToLock:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog",
-							"Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+				case ChangeGraduateStatusToLock:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
+				case GraduateWithMoreBooksToReturn:
+					Object[] o = (Object[]) msg.getObj();
+					ArrayList<String> arr=(ArrayList<String>)o[1];
+					String listString = String.join(", ", arr);
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Graduate need to return the following books :"+listString);
 				}
 				break;
 			case DownloadTableOfContent:
@@ -299,7 +305,6 @@ public class MessageManager {
 					utils.showAlertWithHeaderText(AlertType.ERROR, "History record", "Can't save history record");
 				}
 				break;
-
 			case ShowMyBorrowedBooks:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
@@ -307,7 +312,7 @@ public class MessageManager {
 					ViewStarter.client.subscriberClientControllerObj.onGetBorrowedBooksResult(borrowBooks);
 					break;
 				case Unsuccessful:
-					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
+					//utils.showAlertWithHeaderText(AlertType.ERROR, "", "Books not found!");
 					break;
 				}
 				break;
@@ -321,6 +326,26 @@ public class MessageManager {
 					break;
 				}
 				break;
+			case AutomaticBorrowExtenation:
+				switch (msg.getReturnMessageType()) 
+				{
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Automatic Borrow Extenation success");
+					
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Automatic Borrow Extenation failed!");
+					break;
+				case BookHaveWaitingList:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "This Book has waiting list , Sorry!");
+					break;
+				case SubscriberStatusNotActive:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Your Reader Card is Hold!");
+					break;
+				
+				}
+				//ViewStarter.client.bookListItemControllerObj.getBtnAskBorrowExtenation().setDisable(true);
+				break;
 			case ShowBookPhotoOnSearchBookDetails:
 				switch (msg.getReturnMessageType()) {
 				case Successful:
@@ -332,6 +357,7 @@ public class MessageManager {
 				case Unsuccessful:
 					break;
 				}
+				break;
 			case ExtensionBookByLibrarian:
 				switch(msg.getReturnMessageType())
 				{
@@ -363,6 +389,30 @@ public class MessageManager {
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "No Messages");
 					break;
+				}
+				break;
+			case LockReaderCard:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Reader Card Lock Successfully");
+					ViewStarter.client.inboxControllerObj.getBtnLock().setDisable(true);
+					ViewStarter.client.inboxControllerObj.getBtnActive().setDisable(false);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Fail to Lock Reader Card");
+					break;	
+				}		
+				break;
+			case ChangeToActiveReaderCard:
+				switch (msg.getReturnMessageType()) {
+				case Successful:
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Reader Card Status Change To 'Active' Successfully");
+					ViewStarter.client.inboxControllerObj.getBtnLock().setDisable(false);
+					ViewStarter.client.inboxControllerObj.getBtnActive().setDisable(true);
+					break;
+				case Unsuccessful:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Fail to change Reader Card status");
+					break;	
 				}
 				break;
 			case GetBookStatstic:
@@ -426,7 +476,6 @@ public class MessageManager {
 					break;
 				}
 				break;
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

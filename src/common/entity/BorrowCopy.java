@@ -23,6 +23,10 @@ public class BorrowCopy implements Serializable {
 
 	private String bookName;
 
+
+
+	private int catalogNumber;
+	private boolean isPopular; 
 	/** copyID is the copy id */
 	private String copyID;
 	/** subNum is the subscriber number */
@@ -52,7 +56,7 @@ public class BorrowCopy implements Serializable {
 	}
 
 	//this constructor  is to the borrows books. you cant use in the book name
-	public BorrowCopy(String bookName,String copyID, int subNum, Date borrowDate, Date returnDueDate) {
+	public BorrowCopy(String bookName,String copyID, int subNum, Date borrowDate, Date returnDueDate,int catalogNumber,boolean isPopular) {
 		super();
 		this.bookName = bookName;
 		System.out.println(bookName);
@@ -60,6 +64,8 @@ public class BorrowCopy implements Serializable {
 		this.subNum = subNum;
 		this.borrowDate = borrowDate;
 		this.returnDueDate = returnDueDate;
+		this.catalogNumber=catalogNumber;
+		this.isPopular=isPopular;
 	}
 
 	/**
@@ -148,6 +154,14 @@ public class BorrowCopy implements Serializable {
 	public String getBookName() {
 		return bookName;
 	}
+	
+	public int getCatalogNumber() {
+		return catalogNumber;
+	}
+
+	public boolean isPopular() {
+		return isPopular;
+	}
 
 	
 	public static List<BorrowCopy> resultSetToList(ResultSet rs) throws SQLException
@@ -157,7 +171,7 @@ public class BorrowCopy implements Serializable {
 		{
        		while (rs.next())
     		{
-       			borrowBooks_list.add(new BorrowCopy(rs.getString("bName"),rs.getString("copyID"),rs.getInt("subNum"),rs.getDate("borrowDate"),rs.getDate("returnDueDate")));
+       			borrowBooks_list.add(new BorrowCopy(rs.getString("bName"),rs.getString("copyID"),rs.getInt("subNum"),rs.getDate("borrowDate"),rs.getDate("returnDueDate"),rs.getInt("bCatalogNum"),rs.getBoolean("bIsPopular")));
     		}
 		}
 		return borrowBooks_list;

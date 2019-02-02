@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="tableRow" fx:id="tableRowBorrowBook" prefHeight="64.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.adapters.BookListItemController">
+<AnchorPane id="tableRow" fx:id="tableRowBorrowBook" prefHeight="64.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.adapters.BookListItemController">
 	<children>
-		<Line endX="-100.0" endY="41.0" layoutX="113.0" layoutY="14.0" startX="-100.0" startY="-7.0" stroke="#8a8a8a" />
-		<Line endX="548.0" endY="1.1444091796875E-5" layoutX="135.0" layoutY="32.0" startX="-114.0" stroke="#8a8a8a" />
-		<Label id="lblBookName" fx:id="txtBookName" layoutX="26.0" layoutY="8.0" text="Book Name">
+		<ImageView id="ivBook" fx:id="imgBookImage" fitHeight="34.0" fitWidth="34.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+		<Line endX="-100.0" endY="33.0" layoutX="152.0" layoutY="14.0" startX="-100.0" />
+		<Line endX="548.0" endY="1.1444091796875E-5" layoutX="168.0" layoutY="32.0" startX="-109.0" />
+		<Label id="lblBookName" fx:id="txtBookName" layoutX="59.0" layoutY="8.0" text="Book Name">
 			<font>
 				<Font name="System Bold" size="12.0" />
 			</font>
 		</Label>
-		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" layoutX="572.0" layoutY="35.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" stylesheets="@../styles/mainView.css" text="Ask Borrow Extension">
+		<Button id="bookDetails" fx:id="btnAskBorrowExtenation" alignment="BASELINE_LEFT" disable="true" ellipsisString="" layoutX="420.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="154.0" styleClass="btnWithImage" text="Ask Borrow Extension" underline="true">
          <font>
-            <Font size="11.0" />
-         </font>
-         <styleClass>
-            <String fx:value="btnWithImageWithBorder" />
-            <String fx:value="buttonShadow" />
-         </styleClass></Button>
-      <Label layoutX="25.0" layoutY="36.0" text="Borrow Date:">
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Label layoutX="58.0" layoutY="36.0" text="Borrow Date:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="txtBorrowDate" layoutX="105.0" layoutY="36.0" text="05/09/2018" />
-      <Label layoutX="185.0" layoutY="36.0" text="Return Date:">
+      <Label fx:id="txtBorrowDate" layoutX="138.0" layoutY="36.0" text="05/09/2018" />
+      <Label layoutX="218.0" layoutY="36.0" text="Return Date:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="txtReturnDate" layoutX="265.0" layoutY="37.0" text="25/09/2018" />
-      <Line endX="-100.0" endY="16.5" layoutX="275.0" layoutY="34.0" startX="-100.0" startY="4.5" stroke="#8a8a8a" />
-      <Line endX="-100.0" endY="16.5" layoutX="435.0" layoutY="34.0" startX="-100.0" startY="4.5" stroke="#8a8a8a" />
-      <Label layoutX="348.0" layoutY="36.0" text="Time left to return book:">
+      <Label fx:id="txtReturnDate" layoutX="298.0" layoutY="37.0" text="25/09/2018" />
+      <Line endX="-100.0" endY="16.5" layoutX="308.0" layoutY="34.0" startX="-100.0" startY="4.5" />
+      <Line endX="-100.0" endY="16.5" layoutX="468.0" layoutY="34.0" startX="-100.0" startY="4.5" />
+      <Label layoutX="381.0" layoutY="36.0" text="Time left to return book:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="txtTimeToReturn" layoutX="497.0" layoutY="36.0" text="3 days" textFill="RED" />
-      <Button fx:id="btnLossReporting" layoutX="572.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" stylesheets="@../styles/mainView.css" text="Loss Reporting">
+      <Label fx:id="txtTimeToReturn" layoutX="527.0" layoutY="36.0" text="day" textFill="RED">
          <font>
-            <Font size="11.0" />
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Button fx:id="btnLossReporting" alignment="BOTTOM_LEFT" ellipsisString="" layoutX="585.0" layoutY="3.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="140.0" styleClass="btnWithImage" text="Loss Reporting" underline="true">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Label layoutX="548.0" layoutY="36.0" text="days" textFill="RED">
+         <font>
+            <Font name="System Bold" size="12.0" />
          </font>
-         <styleClass>
-            <String fx:value="btnWithImageWithBorder" />
-            <String fx:value="buttonShadow" />
-         </styleClass></Button>
+      </Label>
+      <Line endX="-100.0" endY="33.0" layoutX="680.0" layoutY="-1.0" startX="-100.0" />
 	</children>
 </AnchorPane>

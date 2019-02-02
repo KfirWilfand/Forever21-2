@@ -61,6 +61,7 @@ public class ServerConsole extends AbstractServer {
 	 */
 	public ServerConsole(int port) {
 		super(port);
+
 		connectedClients = new ArrayList<Integer>();
 	}
 
@@ -83,7 +84,8 @@ public class ServerConsole extends AbstractServer {
 		LibrarianController librarianControllerObj = LibrarianController.getInstance();
 		ManageStockController manageStockControllerObj = ManageStockController.getInstance();
 		StatisticController statisticController = StatisticController.getInstance();
-
+		LibraryManagerController libraryManagerControllerObj = LibraryManagerController.getInstance();
+		
 		try {
 			switch (((Message) msg).getOperationType()) {
 			case Login:
@@ -140,7 +142,7 @@ public class ServerConsole extends AbstractServer {
 				this.sendToClient(returnMessageToClient, client);
 				break;
 			case UpdateBookDetails:
-				returnMessageToClient = manageStockControllerObj.updateBookDetails(msg);
+				returnMessageToClient=manageStockControllerObj.updateBookDetails(msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
 			case OrderBook:
@@ -212,6 +214,18 @@ public class ServerConsole extends AbstractServer {
 				returnMessageToClient=librarianControllerObj.extensionBookManually((Message)msg);
 				this.sendToClient(returnMessageToClient, client);
 				break;
+			case LockReaderCard:
+				returnMessageToClient=libraryManagerControllerObj.lockReaderCard((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case ChangeToActiveReaderCard:
+				returnMessageToClient=libraryManagerControllerObj.changeToActiveReaderCard((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;
+			case AutomaticBorrowExtenation:
+				returnMessageToClient=subscriberControllerObj.askForBorrowExtenation((Message)msg);
+				this.sendToClient(returnMessageToClient, client);
+				break;	
 			}
 
 		} catch (Exception ex) {
@@ -227,7 +241,7 @@ public class ServerConsole extends AbstractServer {
 	public void serverStarted() {
 		LOGGER.log(Level.INFO, "Server listening for connections on port " + getPort());
 		AutomaticFunctionsController afObj = AutomaticFunctionsController.getInstance();
-		afObj.startExecutionAt(00, 00, 01);
+		//afObj.startExecutionAt(00, 00, 01);
 	}
 
 	/**
@@ -238,5 +252,7 @@ public class ServerConsole extends AbstractServer {
 		ServerStarter.server.stopListening();
 		LOGGER.log(Level.INFO, "Server has stopped listening for connections.");
 	}
+	
+
 
 }

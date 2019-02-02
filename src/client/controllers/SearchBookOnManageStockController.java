@@ -1,5 +1,7 @@
 package client.controllers;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -110,7 +112,14 @@ public class SearchBookOnManageStockController {
 	 */
 	@FXML
 	void onClickSavePDF(ActionEvent event) {
-			PDFGenerator.getInstance().createPdf(PDF_PATH, "Book Stock Result", booksTable.getItems());
+		PDFGenerator.getInstance().createPdf(PDF_PATH, "Book Stock Result", booksTable.getItems());
+		File file = new File(PDF_PATH);
+		try {
+			Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -173,6 +182,8 @@ public class SearchBookOnManageStockController {
 			ViewStarter.client.manageStockClientControllerObj.getBtnAddNewCopy().setVisible(false);
 			ViewStarter.client.manageStockClientControllerObj.getBtnDeleteCopy().setVisible(false);
 			ViewStarter.client.manageStockClientControllerObj.getTfEnterNewCopyID().setVisible(false);
+			ViewStarter.client.manageStockClientControllerObj.getLabel1().setVisible(false);
+			ViewStarter.client.manageStockClientControllerObj.getLabel2().setVisible(false);
 			try {
 				Parent newPane = FXMLLoader
 						.load(getClass().getResource("/client/boundery/layouts/updateOrAddBook.fxml"));

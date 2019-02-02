@@ -77,7 +77,8 @@ public class SubscriberController {
 	 */
 	public static Subscriber getSubscriberById(String userId) throws SQLException {
 
-		String subscriberQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, a.usrType,b.subPhoneNum, b.subLatesCounter, b.subStatus,b.subGraduationDate FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "
+		String subscriberQuery = "SELECT b.subNum, a.usrName, a.usrPassword, a.usrFirstName, a.usrLastName, a.usrEmail, a.usrType,b.subPhoneNum, b.subLatesCounter, b.subStatus"
+				+ ",b.subGraduationDate FROM obl.users as a right join obl.subscribers as b on a.usrId=b.subNum WHERE a.usrId = "
 				+ userId;
 
 		DBcontroller dbControllerObj = DBcontroller.getInstance();
@@ -181,7 +182,7 @@ public class SubscriberController {
 			return new Message(OperationType.OrderBook, null, ReturnMessageType.SubscriberAlreadyInOrderList);
 		else {
 			Book bookToOrder = ManageStockController
-					.getBookByCatalogNumber(checkIfOrderAlreadyExist_res.getInt("boCatalogNum"));
+					.getBookByCatalogNumber(tempBookCatalogNum);
 			Queue<Subscriber> orderQueue = ManageStockController.getBookOrderQueue(bookToOrder.getCatalogNum());
 			if (bookToOrder.getCopiesNum() == orderQueue.size())
 				return new Message(OperationType.OrderBook, null, ReturnMessageType.FullOrderList);
@@ -189,7 +190,12 @@ public class SubscriberController {
 					+ tempSubNum + "','" + tempBookCatalogNum + "','" + orderDate + "')";
 			Boolean insertBookInOrder = dbControllerObj.update(orderQuery);
 			if (insertBookInOrder)// if order executed
+			{
+	    		SubscriberController scObj=SubscriberController.getInstance();
+	    		HistoryItem hRecord=new HistoryItem(tempSubNum,"Subscriber order the book: "+bookToOrder.getBookName(),SubscriberHistoryType.BooksRequest);
+	    		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 				return new Message(OperationType.OrderBook, null, ReturnMessageType.Successful);
+			}
 			else
 				return new Message(OperationType.OrderBook, null, ReturnMessageType.Unsuccessful);
 		}
@@ -214,15 +220,53 @@ public class SubscriberController {
     	DBcontroller dbControllerObj= DBcontroller.getInstance();
     	boolean query_res1= dbControllerObj.update((String)updateLossCopyQuery[0]);
     	boolean query_res2= dbControllerObj.update((String)updateLossCopyQuery[1]);
-//		SubscriberController scObj=SubscriberController.getInstance();
-//		HistoryItem hRecord=new HistoryItem(Integer.valueOf(arr[2]),"subscriber lost book: ",SubscriberHistoryType.EditProfile);
-//		scObj.addHistoryRecordBySubId(new Message(OperationType.EditDetailsBySubscriber,hRecord ));
+    	int subNum=(Integer)updateLossCopyQuery[2];
+    	String bookNameLoss=(String)updateLossCopyQuery[3];
+
     	
     	if (query_res1&&query_res2)
-				return new Message(OperationType.LossReporting, null , ReturnMessageType.Successful);
+    	{
+	    		HistoryItem hRecord=new HistoryItem(subNum,"Subscriber Loss the book "+bookNameLoss,SubscriberHistoryType.BooksReturn);
+	    		addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+	    		return new Message(OperationType.LossReporting, null , ReturnMessageType.Successful);
+    	}
 		else
 				return new Message(OperationType.LossReporting, null , ReturnMessageType.Unsuccessful);
     		
 	}
-
+	
+	public Message askForBorrowExtenation(Object msg) throws SQLException
+	{
+		Object[] borrowExtenationQ=(Object[])((Message)msg).getObj();
+		int num=(int)borrowExtenationQ[1];
+    	Queue<Subscriber> q=ManageStockController.getBookOrderQueue(num);
+    	String subNum_query=Integer.toString((int)borrowExtenationQ[2]);
+    	ReaderCardStatus status=getSubscriberById(subNum_query).getReaderCard().getStatus();
+    	if(status==ReaderCardStatus.Active)
+    	{
+	    	if(q.isEmpty()==true)
+	    	{
+	    		DBcontroller dbControllerObj= DBcontroller.getInstance();
+	    		boolean query_res= dbControllerObj.update((String)borrowExtenationQ[0]);
+	    		if(query_res==true)
+	    		{
+	    			HistoryItem hRecord=new HistoryItem((int)borrowExtenationQ[2],"Subscriber get extenation to the book: "+(String)borrowExtenationQ[3],SubscriberHistoryType.BooksReturn);
+		    		addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+		    		String bringAllLibrarians= "SELECT usrId from users where usrType='Librarian'";
+		    		ResultSet librarians= dbControllerObj.query(bringAllLibrarians);
+		    		while(librarians.next())
+		    		{
+		    			SendMailController.sendReminderInbox(librarians.getInt("usrID"), "Extenation Approve", "Subscriber number "+(int)borrowExtenationQ[2]+" get extenation to the book: "+(String)borrowExtenationQ[3]);
+		    			System.out.println("mail sent to the librarian number:"+librarians.getInt("usrID")+" inbox ");
+		    		}
+		    		return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.Successful);
+	    		}
+	    		return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.Unsuccessful);
+	    	}	
+	    	return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.BookHaveWaitingList);
+    	}
+    	return new Message(OperationType.AutomaticBorrowExtenation, null , ReturnMessageType.SubscriberStatusNotActive);
+	}
 }
+    	
+	

@@ -1,5 +1,7 @@
 package client.controllers;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,6 +107,13 @@ public class SearchBookController {
 	void onSavePdfBtn(ActionEvent event) throws IOException {
 		System.out.println(PDF_PATH);
 		PDFGenerator.getInstance().createPdf("/output/1.pdf", "Search Book Result", this.books);
+		File file = new File(PDF_PATH);
+		try {
+			Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

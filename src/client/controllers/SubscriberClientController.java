@@ -151,7 +151,7 @@ public class SubscriberClientController {
     {
     
     	User usr=ViewStarter.client.mainViewController.getUser();
-    	String query="SELECT c.bName ,a.copyID, a.subNum ,a.borrowDate, a.returnDueDate FROM obl.borrows as a left join obl.copeis as b on a.copyID=b.copyID left join obl.books as c on b.bCatalogNum=c.bCatalogNum where a.subNum= '"+usr.getId()+"' and a.actualReturnDate is null";
+    	String query="SELECT c.bName ,a.copyID, a.subNum ,a.borrowDate, a.returnDueDate, c.bCatalogNum,c.bIsPopular FROM obl.borrows as a left join obl.copeis as b on a.copyID=b.copyID left join obl.books as c on b.bCatalogNum=c.bCatalogNum where a.subNum= '"+usr.getId()+"' and a.actualReturnDate is null";
     	System.out.println(query);
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ShowMyBorrowedBooks, query));
     }

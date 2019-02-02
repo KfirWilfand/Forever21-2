@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import client.controllers.adapters.AlertController;
+import client.controllers.adapters.BookListItemController;
 import client.controllers.adapters.MessageManager;
 import common.controllers.Message;
 import common.controllers.enums.ReturnMessageType;
@@ -32,6 +33,8 @@ public class Client extends AbstractClient {
 	public SearchBookOnManageStockController searchBookOnManageStockControllerObj;
 	public AlertController alertClientControllerObj;
 	public BookDetailsController bookDetailsControllerObj;
+	public BookListItemController bookListItemControllerObj;
+
 	public StatisticController statisticClientControllerObj;
 	public InboxController inboxControllerObj;
 	 /**
