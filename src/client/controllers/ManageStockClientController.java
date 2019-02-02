@@ -229,7 +229,7 @@ public class ManageStockClientController {
     		return;
     		}
     	
-    	Object[] queryArr=new Object[3];
+    	Object[] queryArr=new Object[4];
     	
     	int copiesNumOfSelectedBook=selectedBook.getCopiesNum();
     	int avilableCopiesNumOfSelectedBook=selectedBook.getAvilableCopiesNum();
@@ -244,6 +244,7 @@ public class ManageStockClientController {
     	queryArr[0]="INSERT INTO obl.copeis (copyID,bCatalogNum, isAvilable) Values('"+tfEnterNewCopyID.getText()+"',"+catlogNumOfSelectedBook+",1);";
     	queryArr[1]="UPDATE obl.books SET bCopiesNum="+(copiesNumOfSelectedBook+1)+",bAvilableCopiesNum="+(avilableCopiesNumOfSelectedBook+1)+" WHERE bCatalogNum="+catlogNumOfSelectedBook+";";
     	queryArr[2]= new Copy(tfEnterNewCopyID.getText(),catlogNumOfSelectedBook,true);
+    	queryArr[3]= "select * from obl.copeis where copyID='"+tfEnterNewCopyID.getText()+"'";
     	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.AddNewCopy, queryArr));
     	
     }

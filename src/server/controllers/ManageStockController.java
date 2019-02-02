@@ -138,11 +138,15 @@ public class ManageStockController {
 	{
 		Object[] m=(Object[])((Message)msg).getObj();
 		DBcontroller dbControllerObj=DBcontroller.getInstance();
+		ResultSet res3=dbControllerObj.query((String)m[3]);
+		if(res3.next())
+		{
+			return new Message(OperationType.AddNewCopy, (Copy)m[2] , ReturnMessageType.CopyIsAlreadyExist);
+		}
+		
 		Boolean res1=dbControllerObj.insert((String)m[0]);
 		Boolean res2=dbControllerObj.update((String)m[1]);
-		//Copy copy = getCopyById(((Copy)m[2]).getCopyID());
-		
-
+	
 		if(res1 && res2)
 			return new Message(OperationType.AddNewCopy, (Copy)m[2] , ReturnMessageType.Successful);
 		else

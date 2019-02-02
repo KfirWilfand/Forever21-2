@@ -120,16 +120,16 @@ public class LibrarianController {
 			Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(copy.getbCatalogNum());
 			if(orderQueue.isEmpty())
 				return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.CopyIsNotAvailable);
-
 			else if(orderQueue.peek().getSubscriberNum() != subscriber.getSubscriberNum())
 				return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.CopyIsNotAvailable);
 			else
 			{
 				Subscriber nextInQueue=orderQueue.remove();
-				String delete_from_line="DELETE FROM obl.book_arrived_mail where subNum="+nextInQueue.getSubscriberNum()+" and catalogNum="+copy.getbCatalogNum();
+				String delete_from_line="DELETE FROM obl.book_arrived_mail where subNum="+nextInQueue.getSubscriberNum()+" and copyID="+copy.getCopyID();
 				Boolean isDeleted=dbControllerObj.update(delete_from_line);
 				String removeFromLine = "delete from obl.books_orders  where boSubNum="+nextInQueue.getSubscriberNum()+" and boCatalogNum="+copy.getbCatalogNum();
 				Boolean isRemoved=dbControllerObj.update(removeFromLine);
+		
 			}
 		}
 
@@ -149,12 +149,16 @@ public class LibrarianController {
 
 		String insertBorrowBookQuery="insert into obl.borrows (copyID, subNum, borrowDate,returnDueDate) values ('"+((BorrowCopy)queryMsg.getObj()).getCopyID()+"','"+((BorrowCopy)queryMsg.getObj()).getSubNum()+"','"+((BorrowCopy)queryMsg.getObj()).getBorrowDate()+"','"+((BorrowCopy)queryMsg.getObj()).getReturnDueDate()+"')";
 		Boolean insertBorrowBook= dbControllerObj.update(insertBorrowBookQuery);
-		String decreaseBookAviabilaty="update obl.books set bAvilableCopiesNum=bAvilableCopiesNum-1 where bCatalogNum='"+String.valueOf(book.getCatalogNum())+"'";
-		Boolean decreaseAviability= dbControllerObj.update(decreaseBookAviabilaty);
+		if(copy.isAvilabale())
+		{
+			String decreaseBookAviabilaty="update obl.books set bAvilableCopiesNum=bAvilableCopiesNum-1 where bCatalogNum='"+String.valueOf(book.getCatalogNum())+"'";
+			Boolean decreaseAviability= dbControllerObj.update(decreaseBookAviabilaty);
+		}
+
 		String updateBookCopyAviability= "update obl.copeis set isAvilable=0 where copyID='"+copy.getCopyID()+"'";
 		Boolean updateAviableCopy= dbControllerObj.update(updateBookCopyAviability);
 
-		if(insertBorrowBook&&decreaseAviability&&updateAviableCopy)
+		if(insertBorrowBook&&updateAviableCopy)
 		{
 			Object[] arr= new Object[2];
 			arr[0]=((BorrowCopy)queryMsg.getObj());
@@ -198,7 +202,7 @@ public class LibrarianController {
 
 		Subscriber subscriber=SubscriberController.getSubscriberById(String.valueOf(borrowCopyFromDB.getSubNum()));
 
-		ReturnMessageType op;
+		ReturnMessageType op=ReturnMessageType.Unsuccessful;
 		ArrayList<String> booksArray = null;
 		if(subscriber.getGraduationDate().before(borrowCopyFromDB.getActualReturnDate()) || subscriber.getGraduationDate().equals(borrowCopyFromDB.getActualReturnDate()))
 		{//student that graduate
@@ -211,7 +215,7 @@ public class LibrarianController {
 				op=ReturnMessageType.GraduateWithMoreBooksToReturn;
 			else 
 			{
-				String updateGraduateSubscriberStatus="update obl.subscribers set subStatuse='Lock' where subNum='"+subscriber.getSubscriberNum()+"'";
+				String updateGraduateSubscriberStatus="update obl.subscribers set subStatus='Lock' where subNum='"+subscriber.getSubscriberNum()+"'";
 				Boolean isUpdate=dbControllerObj.update(updateGraduateSubscriberStatus);
 				op=ReturnMessageType.ChangeGraduateStatusToLock;
 			}		
@@ -220,7 +224,7 @@ public class LibrarianController {
 		{//regular subscriber
 			if( borrowCopyFromDB.getActualReturnDate().after(borrowCopyFromDB.getReturnDueDate()) && subscriber.getReaderCard().getStatus().equals(ReaderCardStatus.Hold))
 			{//return not in time
-				String updateSubscriberStatus="update obl.subscribers set subStatuse='Active' where subNum='"+subscriber.getSubscriberNum()+"'";
+				String updateSubscriberStatus="update obl.subscribers set subStatus='Active' where subNum='"+subscriber.getSubscriberNum()+"'";
 				Boolean isUpdate=dbControllerObj.update(updateSubscriberStatus);
 				//add to history status changing
 				HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"Status changed from Hold to Active",SubscriberHistoryType.ChangeStatus);
@@ -230,8 +234,7 @@ public class LibrarianController {
 
 		}
 
-
-
+		
 		Book bookDetails=ManageStockController.getBookByCatalogNumber(copy.getbCatalogNum());
 		
 		Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(copy.getbCatalogNum());
@@ -244,8 +247,8 @@ public class LibrarianController {
 			//update copy to be available
 			String returnToCopeisTable="update obl.copeis set isAvilable=1 where copyID='"+copy.getCopyID()+"'";
 			Boolean returnToCopeisTable_res=dbControllerObj.update(returnToCopeisTable);
-			
-			op=ReturnMessageType.Successful;
+			if(op.equals(ReturnMessageType.Unsuccessful))
+				op=ReturnMessageType.Successful;
 		}
 		else
 		{//there is subscriber in orderQueue

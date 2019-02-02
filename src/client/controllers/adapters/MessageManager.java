@@ -164,6 +164,9 @@ public class MessageManager {
 				break;
 			case AddNewCopy:
 				switch (msg.getReturnMessageType()) {
+				case CopyIsAlreadyExist:
+					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Fail - Copy is already exist!");
+					break;
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Copy added Successfully!");
 					ViewStarter.client.manageStockClientControllerObj.addCopieToList((Copy) msg.getObj());
@@ -263,7 +266,7 @@ public class MessageManager {
 					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
 				case ChangeGraduateStatusToLock:
-					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Subscriber status was changed to 'Lock'.\nSubscriber was late in return more than 3 times");
+					utils.showAlertWithHeaderText(AlertType.INFORMATION, "","Subscriber status might changed to 'Lock'.\nSubscriber was late in return more than 3 times");
 					ViewStarter.client.librarianClientControllerObj.updateReturnUI((BorrowCopy) msg.getObj());
 					break;
 				case GraduateWithMoreBooksToReturn:
