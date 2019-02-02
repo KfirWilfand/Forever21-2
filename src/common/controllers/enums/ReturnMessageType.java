@@ -33,4 +33,6 @@ public enum ReturnMessageType {
 	PopularBook,
 	GraduateWithMoreBooksToReturn,
 	ChangeGraduateStatusToLock,
+	CheckSubscriberStatus,
+	
 }

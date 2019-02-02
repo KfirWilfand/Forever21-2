@@ -228,6 +228,13 @@ public class SubscriberController {
     	{
 	    		HistoryItem hRecord=new HistoryItem(subNum,"Subscriber Loss the book "+bookNameLoss,SubscriberHistoryType.BooksReturn);
 	    		addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+	    		String bringAllLibrarians= "SELECT usrId from users where usrType='Librarian'";
+	    		ResultSet librarians= dbControllerObj.query(bringAllLibrarians);
+	    		while(librarians.next())
+	    		{
+	    			SendMailController.sendReminderInbox(librarians.getInt("usrID"), "Loss Reporting", "Subscriber number "+(int)updateLossCopyQuery[2]+" loss the book: "+(String)updateLossCopyQuery[3]);
+	    			System.out.println("mail sent to the librarian number:"+librarians.getInt("usrID")+" inbox ");
+	    		}
 	    		return new Message(OperationType.LossReporting, null , ReturnMessageType.Successful);
     	}
 		else
@@ -252,6 +259,8 @@ public class SubscriberController {
 	    		{
 	    			HistoryItem hRecord=new HistoryItem((int)borrowExtenationQ[2],"Subscriber get extenation to the book: "+(String)borrowExtenationQ[3],SubscriberHistoryType.BooksReturn);
 		    		addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+		    		System.out.println((int)borrowExtenationQ[2]);
+		    		
 		    		String bringAllLibrarians= "SELECT usrId from users where usrType='Librarian'";
 		    		ResultSet librarians= dbControllerObj.query(bringAllLibrarians);
 		    		while(librarians.next())
