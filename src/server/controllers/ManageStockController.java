@@ -311,15 +311,16 @@ public class ManageStockController {
 	 * sendBookPhotoToClient is send to the client photo of the book (if there is photo like this)
 	 * @param  msg   message from client
 	 * @return Message to the client
+	 * @throws URISyntaxException 
 	 */
 	
-	public Message sendBookPhotoToClient(Message msg) 
+	public Message sendBookPhotoToClient(Message msg) throws URISyntaxException 
 	{
   		String bookName=(String)msg.getObj();
   		
   		String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
   		path = path.substring(0, path.lastIndexOf("/"));
-  		System.out.println(path);
+
   		TransferFile tf=TransferFile.createFileToTransfer(path+"/BooksImages/"+bookName.replace(" ","_")+".png");
   		Object[] message=new Object[2];
   		message[0]=tf;

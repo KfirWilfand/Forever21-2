@@ -53,6 +53,7 @@ public class FilesController {
 	  		FileOutputStream fis = new FileOutputStream(file);
 	  		try {
 	  			fis.write(tf.getMybytearray(),0,tf.getSize());
+	  			fis.close();
 	  		} catch (IOException e) {
 	  			// TODO Auto-generated catch block
 	  			e.printStackTrace();
@@ -82,6 +83,7 @@ public class FilesController {
 		  		try {
 
 		  			fis.write(tf.getMybytearray(),0,tf.getSize());
+		  			fis.close();
 		  		} catch (IOException e) {
 		  			// TODO Auto-generated catch block
 		  			e.printStackTrace();

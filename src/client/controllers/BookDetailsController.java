@@ -142,11 +142,7 @@ public class BookDetailsController {
 		
 		Platform.runLater(new Runnable() {
 			@Override
-			public void run() {
-				
-				FileChooser fileChooser = new FileChooser();
-		        fileChooser.setTitle("Save Table of content");
-		        
+			public void run() {						        
 		    	String path="";
 				try {
 					path = (BookDetailsController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
@@ -157,9 +153,10 @@ public class BookDetailsController {
 		  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
 				String str=path+fileName.replace(" ","_")+".pdf";
 		        
-				File file = new File(str);
+			
 				try {
-					Desktop.getDesktop().open(file);
+					//File file = new File(str);
+					Desktop.getDesktop().open(new File(str));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -227,9 +224,7 @@ public class BookDetailsController {
 	}
 	
     public void showPhoto(String fileName) throws URISyntaxException
-    {
-    	System.out.println("4");
-    	
+    {    	
     	String path =(BookDetailsController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
   		path = path.substring(0, path.lastIndexOf("/"))+"/BooksImages/";
 		String str=path+fileName.replace(" ","_")+".png";
