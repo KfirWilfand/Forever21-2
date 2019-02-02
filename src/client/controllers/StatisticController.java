@@ -190,9 +190,9 @@ public class StatisticController {
 	/** Node component in statistic controller */
 	@FXML
 	private CheckBox cbLateSingleBooksDist;
-	/** mActiviySnapshot is list of ActiviySnapshot, 
-	 *  this list is for temporary uses.
-	 * */
+	/**
+	 * mActiviySnapshot is list of ActiviySnapshot, this list is for temporary uses.
+	 */
 	private List<ActiviySnapshot> mActiviySnapshot;
 	/** PDF_PATH is the path for saved stock result file */
 	private static final String PDF_PATH = System.getProperty("user.dir") + "/output/report_" + LocalDate.now()
@@ -206,8 +206,9 @@ public class StatisticController {
 		ViewStarter.client.statisticClientControllerObj = this;
 		mActiviySnapshot = new ArrayList<ActiviySnapshot>();
 	}
+
 	/**
-	 * initializeDetailsOnStatisticClick all statistic details on startup. 
+	 * initializeDetailsOnStatisticClick all statistic details on startup.
 	 */
 	public void initializeDetailsOnStatisticClick() {
 
@@ -220,10 +221,10 @@ public class StatisticController {
 				.handleMessageFromClientUI(new Message(OperationType.GetBookStatstic, BookStatsticType.Regular));
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetBookStatstic, BookStatsticType.Late));
 
-		// bad practice bad work!
-		tfStatisticSingleBookReturnLates.setText("3");
-		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
-				tfStatisticSingleBookReturnLates.getText()));
+//		// bad practice bad work!
+//		tfStatisticSingleBookReturnLates.setText("3");
+//		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
+//				tfStatisticSingleBookReturnLates.getText()));
 
 		// initialize on click tab
 		tabPaneStatistic.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
@@ -294,10 +295,11 @@ public class StatisticController {
 		dpActReportStartDate.valueProperty().addListener(changeListener);
 		dpActReportEndDate.valueProperty().addListener(changeListener);
 	}
+
 	/**
-	 * on Return Activity Snapshot By Period from server in generate report tab,
-	 * the method update the local activity snapshot list, and change disability of relate 
-	 * check boxes.
+	 * on Return Activity Snapshot By Period from server in generate report tab, the
+	 * method update the local activity snapshot list, and change disability of
+	 * relate check boxes.
 	 */
 	public void onReturnActivitySnapshotByPeriod(List<ActiviySnapshot> activiySnapshotList) {
 		mActiviySnapshot.clear();
@@ -305,17 +307,19 @@ public class StatisticController {
 		cbActReportLates.setDisable(false);
 		cbActReportCopies.setDisable(false);
 	}
+
 	/**
-	 * on Unsuccessful Return Activity Snapshot By Period from server in generate report tab,
-	 * the method update the local activity snapshot list, and change disability of relate 
-	 * check boxes.
+	 * on Unsuccessful Return Activity Snapshot By Period from server in generate
+	 * report tab, the method update the local activity snapshot list, and change
+	 * disability of relate check boxes.
 	 */
 	public void onReturnActivitySnapshotByPeriodUnsuccessful() {
-			mActiviySnapshot.clear();
+		mActiviySnapshot.clear();
 		cbActReportLates.setDisable(true);
 		cbActReportCopies.setDisable(true);
 		dpActReportEndDate.setValue(null);
 	}
+
 	/**
 	 * on return activity snapshot by date, update Activity UI tab
 	 */
@@ -335,8 +339,10 @@ public class StatisticController {
 			}
 		});
 	}
+
 	/**
 	 * Generate custom PDF file
+	 * 
 	 * @param ActionEvent event
 	 */
 	@FXML
@@ -353,27 +359,50 @@ public class StatisticController {
 			return;
 		}
 
+		if (this.cbLateSingleBooksAvg.isSelected() || this.cbLateSingleBooksMed.isSelected()
+				|| this.cbLateSingleBooksDist.isSelected()) {
+			if (tfStatisticSingleBookReturnLates.getText().equals("")) {
+				ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "Generate Report",
+						"You can't add single book lates statstic without search book in advance");
+				cbLateSingleBooksAvg.setSelected(false);
+				cbLateSingleBooksMed.setSelected(false);
+				cbLateSingleBooksDist.setSelected(false);
+				return;
+			}
+		}
+
 		try {
 			PDFGenerator.getInstance().createPdf(PDF_PATH, "Report", this);
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 	/**
-	 * On click search button, send new Message to server to get all lates return by single book by catalog number.
+	 * On click search button, send new Message to server to get all lates return by
+	 * single book by catalog number.
+	 * 
 	 * @param ActionEvent event
 	 */
 	@FXML
 	void onSearchSingleBook(ActionEvent event) {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
 				tfStatisticSingleBookReturnLates.getText()));
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
+				tfStatisticSingleBookReturnLates.getText()));
 	}
 
 	/**
 	 * updateBookStatsticUI is updating the statistic book elements.
+	 * 
 	 * @param bookStatistic
 	 */
 	public void updateBookStatsticUI(BookStatistic bookStatistic) {
+		
+		if(bookStatistic.getDistribution().isEmpty()) {
+			return;
+		}
+		
 		String[] distributionRange = getDistraibutionRanges(bookStatistic.getDistribution());
 
 		Series<String, Integer> distributionDataByDecimalRange = getDistributionDataByDecimalRange(
@@ -470,238 +499,305 @@ public class StatisticController {
 
 		return ranges;
 	}
+
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return DatePicker
 	 */
 	public DatePicker getDpActivityStatistic() {
 		return dpActivityStatistic;
 	}
+
 	/**
 	 * getDpActReportStartDate
+	 * 
 	 * @return DatePicker
 	 */
 	public DatePicker getDpActReportStartDate() {
 		return dpActReportStartDate;
 	}
+
 	/**
 	 * getDpActReportEndDate
+	 * 
 	 * @return DatePicker
 	 */
 	public DatePicker getDpActReportEndDate() {
 		return dpActReportEndDate;
 	}
+
 	/**
 	 * getActiviySnapshot
+	 * 
 	 * @return mActiviySnapshot
 	 */
 	public List<ActiviySnapshot> getActiviySnapshot() {
 		return mActiviySnapshot;
 	}
+
 	/**
 	 * getBcStatisticRegularBooks
+	 * 
 	 * @return bcStatisticRegularBooks
 	 */
 	public BarChart<String, Integer> getBcStatisticRegularBooks() {
 		return bcStatisticRegularBooks;
 	}
+
 	/**
 	 * getBcStatisticPopularBooks
+	 * 
 	 * @return bcStatisticPopularBooks
 	 */
 	public BarChart<String, Integer> getBcStatisticPopularBooks() {
 		return bcStatisticPopularBooks;
 	}
+
 	/**
 	 * getBcStatisticReturnLates
+	 * 
 	 * @return bcStatisticReturnLates
 	 */
 	public BarChart<String, Integer> getBcStatisticReturnLates() {
 		return bcStatisticReturnLates;
 	}
+
 	/**
-	 * @return getBcStatisticReturnLatesSingle 
+	 * @return getBcStatisticReturnLatesSingle
 	 */
 	public BarChart<String, Integer> getBcStatisticReturnLatesSingle() {
 		return bcStatisticReturnLatesSingle;
 	}
+
 	/**
 	 * getCbActReportLates
+	 * 
 	 * @return ChecbActReportLatesckBox
 	 */
 	public CheckBox getCbActReportLates() {
 		return cbActReportLates;
 	}
+
 	/**
 	 * getCbBorrRegReportDecDist
+	 * 
 	 * @return cbBorrRegReportDecDist
 	 */
 	public CheckBox getCbBorrRegReportDecDist() {
 		return cbBorrRegReportDecDist;
 	}
+
 	/**
 	 * getCbBorrRegReportAvg
+	 * 
 	 * @return cbBorrRegReportAvg
 	 */
 	public CheckBox getCbBorrRegReportAvg() {
 		return cbBorrRegReportAvg;
 	}
+
 	/**
 	 * getCbBorrRegReportMed
+	 * 
 	 * @return cbBorrRegReportMed
 	 */
 	public CheckBox getCbBorrRegReportMed() {
 		return cbBorrRegReportMed;
 	}
+
 	/**
 	 * getCbBorrPopReportDecDist
+	 * 
 	 * @return cbBorrPopReportDecDist
 	 */
 	public CheckBox getCbBorrPopReportDecDist() {
 		return cbBorrPopReportDecDist;
 	}
+
 	/**
 	 * getCbBorrPopReportAvg
+	 * 
 	 * @return cbBorrPopReportAvg
 	 */
 	public CheckBox getCbBorrPopReportAvg() {
 		return cbBorrPopReportAvg;
 	}
+
 	/**
 	 * getCbBorrPopReportMed
+	 * 
 	 * @return cbBorrPopReportMed
 	 */
 	public CheckBox getCbBorrPopReportMed() {
 		return cbBorrPopReportMed;
 	}
+
 	/**
 	 * getCbAllLateRegReportDecDist
+	 * 
 	 * @return cbAllLateRegReportDecDist
 	 */
 	public CheckBox getCbAllLateRegReportDecDist() {
 		return cbAllLateRegReportDecDist;
 	}
+
 	/**
 	 * getCbAllLateRegReportAvg
+	 * 
 	 * @return cbAllLateRegReportAvg
 	 */
 	public CheckBox getCbAllLateRegReportAvg() {
 		return cbAllLateRegReportAvg;
 	}
+
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbAllLatesRegReportMed
 	 */
 	public CheckBox getCbAllLatesRegReportMed() {
 		return cbAllLatesRegReportMed;
 	}
+
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbLateSingleBooksAvg
 	 */
 	public CheckBox getCbLateSingleBooksAvg() {
 		return cbLateSingleBooksAvg;
 	}
+
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbLateSingleBooksMed
 	 */
 	public CheckBox getCbLateSingleBooksMed() {
 		return cbLateSingleBooksMed;
 	}
+
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbLateSingleBooksDist
 	 */
 	public CheckBox getCbLateSingleBooksDist() {
 		return cbLateSingleBooksDist;
 	}
+
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbActReportCopies
 	 */
 	public CheckBox getCbActReportCopies() {
 		return cbActReportCopies;
 	}
+
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return lblStatisticSubLatesNumCopies
 	 */
 	public Label getLblStatisticSubLatesNumCopies() {
 		return lblStatisticSubLatesNumCopies;
 	}
+
 	/**
 	 * getLblStatisticNumCopies
+	 * 
 	 * @return lblStatisticNumCopies
 	 */
 	public Label getLblStatisticNumCopies() {
 		return lblStatisticNumCopies;
 	}
+
 	/**
 	 * getLblStatisticAveragePopularBooks
+	 * 
 	 * @return lblStatisticAveragePopularBooks
 	 */
 	public Label getLblStatisticAveragePopularBooks() {
 		return lblStatisticAveragePopularBooks;
 	}
+
 	/**
 	 * getLblStatisticMedianRegularBooks
+	 * 
 	 * @return lblStatisticMedianRegularBooks
 	 */
 	public Label getLblStatisticMedianRegularBooks() {
 		return lblStatisticMedianRegularBooks;
 	}
+
 	/**
 	 * getLblStatisticAverageRegularBooks
+	 * 
 	 * @return lblStatisticAverageRegularBooks
 	 */
 	public Label getLblStatisticAverageRegularBooks() {
 		return lblStatisticAverageRegularBooks;
 	}
+
 	/**
 	 * getLblStatisticMedianPopularBooks
+	 * 
 	 * @return lblStatisticMedianPopularBooks
 	 */
 	public Label getLblStatisticMedianPopularBooks() {
 		return lblStatisticMedianPopularBooks;
 	}
+
 	/**
 	 * getLblStatisticAverageReturnLates
+	 * 
 	 * @return lblStatisticAverageReturnLates
 	 */
 	public Label getLblStatisticAverageReturnLates() {
 		return lblStatisticAverageReturnLates;
 	}
+
 	/**
 	 * getLblStatisticSingleBookAverageReturnLates
+	 * 
 	 * @return lblStatisticSingleBookAverageReturnLates
 	 */
 	public Label getLblStatisticSingleBookAverageReturnLates() {
 		return lblStatisticSingleBookAverageReturnLates;
 	}
+
 	/**
 	 * getLblStatisticMedianReturnLates
+	 * 
 	 * @return lblStatisticMedianReturnLates
 	 */
 	public Label getLblStatisticMedianReturnLates() {
 		return lblStatisticMedianReturnLates;
 	}
+
 	/**
 	 * getLblStatisticSingleBookMedianReturnLates
+	 * 
 	 * @return lblStatisticSingleBookMedianReturnLates
 	 */
 	public Label getLblStatisticSingleBookMedianReturnLates() {
 		return lblStatisticSingleBookMedianReturnLates;
 	}
+
 	/**
 	 * getLblStatisticAverageReturnLates1
+	 * 
 	 * @return lblStatisticAverageReturnLates1
 	 */
 	public Label getLblStatisticAverageReturnLates1() {
 		return lblStatisticAverageReturnLates1;
 	}
+
 	/**
 	 * getTfStatisticSingleBookReturnLates
+	 * 
 	 * @return tfStatisticSingleBookReturnLates
 	 */
 	public TextField getTfStatisticSingleBookReturnLates() {

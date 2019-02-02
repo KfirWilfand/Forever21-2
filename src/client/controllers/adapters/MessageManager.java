@@ -330,7 +330,7 @@ public class MessageManager {
 				{
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Automatic Borrow Extenation success");
-					
+					ViewStarter.client.subscriberClientControllerObj.onBorrowedBooksTab(null);
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Automatic Borrow Extenation failed!");

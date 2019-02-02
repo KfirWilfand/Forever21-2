@@ -149,7 +149,7 @@ public class SubscriberClientController {
    	 * @param event action event
    	 */
     @FXML
-    void onBorrowedBooksTab(Event event) 
+    public void onBorrowedBooksTab(Event event) 
     {
     
     	User usr=ViewStarter.client.mainViewController.getUser();
