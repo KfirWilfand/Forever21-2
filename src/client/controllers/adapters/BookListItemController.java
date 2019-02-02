@@ -118,7 +118,7 @@ public class BookListItemController extends ListCell<BorrowCopy>
 			LocalDate todaylocaldate = LocalDate.now();
 			Date todaydate = Date.valueOf(todaylocaldate);	
 		// Image image = new Image(item.getBookImagePath());
-			// ivBook.setImage(image)
+			// ivBook.setImage(image)v
 			Long diff = bookItem.getReturnDueDate().getTime() - todaydate.getTime();
 			int dayVar=Math.toIntExact(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
 			txtTimeToReturn.setText(Integer.toString(dayVar));

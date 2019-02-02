@@ -348,7 +348,7 @@ public class MessageManager {
 				{
 				case Successful:
 					utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Automatic Borrow Extenation success");
-					
+					ViewStarter.client.subscriberClientControllerObj.onBorrowedBooksTab(null);
 					break;
 				case Unsuccessful:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "", "Automatic Borrow Extenation failed!");
@@ -385,11 +385,14 @@ public class MessageManager {
 				 case CopyNotExist:
 					utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Copy do not exist");
 					break;
-				 case wrongBorrowDetails:
-					 utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Wrong Extension Details");
+				 //case wrongBorrowDetails:
+					// utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Wrong Extension Details");
+						//break;
+				 case CheckSubscriberStatus:
+						utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber status is not active!");
 						break;
 				 case MustReturnBook:
-					 utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber must return the book!");
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "Error Dialog", "Subscriber must return the book due to late!");
 					break;
 				 case PopularBook:
 					 utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot get an extension because book is popular!");
@@ -398,8 +401,13 @@ public class MessageManager {
 					 utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot get an extension!");
 					break;
 				 case Successful:
+					 ViewStarter.client.librarianClientControllerObj.updateManualExtensionUI((BorrowCopy) msg.getObj());
 					 utils.showAlertWithHeaderText(AlertType.INFORMATION, "", "Book just got 7 days extension!");
 					break;
+				 case BookHaveWaitingList:
+					 utils.showAlertWithHeaderText(AlertType.ERROR, "", "Book cannot get an extension due to waiting list! ");
+					break;
+					 
 				}
 				break;
 			case GetInboxMsg:

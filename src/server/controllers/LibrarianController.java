@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 import client.ViewStarter;
 import client.controllers.adapters.AlertController;
@@ -113,7 +114,7 @@ public class LibrarianController {
 
 		if(copy == null)
 			return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.CopyNotExist);
-		
+
 		if(!subscriber.getReaderCard().getStatus().equals(ReaderCardStatus.Active))
 			return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.HoldOrLockStatus);
 		if(!copy.isAvilabale())
@@ -164,12 +165,12 @@ public class LibrarianController {
 			Object[] arr= new Object[2];
 			arr[0]=((BorrowCopy)queryMsg.getObj());
 			arr[1]=book.isPopular();
-			
+
 			//insert to the history
 			SubscriberController scObj=SubscriberController.getInstance();
 			HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),"The book: "+book.getBookName()+" was borrowed",SubscriberHistoryType.BooksApprove);
 			scObj.addHistoryRecordBySubId(new Message(OperationType.BorrowBookByLibrarian,hRecord ));
-			
+
 			return new Message(OperationType.BorrowBookByLibrarian, arr , ReturnMessageType.Successful);
 		}
 		return new Message(OperationType.BorrowBookByLibrarian, null , ReturnMessageType.Unsuccessful);
@@ -185,13 +186,13 @@ public class LibrarianController {
 	 */
 	public Message returnBook (Object msg) throws SQLException
 	{
-		
+
 		SubscriberController scObj=SubscriberController.getInstance();
 		DBcontroller dbControllerObj= DBcontroller.getInstance();
 		Message copyIDofReturnedBook=((Message)msg);
 		String copyIDtemp=((BorrowCopy)copyIDofReturnedBook.getObj()).getCopyID();
 		Copy copy=ManageStockController.getCopyById(copyIDtemp);
-	//check if copy id is correct
+		//check if copy id is correct
 		if(copy == null)
 			return new Message(OperationType.ReturnBookByLibrarian, null , ReturnMessageType.CopyNotExist);
 
@@ -237,7 +238,7 @@ public class LibrarianController {
 
 		
 		Book bookDetails=ManageStockController.getBookByCatalogNumber(copy.getbCatalogNum());
-		
+
 		Queue<Subscriber> orderQueue=ManageStockController.getBookOrderQueue(copy.getbCatalogNum());
 		if(orderQueue.isEmpty())
 		{//there is no subscribers in waiting list
@@ -250,6 +251,7 @@ public class LibrarianController {
 			Boolean returnToCopeisTable_res=dbControllerObj.update(returnToCopeisTable);
 			if(op.equals(ReturnMessageType.Unsuccessful))
 				op=ReturnMessageType.Successful;
+
 		}
 		else
 		{//there is subscriber in orderQueue
@@ -259,28 +261,28 @@ public class LibrarianController {
 			String mailSubject="Your Book is arraived";
 			String mailBody="Your Book: "+bookDetails.getBookName()+"is arraived. You have two days to take it before your order cancelled.";
 			SendMailController.sendMailToSubscriber(firstInLine, mailSubject, mailBody);
-			
+
 			String query="insert into obl.book_arrived_mail (subNum,copyID,reminderDate) values ("+firstInLine.getSubscriberNum()+",'"+copy.getCopyID()+"','"+borrowCopyFromDB.getActualReturnDate()+"')";
 			Boolean insertToBookArrivedMail=dbControllerObj.update(query);
 			op=ReturnMessageType.subscriberInWaitingList;
 
 		}
 
-		
+
 		//add return to history
 		String historyMsg="The book: "+bookDetails.getBookName()+" returned.";
 		if(op.equals(ReturnMessageType.ChangeStatusToActive))
 			historyMsg=historyMsg+" the subscriber was late in return.";
-	
+
 		HistoryItem hRecord=new HistoryItem(subscriber.getSubscriberNum(),historyMsg,SubscriberHistoryType.BooksReturn);
 		scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
 
-		
+
 		//update actual return date in DB
 		String updateActualReturnDate="update obl.borrows set actualReturnDate='"+borrowCopyFromDB.getActualReturnDate()+"' where copyID='"+copy.getCopyID()+"' and subNum='"+subscriber.getSubscriberNum()+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"' and actualReturnDate is null";
 		Boolean updateActualReturnDate_res=dbControllerObj.update(updateActualReturnDate);
-		
-		
+
+
 		if(op.equals(ReturnMessageType.GraduateWithMoreBooksToReturn))
 		{
 			Object[] msgObj=new Object[2];
@@ -319,7 +321,7 @@ public class LibrarianController {
 		if(checkSubStatus_res.next())
 		{
 			if (!(checkSubStatus_res.getString("subStatus").equals("Active")))//if subscriber is not active
-				return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.MustReturnBook);
+				return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.CheckSubscriberStatus);
 			//check if book is popular
 			String checkIfPopular="select bIsPopular, bName from obl.books where bCatalogNum='"+copy.getbCatalogNum()+"'";
 			ResultSet checkIfPopular_res = dbControllerObj.query(checkIfPopular);
@@ -332,24 +334,36 @@ public class LibrarianController {
 				String checkIfBookInOrderQueue="select boSubNum from obl.books_orders where boCatalogNum='"+copy.getbCatalogNum()+"'";
 				ResultSet checkIfBookInOrderQueue_res = dbControllerObj.query(checkIfBookInOrderQueue);
 				if(checkIfBookInOrderQueue_res.next())//if has next, means waiting list, return can't return book
+					return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.BookHaveWaitingList);
+				LocalDate todaylocaldate = LocalDate.now();
+				Date todaydate = Date.valueOf(todaylocaldate);	
+				Long diff =borrowCopyFromDB.getReturnDueDate().getTime() - todaydate.getTime();
+				int dayVar=Math.toIntExact(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+				if(dayVar>7)
 					return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
+
 				//if extension approved by the system
 				LocalDate returnDateUpdated=borrowCopyFromDB.getReturnDueDate().toLocalDate().plusDays(7L); //set the returnDueDate to plus 7 days
 				((BorrowCopy)copyIDforExtensionBook.getObj()).setReturnDueDate(Date.valueOf(returnDateUpdated));
-				String extendBookDate="update obl.borrows set returnDueDate='"+((BorrowCopy)copyIDforExtensionBook.getObj()).getReturnDueDate()+"' where copyId='"+copyIDtemp+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"'";
+				Date newDate=((BorrowCopy)copyIDforExtensionBook.getObj()).getReturnDueDate();
+				borrowCopyFromDB.setReturnDueDate(newDate);
+				String extendBookDate="update obl.borrows set returnDueDate='"+newDate+"' where copyId='"+borrowCopyFromDB.getCopyID()+"' and borrowDate='"+borrowCopyFromDB.getBorrowDate()+"' and actualReturnDate is null and subNum="+borrowCopyFromDB.getSubNum()+"";
 				Boolean extendBookDateBoolean=dbControllerObj.update(extendBookDate);
 				if(extendBookDateBoolean)
 				{	
 					SubscriberController scObj=SubscriberController.getInstance();
-	    			HistoryItem hRecord=new HistoryItem(checkIfBookInOrderQueue_res.getInt("boSubNum"),"Subscriber got extenation for the book"+checkIfPopular_res.getString("bName"),SubscriberHistoryType.BookExtension);
-	    			scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
-					return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Successful);
+					System.out.println(borrowCopyFromDB.getSubNum());
+					HistoryItem hRecord=new HistoryItem(borrowCopyFromDB.getSubNum(),"Subscriber got extenation for the book"+checkIfPopular_res.getString("bName"),SubscriberHistoryType.BookExtension);
+					scObj.addHistoryRecordBySubId(new Message(OperationType.ReturnBookByLibrarian,hRecord ));
+					return new Message(OperationType.ExtensionBookByLibrarian, borrowCopyFromDB , ReturnMessageType.Successful);
 				}
 				else
 					return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
-			}return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
+			}
+			return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
 
-		}return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
+		}
+		return new Message(OperationType.ExtensionBookByLibrarian, null , ReturnMessageType.Unsuccessful);
 	}
 
 }

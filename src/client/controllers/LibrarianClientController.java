@@ -272,9 +272,9 @@ public class LibrarianClientController {
 				if (ancStatistic != null) {
 					ancStatistic.getChildren().setAll(statisticPane);
 					statisticPaneloadder.<StatisticController>getController().initializeDetailsOnStatisticClick();
-					
+
 				}
-			}else {
+			} else {
 				btnStatisticTab.setDisable(true);
 			}
 		} catch (IOException e) {
@@ -551,9 +551,8 @@ public class LibrarianClientController {
 					ssCxbHoldSubscriber.setSelected(true);
 					break;
 				}
-				
 
-				if (mIsLibrarianManager) 
+				if (mIsLibrarianManager)
 					ssCxbHoldSubscriber.setDisable(false);
 				else
 					ssCxbHoldSubscriber.setDisable(true);
@@ -646,9 +645,23 @@ public class LibrarianClientController {
 			LocalDate currentDate = LocalDate.now();
 			Date date = Date.valueOf(currentDate);
 			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
+
 			ViewStarter.client
 					.handleMessageFromClientUI(new Message(OperationType.ExtensionBookByLibrarian, borrowCopy));
+
 		}
+
+	}
+
+	public void updateManualExtensionUI(BorrowCopy borrowCopy) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				tfReturnBookSubscriberNumber.setText(Integer.toString(borrowCopy.getSubNum()));
+				tfReturnBookBorrowDate.setValue(borrowCopy.getBorrowDate().toLocalDate());
+				tfReturnBookEndBorrowDate.setValue(borrowCopy.getReturnDueDate().toLocalDate());
+			}
+		});
 
 	}
 

@@ -234,6 +234,7 @@ public class StatisticController {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
 				tfStatisticSingleBookReturnLates.getText()));
 
+
 		// initialize on click tab
 		tabPaneStatistic.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 			@Override
@@ -377,6 +378,18 @@ public class StatisticController {
 			return;
 		}
 
+		if (this.cbLateSingleBooksAvg.isSelected() || this.cbLateSingleBooksMed.isSelected()
+				|| this.cbLateSingleBooksDist.isSelected()) {
+			if (tfStatisticSingleBookReturnLates.getText().equals("")) {
+				ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "Generate Report",
+						"You can't add single book lates statstic without search book in advance");
+				cbLateSingleBooksAvg.setSelected(false);
+				cbLateSingleBooksMed.setSelected(false);
+				cbLateSingleBooksDist.setSelected(false);
+				return;
+			}
+		}
+
 		try {
 			File file = PDFGenerator.getInstance().createPdf(PDF_PATH, "Statatic Report", this);
 			Desktop.getDesktop().open(file);
@@ -398,6 +411,8 @@ public class StatisticController {
 	void onSearchSingleBook(ActionEvent event) {
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
 				tfStatisticSingleBookReturnLates.getText()));
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
+				tfStatisticSingleBookReturnLates.getText()));
 	}
 
 	/**
@@ -406,6 +421,11 @@ public class StatisticController {
 	 * @param bookStatistic
 	 */
 	public void updateBookStatsticUI(BookStatistic bookStatistic) {
+		
+		if(bookStatistic.getDistribution().isEmpty()) {
+			return;
+		}
+		
 		String[] distributionRange = getDistraibutionRanges(bookStatistic.getDistribution());
 
 		Series<String, Integer> distributionDataByDecimalRange = getDistributionDataByDecimalRange(
@@ -539,6 +559,7 @@ public class StatisticController {
 
 	/**
 	 * getActiviySnapshot
+	 * 
 	 * @return mActiviySnapshot
 	 */
 	public List<ActiviySnapshot> getActiviySnapshot() {
@@ -547,6 +568,7 @@ public class StatisticController {
 
 	/**
 	 * getBcStatisticRegularBooks
+	 * 
 	 * @return bcStatisticRegularBooks
 	 */
 	public BarChart<String, Integer> getBcStatisticRegularBooks() {
@@ -555,6 +577,7 @@ public class StatisticController {
 
 	/**
 	 * getBcStatisticPopularBooks
+	 * 
 	 * @return bcStatisticPopularBooks
 	 */
 	public BarChart<String, Integer> getBcStatisticPopularBooks() {
@@ -563,6 +586,7 @@ public class StatisticController {
 
 	/**
 	 * getBcStatisticReturnLates
+	 * 
 	 * @return bcStatisticReturnLates
 	 */
 	public BarChart<String, Integer> getBcStatisticReturnLates() {
@@ -570,7 +594,7 @@ public class StatisticController {
 	}
 
 	/**
-	 * @return getBcStatisticReturnLatesSingle 
+	 * @return getBcStatisticReturnLatesSingle
 	 */
 	public BarChart<String, Integer> getBcStatisticReturnLatesSingle() {
 		return bcStatisticReturnLatesSingle;
@@ -578,6 +602,7 @@ public class StatisticController {
 
 	/**
 	 * getCbActReportLates
+	 * 
 	 * @return ChecbActReportLatesckBox
 	 */
 	public CheckBox getCbActReportLates() {
@@ -586,6 +611,7 @@ public class StatisticController {
 
 	/**
 	 * getCbBorrRegReportDecDist
+	 * 
 	 * @return cbBorrRegReportDecDist
 	 */
 	public CheckBox getCbBorrRegReportDecDist() {
@@ -594,6 +620,7 @@ public class StatisticController {
 
 	/**
 	 * getCbBorrRegReportAvg
+	 * 
 	 * @return cbBorrRegReportAvg
 	 */
 	public CheckBox getCbBorrRegReportAvg() {
@@ -602,6 +629,7 @@ public class StatisticController {
 
 	/**
 	 * getCbBorrRegReportMed
+	 * 
 	 * @return cbBorrRegReportMed
 	 */
 	public CheckBox getCbBorrRegReportMed() {
@@ -610,6 +638,7 @@ public class StatisticController {
 
 	/**
 	 * getCbBorrPopReportDecDist
+	 * 
 	 * @return cbBorrPopReportDecDist
 	 */
 	public CheckBox getCbBorrPopReportDecDist() {
@@ -618,6 +647,7 @@ public class StatisticController {
 
 	/**
 	 * getCbBorrPopReportAvg
+	 * 
 	 * @return cbBorrPopReportAvg
 	 */
 	public CheckBox getCbBorrPopReportAvg() {
@@ -626,6 +656,7 @@ public class StatisticController {
 
 	/**
 	 * getCbBorrPopReportMed
+	 * 
 	 * @return cbBorrPopReportMed
 	 */
 	public CheckBox getCbBorrPopReportMed() {
@@ -634,6 +665,7 @@ public class StatisticController {
 
 	/**
 	 * getCbAllLateRegReportDecDist
+	 * 
 	 * @return cbAllLateRegReportDecDist
 	 */
 	public CheckBox getCbAllLateRegReportDecDist() {
@@ -642,6 +674,7 @@ public class StatisticController {
 
 	/**
 	 * getCbAllLateRegReportAvg
+	 * 
 	 * @return cbAllLateRegReportAvg
 	 */
 	public CheckBox getCbAllLateRegReportAvg() {
@@ -650,6 +683,7 @@ public class StatisticController {
 
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbAllLatesRegReportMed
 	 */
 	public CheckBox getCbAllLatesRegReportMed() {
@@ -658,6 +692,7 @@ public class StatisticController {
 
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbLateSingleBooksAvg
 	 */
 	public CheckBox getCbLateSingleBooksAvg() {
@@ -666,6 +701,7 @@ public class StatisticController {
 
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbLateSingleBooksMed
 	 */
 	public CheckBox getCbLateSingleBooksMed() {
@@ -674,6 +710,7 @@ public class StatisticController {
 
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbLateSingleBooksDist
 	 */
 	public CheckBox getCbLateSingleBooksDist() {
@@ -682,6 +719,7 @@ public class StatisticController {
 
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return cbActReportCopies
 	 */
 	public CheckBox getCbActReportCopies() {
@@ -690,6 +728,7 @@ public class StatisticController {
 
 	/**
 	 * getDpActivityStatistic
+	 * 
 	 * @return lblStatisticSubLatesNumCopies
 	 */
 	public Label getLblStatisticSubLatesNumCopies() {
@@ -698,6 +737,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticNumCopies
+	 * 
 	 * @return lblStatisticNumCopies
 	 */
 	public Label getLblStatisticNumCopies() {
@@ -706,6 +746,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticAveragePopularBooks
+	 * 
 	 * @return lblStatisticAveragePopularBooks
 	 */
 	public Label getLblStatisticAveragePopularBooks() {
@@ -714,6 +755,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticMedianRegularBooks
+	 * 
 	 * @return lblStatisticMedianRegularBooks
 	 */
 	public Label getLblStatisticMedianRegularBooks() {
@@ -722,6 +764,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticAverageRegularBooks
+	 * 
 	 * @return lblStatisticAverageRegularBooks
 	 */
 	public Label getLblStatisticAverageRegularBooks() {
@@ -730,6 +773,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticMedianPopularBooks
+	 * 
 	 * @return lblStatisticMedianPopularBooks
 	 */
 	public Label getLblStatisticMedianPopularBooks() {
@@ -738,6 +782,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticAverageReturnLates
+	 * 
 	 * @return lblStatisticAverageReturnLates
 	 */
 	public Label getLblStatisticAverageReturnLates() {
@@ -746,6 +791,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticSingleBookAverageReturnLates
+	 * 
 	 * @return lblStatisticSingleBookAverageReturnLates
 	 */
 	public Label getLblStatisticSingleBookAverageReturnLates() {
@@ -754,6 +800,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticMedianReturnLates
+	 * 
 	 * @return lblStatisticMedianReturnLates
 	 */
 	public Label getLblStatisticMedianReturnLates() {
@@ -762,6 +809,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticSingleBookMedianReturnLates
+	 * 
 	 * @return lblStatisticSingleBookMedianReturnLates
 	 */
 	public Label getLblStatisticSingleBookMedianReturnLates() {
@@ -770,6 +818,7 @@ public class StatisticController {
 
 	/**
 	 * getLblStatisticAverageReturnLates1
+	 * 
 	 * @return lblStatisticAverageReturnLates1
 	 */
 	public Label getLblStatisticAverageReturnLates1() {
@@ -778,6 +827,7 @@ public class StatisticController {
 
 	/**
 	 * getTfStatisticSingleBookReturnLates
+	 * 
 	 * @return tfStatisticSingleBookReturnLates
 	 */
 	public TextField getTfStatisticSingleBookReturnLates() {
