@@ -340,7 +340,6 @@ public class MainViewController {
 	 * onLogin make the log in procedure
 	 * 
 	 * @param objMsg the current logged user
-	 * @exception Exception
 	 */
 	public void onLogin(Object[] objMsg) {
 		this.user=(User) objMsg[0];

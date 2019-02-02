@@ -120,7 +120,6 @@ public class SearchBookController {
 	 * onGetSearchResult display the results
 	 * 
 	 * @param books is the list view of books
-	 * @exception Exception
 	 */
 
 	public void onGetSearchResult(List<Book> books) {

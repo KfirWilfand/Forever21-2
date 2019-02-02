@@ -46,6 +46,7 @@ public class LibrarianController {
 	private LibrarianController(){}
 	/**
 	 * getInstance is creating the singleton object of the class
+	 * @return instance  instance of LibrarianController object
 	 */
 	public static LibrarianController getInstance(){
 		if(instance == null){
@@ -55,9 +56,9 @@ public class LibrarianController {
 	}
 	/**
 	 * createNewSubscriber is creating a new subscriber 
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
+	 * @param msg                contains the message from the client 
+	 * @throws SQLException      SQLException
+	 * @return Message           return msg the client
 	 */
 	public Message createNewSubscriber (Object msg) throws SQLException
 	{
@@ -77,9 +78,9 @@ public class LibrarianController {
 	}
 	/**
 	 * searchSubscriber is searching a subscriber
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
+	 * @param msg                 contains the message from the client 
+	 * @throws SQLException       SQLException
+	 * @return Message            return message to the client
 	 */
 	public Message searchSubscriber(Object msg) throws SQLException
 	{
@@ -96,9 +97,9 @@ public class LibrarianController {
 
 	/**
 	 * borrowBook is place a borrow of a book
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
+	 * @param msg                  contains the message from the client 
+	 * @throws SQLException        SQLException
+	 * @return Message             return message to the client
 	 */
 	public Message borrowBook (Object msg) throws SQLException
 	{
@@ -175,9 +176,9 @@ public class LibrarianController {
 
 	/**
 	 * returnBook is place the return of a borrowed book and checks all the required conditions
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
+	 * @param msg                  contains the message from the client 
+	 * @throws SQLException        SQLException
+	 * @return Message             return message to the client
 	 */
 	public Message returnBook (Object msg) throws SQLException
 	{
@@ -290,10 +291,10 @@ public class LibrarianController {
 
 
 	/**
-	 * extensionBookManually is a fuunction that check all the extension criteria and according to it choose if to make an extension 
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
+	 * extensionBookManually is a function that check all the extension criteria and according to it choose if to make an extension 
+	 * @param msg              contains the message from the client 
+	 * @throws SQLException 	SQLException
+	 * @return Message         return message to the client
 	 */
 	public Message extensionBookManually(Message msg) throws SQLException 
 	{

@@ -19,9 +19,8 @@ public class HistoryItem implements Serializable {
 	private Integer subId;
 	/**
 	 * HistoryItem class constructor use for display in ListView
-	 * @param date
-	 * @param description
-	 * @return HistoryItem object
+	 * @param date             date of action
+	 * @param description      description of action
 	 */
 	public HistoryItem(Date date, String description) {
 		this.date = date;
@@ -29,10 +28,9 @@ public class HistoryItem implements Serializable {
 	}
 	/**
 	 * HistoryItem class constructor use for send object from client to server
-	 * @param date
-	 * @param description
-	 * @param subscriberHistoryType
-	 * @return HistoryItem object
+	 * @param subId                       subscriber id
+	 * @param description                 action description
+	 * @param subscriberHistoryType       history type
 	 */
 	public HistoryItem(Integer subId, String description,SubscriberHistoryType subscriberHistoryType) {
 		this.subId = subId;

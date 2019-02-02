@@ -40,7 +40,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import server.controllers.ManageStockController;
-
+/**
+ * The BookListItemController class represent the row at the table view of the borrowed books
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class BookListItemController extends ListCell<BorrowCopy>
 {
     @FXML
@@ -119,7 +126,9 @@ public class BookListItemController extends ListCell<BorrowCopy>
 			if(dayVar<=7&&dayVar>=0)
 	    		btnAskBorrowExtenation.setDisable(false);
 			
-			
+/**
+ * on click loss report message have been send to the server to update that the book is loss
+ */
 			btnLossReporting.setOnAction(new EventHandler<ActionEvent>()
 			{
 			    @Override public void handle(ActionEvent e)
@@ -139,7 +148,10 @@ public class BookListItemController extends ListCell<BorrowCopy>
 			    }
 			});
 			
-			
+			/**
+			 * on click borrow extenuation - message have been send to the server about extenuation request
+			 */
+							
 			btnAskBorrowExtenation.setOnAction(new EventHandler<ActionEvent>()
 			{
 			    @Override public void handle(ActionEvent e)

@@ -23,7 +23,6 @@ public class Copy implements Serializable
 	 * @param copyID
 	 * @param bCatalogNum
 	 * @param isAvilabale
-	 * @return Copy object
 	 */
 	public Copy(String copyID, int bCatalogNum, Boolean isAvilabale) {
 		super();

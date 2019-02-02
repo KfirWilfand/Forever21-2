@@ -32,8 +32,7 @@ public enum SubscriberHistoryType {
 	}
 	/**
 	 * getEnums method get enums
-	 * @throws SQLException when occurs
-	 * @return List of reader card history
+	 * @return list    List of reader card history
 	 */
 	public static List<SubscriberHistoryType> getEnums(){
 		List<SubscriberHistoryType> list = new ArrayList<SubscriberHistoryType>();

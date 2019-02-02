@@ -32,6 +32,7 @@ public class DBcontroller {
     private DBcontroller(){}
     /**
 	 * getInstance is creating the singleton object of the class
+	 * @return DBcontroller
 	 */
     public static DBcontroller getInstance(){
         if(instance == null){
@@ -42,10 +43,9 @@ public class DBcontroller {
 
     /**
 	 * connectDB is connecting to the data base
-	 * @param schema
-	 * @param userName
-	 * @param password
-	 * @exception SQLException
+	 * @param schema          schema name
+	 * @param userName        user name
+	 * @param password        password 
 	 */
 	public  void connectDB(String schema,String userName, String password) {
 		try {
@@ -62,8 +62,7 @@ public class DBcontroller {
 	}
 	/**
 	 * query is executing the SELECT sql queries
-	 * @param query in sql
-	 * @exception SQLException
+	 * @param query      sql query
 	 * @return result set of the fitting tuples
 	 */
 	public ResultSet query(String query)
@@ -81,9 +80,8 @@ public class DBcontroller {
 	}
 	/**
 	 * insert is executing the UPDATE/INSERT sql queries
-	 * @param query in sql
-	 * @exception SQLException
-	 * @return boolean if succeeded or not
+	 * @param query     sql qery
+	 * @return boolean  if succeeded or not
 	 */
 	public Boolean insert(String query) 
 	{
@@ -102,9 +100,8 @@ public class DBcontroller {
 	}
 	/**
 	 * update is executing the UPDATE/INSERT sql queries
-	 * @param query in sql
-	 * @exception SQLException
-	 * @return boolean if succeeded or not
+	 * @param query              sql query
+	 * @return boolean           if succeeded or not
 	 */
 	public  Boolean update(String query) {//receive update query as a string and execute the query in the DB
 	

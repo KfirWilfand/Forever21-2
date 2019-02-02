@@ -5,7 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import common.entity.enums.BookStatsticType;
-
+/**
+ * The BookStatistic class represent the amount of regular and popular books
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class BookStatistic implements Serializable{
 	private float average;
 	private int median;

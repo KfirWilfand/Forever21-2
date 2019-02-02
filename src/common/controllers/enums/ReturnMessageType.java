@@ -1,5 +1,7 @@
 package common.controllers.enums;
-
+/**
+ * enum class that present all the message types that the obl can return 
+ */
 public enum ReturnMessageType {
 	UserIsNotExist, 
 	UserSuccessLogin, 

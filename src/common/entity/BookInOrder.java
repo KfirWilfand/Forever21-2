@@ -67,7 +67,6 @@ public void setDateOfOrder(Timestamp dateOfOrder) {
  * @param subNum
  * @param bCatalogNum
  * @param dateOfOrder
- * @return BookInOrder object
  */
 public BookInOrder(int subNum, int bCatalogNum , Timestamp dateOfOrder) {
 	super();

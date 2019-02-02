@@ -69,7 +69,7 @@ public class SubscriberController {
 	}
 
 	/**
-	 * getSubscriberById is getting the subscriber ри ID
+	 * getSubscriberById is getting the subscriber by ID
 	 * 
 	 * @param userId is the user id
 	 * @throws SQLException when occurs
@@ -201,6 +201,12 @@ public class SubscriberController {
 		}
 	}
 	
+	/**
+	 * showBorrowedBooks is function that show all the borrowed books of a specific subscriber that log in 
+	 * @param msg is the message from the client
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
 	public Message showBorrowedBooks(Object msg) throws SQLException
     {
     	String borrowQuery= (String)((Message)msg).getObj();
@@ -214,6 +220,12 @@ public class SubscriberController {
     		return new Message(OperationType.ShowMyBorrowedBooks, null, ReturnMessageType.Unsuccessful);
     }
 	
+	/**
+	 * lossCopyReport is function that update the DB that the book is loss 
+	 * @param msg is the message from the client
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
 	public Message lossCopyReport(Object msg) throws SQLException
 	{
 		Object[] updateLossCopyQuery=(Object[])((Message)msg).getObj();
@@ -242,6 +254,13 @@ public class SubscriberController {
     		
 	}
 	
+	/**
+	 * askForBorrowExtenation is function that check if the subscriber can get an extenuation of a book he
+	 * borrowed and if it is possible the function update the new return date and send the librarians inbox message 
+	 * @param msg is the message from the client
+	 * @throws SQLException when occurs
+	 * @return Message
+	 */
 	public Message askForBorrowExtenation(Object msg) throws SQLException
 	{
 		Object[] borrowExtenationQ=(Object[])((Message)msg).getObj();

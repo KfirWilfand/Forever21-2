@@ -59,7 +59,6 @@ public class Book implements Serializable {
    	 * @param printDate
    	 * @param isPopular
    	 * @param avilableCopiesNum
-   	 * @return Book object
    	 */
 	public Book(int catalogNum, String bookName, String description, List<String> author, List<String> genre,
 			int copiesNum, Date purchaseDate, String shelfLocation, String edition, Date printDate, boolean isPopular,int avilableCopiesNum) 
@@ -211,7 +210,7 @@ public class Book implements Serializable {
 	}
 	/**
    	 * setEdition setter of book edition
-   	 * @param genre book genre
+   	 * @param edition   edition number
    	 */
 	public void setEdition(String edition) {
 		this.edition = edition;

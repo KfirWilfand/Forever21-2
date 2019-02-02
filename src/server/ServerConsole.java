@@ -47,10 +47,7 @@ import server.controllers.SubscriberController;
  */
 public class ServerConsole extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
-	/**
-	 * public static List<BookInOrder> BooksOrders =
-	 * Collections.synchronizedList(new LinkedList<BookInOrder>());
-	 */
+
 	public static ArrayList<Integer> connectedClients;
 	private int port;
 
