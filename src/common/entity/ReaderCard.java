@@ -35,7 +35,6 @@ public class ReaderCard implements Serializable {
 	 * @param status
 	 * @param lateReturnsBookCounter
 	 * @param history
-	 * @return ReaderCard object
 	 */
 	//Create ReaderCard with given history
 	public ReaderCard(ReaderCardStatus status, int lateReturnsBookCounter,
@@ -48,7 +47,6 @@ public class ReaderCard implements Serializable {
 	 * ReaderCard constructor
 	 * @param status
 	 * @param lateReturnsBookCounter
-	 * @return ReaderCard object
 	 */
 	//Create ReaderCard init() history and wait for other query to add his history
 	public ReaderCard(ReaderCardStatus status, int lateReturnsBookCounter) {
@@ -58,7 +56,6 @@ public class ReaderCard implements Serializable {
 	}
 	/**
 	 * init
-	 * @param history
 	 */
 	public void init() {
 		history = new HashMap<SubscriberHistoryType, List<HistoryItem>>();
@@ -97,8 +94,7 @@ public class ReaderCard implements Serializable {
 	}
 	/**
 	 * setHistory setter of history
-	 * @param Map<SubscriberHistoryType
-	 * @param List<HistoryItem>> history
+	 * @param history         history of subscriber
 	 */
 	public void setHistory(Map<SubscriberHistoryType, List<HistoryItem>> history) {
 		this.history = history;

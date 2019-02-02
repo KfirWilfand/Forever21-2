@@ -1,5 +1,7 @@
 package common.controllers.enums;
-
+/**
+ * enum class that present all the operation that the OBL do
+ */
 public enum OperationType {
 Login,
 SearchBook,

@@ -107,8 +107,7 @@ public class Utils {
 		 * call call list cell of books
 		 * 
 		 * @param param list view of books
-		 * @return ListCell
-		 * @exception IOException
+		 * @return bookSearchRow null
 		 */
 		@Override
 		public ListCell<Book> call(ListView<Book> param) {
@@ -138,8 +137,7 @@ public class Utils {
 		 * call call list cell of borrowed books
 		 * 
 		 * @param param list view of books
-		 * @return ListCell
-		 * @exception IOException
+		 * @return borrowBookRow
 		 */
 		@Override
 		public ListCell<BorrowCopy> call(ListView<BorrowCopy> param) {
@@ -162,7 +160,6 @@ public class Utils {
 	 * @param alertType the type of alert
 	 * @param title     the title
 	 * @param text      the text in the alert
-	 * @exception Exception
 	 */
 	public void showAlertWithHeaderText(AlertType alertType, String title, String text) {// this alert function pops up
 																							// pops up
@@ -228,9 +225,7 @@ public class Utils {
 	}
 
 	/**
-	 * setBtnPressed is set button pressed
-	 * 
-	 * @param setBtnPressed
+	 * setBtnPressed is set button pressed 
 	 * @param isSearchPressed
 	 * @param isProfilePressed
 	 * @param isMailBox
@@ -300,8 +295,8 @@ public class Utils {
 	/**
 	 * setStyleToList is set style to list
 	 * 
-	 * @param setStyleToList
-	 * @param setStyleToList
+	 * @param txtfields    textfields list
+	 * @param css          setStyleToList
 	 */
 	public void setStyleToList(List<Control> txtfields, String css) {
 		for (Control tf : txtfields) {

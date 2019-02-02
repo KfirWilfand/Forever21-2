@@ -72,6 +72,12 @@ public class serverGuiController {
     @FXML
     private Text txtAutoFunc;
 
+	/**
+     * onClickSendBtn a subscriber id that finish graduate is send to the "OBL" and update at the DB the date of graduate
+     * Check if there are still books he not return and change his status .
+     * @param event is action event
+     * @exception IOException
+	 */
     @FXML
     void onClickSendBtn(ActionEvent event) throws SQLException 
     {
@@ -192,6 +198,10 @@ public class serverGuiController {
 		
 	}
 	
+	/**
+     * onClickSetTimeToNow change the execute time of the automatic functions to - now
+     * @param event is action event
+	 */
     @FXML
     void onClickSetTimeToNow(ActionEvent event) {
     	txtAutoFunc.setVisible(false);

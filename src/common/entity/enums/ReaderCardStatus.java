@@ -16,9 +16,8 @@ public enum ReaderCardStatus {
 	Lock, Hold,Active;
 	/**
 	 * stringToEnum is taking a string and convert to enum
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
+	 * @param userType contains the message from the client 
+	 * @return ReaderCardStatus
 	 */
 	public static ReaderCardStatus stringToEnum(String userType){
 		switch(userType) {
@@ -34,8 +33,7 @@ public enum ReaderCardStatus {
 	}
 	/**
 	 * getEnums method get enums
-	 * @throws SQLException when occurs
-	 * @return List of reader card history
+	 * @return  list             List of reader card history
 	 */
 	public static List<ReaderCardStatus> getEnums(){
 		List<ReaderCardStatus> list = new ArrayList<ReaderCardStatus>();

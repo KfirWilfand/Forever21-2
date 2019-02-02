@@ -2,6 +2,7 @@ package client.controllers;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,7 +74,8 @@ public class SearchBookController {
 	private List<Book> books;
 
 	/** PDF_PATH is the path for saved search result file */
-	private static final String PDF_PATH = System.getProperty("user.dir") + "/output/search_result.pdf";
+	private static final String PDF_PATH = "output/search_result.pdf";
+
 
 	/**
 	 * initialize the book search view
@@ -94,7 +96,6 @@ public class SearchBookController {
 		String searchQeury = qbObj.searchQuery(tfBookName.getText(), tfAuthorName.getText(), tfBookGenre.getText(),
 				tfTextFree.getText());
 
-		System.out.println(searchQeury);
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.SearchBook, searchQeury));
 	}
 
@@ -105,13 +106,10 @@ public class SearchBookController {
 	 */
 	@FXML
 	void onSavePdfBtn(ActionEvent event) throws IOException {
-		System.out.println(PDF_PATH);
-		PDFGenerator.getInstance().createPdf("/output/1.pdf", "Search Book Result", this.books);
-		File file = new File(PDF_PATH);
+		File file = PDFGenerator.getInstance().createPdf(PDF_PATH, "Search Book Result", this.books);
 		try {
 			Desktop.getDesktop().open(file);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -120,7 +118,6 @@ public class SearchBookController {
 	 * onGetSearchResult display the results
 	 * 
 	 * @param books is the list view of books
-	 * @exception Exception
 	 */
 
 	public void onGetSearchResult(List<Book> books) {

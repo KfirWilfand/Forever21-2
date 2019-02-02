@@ -1,5 +1,6 @@
 package server.controllers;
 
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,6 +40,7 @@ public class ReaderController {
     private ReaderController(){}
     /**
 	 * getInstance is creating the singleton object of the class
+	 * @return  instance    instance of ReaderController
 	 */
     public static ReaderController getInstance(){
         if(instance == null){
@@ -134,13 +136,25 @@ public class ReaderController {
     	}
     }
     
+    /**
+   	 * sendTableOfContantToClient is send the table of contant to the client 
+   	 * @param msg contains the message from the client
+   	 */ 
   	public Message sendTableOfContantToClient(Message msg)
   	{
   		String bookName=(String)msg.getObj();
-		URL url = getClass().getResource("/TableOfContent/");
-		String path=url.getPath().toString()+bookName.replace(" ","_")+".pdf";
-		path=path.replace('/', '\\');
-		path=path.replaceAll("bin", "src");
+  		
+
+    	String path="";
+		try {
+			path = (ReaderController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+  		path=path+bookName.replace(" ","_")+".pdf";
+  	
   		TransferFile tf=TransferFile.createFileToTransfer(path);
   		Object[] message=new Object[2];
   		message[0]=tf;
@@ -151,7 +165,12 @@ public class ReaderController {
   			return new Message(OperationType.DownloadTableOfContent, null , ReturnMessageType.Unsuccessful);
   	}
 
-  	
+    /**
+   	 * getInboxMessagesByID get all the inbox messages of a particular user 
+   	 * @param id              the id of the user 
+   	 * @throws SQLException   SQLException
+   	 * @return msgList        the list of the inbox messages
+   	 */
   	public List<InboxMsgItem> getInboxMessagesByID(int id) throws SQLException
   	{
   		String query="select * from obl.inbox_msg where usrID="+String.valueOf(id);
@@ -166,7 +185,11 @@ public class ReaderController {
   	}
   	
   	
-  	
+    /**
+   	 * getInboxMessages use the 'getInboxMessageById' function and send to client the messages 
+   	 * @param msg              contains the message from the client
+   	 * @throws SQLException    SQLException
+   	 */
   	public Message getInboxMessage(Message msg) throws SQLException
   	{
     	List<InboxMsgItem> msgList=getInboxMessagesByID(((User)msg.getObj()).getId());
@@ -177,6 +200,11 @@ public class ReaderController {
     		return new Message(OperationType.GetInboxMsg, msgList , ReturnMessageType.Successful);
   		
   	}
+  	
+  	/**
+  	 * makeAsRead change the inbox message to be show as message that already been read
+  	 * @param msg       message from the client
+  	 */
 	public void makeAsRead(Message msg) {
 		String query= "Update obl.inbox_msg set is_read=1 where usrID='"+((InboxMsgItem)msg.getObj()).getUserID()+"'and date='"+((InboxMsgItem)msg.getObj()).getTime()+"'";
 		System.out.println(query);

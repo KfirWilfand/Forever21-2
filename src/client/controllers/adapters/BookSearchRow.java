@@ -27,10 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 
-/**
- * The BookSearchRow class that extends ListCell<Book> represents the rows in book search results. 
- * @author  Kfir Wilfand
- */
+/** The BookSearchRow class that extends ListCell represents the rows in book search results. */
 public class BookSearchRow extends ListCell<Book> {
 	/** tableRow is an anchorPane */
 	@FXML

@@ -40,13 +40,13 @@
          </font>
       </Text>
       <Line endX="-100.0" endY="196.0" layoutX="389.0" layoutY="12.0" startX="-100.0" stroke="#909090" />
-      <TextField fx:id="tfServerPort" layoutX="349.0" layoutY="73.0" prefHeight="25.0" prefWidth="131.0" text="5555" />
-      <Text layoutX="307.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" wrappingWidth="34.990234375">
+      <TextField fx:id="tfServerPort" layoutX="349.0" layoutY="74.0" prefHeight="26.0" prefWidth="140.0" text="5555" />
+      <Text layoutX="307.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" wrappingWidth="34.990234375">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Text>
-      <ToggleButton fx:id="btnServerOnOff" layoutX="492.0" layoutY="73.0" mnemonicParsing="false" onAction="#onServerOnOffbtn" prefHeight="17.0" prefWidth="51.0" style="-fx-border-radius: 20px;" text="ON" textFill="WHITE" />
+      <ToggleButton fx:id="btnServerOnOff" layoutX="497.0" layoutY="74.0" mnemonicParsing="false" onAction="#onServerOnOffbtn" prefHeight="17.0" prefWidth="51.0" style="-fx-border-radius: 20px;" text="ON" textFill="WHITE" />
       <Button fx:id="btnDisconnectClients" layoutX="367.0" layoutY="194.0" mnemonicParsing="false" onAction="#onDisconnectClientBtn" prefHeight="40.0" prefWidth="140.0" text="Disconnect all Clients" visible="false" />
       <Line endX="-86.0" endY="112.0" layoutX="375.0" layoutY="335.0" startX="-86.0" startY="-101.0" stroke="#909090" />
       <Label layoutX="15.0" layoutY="237.0" text="Graduate Student:" textFill="#51a1cd">

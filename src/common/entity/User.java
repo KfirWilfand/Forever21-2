@@ -38,7 +38,6 @@ public abstract class User implements Serializable {
 	 * @param id
 	 * @param email
 	 * @param userType
-	 * @return User object
 	 */
 	public User(String usrName, String password, String firstName, String lastName, Integer id, String email, UserType userType) {
 		this.usrName = usrName;
@@ -62,21 +61,21 @@ public abstract class User implements Serializable {
 	}
 	/**
 	 * setUsrName setter of user's username
-	 * @param usrName
+	 * @param usrName       user name
 	 */
 	public void setUsrName(String usrName) {
 		this.usrName = usrName;
 	}
 	/**
 	 * getId getter of user's id
-	 * @return id
+	 * @return id     user id
 	 */
 	public Integer getId() {
 		return id;
 	}
 	/**
 	 * setId setter of user's id
-	 * @param id
+	 * @param id      user id
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -84,70 +83,70 @@ public abstract class User implements Serializable {
 
 	/**
 	 * getPassword getter of user's password
-	 * @return password
+	 * @return password     user password
 	 */
 	public String getPassword() {
 		return password;
 	}
 	/**
 	 * setPassword setter of user's password
-	 * @param password
+	 * @param password    user password
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 	/**
 	 * getFirstName getter of user's first name
-	 * @return firstName
+	 * @return firstName  user first name
 	 */
 	public String getFirstName() {
 		return firstName;
 	}
 	/**
 	 * setFirstName setter of user's first name
-	 * @param firstName
+	 * @param firstName        user first name
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 	/**
 	 * getLastName getter of user's lasr name
-	 * @return lastName
+	 * @return lastName   user last name
 	 */
 	public String getLastName() {
 		return lastName;
 	}
 	/**
 	 * setLastName setter of user's last name
-	 * @param lastName
+	 * @param lastName      user last name
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 	/**
 	 * getEmail getter of user's email
-	 * @return email
+	 * @return email     user email
 	 */
 	public String getEmail() {
 		return email;
 	}
 	/**
 	 * setEmail setter of user's email
-	 * @param email
+	 * @param email      user email
 	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 	/**
 	 * getUserType getter of user's type
-	 * @return userType
+	 * @return userType      user type
 	 */
 	public UserType getUserType() {
-		return userType;
+		return userType;        
 	}
 	/**
 	 * setUserType setter of user's type
-	 * @param userType
+	 * @param userType    user type
 	 */
 	public void setUserType(UserType userType) {
 		this.userType = userType;

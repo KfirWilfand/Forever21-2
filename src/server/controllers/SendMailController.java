@@ -86,9 +86,14 @@ public class SendMailController {
             me.printStackTrace();
         }
     }
+    
+    /**
+  	 * sendLockInboxToLibraryManager is sending an inbox message to the library manager to lock subscriber that lates 3 times at return books
+  	 * @param subscriberNumber     subscriber number to lock
+  	 */
 
-	
     public static void sendLockInboxToLibraryManager(int subscriberNumber) throws SQLException
+
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
     	Timestamp today= new Timestamp(System.currentTimeMillis());
@@ -104,6 +109,12 @@ public class SendMailController {
     	}
     }
     
+    /**
+  	 * sendReminderInbox is sending an inbox message to user to remind something
+  	 * @param usrID         user id
+  	 * @param msgTitle      the title of the inbox message
+  	 * @param msgBody       the body of the inbox message 
+  	 */
     public static void sendReminderInbox(int usrID,String msgTitle, String msgBody)
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
@@ -115,6 +126,12 @@ public class SendMailController {
     	DBcObj.update(query);
     }
     
+    /**
+  	 * sendAlertInbox is sending an inbox Alert message to user 
+  	 * @param usrID          user id
+  	 * @param msgTitle       the title of the inbox message
+  	 * @param msgBody        the body of the inbox message 
+  	 */
     public static void sendAlertInbox(int usrID,String msgTitle, String msgBody)
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();

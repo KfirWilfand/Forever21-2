@@ -7,7 +7,14 @@ import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
 import common.entity.HistoryItem;
 import common.entity.enums.SubscriberHistoryType;
-
+/**
+ * The LibraryManagerController class represent the library manager controller on the server side
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class LibraryManagerController {
 
 	private static LibraryManagerController instance;
@@ -15,6 +22,7 @@ public class LibraryManagerController {
 	private LibraryManagerController(){}
 	 /**
 	 * getInstance is creating the singleton object of the class
+	 * @return instance      instance of  LibraryManagerController object
 	 */
 	public static LibraryManagerController getInstance(){
 		if(instance == null){
@@ -22,6 +30,13 @@ public class LibraryManagerController {
 		}
 		return instance;
 	}
+	
+	/**
+	 * function that lock the Reader Card
+	 * @return Message message to the client
+	 * @throws SQLException   SQLException
+	 * @param msg     message from client
+	 */
 	public Message lockReaderCard(Message msg) throws SQLException
 	{
 		
@@ -41,6 +56,13 @@ public class LibraryManagerController {
 			 return new Message(OperationType.LockReaderCard, null , ReturnMessageType.Unsuccessful);
 	}
 	
+	
+	/**
+	 * The function change the status of the reader card to active
+	 * @return Message message to the client
+	 * @throws SQLException   SQLException
+	 * @param msg  message from client
+	 */
 	public Message changeToActiveReaderCard(Message msg) throws SQLException 
 	{
 		
