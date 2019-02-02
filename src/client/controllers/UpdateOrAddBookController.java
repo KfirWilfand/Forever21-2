@@ -27,6 +27,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -232,20 +233,51 @@ public class UpdateOrAddBookController {
     @FXML
     void onClickUpdate(ActionEvent event) 
     {
-    	String query = "UPDATE obl.books SET bName='"+tfBookName.getText()+"',bAuthor='"+tfAuthorName.getText()+"',bGenre='"+tfGenre.getText()+"',bIsPopular="+cbIsPopular.isSelected()+",bEdition='"+tfEditionNumber.getText()+"',bPrintDate='"+dpPrintingDate.getValue()+"',bDescription='"+txteDescription.getText()+"',bPurchaseDate='"+dpPurchaseDate.getValue()+"',bShelfLocation='"+tfLocationOnShelf.getText()+"' WHERE bCatalogNum="+tfCatalogNumber.getText()+";";
+    	tfCatalogNumber.setStyle(null);
+    	tfBookName.setStyle(null);
+    	tfAuthorName.setStyle(null);
+    	tfEditionNumber.setStyle(null);
+    	tfLocationOnShelf.setStyle(null);
+    	tfGenre.setStyle(null);
+    	txteDescription.setStyle(null);
+    	dpPrintingDate.setStyle(null);
+    	dpPurchaseDate.setStyle(null);
     	
-		TransferFile tf =TransferFile.createFileToTransfer(tfTableOfContent.getText());
-		TransferFile photo=TransferFile.createFileToTransfer(tfBookImagePath.getText());
+    	
+    	if(tfCatalogNumber.getText().isEmpty())
+    		tfBookName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfBookName.getText().isEmpty())
+			tfBookName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfAuthorName.getText().isEmpty())
+			tfAuthorName.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfEditionNumber.getText().isEmpty())
+			tfEditionNumber.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfLocationOnShelf.getText().isEmpty())
+			tfLocationOnShelf.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(tfGenre.getText().isEmpty())
+			tfGenre.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(txteDescription.getText().isEmpty())
+			txteDescription.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(dpPrintingDate.getValue()==null)
+			dpPrintingDate.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+		if(dpPurchaseDate.getValue()==null)
+			dpPurchaseDate.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
+    	
+		if(!tfCatalogNumber.getText().isEmpty()&&!tfBookName.getText().isEmpty() && !tfAuthorName.getText().isEmpty() && !tfEditionNumber.getText().isEmpty() && !tfLocationOnShelf.getText().isEmpty() && !tfGenre.getText().isEmpty() && !txteDescription.getText().isEmpty() && !(dpPrintingDate.getValue()==null) && !(dpPurchaseDate.getValue()==null))
+    	{	String query = "UPDATE obl.books SET bName='"+tfBookName.getText()+"',bAuthor='"+tfAuthorName.getText()+"',bGenre='"+tfGenre.getText()+"',bIsPopular="+cbIsPopular.isSelected()+",bEdition='"+tfEditionNumber.getText()+"',bPrintDate='"+dpPrintingDate.getValue()+"',bDescription='"+txteDescription.getText()+"',bPurchaseDate='"+dpPurchaseDate.getValue()+"',bShelfLocation='"+tfLocationOnShelf.getText()+"' WHERE bCatalogNum="+tfCatalogNumber.getText()+";";
+    	
+			TransferFile tf =TransferFile.createFileToTransfer(tfTableOfContent.getText());
+			TransferFile photo=TransferFile.createFileToTransfer(tfBookImagePath.getText());
 		
-		Object[] msg=new Object[4];
-		msg[0]=query;
-		msg[1]=tf;
-		msg[2]=tfBookName.getText();
-		msg[3]=photo;
+			Object[] msg=new Object[4];
+			msg[0]=query;
+			msg[1]=tf;
+			msg[2]=tfBookName.getText();
+			msg[3]=photo;
 		
-    	System.out.println(query);
-    	ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,msg ));
-
+			System.out.println(query);
+			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.UpdateBookDetails,msg ));
+    	}
     	
     }
     /**
@@ -317,7 +349,6 @@ public class UpdateOrAddBookController {
     	if (selectedFile != null)
     		{
     			tfBookImagePath.setText(selectedFile.getCanonicalPath());
-    			//imgByteArr=Files.readAllBytes(selectedFile.toPath());
     			bookImage.setImage(new Image(selectedFile.toURI().toString()));
     		}
     	
@@ -342,7 +373,6 @@ public class UpdateOrAddBookController {
     	URL url = getClass().getResource("/BooksImages/");
     	
 		String str=url.getPath().toString()+fileName.replace(" ","_")+".png";
-		//str=str.replace('/', '\\');
 		str=str.replaceAll("bin", "src");
 		System.out.println(str);
     	bookImage.setImage(new Image(new File(str).toURI().toString()));

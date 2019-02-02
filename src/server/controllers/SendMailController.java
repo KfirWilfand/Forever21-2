@@ -1,4 +1,5 @@
 package server.controllers;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -87,16 +88,20 @@ public class SendMailController {
     }
 
 	
-    public static void sendLockInboxToLibraryManager(int subscriberNumber)
+    public static void sendLockInboxToLibraryManager(int subscriberNumber) throws SQLException
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
     	Timestamp today= new Timestamp(System.currentTimeMillis());
-    	//java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
-    	String title="Lock subscriber request";
-    	String body="Subscriber number '"+subscriberNumber+"' late in returning 3 times.You have the option to lock his reader card";
-    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values(18,'"+title+"',\""+body+"\",'LockReader',0,'"+today+"')";
-    	System.out.println(query);
-    	DBcObj.update(query);
+    	String getLibraryManagers="SELECT usrID FROM obl.users where usrType='LibraryManager'";
+    	ResultSet libraryManagers=DBcObj.query(getLibraryManagers);
+    	while(libraryManagers.next())
+    	{
+    		String title="Lock subscriber request";
+    		String body="Subscriber number '"+subscriberNumber+"' late in returning 3 times.You have the option to lock his reader card";
+    		String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values("+libraryManagers.getString("usrID")+",'"+title+"',\""+body+"\",'LockReader',0,'"+today+"')";
+    		System.out.println(query);
+    		DBcObj.update(query);
+    	}
     }
     
     public static void sendReminderInbox(int usrID,String msgTitle, String msgBody)
@@ -122,6 +127,4 @@ public class SendMailController {
     }
     
     
-    
-	
 }
