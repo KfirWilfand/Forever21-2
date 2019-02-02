@@ -4,7 +4,14 @@ import java.io.Serializable;
 
 import common.controllers.enums.OperationType;
 import common.controllers.enums.ReturnMessageType;
-
+/**
+ * The Message class represent message that send from the client to the server and from the server to the client 
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class Message implements Serializable {
 	// Type of the operation we want from the server to make.
 	private OperationType operationType;

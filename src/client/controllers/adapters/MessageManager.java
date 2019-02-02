@@ -49,7 +49,6 @@ public class MessageManager {
 	 * type after the return from the server
 	 * 
 	 * @param msg a Message that contains the respond from the server
-	 * @exception printStackTrace
 	 */
 	public static void handle(Message msg) {
 		try {

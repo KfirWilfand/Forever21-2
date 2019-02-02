@@ -155,12 +155,11 @@ public class PDFGenerator {
 	}
 
 	/**
-	 * Generate a PDF file with statistic report, all data comes from statistic
-	 * controller, include what to insert to file.
-	 * 
-	 * @param                     dest: path to save the file
-	 * @param                     title: PDF title
-	 * @param StatisticController
+	 * Generate a PDF file with statistic report, all data comes from 
+	 * statistic controller, include what to insert to file.
+	 * @param dest  path to save the file
+	 * @param title PDF title
+	 * @param statis StatisticController
 	 */
 	public File createPdf(String dest, String title, StatisticController statis)
 			throws DocumentException, MalformedURLException, IOException {

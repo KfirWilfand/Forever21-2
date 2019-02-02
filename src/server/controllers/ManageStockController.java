@@ -43,6 +43,7 @@ public class ManageStockController {
 	private ManageStockController(){}
 	/**
 	 * getInstance is creating the singleton object of the class
+	 * @return instance    instance of ManageStockController object
 	 */
 	public static ManageStockController getInstance(){
 		if(instance == null){
@@ -52,10 +53,9 @@ public class ManageStockController {
 	}
 	/**
 	 * addNewBook is adding a new book to the inventory
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
-	 * @throws URISyntaxException 
+	 * @param msg             contains the message from the client 
+	 * @throws SQLException   SQLException
+	 * @return Message        message to the client
 	 */
 	public Message addNewBook(Object msg) throws SQLException, URISyntaxException 
 	{
@@ -120,13 +120,13 @@ public class ManageStockController {
 
 	/**
 	 * This method update Subscriber details by Librarian
-	 * @param Message
+	 * @param msg
 	 * Message.getObj() return String[3]
 	 * 
 	 * String[0] = subId
 	 * String[1] = query 1 to update user table
 	 * String[2] = query 2 to update subscriber table
-	 * 
+	 * @throws SQLException  SQLException
 	 * @return if Successful: Message with updated Subscriber Object
 	 */ 
 	public Message editDetailsByLibrarian(Object msg) throws SQLException {
@@ -168,10 +168,10 @@ public class ManageStockController {
 	}
 	/**
 	 * deleteCopy is deleting a copy from the inventory
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @throw IOException
-	 * @return Message to the client
+	 * @param msg              contains the message from the client 
+	 * @throws SQLException    SQLException
+	 * @throws IOException      IOException
+	 * @return Message         Message IOException to the client
 	 */
 	public Message deleteCopy(Object msg) throws SQLException, IOException 
 	{
@@ -189,10 +189,9 @@ public class ManageStockController {
 	}
 	/**
 	 * updateBookDetails is updating details about book
-	 * @param msg contains the message from the client 
-	 * @throws SQLException when occurs
-	 * @return Message to the client
-	 * @throws URISyntaxException 
+	 * @param msg             contains the message from the client 
+	 * @throws SQLException   SQLException
+	 * @return Message        Message to the client
 	 */
 	public Message updateBookDetails(Object msg) throws SQLException, URISyntaxException 
 	{
@@ -231,9 +230,9 @@ public class ManageStockController {
 
 	/**
 	 * getCopyById is returning copy by his id
-	 * @param copyID contains the id of the copy 
-	 * @throws SQLException when occurs
-	 * @return Copy details to the client
+	 * @param copyID           contains the id of the copy 
+	 * @throws SQLException    SQLException 
+	 * @return copy            copy details to the client
 	 */
 	public static Copy getCopyById(String copyID) throws SQLException
 	{
@@ -250,9 +249,9 @@ public class ManageStockController {
 	}
 	/**
 	 * getBookByCatalogNumber is returning book by his catalog number
-	 * @param catalogNumber contains the book catalog number
-	 * @throws SQLException when occurs
-	 * @return book details to the client
+	 * @param catalogNumber       contains the book catalog number
+	 * @throws SQLException       SQLException
+	 * @return book               book details to the client
 	 */
 	public static Book getBookByCatalogNumber(int catalogNumber) throws SQLException
 	{
@@ -274,9 +273,9 @@ public class ManageStockController {
 
 	/**
 	 * getBookOrderQueue is returning queue of subscriber for specific book
-	 * @param bookCatalogNamber contains the book catalog number
-	 * @throws SQLException when occurs
-	 * @return Queue<Subscriber> 
+	 * @param bookCatalogNamber           contains the book catalog number
+	 * @throws SQLException               SQLException
+	 * @return orderQueue                 order queue of book
 	 */
 	public static Queue<Subscriber> getBookOrderQueue(int bookCatalogNamber) throws SQLException
 	{
@@ -293,9 +292,9 @@ public class ManageStockController {
 	}
 	/**
 	 * getBorrowCopyByCopyID is returning a borrow copy by his copy id
-	 * @param bookCatalogNamber contains the book catalog number
-	 * @throws SQLException when occurs
-	 * @return BorrowCopy 
+	 * @param copyID                copy id
+	 * @throws SQLException         SQLException
+	 * @return BorrowCopy           details about borrow copy
 	 */
 	public static BorrowCopy getBorrowCopyByCopyID(String copyID) throws SQLException
 	{
@@ -308,10 +307,14 @@ public class ManageStockController {
 			borrow=new BorrowCopy(rs.getString("copyID"),rs.getInt("subNum"),rs.getDate("borrowDate"), rs.getDate("returnDueDate"));
 		return borrow ;
 	}
-
-	public Message sendBookPhotoToClient(Message msg) throws URISyntaxException 
+	/**
+	 * sendBookPhotoToClient is send to the client photo of the book (if there is photo like this)
+	 * @param  msg   message from client
+	 * @return Message to the client
+	 */
+	
+	public Message sendBookPhotoToClient(Message msg) 
 	{
-		System.out.println("!!!!!!!!!!!");
   		String bookName=(String)msg.getObj();
   		
   		String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();

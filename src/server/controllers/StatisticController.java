@@ -53,7 +53,6 @@ public class StatisticController {
 	 * getBookStatstic is getting the general system Book statistic details
 	 * 
 	 * @param msg contains the message from the client
-	 * @throws SQLException when occurs
 	 * @return Message
 	 */
 	public Message getBookStatstic(Object msg) {
@@ -94,7 +93,6 @@ public class StatisticController {
 	 * getLateBookStatsticByCatId is get Book Statistic obj by catalog num
 	 * 
 	 * @param msg contains the message from the client
-	 * @throws SQLException when occurs
 	 * @return Message with BookStatistic
 	 */
 	public Message getLateBookStatsticByCatId(Object msg) {
@@ -124,8 +122,6 @@ public class StatisticController {
 	/**
 	 * insertStatisticActiviySnapshot use primarily to insert new statistic activity
 	 * snapshot automatic functions.
-	 * 
-	 * @param msg contains the message from the client
 	 * @throws SQLException when occurs
 	 */
 	public static void insertStatisticActiviySnapshot() throws Exception {
@@ -200,7 +196,6 @@ public class StatisticController {
 	 * getActivitySnapshotByDate
 	 * 
 	 * @param date of activity snapshot
-	 * @throws Exception when occurs
 	 * @return ActiviySnapshot
 	 * @throws SQLException
 	 */
@@ -420,7 +415,7 @@ public class StatisticController {
 	/**
 	 * getAllLatesReturnBySingleBookCatId return Single Book of calculate duration of borrow books.
 	 * 
-	 * @param borrowDates
+	 * @param msg
 	 * @return list of calculate duration
 	 */
 	public Message getAllLatesReturnBySingleBookCatId(Message msg) {
@@ -461,8 +456,9 @@ public class StatisticController {
 	/**
 	 * getSingleActiviySnapshotByPeriod return List of ActiviySnapshot between given period dates
 	 * 
-	 * @param borrowDates
-	 * @return Message with list of calculate duration
+	 * @param msg
+	 * @return Message           with list of calculate duration
+	 * @exception SQLException      
 	 */
 	public Message getSingleActiviySnapshotByPeriod(Object msg) throws SQLException {
 
@@ -493,8 +489,7 @@ public class StatisticController {
 	 * getSingleActiviySnapshotByDate return Single Activity Snapshot by date
 	 * if the Activity do not exist return the last activity record
 	 * 
-	 * @param Message with dates
-	 * @throw Exception , SQLException when occurs
+	 * @param msg       Message with dates
 	 * @return Message with list of calculate duration
 	 */
 	public Message getSingleActiviySnapshotByDate(Message msg) {
@@ -524,8 +519,7 @@ public class StatisticController {
 	/**
 	 * getLastActiviySnapshotRecord return the last activity record 
 	 * 
-	 * @param Message with empty object
-	 * @throw Exception , SQLException when occurs
+	 * @param msg with empty object
 	 * @return Message with list of calculate duration
 	 */
 	public Message getLastActiviySnapshotRecord(Message msg) {

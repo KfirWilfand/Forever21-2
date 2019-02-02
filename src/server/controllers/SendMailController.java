@@ -1,4 +1,5 @@
 package server.controllers;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -85,20 +86,35 @@ public class SendMailController {
             me.printStackTrace();
         }
     }
+    
+    /**
+  	 * sendLockInboxToLibraryManager is sending an inbox message to the library manager to lock subscriber that lates 3 times at return books
+  	 * @param subscriberNumber     subscriber number to lock
+  	 */
 
-	
-    public static void sendLockInboxToLibraryManager(int subscriberNumber)
+    public static void sendLockInboxToLibraryManager(int subscriberNumber) throws SQLException
+
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
     	Timestamp today= new Timestamp(System.currentTimeMillis());
-    	//java.sql.Date today=java.sql.Date.valueOf(LocalDate.now());
-    	String title="Lock subscriber request";
-    	String body="Subscriber number '"+subscriberNumber+"' late in returning 3 times.You have the option to lock his reader card";
-    	String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values(18,'"+title+"',\""+body+"\",'LockReader',0,'"+today+"')";
-    	System.out.println(query);
-    	DBcObj.update(query);
+    	String getLibraryManagers="SELECT usrID FROM obl.users where usrType='LibraryManager'";
+    	ResultSet libraryManagers=DBcObj.query(getLibraryManagers);
+    	while(libraryManagers.next())
+    	{
+    		String title="Lock subscriber request";
+    		String body="Subscriber number '"+subscriberNumber+"' late in returning 3 times.You have the option to lock his reader card";
+    		String query="insert into obl.inbox_msg (usrID,Title,body,type,is_read,date) values("+libraryManagers.getString("usrID")+",'"+title+"',\""+body+"\",'LockReader',0,'"+today+"')";
+    		System.out.println(query);
+    		DBcObj.update(query);
+    	}
     }
     
+    /**
+  	 * sendReminderInbox is sending an inbox message to user to remind something
+  	 * @param usrID         user id
+  	 * @param msgTitle      the title of the inbox message
+  	 * @param msgBody       the body of the inbox message 
+  	 */
     public static void sendReminderInbox(int usrID,String msgTitle, String msgBody)
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
@@ -110,6 +126,12 @@ public class SendMailController {
     	DBcObj.update(query);
     }
     
+    /**
+  	 * sendAlertInbox is sending an inbox Alert message to user 
+  	 * @param usrID          user id
+  	 * @param msgTitle       the title of the inbox message
+  	 * @param msgBody        the body of the inbox message 
+  	 */
     public static void sendAlertInbox(int usrID,String msgTitle, String msgBody)
     {
     	DBcontroller DBcObj=DBcontroller.getInstance();
@@ -122,6 +144,4 @@ public class SendMailController {
     }
     
     
-    
-	
 }

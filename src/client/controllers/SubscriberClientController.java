@@ -144,8 +144,10 @@ public class SubscriberClientController {
 
 	
 	
-	
-
+	/**
+   	 * onBorrowedBooksTab will present the books that the subscriber order but still do not return
+   	 * @param event action event
+   	 */
     @FXML
     void onBorrowedBooksTab(Event event) 
     {
@@ -252,6 +254,10 @@ public class SubscriberClientController {
 		});
 	}
 	
+	/**
+	 * onGetBorrowedBooksResult update the table view of the borrowed books - enter to every row the book
+	 * @param BorrowedBooks 
+	 */
 	public void onGetBorrowedBooksResult(List<BorrowCopy> BorrowedBooks) {
 		try {
 			Platform.runLater(new Runnable() {

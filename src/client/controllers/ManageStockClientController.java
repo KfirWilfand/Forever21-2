@@ -123,7 +123,6 @@ public class ManageStockClientController {
 	
 	 /**
    	 * initialize manage stock
-   	 * @exception IOException 
    	 */
 	@FXML
 	public void initialize() {

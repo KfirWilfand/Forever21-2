@@ -11,7 +11,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
-
+/**
+ * The BookSelected class represent the statistic details about specific book
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class BookSelected implements Serializable {
 
 	private Integer bCatalogNum;

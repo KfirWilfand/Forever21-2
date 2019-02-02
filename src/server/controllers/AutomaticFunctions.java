@@ -13,11 +13,22 @@ import common.entity.Copy;
 import common.entity.HistoryItem;
 import common.entity.Subscriber;
 import common.entity.enums.SubscriberHistoryType;
-
+/**
+ * The AutomaticFunction class represent the functions that execute automatically at 00:00 every day. if you want to change the execute time 
+ * you need to click on the "set time" button at the server GUI
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class AutomaticFunctions {
 	
 	
-	
+	/**
+	 * function that check every day the books that their return day is arrived but still do not return the book and change the reader card status to hold
+	 * @throws SQLException  SQLException
+	 */
 	public static void checkLatesInReturns() throws SQLException
 	{
 		
@@ -71,6 +82,12 @@ public class AutomaticFunctions {
 	    }	    
 	}
 	
+	
+
+	/**
+	 * function that check every day the books that their return day is tomorrow and remind to the students to return the book
+	 * @throws SQLException      SQLException
+	 */
 	public static void remainderOneDayBeforeReturns() throws SQLException
 	{	
 		System.out.println("function 2 strat!!!");
@@ -96,6 +113,12 @@ public class AutomaticFunctions {
 	        
 	}
 	
+	
+
+	/**
+	 * function that check every day if the first subscriber in the order list take the book and if 2 days already pass - the function move to the next subscriber at queue
+	 * @exception SQLException     SQLException
+	 */
 	public static void moveToTheNextSubscriberInQueue() throws SQLException
 	{
 		System.out.println("function 3 strat!!!");

@@ -32,8 +32,6 @@ public class ViewStarter extends Application {
 	public static Client client;
 	/**
      * main method
-     * @exception ArrayIndexOutOfBoundsException
-     * @exception IOException
 	 */
 	public static void main(String[] args) {
 		String host = "";
@@ -69,8 +67,7 @@ public class ViewStarter extends Application {
 	}
 	/**
      * start method
-     * @param primaryStage
-     * @exception Exception
+     * @param primaryStage       primary Stage
 	 */
 	@Override
 	public void start(Stage primaryStage) {

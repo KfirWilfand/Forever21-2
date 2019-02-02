@@ -68,7 +68,6 @@ public class Client extends AbstractClient {
 	 /**
    	 * handleMessageFromClientUI is chenneling the client's request to the server
    	 * @param message is the message that need to be sent to the server
-   	 * @exception IOException
    	 */
 	public void handleMessageFromClientUI(Object message) {
 		try {
