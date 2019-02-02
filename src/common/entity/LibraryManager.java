@@ -14,15 +14,14 @@ import common.entity.enums.UserType;
 public class LibraryManager extends Librarian implements Serializable{
 
 	/**
-	 * Copy Librarian constructor
-	 * @param usrId
-	 * @param usrName
-	 * @param usrPassword
-	 * @param usrFirstName
-	 * @param usrLastName
-	 * @param usrEmail
-	 * @param usrType
-	 * @return Librarian object
+	 * LibraryManager constructor
+	 * @param usrId                    user id
+	 * @param usrName                  user name
+	 * @param usrPassword              user password
+	 * @param usrFirstName             user first name
+	 * @param usrLastName              user last name
+	 * @param usrEmail                 user email
+	 * @param usrType                  user Type
 	 */
 	public LibraryManager(int usrId, String usrName, String usrPassword, String usrFirstName, String usrLastName,
 			String usrEmail, UserType usrType) {

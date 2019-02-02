@@ -19,7 +19,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-
+/**
+ * The InboxController class that operate the inbox
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class InboxController {
 
     @FXML
@@ -53,7 +60,10 @@ public class InboxController {
 		ViewStarter.client.inboxControllerObj = this;
 	}
 	
-
+/**
+ * onLockReaderBtn send to the server request to lock reader card
+ * @param event
+ */
     @FXML
     void onLockReaderBtn(ActionEvent event)
     {
@@ -67,6 +77,10 @@ public class InboxController {
     	}
     }
 
+    /**
+     * onUnlockReaderBtn send to the server request to change the reader card to Active
+     * @param event
+     */   
     @FXML
     void onUnlockReaderBtn(ActionEvent event) 
     {
@@ -80,6 +94,10 @@ public class InboxController {
     	}
     }
 
+    /**
+     * onClickMsg display the selected message
+     * @param event
+     */   
     @FXML
     void onClickMsg(MouseEvent event) {
     	InboxMsgItem msgItem=lvMessages.getSelectionModel().getSelectedItem();
@@ -109,7 +127,10 @@ public class InboxController {
 
     }
 
-
+    /**
+     * show inbox messages
+     * @param messages
+     */   
 	public void showInboxMessages(List<InboxMsgItem> messages) {
 		// TODO Auto-generated method stub
 		

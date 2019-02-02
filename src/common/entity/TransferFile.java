@@ -4,7 +4,14 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.Serializable;
-
+/**
+ * The TransferFile class represent file that sent between the server and the client 
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class TransferFile implements Serializable{
 
 	private String Description=null;
@@ -59,7 +66,10 @@ public class TransferFile implements Serializable{
 	public void setDescription(String description) {
 		Description = description;
 	}	
-	
+	/**
+	 * create a file to transfer
+	 * @param Path
+	 */
     public static TransferFile createFileToTransfer(String Path)
     {
     	if(Path.isEmpty())

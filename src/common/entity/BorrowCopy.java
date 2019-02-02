@@ -44,7 +44,6 @@ public class BorrowCopy implements Serializable {
 	 * @param subNum
 	 * @param borrowDate
 	 * @param returnDueDate
-	 * @return BorrowCopy object
 	 */
 
 	public BorrowCopy(String copyID, int subNum, Date borrowDate, Date returnDueDate) {
@@ -72,7 +71,6 @@ public class BorrowCopy implements Serializable {
 	 * BorrowCopy class constructor
 	 * @param copyID
 	 * @param actualReturnDate
-	 * @return BorrowCopy object
 	 */
 
 	public BorrowCopy(String copyID, Date actualReturnDate)//constructor for return date functionality 
@@ -163,7 +161,12 @@ public class BorrowCopy implements Serializable {
 		return isPopular;
 	}
 
-	
+	/**
+	 * resultSetToList create a list with the books that borrowed by the subscriber 
+	 * @param rs                   result set from data base
+	 * @return borrowBooks_list    list of borrow book
+	 * @exception SQLException SQLException
+	 */
 	public static List<BorrowCopy> resultSetToList(ResultSet rs) throws SQLException
 	{
 		List<BorrowCopy> borrowBooks_list= new ArrayList<BorrowCopy>();

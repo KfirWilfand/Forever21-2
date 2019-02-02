@@ -39,7 +39,6 @@ public class ServerStarter extends Application {
 	/**
      * start server method
      * @param primaryStage
-     * @exception Exception
 	 */
 	@Override
 	public void start(Stage primaryStage) {
@@ -67,7 +66,6 @@ public class ServerStarter extends Application {
 	}
 	/**
      * stop server method
-     * @exception IOException
 	 */
 	@Override
 	public void stop(){

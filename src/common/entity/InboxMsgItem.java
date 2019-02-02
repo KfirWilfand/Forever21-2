@@ -4,7 +4,14 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import common.entity.enums.InboxMsgType;
-
+/**
+ * The InboxMsgItem class represent the message that send to the inbox of the users
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class InboxMsgItem implements Serializable{
 	
 

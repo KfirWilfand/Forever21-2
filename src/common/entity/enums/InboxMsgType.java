@@ -1,5 +1,7 @@
 package common.entity.enums;
-
+/**
+ * enum class that present all the types of inbox messages
+ */
 public enum InboxMsgType {
 	
 	LockReader, Reminder, Alert;

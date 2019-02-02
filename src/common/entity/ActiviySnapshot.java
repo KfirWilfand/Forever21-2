@@ -2,7 +2,9 @@ package common.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
-
+/**
+ * ActiviySnapshot class present the status of the subscribers at specific time
+ */
 public class ActiviySnapshot implements Serializable {
 	private Date aDate;
 	private int aLockSub;

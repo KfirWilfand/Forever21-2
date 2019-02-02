@@ -29,17 +29,16 @@ public class Subscriber extends User implements Serializable {
 	private ReaderCard readerCard;
 	/**
 	 * Subscriber constructor
-	 * @param usrId
-	 * @param usrName
-	 * @param usrPassword
-	 * @param usrFirstName
-	 * @param usrLastName
-	 * @param usrEmail
-	 * @param usrType
-	 * @param phoneNum
-	 * @param readerCard
-	 * @param graduationDate
-	 * @return Subscriber object
+	 * @param usrId                       user id
+	 * @param usrName                     user name
+	 * @param usrPassword                 user password
+	 * @param usrFirstName                user first name
+	 * @param usrLastName                 user last name
+	 * @param usrEmail                    user email
+	 * @param usrType                     user type
+	 * @param phoneNum                    user phone
+	 * @param readerCard                  user reader card
+	 * @param graduationDate              user graduation date
 	 */
 	public Subscriber(Integer usrId, String usrName, String usrPassword, String usrFirstName, String usrLastName,
 			String usrEmail, UserType usrType, String phoneNum ,ReaderCard readerCard,Date graduationDate) {
@@ -53,56 +52,56 @@ public class Subscriber extends User implements Serializable {
 	}
 	/**
 	 * getGraduationDate getter of subscriber graduation date
-	 * @return graduationDate
+	 * @return graduationDate          subscriber graduationDate
 	 */
 	public Date getGraduationDate() {
 		return graduationDate;
 	}
 	/**
 	 * setGraduationDate getter of subscriber graduation date
-	 * @param graduationDate
+	 * @param graduationDate  subscriber graduationDate
 	 */
 	public void setGraduationDate(Date graduationDate) {
 		this.graduationDate = graduationDate;
 	}
 	/**
 	 * getReaderCard getter of subscriber reader card
-	 * @return readerCard
+	 * @return readerCard         subscriber reader card 
 	 */
 	public ReaderCard getReaderCard() {
 		return readerCard;
 	}
 	/**
 	 * setReaderCard setter of subscriber reader card
-	 * @param readerCard
+	 * @param readerCard       subscriber reader card 
 	 */
 	public void setReaderCard(ReaderCard readerCard) {
 		this.readerCard = readerCard;
 	}
 	/**
 	 * getSubscriberNum getter of subscriber number
-	 * @return subscriberNum
+	 * @return subscriberNum     subscriber Number
 	 */
 	public Integer getSubscriberNum() {
 		return subscriberNum;
 	}
 	/**
 	 * setSubscriberNum setter of subscriber number
-	 * @param subscriberNum
+	 * @param subscriberNum   subscriber Number
 	 */
 	public void setSubscriberNum(Integer subscriberNum) {
 		this.subscriberNum = subscriberNum;
 	}
 	/**
 	 * getPhoneNum getter of subscriber phone number
-	 * @return phoneNum
+	 * @return phoneNum    subscriber phone number
 	 */
 	public String getPhoneNum() {
 		return phoneNum;
 	}
 	/**
 	 * setPhoneNum setter of subscriber phone number
-	 * @param phoneNum
+	 * @param phoneNum subscriber phone number
 	 */
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;

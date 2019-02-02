@@ -1,6 +1,6 @@
 package server.controllers;
 
-import java.lang.System.Logger.Level;
+
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -10,7 +10,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * The AutomaticFunctionsController class invoke the automatic functions
+ * @author  Kfir Wilfand
+ * @author Bar Korkos
+ * @author Zehavit Otmazgin
+ * @author Noam Drori
+ * @author Sapir Hochma
+ */
 public class AutomaticFunctionsController {
 
 		ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);

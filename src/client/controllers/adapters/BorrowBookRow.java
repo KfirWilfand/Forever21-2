@@ -19,10 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-/**
- * The BorrowBookRow class that extends ListCell<BorrowBook> represents the rows in borrow book. 
- * @author  Kfir Wilfand
- */
+
 public class BorrowBookRow extends ListCell<BorrowBook> {
 
 	/** lblBookName is a label that contains book name */

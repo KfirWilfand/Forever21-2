@@ -337,6 +337,10 @@ public class UpdateOrAddBookController {
     	
     }
     
+    /**
+   	 * showPhoto present the book's photo at the details of the book
+   	 * @param fileName  file name 
+   	 */
     public void showPhoto(String fileName)
     {
     	URL url = getClass().getResource("/BooksImages/");

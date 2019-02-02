@@ -39,11 +39,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 
-
-/**
- * @author kfir3
- *
- */
 public class StatisticController {
 	/** Node component in statistic controller */
 	@FXML
@@ -498,217 +493,216 @@ public class StatisticController {
 	}
 	/**
 	 * getActiviySnapshot
-	 * @return List<ActiviySnapshot>
+	 * @return mActiviySnapshot
 	 */
 	public List<ActiviySnapshot> getActiviySnapshot() {
 		return mActiviySnapshot;
 	}
 	/**
 	 * getBcStatisticRegularBooks
-	 * @return BarChart<String, Integer>
+	 * @return bcStatisticRegularBooks
 	 */
 	public BarChart<String, Integer> getBcStatisticRegularBooks() {
 		return bcStatisticRegularBooks;
 	}
 	/**
 	 * getBcStatisticPopularBooks
-	 * @return BarChart<String, Integer>
+	 * @return bcStatisticPopularBooks
 	 */
 	public BarChart<String, Integer> getBcStatisticPopularBooks() {
 		return bcStatisticPopularBooks;
 	}
 	/**
 	 * getBcStatisticReturnLates
-	 * @return BarChart<String, Integer>
+	 * @return bcStatisticReturnLates
 	 */
 	public BarChart<String, Integer> getBcStatisticReturnLates() {
 		return bcStatisticReturnLates;
 	}
 	/**
-	 * getBcStatisticReturnLatesSingle
-	 * @return BarChart<String, Integer>
+	 * @return getBcStatisticReturnLatesSingle 
 	 */
 	public BarChart<String, Integer> getBcStatisticReturnLatesSingle() {
 		return bcStatisticReturnLatesSingle;
 	}
 	/**
 	 * getCbActReportLates
-	 * @return CheckBox
+	 * @return ChecbActReportLatesckBox
 	 */
 	public CheckBox getCbActReportLates() {
 		return cbActReportLates;
 	}
 	/**
 	 * getCbBorrRegReportDecDist
-	 * @return CheckBox
+	 * @return cbBorrRegReportDecDist
 	 */
 	public CheckBox getCbBorrRegReportDecDist() {
 		return cbBorrRegReportDecDist;
 	}
 	/**
 	 * getCbBorrRegReportAvg
-	 * @return CheckBox
+	 * @return cbBorrRegReportAvg
 	 */
 	public CheckBox getCbBorrRegReportAvg() {
 		return cbBorrRegReportAvg;
 	}
 	/**
 	 * getCbBorrRegReportMed
-	 * @return CheckBox
+	 * @return cbBorrRegReportMed
 	 */
 	public CheckBox getCbBorrRegReportMed() {
 		return cbBorrRegReportMed;
 	}
 	/**
 	 * getCbBorrPopReportDecDist
-	 * @return CheckBox
+	 * @return cbBorrPopReportDecDist
 	 */
 	public CheckBox getCbBorrPopReportDecDist() {
 		return cbBorrPopReportDecDist;
 	}
 	/**
 	 * getCbBorrPopReportAvg
-	 * @return CheckBox
+	 * @return cbBorrPopReportAvg
 	 */
 	public CheckBox getCbBorrPopReportAvg() {
 		return cbBorrPopReportAvg;
 	}
 	/**
 	 * getCbBorrPopReportMed
-	 * @return CheckBox
+	 * @return cbBorrPopReportMed
 	 */
 	public CheckBox getCbBorrPopReportMed() {
 		return cbBorrPopReportMed;
 	}
 	/**
 	 * getCbAllLateRegReportDecDist
-	 * @return CheckBox
+	 * @return cbAllLateRegReportDecDist
 	 */
 	public CheckBox getCbAllLateRegReportDecDist() {
 		return cbAllLateRegReportDecDist;
 	}
 	/**
 	 * getCbAllLateRegReportAvg
-	 * @return CheckBox
+	 * @return cbAllLateRegReportAvg
 	 */
 	public CheckBox getCbAllLateRegReportAvg() {
 		return cbAllLateRegReportAvg;
 	}
 	/**
 	 * getDpActivityStatistic
-	 * @return CheckBox
+	 * @return cbAllLatesRegReportMed
 	 */
 	public CheckBox getCbAllLatesRegReportMed() {
 		return cbAllLatesRegReportMed;
 	}
 	/**
 	 * getDpActivityStatistic
-	 * @return CheckBox
+	 * @return cbLateSingleBooksAvg
 	 */
 	public CheckBox getCbLateSingleBooksAvg() {
 		return cbLateSingleBooksAvg;
 	}
 	/**
 	 * getDpActivityStatistic
-	 * @return CheckBox
+	 * @return cbLateSingleBooksMed
 	 */
 	public CheckBox getCbLateSingleBooksMed() {
 		return cbLateSingleBooksMed;
 	}
 	/**
 	 * getDpActivityStatistic
-	 * @return CheckBox
+	 * @return cbLateSingleBooksDist
 	 */
 	public CheckBox getCbLateSingleBooksDist() {
 		return cbLateSingleBooksDist;
 	}
 	/**
 	 * getDpActivityStatistic
-	 * @return CheckBox
+	 * @return cbActReportCopies
 	 */
 	public CheckBox getCbActReportCopies() {
 		return cbActReportCopies;
 	}
 	/**
 	 * getDpActivityStatistic
-	 * @return Label
+	 * @return lblStatisticSubLatesNumCopies
 	 */
 	public Label getLblStatisticSubLatesNumCopies() {
 		return lblStatisticSubLatesNumCopies;
 	}
 	/**
 	 * getLblStatisticNumCopies
-	 * @return Label
+	 * @return lblStatisticNumCopies
 	 */
 	public Label getLblStatisticNumCopies() {
 		return lblStatisticNumCopies;
 	}
 	/**
 	 * getLblStatisticAveragePopularBooks
-	 * @return Label
+	 * @return lblStatisticAveragePopularBooks
 	 */
 	public Label getLblStatisticAveragePopularBooks() {
 		return lblStatisticAveragePopularBooks;
 	}
 	/**
 	 * getLblStatisticMedianRegularBooks
-	 * @return Label
+	 * @return lblStatisticMedianRegularBooks
 	 */
 	public Label getLblStatisticMedianRegularBooks() {
 		return lblStatisticMedianRegularBooks;
 	}
 	/**
 	 * getLblStatisticAverageRegularBooks
-	 * @return Label
+	 * @return lblStatisticAverageRegularBooks
 	 */
 	public Label getLblStatisticAverageRegularBooks() {
 		return lblStatisticAverageRegularBooks;
 	}
 	/**
 	 * getLblStatisticMedianPopularBooks
-	 * @return Label
+	 * @return lblStatisticMedianPopularBooks
 	 */
 	public Label getLblStatisticMedianPopularBooks() {
 		return lblStatisticMedianPopularBooks;
 	}
 	/**
 	 * getLblStatisticAverageReturnLates
-	 * @return Label
+	 * @return lblStatisticAverageReturnLates
 	 */
 	public Label getLblStatisticAverageReturnLates() {
 		return lblStatisticAverageReturnLates;
 	}
 	/**
 	 * getLblStatisticSingleBookAverageReturnLates
-	 * @return Label
+	 * @return lblStatisticSingleBookAverageReturnLates
 	 */
 	public Label getLblStatisticSingleBookAverageReturnLates() {
 		return lblStatisticSingleBookAverageReturnLates;
 	}
 	/**
 	 * getLblStatisticMedianReturnLates
-	 * @return Label
+	 * @return lblStatisticMedianReturnLates
 	 */
 	public Label getLblStatisticMedianReturnLates() {
 		return lblStatisticMedianReturnLates;
 	}
 	/**
 	 * getLblStatisticSingleBookMedianReturnLates
-	 * @return Label
+	 * @return lblStatisticSingleBookMedianReturnLates
 	 */
 	public Label getLblStatisticSingleBookMedianReturnLates() {
 		return lblStatisticSingleBookMedianReturnLates;
 	}
 	/**
 	 * getLblStatisticAverageReturnLates1
-	 * @return Label
+	 * @return lblStatisticAverageReturnLates1
 	 */
 	public Label getLblStatisticAverageReturnLates1() {
 		return lblStatisticAverageReturnLates1;
 	}
 	/**
 	 * getTfStatisticSingleBookReturnLates
-	 * @return Label
+	 * @return tfStatisticSingleBookReturnLates
 	 */
 	public TextField getTfStatisticSingleBookReturnLates() {
 		return tfStatisticSingleBookReturnLates;

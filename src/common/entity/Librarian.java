@@ -22,7 +22,6 @@ public class Librarian extends User implements Serializable{
 	 * @param usrLastName
 	 * @param usrEmail
 	 * @param usrType
-	 * @return Librarian object
 	 */
 	public Librarian(Integer usrId, String usrName, String usrPassword, String usrFirstName, String usrLastName, String usrEmail, UserType usrType) 
 	{
