@@ -1,9 +1,13 @@
 package client.controllers;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -194,9 +198,13 @@ public class StatisticController {
 	 * mActiviySnapshot is list of ActiviySnapshot, this list is for temporary uses.
 	 */
 	private List<ActiviySnapshot> mActiviySnapshot;
+	protected boolean isTabReturnLatesPressed = false;
+	protected boolean isTabBorrowPressed = false;
+	private boolean isContextFromMainView = true;
+
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 	/** PDF_PATH is the path for saved stock result file */
-	private static final String PDF_PATH = System.getProperty("user.dir") + "/output/report_" + LocalDate.now()
-			+ ".pdf";
+	private static String PDF_PATH = "output/report_" + LocalDateTime.now().format(formatter) + ".pdf";
 
 	/**
 	 * initialize the librarian controller
@@ -221,33 +229,44 @@ public class StatisticController {
 				.handleMessageFromClientUI(new Message(OperationType.GetBookStatstic, BookStatsticType.Regular));
 		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetBookStatstic, BookStatsticType.Late));
 
-//		// bad practice bad work!
-//		tfStatisticSingleBookReturnLates.setText("3");
-//		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
-//				tfStatisticSingleBookReturnLates.getText()));
+		// bad practice bad work!
+		tfStatisticSingleBookReturnLates.setText("4");
+		ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.GetAllLatesReturnBySingleBookCatId,
+				tfStatisticSingleBookReturnLates.getText()));
+
 
 		// initialize on click tab
 		tabPaneStatistic.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 			@Override
-			public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab newTab) {
-				if (newTab.equals(tabActivity))
+			public void changed(ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab) {
+				if (newTab.equals(tabActivity)) {
 					ViewStarter.client.handleMessageFromClientUI(
 							new Message(OperationType.GetLastActiviySnapshotRecord, "initialize")); // sending
+				}
 
-				if (newTab.equals(tabReturnLates))
+				if (newTab.equals(tabReturnLates)) {
 					ViewStarter.client.handleMessageFromClientUI(
 							new Message(OperationType.GetBookStatstic, BookStatsticType.Late));
+					isTabReturnLatesPressed = true;
+				}
 
 				if (newTab.equals(tabBorrow)) {
 					ViewStarter.client.handleMessageFromClientUI(
 							new Message(OperationType.GetBookStatstic, BookStatsticType.Popular));
 					ViewStarter.client.handleMessageFromClientUI(
 							new Message(OperationType.GetBookStatstic, BookStatsticType.Regular));
+					isTabBorrowPressed = true;
 				}
 
 				if (newTab.equals(tabGenerateReport)) {
-
+					if (!isTabReturnLatesPressed || !isTabBorrowPressed) {
+						ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR,
+								"Statstic Generate Report",
+								"You have to explore \"Return Late\" and \"Borrow\" tab before you try to generate report.");
+						tabPaneStatistic.getSelectionModel().select(oldTab);
+					}
 				}
+
 			}
 		});
 
@@ -372,10 +391,14 @@ public class StatisticController {
 		}
 
 		try {
-			PDFGenerator.getInstance().createPdf(PDF_PATH, "Report", this);
-		} catch (DocumentException | IOException e) {
+			File file = PDFGenerator.getInstance().createPdf(PDF_PATH, "Statatic Report", this);
+			Desktop.getDesktop().open(file);
+			ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.INFORMATION, "Generate Report",
+					"you'r file saved in " + file.getPath());
+		} catch (IOException | DocumentException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	/**
@@ -446,6 +469,13 @@ public class StatisticController {
 				}
 			}
 		});
+	}
+
+	public void updateBookStatsticUIUnsuccessful(BookStatistic bookSelected) {
+		if(isContextFromMainView ) {
+		ViewStarter.client.utilsControllers.showAlertWithHeaderText(AlertType.ERROR, "Search Single Book",
+				"Can't find data on this book!");
+		}
 	}
 
 	/**

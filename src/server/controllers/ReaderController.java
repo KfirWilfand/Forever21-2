@@ -1,5 +1,6 @@
 package server.controllers;
 
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -142,10 +143,18 @@ public class ReaderController {
   	public Message sendTableOfContantToClient(Message msg)
   	{
   		String bookName=(String)msg.getObj();
-		URL url = getClass().getResource("/TableOfContent/");
-		String path=url.getPath().toString()+bookName.replace(" ","_")+".pdf";
-		path=path.replace('/', '\\');
-		path=path.replaceAll("bin", "src");
+  		
+
+    	String path="";
+		try {
+			path = (ReaderController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+  		path=path+bookName.replace(" ","_")+".pdf";
+  	
   		TransferFile tf=TransferFile.createFileToTransfer(path);
   		Object[] message=new Object[2];
   		message[0]=tf;
