@@ -372,10 +372,11 @@ public class UpdateOrAddBookController {
     
     public void showPhoto(String fileName) throws URISyntaxException
     {
-    	URL url = getClass().getResource("/BooksImages/");
+    	//URL url = getClass().getResource("/BooksImages/");
     	
     	String path =(UpdateOrAddBookController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
   		path = path.substring(0, path.lastIndexOf("/"))+"/BooksImages/";
+  		path=path.replaceAll("bin", "src");
 		String str=path+fileName.replace(" ","_")+".png";
 		System.out.println(str);
     	bookImage.setImage(new Image(new File(str).toURI().toString()));

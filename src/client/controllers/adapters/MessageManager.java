@@ -290,8 +290,9 @@ public class MessageManager {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-			  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
 					
+			  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+			  		path=path.replaceAll("bin", "src");
 					fc.SaveTableOfContent((TransferFile) o[0], (String) o[1],path);
 					ViewStarter.client.bookDetailsControllerObj.downloadTableOC((String) o[1]);
 					break;
@@ -307,7 +308,8 @@ public class MessageManager {
 					Object[] o = (Object[]) msg.getObj();
 					String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
 			  		path = path.substring(0, path.lastIndexOf("/"));
-	
+			  		path=path.replaceAll("bin", "src");
+			  		
 					fc.SavePhoto((TransferFile) o[0], (String) o[1], path+"/BooksImages/");
 					ViewStarter.client.updateOrAddBookControllerObj.showPhoto((String) o[1]);
 					break;
@@ -371,6 +373,7 @@ public class MessageManager {
 					Object[] o = (Object[]) msg.getObj();
 					String path =(MessageManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
 			  		path = path.substring(0, path.lastIndexOf("/"));
+			  		path=path.replaceAll("bin", "src");
 					fc.SavePhoto((TransferFile) o[0], (String) o[1], path+"/BooksImages/");
 					ViewStarter.client.bookDetailsControllerObj.showPhoto((String) o[1]);
 					break;

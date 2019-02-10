@@ -76,12 +76,14 @@ public class ManageStockController {
 				e1.printStackTrace();
 			}
 	  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+	  		path=path.replaceAll("bin", "src");
 			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],path);
 		}
 		if((TransferFile)message[3]!=null)
 		{
 			String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
 	  		path = path.substring(0, path.lastIndexOf("/"));
+	  		path=path.replaceAll("bin", "src");
 			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],path+"/BooksImages/");
 		}
 		
@@ -215,6 +217,7 @@ public class ManageStockController {
 				e1.printStackTrace();
 			}
 	  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+	  		path=path.replaceAll("bin", "src");
 			filesControllerObj.SaveTableOfContent((TransferFile)message[1],(String)message[2],path);
 		}
 
@@ -222,6 +225,7 @@ public class ManageStockController {
 		{
 	  		String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
 	  		path = path.substring(0, path.lastIndexOf("/"));
+	  		path=path.replaceAll("bin", "src");
 			filesControllerObj.SavePhoto((TransferFile)message[3],(String)message[2],path+"/BooksImages/");
 		}
 		if(res)
@@ -324,7 +328,8 @@ public class ManageStockController {
   		
   		String path =(ManageStockController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
   		path = path.substring(0, path.lastIndexOf("/"));
-
+  
+  		path=path.replaceAll("bin", "src");
   		TransferFile tf=TransferFile.createFileToTransfer(path+"/BooksImages/"+bookName.replace(" ","_")+".png");
   		Object[] message=new Object[2];
   		message[0]=tf;

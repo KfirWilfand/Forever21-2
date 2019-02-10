@@ -151,7 +151,8 @@ public class BookDetailsController {
 					e1.printStackTrace();
 				}
 		  		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
-				String str=path+fileName.replace(" ","_")+".pdf";
+		  		path=path.replaceAll("bin", "src");
+		  		String str=path+fileName.replace(" ","_")+".pdf";
 		        
 			
 				try {
@@ -227,6 +228,7 @@ public class BookDetailsController {
     {    	
     	String path =(BookDetailsController.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
   		path = path.substring(0, path.lastIndexOf("/"))+"/BooksImages/";
+  		path=path.replaceAll("bin", "src");
 		String str=path+fileName.replace(" ","_")+".png";
 		System.out.println(str);
 		bookImage.setImage(new Image(new File(str).toURI().toString()));

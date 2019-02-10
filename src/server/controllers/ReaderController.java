@@ -153,6 +153,7 @@ public class ReaderController {
 			e1.printStackTrace();
 		}
   		path = path.substring(0, path.lastIndexOf("/"))+"/TableOfContent/";
+  		path=path.replaceAll("bin", "src");
   		path=path+bookName.replace(" ","_")+".pdf";
   	
   		TransferFile tf=TransferFile.createFileToTransfer(path);
