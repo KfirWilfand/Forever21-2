@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.sql.Date;
 import client.ViewStarter;
 import client.controllers.adapters.AlertController;
@@ -22,7 +23,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
@@ -463,22 +467,30 @@ public class LibrarianClientController {
 	 */
 	@FXML
 	void onReturnBookBtn(ActionEvent event) {
+
 		tfReturnBookSubscriberNumber.clear();
 		tfReturnBookBorrowDate.setValue(null);
 		tfReturnBookEndBorrowDate.setValue(null);
 		tfReturnBookReturningDate.setValue(null);
-
 		tfReturnBookCatalogNumber.setStyle(null);
 
 		if (tfReturnBookCatalogNumber.getText().isEmpty())
 			tfReturnBookCatalogNumber
 					.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		else {
-			LocalDate actualReturnDate = LocalDate.now();
-			Date date = Date.valueOf(actualReturnDate);
-			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
-			ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ReturnBookByLibrarian, borrowCopy));
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirmation");
+			alert.setHeaderText("Are you sure you want to return this book?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				LocalDate actualReturnDate = LocalDate.now();
+				Date date = Date.valueOf(actualReturnDate);
+				BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
+				ViewStarter.client.handleMessageFromClientUI(new Message(OperationType.ReturnBookByLibrarian, borrowCopy));
+			}
 		}
+		
 	}
 
 	/**
@@ -642,13 +654,21 @@ public class LibrarianClientController {
 			tfReturnBookCatalogNumber
 					.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 5px;");
 		else {
-			LocalDate currentDate = LocalDate.now();
-			Date date = Date.valueOf(currentDate);
-			BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
+			
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirmation");
+			alert.setHeaderText("Are you sure you want to get extantion for this book?");
 
-			ViewStarter.client
-					.handleMessageFromClientUI(new Message(OperationType.ExtensionBookByLibrarian, borrowCopy));
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				LocalDate currentDate = LocalDate.now();
+				Date date = Date.valueOf(currentDate);
+				BorrowCopy borrowCopy = new BorrowCopy(tfReturnBookCatalogNumber.getText(), date);
 
+				ViewStarter.client
+						.handleMessageFromClientUI(new Message(OperationType.ExtensionBookByLibrarian, borrowCopy));
+
+			}
 		}
 
 	}

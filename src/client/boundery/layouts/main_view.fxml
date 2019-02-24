@@ -22,7 +22,7 @@
 				<Image url="@../resources/footer.png" />
 			</image>
 		</ImageView>
-		<ImageView fitHeight="72.0" fitWidth="182.0" layoutX="23.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+		<ImageView fitHeight="79.0" fitWidth="112.0" layoutX="23.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
 			<image>
 				<Image url="@../resources/logo.png" />
 			</image>
@@ -32,12 +32,12 @@
 				<Font name="Segoe UI" size="50.0" />
 			</font>
 		</Text>
-		<Pane fx:id="mainPane" accessibleText="1" layoutX="22.0" layoutY="137.0" opacity="0.85" prefHeight="620.0" prefWidth="766.0">
+		<Pane fx:id="mainPane" accessibleText="1" layoutX="22.0" layoutY="136.0" opacity="0.85" prefHeight="620.0" prefWidth="766.0">
 			<padding>
 				<Insets bottom="50.0" left="5.0" right="5.0" top="100.0" />
 			</padding>
 		</Pane>
-		<Button fx:id="btnSearchBook" layoutX="267.0" layoutY="33.0" mnemonicParsing="false" onAction="#openSearchView" prefHeight="46.0" prefWidth="39.0" styleClass="btnWithImage">
+		<Button fx:id="btnSearchBook" layoutX="267.0" layoutY="28.0" mnemonicParsing="false" onAction="#openSearchView" prefHeight="46.0" prefWidth="39.0" styleClass="btnWithImage">
 			<graphic>
 				<ImageView fitHeight="39.0" fitWidth="45.0">
 					<image>
@@ -52,12 +52,12 @@
 			</font>
 		</Label>
 		<Line endX="326.0" layoutX="461.0" layoutY="136.0" startX="-436.0" stroke="#022b3a" />
-		<Button fx:id="btnLogin" alignment="BOTTOM_LEFT" ellipsisString="" layoutX="699.0" layoutY="21.0" mnemonicParsing="false" onAction="#openLogInForm" prefHeight="36.0" prefWidth="101.0" styleClass="btnWithImage" text="Login" underline="true">
+		<Button fx:id="btnLogin" alignment="BOTTOM_LEFT" ellipsisString="" layoutX="696.0" layoutY="15.0" mnemonicParsing="false" onAction="#openLogInForm" prefHeight="36.0" prefWidth="101.0" styleClass="btnWithImage" text="Login" underline="true">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
 		</Button>
-		<Label fx:id="lblLoginAs" layoutX="705.0" layoutY="51.0" prefHeight="18.0" prefWidth="90.0" textAlignment="CENTER">
+		<Label fx:id="lblLoginAs" layoutX="705.0" layoutY="44.0" prefHeight="18.0" prefWidth="101.0" textAlignment="CENTER">
          <font>
             <Font size="10.0" />
          </font></Label>
@@ -89,12 +89,12 @@
 				</Button>
 			</children>
 		</AnchorPane>
-      <Button fx:id="btnLogout" layoutX="695.0" layoutY="61.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#onLogoutBtn" prefHeight="27.0" prefWidth="63.0" styleClass="btnWithImage" text="Logout" textAlignment="CENTER" underline="true" visible="false">
+      <Button fx:id="btnLogout" layoutX="695.0" layoutY="52.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#onLogoutBtn" prefHeight="27.0" prefWidth="63.0" styleClass="btnWithImage" text="Logout" textAlignment="CENTER" underline="true" visible="false">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-		<Button fx:id="btnProfile" layoutX="660.0" layoutY="34.0" mnemonicParsing="false" onAction="#openProfileView" prefHeight="46.0" prefWidth="45.0" styleClass="btnWithImage">
+		<Button fx:id="btnProfile" layoutX="655.0" layoutY="31.0" mnemonicParsing="false" onAction="#openProfileView" prefHeight="46.0" prefWidth="45.0" styleClass="btnWithImage">
          <graphic>
       				<ImageView fitHeight="35.0" fitWidth="33.0">
       					<image>
@@ -103,7 +103,7 @@
       				</ImageView>
          </graphic>
 		</Button>
-      <Button fx:id="btnHomePage" layoutX="219.0" layoutY="33.0" mnemonicParsing="false" onAction="#onHomePageBtn" prefHeight="46.0" prefWidth="39.0" styleClass="btnWithImage">
+      <Button fx:id="btnHomePage" layoutX="219.0" layoutY="26.0" mnemonicParsing="false" onAction="#onHomePageBtn" prefHeight="46.0" prefWidth="39.0" styleClass="btnWithImage">
          <graphic>
             <ImageView fitHeight="39.0" fitWidth="38.0">
                <image>
@@ -112,7 +112,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="btnMailBox" layoutX="322.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickMailBox" prefHeight="59.0" prefWidth="62.0" styleClass="btnWithImage" visible="false">
+      <Button fx:id="btnMailBox" layoutX="321.0" layoutY="21.0" mnemonicParsing="false" onAction="#onClickMailBox" prefHeight="59.0" prefWidth="62.0" styleClass="btnWithImage" visible="false">
          <graphic>
             <ImageView fitHeight="38.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -123,6 +123,26 @@
       </Button>
       <Circle fx:id="redCircel" accessibleText="1" disable="true" fill="#ff1f1f" layoutX="366.0" layoutY="49.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
       <Text fx:id="txtNumberOfMsg" layoutX="363.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" visible="false" />
+      <Label layoutX="231.0" layoutY="71.0" text="Home" textFill="#022b3a">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="279.0" layoutY="71.0" text="Search" textFill="#022b3a">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblInbox" layoutX="336.0" layoutY="72.0" text="Inbox" textFill="#022b3a" visible="false">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblProfile" layoutX="660.0" layoutY="75.0" text="Operations" textAlignment="CENTER" textFill="#022b3a" visible="false">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
 
 	</children>
 </AnchorPane>

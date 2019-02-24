@@ -34,10 +34,8 @@ public enum ReturnMessageType {
 	MustReturnBook,
 	PopularBook,
 	GraduateWithMoreBooksToReturn,
-
 	ChangeGraduateStatusToLock, 
 	CopyIsAlreadyExist,
-
 	CheckSubscriberStatus,
 	
 }

@@ -125,6 +125,12 @@ public class MainViewController {
     @FXML
     private Text txtNumberOfMsg;
     
+    @FXML
+    private Label lblInbox;
+
+    @FXML
+    private Label lblProfile;
+    
     public Circle getRedCircel() {
 		return redCircel;
 	}
@@ -254,6 +260,8 @@ public class MainViewController {
 		tfUserName.clear();
 		tfPassword.clear();
 		btnMailBox.setVisible(false);
+		lblInbox.setVisible(false);
+		lblProfile.setVisible(false);
 		redCircel.setVisible(false);
 		txtNumberOfMsg.setVisible(false);
 		
@@ -366,6 +374,8 @@ public class MainViewController {
 						}
 								
 					btnMailBox.setVisible(true);
+					lblInbox.setVisible(true);
+					lblProfile.setVisible(true);
 					btnLogout.setVisible(true);
 					mainView.getChildren().remove(dialogBoxLogin);
 					btnLogin.setText(user.getFirstName() + " " + user.getLastName());
@@ -374,7 +384,7 @@ public class MainViewController {
 
 					if (user instanceof Subscriber) {
 						utils.layoutSwitcher(mainPane, "subscriber.fxml", "Subscriber Profile");
-
+						lblProfile.setText("Profile");
 						lblLoginAs.setText("Log as Subscriber");
 						ViewStarter.client.subscriberClientControllerObj.initializeDetailsAtLogin((Subscriber) user);
 					}
@@ -383,13 +393,15 @@ public class MainViewController {
 					
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Librarian Profile");
 						lblLoginAs.setText("Log as Librarian");
+						
 						ViewStarter.client.librarianClientControllerObj.setLibrarianManager(false);
 						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();
 					}
 
 					if (user instanceof LibraryManager) {
 						utils.layoutSwitcher(mainPane, "librarian.fxml", "Library Manager Profile");
-						lblLoginAs.setText("Log as LibraryManager");
+						lblLoginAs.setText("Log as Manager");
+						lblProfile.setText("Operstions");
 						ViewStarter.client.librarianClientControllerObj.setLibrarianManager(true);
 						ViewStarter.client.librarianClientControllerObj.initializeDetailsAtLogin();
 					}
